@@ -163,20 +163,18 @@ export default function SignUpStep1Screen(props) {
             marginTop: 10,
             marginLeft: '20%',
           }}
-          text=" Already have an account?"
-          children={
-            <DmzText
-              style={{
-                color: '#FF7A59',
-                textAlign: 'center',
-                fontSize: 14,
-                marginTop: 10,
-                paddingLeft: 10,
-              }}
-              text="Sign In"
-            />
-          }
-        />
+          text=" Already have an account?">
+          <DmzText
+            style={{
+              color: '#FF7A59',
+              textAlign: 'center',
+              fontSize: 14,
+              marginTop: 10,
+              paddingLeft: 10,
+            }}
+            text="Sign In"
+          />
+        </DmzText>
       </View>
     </View>
   );
