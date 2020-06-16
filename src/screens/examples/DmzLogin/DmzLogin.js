@@ -21,16 +21,16 @@ function DmzLogin(props) {
   const [data, setData] = useState({email: '', password: ''});
   const [isDoctor, setDoctor] = useState(false);
   const dispatch = useDispatch();
-  const authData = useSelector(state => state.AuthReducer);
+  const authData = useSelector((state) => state.AuthReducer);
   const [heightOffset, setHeightOffset] = useState(0);
   const opacity = useRef(new Animated.Value(0)).current;
 
-  const onLayout = props => {
+  const onLayout = (props) => {
     if (heightOffset !== props.nativeEvent.layout.y)
       setHeightOffset(props.nativeEvent.layout.y);
   };
 
-  const successCallback = successResponce => {
+  const successCallback = (successResponce) => {
     showTost(successResponce.message.toString());
     console.log(`PatientLoginAction(success):  ${successResponce.message}`);
     // console.log(authData);
@@ -41,9 +41,8 @@ function DmzLogin(props) {
     // props.navigation.navigate('pageNavigation', {}, NavigationActions.navigate({routeName: 'patientHomePage'}));
   };
 
-  const errorCallback = faildResponce => {
+  const errorCallback = (faildResponce) => {
     showTost(faildResponce.message.toString());
-    console.log(`PatientLoginAction(error):  ${faildResponce.message}`);
   };
 
   const _handelPatientLogin = () => {
@@ -137,7 +136,7 @@ function DmzLogin(props) {
             withAnim={false}
             placeholder="Email"
             style={{Container: {borderBottomWidth: 0}}}
-            inputHandler={txt => setData({...data, email: txt})}
+            inputHandler={(txt) => setData({...data, email: txt})}
           />
         </Animated.View>
 
@@ -161,7 +160,7 @@ function DmzLogin(props) {
               Container: {borderBottomWidth: 0},
               input: {backgroundColor: 'pink'},
             }}
-            inputHandler={txt => setData({...data, password: txt})}
+            inputHandler={(txt) => setData({...data, password: txt})}
           />
         </Animated.View>
         {/* <ExpandableButton
