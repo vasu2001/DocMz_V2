@@ -44,12 +44,12 @@ function AvailDoctorContentV2({
             {schedule &&
               schedule
                 .filter(
-                  item =>
+                  (item) =>
                     item.bookedFor.slice(11, 16) >
                     new Date().toISOString().slice(11, 16),
                 )
                 .slice(0, 3)
-                .map(item => (
+                .map((item) => (
                   <Text
                     style={[
                       CardContentStyles.AvailableDoctorsAvailableTime,
@@ -58,17 +58,6 @@ function AvailDoctorContentV2({
                     {item.bookedFor.slice(11, 16)}
                   </Text>
                 ))}
-            <Text
-              style={[
-                CardContentStyles.AvailableDoctorsAvailableTime,
-                CardContentStyles.AvailableDoctorsAvailableTimeActive,
-              ]}>
-              {'11:00'}
-            </Text>
-
-            <Text style={[CardContentStyles.AvailableDoctorsAvailableTime]}>
-              {'16:00'}
-            </Text>
           </View>
         </View>
       </TouchableOpacity>

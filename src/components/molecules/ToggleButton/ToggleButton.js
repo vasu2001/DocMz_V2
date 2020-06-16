@@ -23,10 +23,12 @@ function ToggleButton({
   onToggle,
   toggle,
   textStyle,
+  btnStyle,
   dotStyle = {},
 }) {
   const onTouch = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    console.log('pressed');
     onToggle();
   };
   return (
@@ -38,7 +40,7 @@ function ToggleButton({
         },
         style ? style : null,
       ]}>
-      <TouchableOpacity onPress={onTouch}>
+      <TouchableOpacity onPress={onTouch} style={[btnStyle ? btnStyle : null]}>
         <Text style={[ToggleButtonStyles.Text, textStyle ? textStyle : null]}>
           {toggle ? text0 : text1}
         </Text>
@@ -52,10 +54,9 @@ const ToggleButtonStyles = StyleSheet.create({
   Container: {
     flexDirection: 'row',
     backgroundColor: '#fff',
-    padding: 4,
+    paddingVertical: 4,
     paddingLeft: 8,
     paddingRight: 8,
-    // width: 70,
     borderRadius: 20,
     justifyContent: 'space-between',
     alignItems: 'center',

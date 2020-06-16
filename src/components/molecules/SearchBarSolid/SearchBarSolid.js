@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, TextInput} from 'react-native';
 
-function SearchBarSolid({withIcon, icon}) {
+function SearchBarSolid({withIcon, icon, placeholder, placeholderTextColor}) {
   return (
     <View
       style={{
@@ -20,7 +20,12 @@ function SearchBarSolid({withIcon, icon}) {
         }}>
         <TextInput
           style={{height: 40, lineHeight: 14, fontSize: 14}}
-          placeholder={'search by conditions,symptoms...'}
+          placeholderTextColor={
+            placeholderTextColor ? placeholderTextColor : 'black'
+          }
+          placeholder={
+            placeholder ? placeholder : 'Search by conditions, symptoms...'
+          }
         />
       </View>
       {withIcon && icon}
