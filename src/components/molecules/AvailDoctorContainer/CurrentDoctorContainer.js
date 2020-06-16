@@ -1,11 +1,11 @@
 import React, {useEffect} from 'react';
 import {View, StyleSheet} from 'react-native';
 import BasicCard from '../../atoms/BasicCard/BasicCard';
-import AvailDoctorContent from '../AvailDoctorContent/AvailDoctorContent';
+import CurrentDoctorContent from '../AvailDoctorContent/CurrentDoctorContent';
 import ProfilePic from '../../atoms/ProfilePic/ProfilePic';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
-function AvailDoctorContainer({
+function CurrentDoctorContainer({
   onPress,
   name,
   schedule,
@@ -16,9 +16,9 @@ function AvailDoctorContainer({
 }) {
   console.log('Navigaton: ', id);
   useEffect(() => {
-    console.log('2222222222222222222222222222222222222222222222222');
-    console.log(schedule);
-    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+    // console.log('2222222222222222222222222222222222222222222222222');
+    // console.log(schedule);
+    // console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
   }, []);
   return (
     <View
@@ -28,7 +28,7 @@ function AvailDoctorContainer({
         style={{
           CardContainer: Styles.AvailableDoctorsBasicCard,
         }}>
-        <AvailDoctorContent
+        <CurrentDoctorContent
           toggle={toggle}
           DoctorName={`Dr. ${name}`}
           rating={4}
@@ -42,12 +42,12 @@ function AvailDoctorContainer({
               sourceurl={require('../../../assets/jpg/person1.jpg')}
               style={{
                 Container: {
-                  height: 70,
-                  width: 70,
-                  borderRadius: 70,
+                  height: 60,
+                  width: 60,
+                  borderRadius: 60,
                 },
                 Image: {
-                  borderRadius: 70,
+                  borderRadius: 60,
                 },
               }}
             />
@@ -72,4 +72,4 @@ const Styles = StyleSheet.create({
     paddingBottom: 25,
   },
 });
-export default AvailDoctorContainer;
+export default CurrentDoctorContainer;
