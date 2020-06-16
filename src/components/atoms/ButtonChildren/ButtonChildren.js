@@ -9,6 +9,7 @@ function DmzButton({
   onPress,
   disabled,
   style,
+  children,
   isLoading = false,
 }) {
   return (
@@ -20,14 +21,10 @@ function DmzButton({
       {isLoading ? (
         <ActivityIndicator color="#fff" />
       ) : (
-        <Text
-          style={[
-            Styles.Text,
-            {color: theme === 'dark' ? '#fff' : '#000'},
-            style ? style.Text : null,
-          ]}>
-          {text}
-        </Text>
+        <View
+          style={[Styles.innerContainer, style ? style.innerContainer : null]}>
+          {children}
+        </View>
       )}
     </TouchableOpacity>
   );
@@ -47,6 +44,10 @@ const Styles = StyleSheet.create({
   Text: {
     fontSize: 14,
     fontWeight: 'bold',
+  },
+  innerContainer: {
+    width: '100%',
+    height: '100%',
   },
 });
 

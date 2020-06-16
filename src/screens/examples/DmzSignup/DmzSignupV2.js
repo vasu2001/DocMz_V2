@@ -1,27 +1,40 @@
-import React from 'react';
-import {View, Text, TextInput, Image} from 'react-native';
+import React, {createRef} from 'react';
+import {View, Text, StyleSheet} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import ViewPager from '@react-native-community/viewpager';
+import SignUpStep1Screen from './SignUpStep1Screen';
+import SignUpStep2Screen from './SignUpStep2Screen';
+import SignUpStep3Screen from './SignUpStep3Screen';
 // import Svg from 'react-native-svg';
 
 function DmzSignupV2() {
+  const pagerRef = createRef();
+  const nextpage = (page) => {
+    pagerRef.current.setPage(page);
+  };
   return (
-    <View style={{flex: 1}}>
-      <LinearGradient
-        start={{x: 0, y: 0}}
-        end={{x: 1, y: 0}}
-        useAngle
-        angle={100}
-        colors={[
-          'rgba(2, 126, 151, 0)',
-          'rgba(2, 126, 151, 0)',
-          'rgba(2, 126, 151, 0)',
-          'rgba(2, 126, 151, 0.31)',
-        ]}
-        style={{flex: 1, opacity: 0.4}}
-      />
-    </View>
+    <ViewPager
+      ref={pagerRef}
+      style={styles.viewPager}
+      initialPage={0}
+      scrollEnabled={false}>
+      <View key="1">
+        <SignUpStep1Screen onPress={() => nextpage(1)} />
+      </View>
+      <View key="2">
+        <SignUpStep2Screen onPress={() => nextpage(2)} />
+      </View>
+      <View key="2">
+        <SignUpStep3Screen />
+      </View>
+    </ViewPager>
   );
 }
 
 export default DmzSignupV2;
+
+const styles = StyleSheet.create({
+  viewPager: {
+    flex: 1,
+  },
+});
