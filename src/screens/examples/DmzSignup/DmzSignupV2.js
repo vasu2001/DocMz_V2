@@ -1,6 +1,5 @@
 import React, {createRef} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import {View, StyleSheet} from 'react-native';
 import ViewPager from '@react-native-community/viewpager';
 import SignUpStep1Screen from './SignUpStep1Screen';
 import SignUpStep2Screen from './SignUpStep2Screen';
