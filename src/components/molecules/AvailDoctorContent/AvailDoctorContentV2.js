@@ -23,8 +23,8 @@ function AvailDoctorContentV2({
         <RatingStars
           size={14}
           filled
-          activeColor={'#2F66C9'}
-          passiveColor={'#9C9C9C'}
+          activeColor={'#027E97'}
+          passiveColor={'#9D9D9D'}
           rating={rating}
         />
       </View>
@@ -44,12 +44,12 @@ function AvailDoctorContentV2({
             {schedule &&
               schedule
                 .filter(
-                  item =>
+                  (item) =>
                     item.bookedFor.slice(11, 16) >
                     new Date().toISOString().slice(11, 16),
                 )
                 .slice(0, 3)
-                .map(item => (
+                .map((item) => (
                   <Text
                     style={[
                       CardContentStyles.AvailableDoctorsAvailableTime,
@@ -93,15 +93,15 @@ const CardContentStyles = StyleSheet.create({
   AvailableDoctorsName: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#444',
+    color: '#027E97',
   },
   AvailableDoctorsSpecialization: {
     color: '#666',
-    fontSize: 12,
+    fontSize: 13,
+    lineHeight: 18,
   },
   AvailableDoctorsAvailableTimes: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     marginTop: 15,
   },
@@ -112,8 +112,10 @@ const CardContentStyles = StyleSheet.create({
     marginRight: 10,
   },
   AvailableDoctorsAvailableTimeActive: {
-    backgroundColor: '#2E6BC7',
+    backgroundColor: '#027E97',
     color: '#fafafa',
+    paddingVertical: 2,
+    paddingHorizontal: 8,
   },
   AvailableDoctorsContinueButton: {
     backgroundColor: '#FF7A59',
@@ -121,9 +123,9 @@ const CardContentStyles = StyleSheet.create({
     bottom: 0,
     right: 0,
     padding: 5,
-    paddingHorizontal: 15,
-    borderBottomRightRadius: 15,
-    borderTopLeftRadius: 15,
+    paddingHorizontal: 20,
+    borderBottomRightRadius: 20,
+    borderTopLeftRadius: 20,
     zIndex: 1000,
   },
 });

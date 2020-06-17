@@ -2,21 +2,24 @@
 import React, {useState} from 'react';
 import {View, Text, TextInput, StyleSheet, Alert} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import {
-  TouchableHighlight,
-  TouchableOpacity,
-} from 'react-native-gesture-handler';
+import Toast from 'react-native-root-toast';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import DmzText from '../../../components/atoms/DmzText/DmzText';
 import DmzButton from '../../../components/atoms/DmzButton/DmzButton';
 import TextInputIcon from '../../../components/atoms/TextInputCustom/TextInputIcon';
 import LoginAsPatient from '../../../assets/svg/LoginAsPatient.svg';
 import LoginAsDoctor from '../../../assets/svg/LoginAsDoctor.svg';
 import Check from '../../../assets/svg/check.svg';
+import {useDispatch} from 'react-redux/lib/hooks/useDispatch';
+import {LoginDoctor, LoginPatient} from '../../../redux/action/auth';
+import {call} from 'react-native-reanimated';
+import {useSelector} from 'react-redux/lib/hooks/useSelector';
 
 export default function DmzLoginV2(props) {
   const [credential, setCredential] = useState({email: '', password: ''});
   const [loginAs, setLoginAs] = useState('patient');
+  const {isLoading} = useSelector((state) => state.AuthReducer);
+  const dispatch = useDispatch();
   const handleEmail = (email) => {
     setCredential({...credential, email});
   };
@@ -24,8 +27,12 @@ export default function DmzLoginV2(props) {
     setCredential({...credential, password: pass});
   };
 
-  const handlePatientLogin = () => {};
-  const handleDoctorLogin = () => {};
+  const handlePatientLogin = () => {
+    dispatch(LoginPatient(credential, successCallback, errorCallback));
+  };
+  const handleDoctorLogin = () => {
+    dispatch(LoginDoctor(credential, successCallback, errorCallback));
+  };
 
   const handleLogin = () => {
     const reg = new RegExp(
@@ -40,15 +47,38 @@ export default function DmzLoginV2(props) {
     }
   };
   const successCallback = (successResponce) => {
-    showTost(successResponce.message.toString());
-    // isDoctor
-    //   ? props.navigation.navigate('pageNavigation')
-    //   : props.navigation.goBack(null);
+    showTost(successResponce.message.toString(), () => {
+      props.navigation.navigate('pageNavigation');
+    });
   };
 
   const errorCallback = (faildResponce) => {
-    showTost(faildResponce.message.toString());
+    Alert.alert(faildResponce.message);
+    showTost(faildResponce.message, () => {});
     console.log(`PatientLoginAction(error):  ${faildResponce.message}`);
+  };
+  const showTost = (msg = '...', callback) => {
+    Toast.show(msg, {
+      duration: Toast.durations.SHORT,
+      position: Toast.positions.BOTTOM,
+      shadow: true,
+      animation: true,
+      hideOnPress: true,
+      delay: 0,
+      onShow: () => {
+        // calls on toast\`s appear animation start
+      },
+      onShown: () => {
+        // calls on toast\`s appear animation end.
+      },
+      onHide: () => {
+        // calls on toast\`s hide animation start.
+      },
+      onHidden: () => {
+        // calls on toast\`s hide animation end.
+      },
+    });
+    callback && callback();
   };
   return (
     <View style={{flex: 1}}>
@@ -254,11 +284,10 @@ export default function DmzLoginV2(props) {
             },
           }}
           text="SIGN IN"
+          isLoading={isLoading}
+          disabled={isLoading}
         />
         <DmzText
-          onPress={() => {
-            this.props.navigation.navigate('SignUpStep1Screen');
-          }}
           style={{
             textAlign: 'center',
             color: 'rgba(0, 0, 0, 0.25)',
@@ -268,16 +297,21 @@ export default function DmzLoginV2(props) {
           }}
           text="No account ?"
           children={
-            <DmzText
-              style={{
-                color: '#FF7A59',
-                textAlign: 'center',
-                fontSize: 14,
-                marginTop: 10,
-                paddingLeft: 10,
-              }}
-              text="Sign Up"
-            />
+            <TouchableOpacity
+              onPress={() => {
+                props.navigation.navigate('signupScreen');
+              }}>
+              <DmzText
+                style={{
+                  color: '#FF7A59',
+                  textAlign: 'center',
+                  fontSize: 14,
+                  marginTop: 10,
+                  paddingLeft: 10,
+                }}
+                text="Sign Up"
+              />
+            </TouchableOpacity>
           }
         />
       </View>

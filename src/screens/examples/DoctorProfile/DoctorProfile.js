@@ -6,6 +6,7 @@ import {
   ScrollView,
   Animated,
   Easing,
+  Image,
 } from 'react-native';
 import SolidHeader from '../../../components/organisms/SolidHeader/SolidHeader';
 import RatingStarts from '../../../components/atoms/ratingStars/RatingStarts';
@@ -14,7 +15,9 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import ProfilePic from '../../../components/atoms/ProfilePic/ProfilePic';
 import DmzText from '../../../components/atoms/DmzText/DmzText';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-function DoctorProfile() {
+import {useSelector} from 'react-redux';
+function DoctorProfile(props) {
+  const {navigation} = props;
   const dimen = useRef(new Animated.Value(0)).current;
   const opacity = useRef(new Animated.Value(0)).current;
   useEffect(() => {
@@ -35,6 +38,23 @@ function DoctorProfile() {
       }),
     ]).start();
   });
+  const {data} = props.navigation.state.params;
+  const authData = useSelector((state) => state.AuthReducer);
+
+  const _checkLogedinAndDoTheStuff = () => {
+    console.log('bug bug ', authData.isLogedin);
+    if (!authData.isLogedin) {
+      console.log('>> authentication.');
+      navigation.navigate('authentication');
+    } else {
+      // navigation.navigate('ConfirmAppointment', {data: data});
+      if (data.toggle === 0) {
+        navigation.navigate('question', {data: data});
+      } else {
+        alert('open schedule popup');
+      }
+    }
+  };
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       <SolidHeader
@@ -60,9 +80,9 @@ function DoctorProfile() {
               fontWeight: '700',
               alignSelf: 'center',
               lineHeight: 36,
-              color: '#fafafa',
+              color: 'rgba(0,126,150,1)',
             }}>
-            Dr.Ekaterine
+            Dr.{data.basic.name}
           </Text>
           <Text
             style={{
@@ -70,12 +90,18 @@ function DoctorProfile() {
               fontWeight: '500',
               alignSelf: 'center',
               lineHeight: 22,
-              color: '#f1f1f1',
+              color: 'rgba(0,126,150,0.8)',
             }}>
-            Gynacologist
+            {data.specialty}
           </Text>
           <View style={{alignSelf: 'center', marginTop: 2}}>
-            <RatingStarts rating={4} size={14} filled />
+            <RatingStarts
+              rating={4}
+              size={14}
+              filled
+              activeColor={'#FD906A'}
+              passiveColor={'#EBFAFF'}
+            />
           </View>
         </Animated.View>
         <Animated.View
@@ -86,23 +112,48 @@ function DoctorProfile() {
             transform: [{scale: opacity}],
           }}>
           <View style={{flex: 3, alignItems: 'center'}}>
-            <ProfilePic
+            <View
               style={{
-                Container: {
-                  borderWidth: 10,
-                  borderColor: '#fff',
+                borderWidth: 10,
+                borderColor: '#fff',
+                borderRadius: 20,
+                height: 180,
+                width: 180,
+                bottom: -15,
+                position: 'relative',
+              }}>
+              <Image
+                style={{
                   borderRadius: 15,
-                  height: 180,
-                  width: 180,
-                  bottom: -15,
-                },
-                Image: {
-                  borderRadius: 10,
-                  resizeMode: 'cover',
-                },
-              }}
-              sourceurl={require('../../../assets/jpg/person1.jpg')}
-            />
+                  height: '100%',
+                  width: '100%',
+                }}
+                source={require('../../../assets/jpg/person1.jpg')}
+              />
+              <View
+                style={{
+                  height: 40,
+                  width: 40,
+                  borderRadius: 40,
+                  borderWidth: 2,
+                  borderColor: '#FD906A',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  elevation: 1,
+                  backgroundColor: '#fff',
+                  position: 'absolute',
+                  bottom: 0,
+                  right: -8,
+                  bottom: -8,
+                  zIndex: 9999,
+                }}>
+                <MaterialCommunityIcons
+                  name="heart"
+                  size={24}
+                  color="#FD906A"
+                />
+              </View>
+            </View>
           </View>
           <View
             style={{
@@ -111,21 +162,21 @@ function DoctorProfile() {
               justifyContent: 'center',
             }}>
             <View style={Styles.DoctorProfilePatientDetails}>
-              <Fontisto name="doctor" size={32} color="#e1e1e1" />
+              <Fontisto name="doctor" size={32} color="#007E96" />
               <View style={{marginLeft: 8}}>
-                <Text style={{color: '#fff', fontSize: 15}}>1.5K</Text>
-                <Text style={{color: '#e1e1e1', fontSize: 12}}>Patients</Text>
+                <Text style={{color: '#007E96', fontSize: 15}}>1.5K</Text>
+                <Text style={{color: '#007E96', fontSize: 12}}>Patients</Text>
               </View>
             </View>
             <View style={Styles.DoctorProfileExperienceDetails}>
               <MaterialCommunityIcons
                 name="timer-sand"
                 size={30}
-                color="#e1e1e1"
+                color="#007E96"
               />
               <View style={{marginLeft: 8}}>
-                <Text style={{color: '#fff', fontSize: 15}}>5 Years</Text>
-                <Text style={{color: '#e1e1e1', fontSize: 12}}>Experience</Text>
+                <Text style={{color: '#007E96', fontSize: 15}}>5 Years</Text>
+                <Text style={{color: '#007E96', fontSize: 12}}>Experience</Text>
               </View>
             </View>
           </View>
@@ -136,7 +187,7 @@ function DoctorProfile() {
           <View style={{alignItems: 'center', justifyContent: 'flex-end'}}>
             <Text
               style={{
-                color: '#F09E4A',
+                color: '#FD906A',
                 fontSize: 16,
                 lineHeight: 16,
                 fontWeight: '700',
@@ -148,7 +199,7 @@ function DoctorProfile() {
                 height: 6,
                 width: 6,
                 borderRadius: 6,
-                backgroundColor: '#F09E4A',
+                backgroundColor: '#FD906A',
                 marginBottom: -8,
                 marginTop: 2,
               }}
@@ -206,26 +257,12 @@ function DoctorProfile() {
           flexDirection: 'row',
         }}>
         <TouchableOpacity
-          style={{
-            height: 40,
-            width: 40,
-            borderRadius: 40,
-            borderWidth: 2,
-            borderColor: '#F09E4A',
-            alignItems: 'center',
-            justifyContent: 'center',
-            elevation: 2,
-            backgroundColor: '#fff',
-            marginRight: 8,
-          }}>
-          <MaterialCommunityIcons name="heart" size={28} color="#F09E4A" />
-        </TouchableOpacity>
-        <TouchableOpacity
+          onPress={_checkLogedinAndDoTheStuff}
           style={{
             height: 40,
             width: 180,
             borderRadius: 40,
-            backgroundColor: '#F09E4A',
+            backgroundColor: '#FD906A',
             alignItems: 'center',
             justifyContent: 'center',
             elevation: 5,
