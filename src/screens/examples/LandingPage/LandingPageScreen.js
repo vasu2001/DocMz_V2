@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState, useRef, useEffect} from 'react';
 import ToggleButton from '../../../components/molecules/ToggleButton/ToggleButton';
 import SearchBarSolid from '../../../components/molecules/SearchBarSolid/SearchBarSolid';
@@ -130,7 +131,7 @@ export default function LandingPageScreen({navigation}) {
           navigation={navigation}
           style={{
             Container: {
-              height: 50,
+              height: '6%',
               marginTop: 0,
             },
           }}
@@ -139,7 +140,7 @@ export default function LandingPageScreen({navigation}) {
           style={{
             flexDirection: 'row',
             paddingHorizontal: 25,
-            marginBottom: 5,
+            height: '18%',
             alignItems: 'center',
             width: '100%',
           }}>
@@ -175,22 +176,21 @@ export default function LandingPageScreen({navigation}) {
                 fontSize: 13,
                 color: '#007E96',
                 fontWeight: 'bold',
-                width: '100%',
+                width: '95%',
                 textAlign: 'center',
               }}
               btnStyle={{
                 width: 80,
               }}
-              dotStyle={{backgroundColor: '#FF9B31', height: 25, width: '40%'}}
+              dotStyle={{backgroundColor: '#FF9B31', height: 25, width: '35%'}}
             />
           </View>
         </View>
         <View
           style={{
-            height: 'auto',
+            height: '8%',
             paddingHorizontal: 25,
             justifyContent: 'center',
-            marginTop: 20,
           }}>
           <SearchBarSolid
             withIcon
@@ -202,14 +202,14 @@ export default function LandingPageScreen({navigation}) {
         </View>
         <View
           style={{
-            marginTop: 30,
             height: 'auto',
           }}>
           <ScrollView
             horizontal
             style={{zIndex: 99999}}
             contentContainerStyle={{
-              paddingVertical: 10,
+              paddingTop: '7%',
+              paddingBottom: 12,
               paddingHorizontal: 25,
             }}>
             {DocCards.map((u, i) => {
