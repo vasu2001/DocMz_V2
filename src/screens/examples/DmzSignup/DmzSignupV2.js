@@ -2,6 +2,7 @@ import React, {createRef, useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import ViewPager from '@react-native-community/viewpager';
+import SignupSplash from './SignupSplash';
 import SignUpStep1Screen from './SignUpStep1Screen';
 import SignUpStep2Screen from './SignUpStep2Screen';
 import SignUpStep3Screen from './SignUpStep3Screen';
@@ -33,6 +34,9 @@ function DmzSignupV2() {
       style={styles.viewPager}
       initialPage={0}
       scrollEnabled={false}>
+      <View key="0">
+        <SignupSplash />
+      </View>
       <View key="1">
         <SignUpStep1Screen
           credential={credential}
