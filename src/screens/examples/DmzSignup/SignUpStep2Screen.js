@@ -12,7 +12,13 @@ import DmzText from '../../../components/atoms/DmzText/DmzText';
 const width = Dimensions.get('screen').width;
 
 export default function SignUpStep2Screen(props) {
-  const [email, setEmail] = useState();
+  const {credential, setCredential} = props;
+  const handleRegistrationNumber = (registration_number) => {
+    setCredential({...credential, registration_number});
+  };
+  const handleSpecialty = (specialty) => {
+    setCredential({...credential, specialty});
+  };
   return (
     <View style={{flex: 1}}>
       <LinearGradient
@@ -107,7 +113,7 @@ export default function SignUpStep2Screen(props) {
         </View>
         <TextInputIcon
           placeholder="Registration Number"
-          value={email}
+          inputHandler={handleRegistrationNumber}
           placeholderTextColor="rgba(0, 0, 0, 0.25)"
           style={styles.inputStyle}
           textStyle={styles.textStyle}
@@ -115,7 +121,7 @@ export default function SignUpStep2Screen(props) {
 
         <TextInputIcon
           placeholder="Mention area of Expertise"
-          value={email}
+          inputHandler={handleSpecialty}
           placeholderTextColor="rgba(0, 0, 0, 0.25)"
           style={styles.inputStyle}
           textStyle={styles.textStyle}

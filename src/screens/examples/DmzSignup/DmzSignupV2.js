@@ -1,4 +1,4 @@
-import React, {createRef} from 'react';
+import React, {createRef, useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import ViewPager from '@react-native-community/viewpager';
@@ -12,6 +12,21 @@ function DmzSignupV2() {
   const nextpage = (page) => {
     pagerRef.current.setPage(page);
   };
+  const [credential, setCredential] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    registration_number: '',
+    specialty: '',
+    phone: '',
+    city: '',
+    country: '',
+  });
+  const handleSubmit = () => {
+    console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
+    console.log(credential);
+  };
   return (
     <ViewPager
       ref={pagerRef}
@@ -19,22 +34,34 @@ function DmzSignupV2() {
       initialPage={0}
       scrollEnabled={false}>
       <View key="1">
-        <SignUpStep1Screen onPress={() => nextpage(1)} />
+        <SignUpStep1Screen
+          credential={credential}
+          setCredential={setCredential}
+          onPress={() => nextpage(1)}
+        />
       </View>
       <View key="2">
-        <SignUpStep2Screen onPress={() => nextpage(2)} />
+        <SignUpStep2Screen
+          credential={credential}
+          setCredential={setCredential}
+          onPress={() => nextpage(2)}
+        />
       </View>
-      <View key="2">
-        <SignUpStep3Screen />
+      <View key="3">
+        <SignUpStep3Screen
+          credential={credential}
+          setCredential={setCredential}
+          onPress={handleSubmit}
+        />
       </View>
     </ViewPager>
   );
 }
-
-export default DmzSignupV2;
 
 const styles = StyleSheet.create({
   viewPager: {
     flex: 1,
   },
 });
+
+export default DmzSignupV2;
