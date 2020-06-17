@@ -77,7 +77,8 @@ const questionnaire = createStackNavigator(
 const MainNavigation = createStackNavigator(
   {
     authentication: AuthNavigation,
-    pageNavigation: isDoctorLogin ? DoctorNavigation : PatientNavigation,
+    pageNavigation: DoctorNavigation,
+    // pageNavigation: isDoctorLogin ? DoctorNavigation : PatientNavigation,
     docPatientStrem: docMainStream,
     question: questionnaire,
     selectFiles: SelectFiles,

@@ -28,7 +28,7 @@ import AddQuestionnaire from '../screens/doctor/AddQuestionnaire/AddQuestionnair
 import QuestionnairePP from '../screens/patient/questionnaire/QuestionnairePP';
 import DoctorProfile from '../screens/examples/DoctorProfile/DoctorProfile';
 import Settings from '../screens/examples/Settings/Settings';
-import LandingPageScreen from '../screens/examples/LandingPage/LandingPageScreen';
+import ViewCategoriesScreen from '../screens/examples/Categories/ViewCategoriesScreen';
 import FindADoctor from '../screens/examples/FindADoctor/FindADoctor';
 import QuestionViewPager from '../screens/examples/Questions/QuestionViewPager';
 import DmzSignupV2 from '../screens/examples/DmzSignup/DmzSignupV2';
@@ -140,7 +140,7 @@ const DoctorNavigationContent = createBottomTabNavigator(
     },
     test: {
       // screen: QuestionnairePP,
-      screen: LandingPageScreen,
+      screen: ViewCategoriesScreen,
       // screen: FindADoctor,
       // screen: DmzSignupV2,
       // screen: DmzloginV2,
