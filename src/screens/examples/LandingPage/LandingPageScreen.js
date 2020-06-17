@@ -1,6 +1,4 @@
-/* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
-import {View, Text, ScrollView} from 'react-native';
+import React, {useState, useRef, useEffect} from 'react';
 import ToggleButton from '../../../components/molecules/ToggleButton/ToggleButton';
 import SearchBarSolid from '../../../components/molecules/SearchBarSolid/SearchBarSolid';
 import Filter from '../../../assets/svg/filter2.svg';
@@ -10,15 +8,107 @@ import Section from '../../../components/molecules/Section/Section';
 import AvailDoctorContainerV2 from '../../../components/molecules/AvailDoctorContainer/AvailDoctorContainerV2';
 import RadialGradient from 'react-native-radial-gradient';
 import TopNavBar from '../../../components/molecules/TopNavBar/TopNavBar';
-import AvailDoctorContainer from '../../../components/molecules/AvailDoctorContainer/AvailDoctorContainer';
 import CurrentDoctorContainer from '../../../components/molecules/AvailDoctorContainer/CurrentDoctorContainer';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  View,
+  Animated,
+  Easing,
+  StyleSheet,
+  ScrollView,
+  ActivityIndicator,
+  Text,
+  FlatList,
+} from 'react-native';
+import {
+  fetchDoctorLite,
+  fetchMoreDoctorLite,
+  searchDoctors,
+  fetchSuperDoc,
+} from '../../../redux/action/doctoreAction';
+import {
+  RowLoader,
+  ListingWithThumbnailLoader,
+} from '../../../components/atoms/Loader/Loader';
+import {GetPatientInfo} from '../../../redux/action/patientAccountAction';
+import _ from 'lodash';
+import LinearGradient from 'react-native-linear-gradient';
 
-export default function LandingPageScreen(props) {
+export default function LandingPageScreen({navigation}) {
   const DocCards = ['Family Physicians', 'Pulmonologist', 'Family Physicians'];
   const AllDocs = ['Dropkin Jared', 'Co Ekaterine', 'Martin Chein'];
   const AvailDocs = ['Martin Chein', 'Co Ekaterine', 'Dropkin Jared'];
 
-  const [toggle, setToggle] = useState(false);
+  const [searchKey, setSearchKey] = useState('');
+  const PopupTranslateY = useRef(new Animated.Value(0)).current;
+  const dispatch = useDispatch();
+  const {
+    doctors,
+    loading,
+    moreDoctorLoading,
+    searchDoctorsLoading,
+    searchedDoctors,
+    superDocsLoading,
+    superDocs,
+  } = useSelector((state) => state.DoctorReducer);
+  const {isLogedin, isDoctor, data} = useSelector((state) => state.AuthReducer);
+  const [activeId, setActiveId] = useState('');
+  const [page, setPage] = useState(0);
+  const [toggle, setToggle] = useState(0);
+  const [disEnd, setDisEnd] = useState(0);
+  const [trigger, setTrigger] = useState(true);
+  var __id = '';
+
+  if (isDoctor && isLogedin) navigation.navigate('doctorHomePage');
+
+  useEffect(() => {
+    dispatch(fetchDoctorLite('', 0, false));
+    isLogedin && dispatch(GetPatientInfo(data.id));
+  }, []);
+
+  const onPress = (id) => {
+    setActiveId(id);
+    __id = id;
+    Animated.sequence([
+      Animated.timing(PopupTranslateY, {
+        toValue: showPopup ? 0 : 1,
+        easing: Easing.bezier(0.52, 0.5, 0.08, 0.78),
+        duration: 800,
+        useNativeDriver: true,
+      }),
+    ]).start();
+    setShowPopup(!showPopup);
+  };
+
+  const fetchMore = (e) => {
+    setDisEnd(disEnd + e.distanceFromEnd);
+    setPage(page + 1);
+  };
+
+  const onScroll = () => {
+    let val = page + 1;
+    dispatch(fetchMoreDoctorLite(page, false));
+    setPage(val);
+  };
+  const fetch = () => {
+    let val = page + 1;
+    dispatch(fetchMoreDoctorLite(page, false));
+    setPage(val);
+  };
+
+  const onEndEditing = ({nativeEvent}) => {
+    dispatch(searchDoctors(searchKey, 0));
+  };
+  const onChangeText = (text) => {
+    setSearchKey(text);
+  };
+  const onToggle = () => {
+    setToggle(toggle === 0 ? 1 : 0);
+    if (toggle === 0) {
+      dispatch(fetchSuperDoc(0));
+    }
+  };
+
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       <RadialGradient
@@ -35,6 +125,9 @@ export default function LandingPageScreen(props) {
           height: '100%',
         }}>
         <TopNavBar
+          onLeftButtonPress={() => {}}
+          // onRightButtonPress={() => {}}
+          navigation={navigation}
           style={{
             Container: {
               height: 50,
@@ -73,11 +166,11 @@ export default function LandingPageScreen(props) {
           </View>
           <View style={{marginLeft: 'auto'}}>
             <ToggleButton
+              toggle={toggle}
+              onToggle={onToggle}
               text0="NOW"
               text1="SCHEDULE"
-              toggle={toggle}
               style={{paddingVertical: 4, width: 150}}
-              onToggle={() => setToggle(!toggle)}
               textStyle={{
                 fontSize: 13,
                 color: '#007E96',
@@ -103,33 +196,39 @@ export default function LandingPageScreen(props) {
             withIcon
             placeholderTextColor={'#44A1B4'}
             icon={<Filter height={24} width={24} color={'#000'} />}
+            onEndEditing={onEndEditing}
+            onChangeText={onChangeText}
           />
         </View>
         <View
           style={{
-            marginTop: 25,
+            marginTop: 30,
             height: 'auto',
           }}>
           <ScrollView
             horizontal
             style={{zIndex: 99999}}
-            contentContainerStyle={{paddingVertical: 8, paddingHorizontal: 25}}>
+            contentContainerStyle={{
+              paddingVertical: 10,
+              paddingHorizontal: 25,
+            }}>
             {DocCards.map((u, i) => {
               return (
                 <BasicCard
                   style={{
                     CardContainer: {
-                      elevation: 10,
+                      elevation: 6,
                       justifyContent: 'space-around',
                       paddingHorizontal: 25,
                       height: 120,
+                      borderRadius: 30,
                     },
                   }}>
-                  <Fontisto name="doctor" size={28} color={'#FF9B31'} />
+                  <Fontisto name="doctor" size={30} color={'#FF7A59'} />
                   <Text
                     style={{
                       fontSize: 18,
-                      color: '#3873CD',
+                      color: '#007E96',
                       fontWeight: 'bold',
                     }}>
                     {u}
@@ -139,26 +238,117 @@ export default function LandingPageScreen(props) {
             })}
           </ScrollView>
         </View>
-        <Section
-          style={{
-            Container: {marginTop: 20, flex: 1},
-            Text: {
-              letterSpacing: 0.5,
-              fontSize: 18,
-              color: '#007E96',
-              textTransform: 'uppercase',
-            },
-          }}
-          HeaderText={toggle ? 'AVAILABLE  DOCTORS' : 'OUR DOCTORS'}>
-          <ScrollView
+        <LinearGradient
+          start={{x: 0, y: 0}}
+          end={{x: 80, y: 0}}
+          useAngle
+          angle={120}
+          colors={[
+            'rgba(255, 255, 255, 0.9)',
+            'rgba(255, 255, 255, 0.9)',
+            'rgba(2, 126, 151, 0)',
+            'rgba(2, 126, 151, 0.12)',
+          ]}
+          style={{flex: 1}}>
+          <Section
             style={{
-              height: '100%',
-            }}>
-            {toggle
-              ? AllDocs.map((u, i) => <CurrentDoctorContainer name={u} />)
-              : AvailDocs.map((u, i) => <AvailDoctorContainerV2 name={u} />)}
-          </ScrollView>
-        </Section>
+              Container: {marginBottom: 40, marginTop: 20},
+              Text: {color: '#007E96', fontWeight: '700'},
+            }}
+            HeaderText={toggle ? 'Available Doctors' : 'Our Doctors'}>
+            {loading || searchDoctorsLoading || superDocsLoading ? (
+              <ListingWithThumbnailLoader />
+            ) : searchedDoctors.length && searchKey !== '' ? (
+              <FlatList
+                // extraData={doctors}
+                data={searchedDoctors}
+                renderItem={({item}) => (
+                  <AvailDoctorContainerV2
+                    toggle={toggle}
+                    data={item}
+                    navigation={navigation}
+                    onPress={() => onPress(item._id)}
+                    id={item._id}
+                    name={item.basic.name.slice(0, 15).concat('...')}
+                    // schedule={item.output.filter(
+                    //   it => it.bookedFor.slice(0, 10) === '2020-05-07',
+                    // )}
+                  />
+                )}
+              />
+            ) : !toggle ? (
+              <FlatList
+                initialNumToRender={5}
+                onMomentumScrollBegin={() => setTrigger(false)}
+                onEndReached={({distanceFromEnd}) => {
+                  console.log('end reached');
+                  // if (!trigger) {
+                  fetch();
+                  //   setTrigger(true);
+                  // }
+                }}
+                // onScroll={onScroll}
+                ListEmptyComponent={
+                  <View
+                    style={{
+                      height: '100%',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <Text>Empty</Text>
+                  </View>
+                }
+                onEndReachedThreshold={0.2}
+                ListFooterComponent={moreDoctorLoading && <ActivityIndicator />}
+                // extraData={doctors}
+                data={doctors}
+                renderItem={({item}) => (
+                  <AvailDoctorContainerV2
+                    toggle={toggle}
+                    data={item}
+                    navigation={navigation}
+                    onPress={() => onPress(item._id)}
+                    id={item._id}
+                    name={item.basic.name.slice(0, 15).concat('...')}
+                    // schedule={item.output.filter(
+                    //   o => o.bookedFor.slice(0, 10) === '2020-05-07',
+                    // )}
+                  />
+                )}
+              />
+            ) : (
+              <FlatList
+                initialNumToRender={5}
+                ListEmptyComponent={
+                  <View
+                    style={{
+                      height: '100%',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <Text>Empty superDocs</Text>
+                  </View>
+                }
+                // ListFooterComponent={moreDoctorLoading && <ActivityIndicator />}
+                // extraData={doctors}
+                data={superDocs}
+                renderItem={({item}) => (
+                  <AvailDoctorContainerV2
+                    toggle={toggle}
+                    data={item}
+                    navigation={navigation}
+                    onPress={() => onPress(item._id)}
+                    id={item._id}
+                    name={item.basic.name.slice(0, 15).concat('...')}
+                    // schedule={item.output.filter(
+                    //   o => o.bookedFor.slice(0, 10) === '2020-05-07',
+                    // )}
+                  />
+                )}
+              />
+            )}
+          </Section>
+        </LinearGradient>
       </View>
     </View>
   );

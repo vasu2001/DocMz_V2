@@ -5,9 +5,8 @@ export const BLACK = '#000000';
 export const BACKGROUND = '#F2F5FF';
 
 // ICONS
-export const MAIN_ICON = '#8D2FFF'
-export const SECONDARY_ICON = '#8F8F8F'
-
+export const MAIN_ICON = '#8D2FFF';
+export const SECONDARY_ICON = '#8F8F8F';
 
 // ACTIONS
 export const SUCCESS = '#3adb76';
@@ -24,7 +23,6 @@ export const GRAY_DARK = '#8a8a8a';
 //GRADIENTS
 export const header_grad_one = '#7479F7';
 export const header_grad_two = '#904FEC';
-
 
 // borders
 export const PRIMARY_BORDER_COLOR = '#9D9D9D';

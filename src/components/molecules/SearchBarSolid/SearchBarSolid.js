@@ -1,7 +1,14 @@
 import React from 'react';
 import {View, TextInput} from 'react-native';
 
-function SearchBarSolid({withIcon, icon, placeholder, placeholderTextColor}) {
+function SearchBarSolid({
+  withIcon,
+  icon,
+  placeholder,
+  placeholderTextColor,
+  onChangeText,
+  onEndEditing,
+}) {
   return (
     <View
       style={{
@@ -26,6 +33,9 @@ function SearchBarSolid({withIcon, icon, placeholder, placeholderTextColor}) {
           placeholder={
             placeholder ? placeholder : 'Search by conditions, symptoms...'
           }
+          onEndEditing={onEndEditing}
+          onChangeText={onChangeText}
+          enablesReturnKeyAutomatically
         />
       </View>
       {withIcon && icon}

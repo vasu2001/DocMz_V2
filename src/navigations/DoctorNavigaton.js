@@ -30,7 +30,11 @@ import DoctorProfile from '../screens/examples/DoctorProfile/DoctorProfile';
 import Settings from '../screens/examples/Settings/Settings';
 import ViewCategoriesScreen from '../screens/examples/Categories/ViewCategoriesScreen';
 import FindADoctor from '../screens/examples/FindADoctor/FindADoctor';
-// import QuestionViewPager from '../screens/examples/Questions/QuestionViewPager';
+import QuestionViewPager from '../screens/examples/Questions/QuestionViewPager';
+import DmzSignupV2 from '../screens/examples/DmzSignup/DmzSignupV2';
+import DmzloginV2 from '../screens/examples/DmzLogin/DmzloginV2';
+import {createAppContainer} from 'react-navigation';
+
 // import Login from '../screens/examples/Login/Login';
 // import FallBg from '../screens/examples/FallBg/FallBg';
 
@@ -62,7 +66,7 @@ import FindADoctor from '../screens/examples/FindADoctor/FindADoctor';
 
 // export default DoctorNavigation;
 
-export default createBottomTabNavigator(
+const DoctorNavigationContent = createBottomTabNavigator(
   {
     homeScreen: {
       screen: Home,
@@ -121,7 +125,7 @@ export default createBottomTabNavigator(
       },
     },
     doctorProfile: {
-      screen: () => <DoctorProfileNavigator />,
+      screen: () => <DoctorProfileNavigatorContainer />,
       navigationOptions: {
         tabBarIcon: ({focused, tintColor}) => {
           return (
@@ -138,6 +142,8 @@ export default createBottomTabNavigator(
       // screen: QuestionnairePP,
       screen: ViewCategoriesScreen,
       // screen: FindADoctor,
+      // screen: DmzSignupV2,
+      // screen: DmzloginV2,
       navigationOptions: {
         tabBarIcon: ({focused, tintColor}) => {
           return (
@@ -186,6 +192,11 @@ const DoctorProfileNavigator = createStackNavigator(
     headerMode: 'none',
   },
 );
+const DoctorProfileNavigatorContainer = createAppContainer(
+  DoctorProfileNavigator,
+);
+
+export default createAppContainer(DoctorNavigationContent);
 // const BottomTabs = props => {
 //   console.log('#######------------#########--------#####');
 //   console.log(props.navigation.state);

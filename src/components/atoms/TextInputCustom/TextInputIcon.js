@@ -22,6 +22,7 @@ function TextInputIcon({
   iconColor,
   textStyle,
   size,
+  inputHandler,
 }) {
   return (
     <View

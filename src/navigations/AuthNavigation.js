@@ -1,11 +1,12 @@
 import {createStackNavigator} from 'react-navigation-stack';
 // import Login from '../screens/authentication/login/Login';
 import Signup from '../screens/examples/DmzSignup/DmzSignup';
-import Login from '../screens/examples/DmzLogin/DmzLogin';
+import LoginV2 from '../screens/examples/DmzLogin/DmzloginV2';
 import SignupV2 from '../screens/examples/DmzSignup/DmzSignupV2';
+import {createAppContainer} from 'react-navigation';
 const AuthNavigation = createStackNavigator(
   {
-    loginScreen: Login,
+    loginScreen: LoginV2,
     // signupScreen: Signup,
     signupScreen: SignupV2,
   },
@@ -15,4 +16,4 @@ const AuthNavigation = createStackNavigator(
   },
 );
 
-export default AuthNavigation;
+export default createAppContainer(AuthNavigation);

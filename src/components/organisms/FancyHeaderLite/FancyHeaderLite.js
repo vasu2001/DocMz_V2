@@ -32,7 +32,7 @@ function FancyHeaderLite({
   return (
     <View style={[HeaderStyles.section, style ? style.Section : null]}>
       <LinearGradient
-        colors={[Colors.header_grad_one, Colors.header_grad_two]}
+        colors={['rgba(2, 126, 151, 0)', 'rgba(2, 126, 151, 0.6)']}
         useAngle={true}
         angle={-180}
         style={[HeaderStyles.Container, style ? style.Container : null]}>
@@ -59,8 +59,8 @@ function FancyHeaderLite({
           />
         )}
         {overlayComponents}
-        <OverlayGradient style={{position: 'absolute', right: 0}} />
-        <HeaderCurve_lite style={{position: 'absolute', right: 0}} />
+        {/* <OverlayGradient style={{position: 'absolute', right: 0}} />
+        <HeaderCurve_lite style={{position: 'absolute', right: 0}} /> */}
         {showOverlayComponent && (
           <>
             <Overlay_circle
@@ -111,7 +111,7 @@ const HeaderStyles = StyleSheet.create({
   Container: {
     width: '100%',
     height: '100%',
-    backgroundColor: '#6E21D1', //fallback to gradient
+    // backgroundColor: '#6E21D1', //fallback to gradient
     position: 'relative',
   },
 });

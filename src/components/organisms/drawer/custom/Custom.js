@@ -114,7 +114,7 @@ const Custom = ({
   phone_num = '8001981993',
   activeItemKey,
 }) => {
-  const {isLogedin, isDoctor, data} = useSelector(state => state.AuthReducer);
+  const {isLogedin, isDoctor, data} = useSelector((state) => state.AuthReducer);
   const dispatch = useDispatch();
   console.log(navigation);
   console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&');

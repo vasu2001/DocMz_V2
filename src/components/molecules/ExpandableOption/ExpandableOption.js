@@ -38,7 +38,7 @@ if (Platform.OS === 'android') {
     UIManager.setLayoutAnimationEnabledExperimental(true);
   }
 }
-const ExpandableOption = props => {
+const ExpandableOption = (props) => {
   const [showContent, setShowContent] = useState(false);
   const onClick = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -78,16 +78,14 @@ const ExpandableOption = props => {
           normal
           gap_small
           style={{
-            color: showContent && isNested ? Colors.header_grad_two : '#222',
+            color: showContent && isNested ? '#007E96' : '#222',
           }}
         />
         <MaterialIcon
           name={icon}
           size={MEDIUM_ICON_SIZE}
           style={styles.icon}
-          color={
-            showContent && isNested ? Colors.header_grad_two : SECONDARY_ICON
-          }
+          color={showContent && isNested ? '#007E96' : SECONDARY_ICON}
         />
       </TouchableOpacity>
       {showContent && (

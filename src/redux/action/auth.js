@@ -6,14 +6,14 @@ import {resetDataStore} from './dataStore';
 import {resetDoctor} from './doctoreAction';
 import {resetQuestion} from './questionAction';
 
-export const addUserToRedux = data => {
+export const addUserToRedux = (data) => {
   return {
     type: 'AUTHENTICATED',
     data: data,
   };
 };
 
-export const addUserFullData = data => {
+export const addUserFullData = (data) => {
   return {
     type: 'FULLDATA',
     data: data,
@@ -35,7 +35,7 @@ const saveNewUser = (data, type) => {
     userType: type.localeCompare('doctor') === 0,
   };
 };
-const haveingError = err => {
+const haveingError = (err) => {
   return {
     type: ERROR,
     error: err,
@@ -60,14 +60,14 @@ export const removeUser = () => {
   };
 };
 
-const setAppointment = appointment => {
+const setAppointment = (appointment) => {
   return {
     type: SAVE_APPOINTMENT,
     payload: appointment,
   };
 };
 
-const removeAppointment = id => {
+const removeAppointment = (id) => {
   return {
     type: REMOVE_APPOINTMENT,
     payload: id,
@@ -75,7 +75,7 @@ const removeAppointment = id => {
 };
 
 export const resetStore = () => {
-  return async dispatch => {
+  return async (dispatch) => {
     await dispatch(removeUser());
     // await dispatch(resetDoctor())
     await dispatch(resetDataStore());
@@ -83,8 +83,8 @@ export const resetStore = () => {
   };
 };
 
-export const LoginPatient = (data, success, faild) => {
-  return dispatch => {
+export const LoginPatient = (data, success, failed) => {
+  return (dispatch) => {
     // setup loading screen
     dispatch(startLoading());
     console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
@@ -99,7 +99,7 @@ export const LoginPatient = (data, success, faild) => {
 
     axios
       .post(`${Host}/patient/authenticate`, data, config)
-      .then(result => {
+      .then((result) => {
         console.log(result.data);
         if (result.data.status) {
           const data = result.data.user;
@@ -117,13 +117,18 @@ export const LoginPatient = (data, success, faild) => {
             message: 'patient add successfully.',
           });
         } else {
-          faild({
+          failed({
             status: false,
-            message: result.data.error,
+            message: 'something went wrong!! try again',
           });
+          dispatch(haveingError({error: 'something went wrong'}));
         }
       })
-      .catch(err => {
+      .catch((err) => {
+        failed({
+          status: false,
+          message: 'something went wrong!! try again',
+        });
         dispatch(haveingError(err));
       });
   };
@@ -136,8 +141,8 @@ function ValidateEmail(mail) {
   return false;
 }
 
-export const LoginDoctor = (data, success, faild) => {
-  return dispatch => {
+export const LoginDoctor = (data, success, failed) => {
+  return (dispatch) => {
     dispatch(startLoading());
     // setting header
     const config = {
@@ -147,7 +152,7 @@ export const LoginDoctor = (data, success, faild) => {
 
     axios
       .post(`${Host}/doctors/authenticate`, data, config)
-      .then(result => {
+      .then((result) => {
         if (result.data.status) {
           const data = result.data.user;
 
@@ -164,17 +169,22 @@ export const LoginDoctor = (data, success, faild) => {
             message: 'Doctor Login successfully.',
           });
         } else {
-          faild({
+          failed({
             status: false,
-            message: result.data.error,
+            message: 'something went wrong!! try again',
           });
+          dispatch(
+            haveingError({
+              error: 'something went wrong',
+            }),
+          );
         }
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log('****************** in err *****************', err)
-        faild({
+        failed({
           // message: 'Incorrect Email and/or password'
-          message: err,
+          message: 'something went wrong',
         });
         dispatch(haveingError(err));
       });
@@ -182,7 +192,7 @@ export const LoginDoctor = (data, success, faild) => {
 };
 
 export const signupDoctor = (data, successCallback, errorCallback) => {
-  return dispatch => {
+  return (dispatch) => {
     const config = {
       'Content-Type': 'application/x-www-form-urlencoded',
       Accept: '*/*',
@@ -209,7 +219,7 @@ export const signupDoctor = (data, successCallback, errorCallback) => {
     dispatch(startLoading());
     axios
       .post(`${Host}/doctors/register`, _data, config)
-      .then(result => {
+      .then((result) => {
         // console.log(result);
         if (result.data.status) {
           const __data = {
@@ -226,14 +236,14 @@ export const signupDoctor = (data, successCallback, errorCallback) => {
               dispatch(saveNewUser(__data, 'doctor'));
               successCallback();
             })
-            .catch(err => {
+            .catch((err) => {
               dispatch(haveingError(err));
               errorCallback(err);
             });
         }
         console.log(result.data.status);
       })
-      .catch(err => {
+      .catch((err) => {
         dispatch(haveingError(err));
         errorCallback(err);
       });
@@ -241,7 +251,7 @@ export const signupDoctor = (data, successCallback, errorCallback) => {
 };
 
 export const signupPatient = (data, successCallback, errorCallback) => {
-  return dispatch => {
+  return (dispatch) => {
     const config = {
       'Content-Type': 'application/x-www-form-urlencoded',
       Accept: '*/*',
@@ -249,7 +259,7 @@ export const signupPatient = (data, successCallback, errorCallback) => {
     dispatch(startLoading());
     axios
       .post(`${Host}/patient/register`, data, config)
-      .then(result => {
+      .then((result) => {
         console.log('result');
         if (result.data.status) {
           dispatch(stoptLoading());
@@ -257,7 +267,7 @@ export const signupPatient = (data, successCallback, errorCallback) => {
           console.log(result.data.status);
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
         dispatch(haveingError(err.message));
         errorCallback(err.message);
@@ -265,26 +275,26 @@ export const signupPatient = (data, successCallback, errorCallback) => {
   };
 };
 
-export const GetAppointmentData = id => {
-  return dispatch => {
+export const GetAppointmentData = (id) => {
+  return (dispatch) => {
     dispatch(startLoading());
     console.log('works...');
     axios
       .get(`${Host}/patient/getinfo/${id}`)
-      .then(result => {
+      .then((result) => {
         if (result.status) {
           console.log(result.data.data.appointments);
           dispatch(setAppointment(result.data.data.appointments));
         }
       })
-      .catch(err => {
+      .catch((err) => {
         dispatch(haveingError(err));
       });
   };
 };
 
-export const RemoveAppointmentData = id => {
-  return async dispatch => {
+export const RemoveAppointmentData = (id) => {
+  return async (dispatch) => {
     const config = {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -299,13 +309,13 @@ export const RemoveAppointmentData = id => {
 
     await axios
       .post(`${Host}/appointment/cancel`, _data, config)
-      .then(result => {
+      .then((result) => {
         if (result.status) {
           console.log('Successfully cancel your appointment.');
           dispatch(removeAppointment(id));
         }
       })
-      .catch(err => {
+      .catch((err) => {
         dispatch(haveingError(err));
       });
   };

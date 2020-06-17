@@ -3,7 +3,10 @@ import {View, StyleSheet} from 'react-native';
 import BasicCard from '../../atoms/BasicCard/BasicCard';
 import AvailDoctorContentV2 from '../AvailDoctorContent/AvailDoctorContentV2';
 import ProfilePic from '../../atoms/ProfilePic/ProfilePic';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from 'react-native-gesture-handler';
 
 function AvailDoctorContainerV2({
   onPress,
@@ -21,9 +24,11 @@ function AvailDoctorContainerV2({
     // console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
   }, []);
   return (
-    <View
+    <TouchableWithoutFeedback
       style={Styles.AvailableDoctorsCardContainer}
-      onPress={() => navigation.navigate('docPatientStrem', {data: data})}>
+      onPress={() => {
+        navigation.navigate('docPatientStrem', {data: data});
+      }}>
       <BasicCard
         style={{
           CardContainer: Styles.AvailableDoctorsBasicCard,
@@ -54,13 +59,13 @@ function AvailDoctorContainerV2({
           }
         />
       </BasicCard>
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 
 const Styles = StyleSheet.create({
   AvailableDoctorsCardContainer: {
-    marginTop: 15,
+    marginTop: 0,
   },
   AvailableDoctorsBasicCard: {
     marginLeft: 20,
@@ -70,6 +75,8 @@ const Styles = StyleSheet.create({
     height: 'auto',
     position: 'relative',
     paddingBottom: 25,
+    borderRadius: 30,
+    elevation: 5,
   },
 });
 export default AvailDoctorContainerV2;
