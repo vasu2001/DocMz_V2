@@ -11,8 +11,11 @@ const ERROR_APPOINTMENT_FETCHING = 'ERROR_APPOINTMENT_FETCHING';
 const ALL_APPOINTMENT_LOADING = 'ALL_APPOINTMENT_LOADING';
 const APPOINTMENT_LOADED_ALL = 'APPOINTMENT_LOADED_ALL';
 const ERROR_ALL_APPOINTMENT_FETCHING = 'ERROR_ALL_APPOINTMENT_FETCHING';
+const SPECIALTY_LOADING = 'SPECIALTY_LOADING';
+const SPECIALTY_LOADED = 'SPECIALTY_LOADED';
+const SPECIALTY_ERROR = 'SPECIALTY_ERROR';
 
-const saveDoc = data => {
+const saveDoc = (data) => {
   return {
     type: save,
     payload: data,
@@ -25,7 +28,7 @@ const startLoading = () => {
   };
 };
 
-const haveingError = error => {
+const haveingError = (error) => {
   return {
     type: err,
     payload: error,
@@ -44,7 +47,7 @@ const startAppointmentLoading = () => {
   };
 };
 
-const appointmentLoaded = appointments => {
+const appointmentLoaded = (appointments) => {
   return {
     type: APPOINTMENT_LOADED,
     payload: appointments,
@@ -56,22 +59,40 @@ const startAppointmentLoadingAll = () => {
     type: ALL_APPOINTMENT_LOADING,
   };
 };
-const appointmentLoadedAll = appointments => {
+const appointmentLoadedAll = (appointments) => {
   return {
     type: APPOINTMENT_LOADED_ALL,
     payload: appointments,
   };
 };
-const errorFetchingAllAppointments = err => {
+const errorFetchingAllAppointments = (err) => {
   return {
     type: ERROR_ALL_APPOINTMENT_FETCHING,
     payload: err,
   };
 };
-const errorFetchingAppointments = err => {
+const errorFetchingAppointments = (err) => {
   return {
     type: ERROR_APPOINTMENT_FETCHING,
     payload: err,
+  };
+};
+
+const specialtyLoading = () => {
+  return {
+    type: SPECIALTY_LOADING,
+  };
+};
+const specialtyLoaded = (specialty) => {
+  return {
+    type: SPECIALTY_LOADED,
+    payload: specialty,
+  };
+};
+const specialtyError = (error) => {
+  return {
+    type: SPECIALTY_ERROR,
+    payload: error,
   };
 };
 
@@ -84,7 +105,7 @@ const errorFetchingAppointments = err => {
 */
 
 export const GettingDocterLatestInfo = (id, limit = 3) => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch(startLoading());
     const __params = {
       limit: limit,
@@ -94,7 +115,7 @@ export const GettingDocterLatestInfo = (id, limit = 3) => {
       // date: '2020-04-25T10:24:39.736Z',
     };
 
-    axios.get(`${Host}/doctors/getdoc/${__params.doctor}`).then(result => {
+    axios.get(`${Host}/doctors/getdoc/${__params.doctor}`).then((result) => {
       if (result.data.status) {
         dispatch(saveDoc(result.data.data));
       } else {
@@ -106,7 +127,7 @@ export const GettingDocterLatestInfo = (id, limit = 3) => {
 };
 
 export const FetchAppointments = (docId, date) => {
-  return async dispatch => {
+  return async (dispatch) => {
     const data = {
       docId,
       date,
@@ -127,7 +148,7 @@ export const FetchAppointments = (docId, date) => {
       console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
       let appointments = response.data.appointments;
       appointments = appointments
-        .filter(item => {
+        .filter((item) => {
           // return true;
           const date = new Date(item.bookedFor);
           const bookedDate = date.getDate();
@@ -146,7 +167,7 @@ export const FetchAppointments = (docId, date) => {
             return true;
           else return false;
         })
-        .filter(item => item.booked)
+        .filter((item) => item.booked)
         .sort((a, b) => {
           return a.bookedFor - b.bookedFor;
         });
@@ -159,7 +180,7 @@ export const FetchAppointments = (docId, date) => {
 };
 
 export const FetchAllAppointments = (docId, date) => {
-  return async dispatch => {
+  return async (dispatch) => {
     const data = {
       docId,
       date,
@@ -192,6 +213,36 @@ export const FetchAllAppointments = (docId, date) => {
     } catch (e) {
       console.log(e);
       dispatch(errorFetchingAllAppointments(e));
+    }
+  };
+};
+
+export const getSpecialty = (pageNo = 0, size = 5) => {
+  return async (dispatch) => {
+    const data = {
+      pageNo,
+      size,
+    };
+    const config = {
+      Accept: '*/*',
+      'Content-Type': 'application/x-www-form-urlencoded',
+    };
+
+    dispatch(specialtyLoading());
+    try {
+      const req = await axios.post(
+        `${Host}/patient/specialty/get`,
+        data,
+        config,
+      );
+      let response = req.data.data;
+      console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+      response = response.map((item) => item.name);
+      console.log(response);
+      dispatch(specialtyLoaded(response));
+    } catch (e) {
+      console.log(e);
+      dispatch(specialtyError(e));
     }
   };
 };

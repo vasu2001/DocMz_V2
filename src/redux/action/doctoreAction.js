@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {Host} from '../../utils/connection';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const GET_DOCTORS = 'GET_DOCTORS';
 const GET_MORE_DOCTORS = 'GET_MORE_DOCTORS';
@@ -12,6 +13,9 @@ const SEARCHING_DOCTORS = 'SEARCHING_DOCTORS';
 const SEARCHED_DOCTORS = 'SEARCHED_DOCTORS';
 const GETTING_SUPER_DOC = 'GETTING_SUPER_DOCS';
 const SUPER_DOCS = 'SUPER_DOCS';
+const UPLOADING_IMAGE = 'UPLOADING_IMAGE';
+const UPLOADED_IMAGE = 'UPLOADED_IMAGE';
+const ERROR_UPLOADING_IMAGE = 'ERROR_UPLOADING_IMAGE';
 
 const setDoctors = (doctors, searchable) => {
   return {
@@ -20,7 +24,7 @@ const setDoctors = (doctors, searchable) => {
     payload: doctors,
   };
 };
-const setMoreDoctors = doctors => {
+const setMoreDoctors = (doctors) => {
   return {
     type: GET_MORE_DOCTORS,
     payload: doctors,
@@ -36,14 +40,14 @@ const startMoreDoctorLoading = () => {
     type: GETTING_MORE_DOCTORS,
   };
 };
-const haveingError = error => {
+const haveingError = (error) => {
   return {
     type: ERROR,
     error: error,
   };
 };
 
-const tempDocStore = data => {
+const tempDocStore = (data) => {
   return {
     type: TMP_DOC_STORE,
     payload: data,
@@ -56,7 +60,7 @@ const searchingDoctors = () => {
   };
 };
 
-const setSearchedDoctors = data => {
+const setSearchedDoctors = (data) => {
   return {
     type: SEARCHED_DOCTORS,
     payload: data,
@@ -69,10 +73,27 @@ const superDocLoading = () => {
   };
 };
 
-const setSuperDoc = data => {
+const setSuperDoc = (data) => {
   return {
     type: SUPER_DOCS,
     payload: data,
+  };
+};
+
+const startUploadingImage = () => {
+  return {
+    type: UPLOADING_IMAGE,
+  };
+};
+const uploadedImage = () => {
+  return {
+    type: UPLOADED_IMAGE,
+  };
+};
+const errorUploadingImage = (e) => {
+  return {
+    type: ERROR_UPLOADING_IMAGE,
+    payload: e,
   };
 };
 
@@ -98,12 +119,13 @@ export const resetDoctor = () => {
 // };
 
 //ex: search: '', page: 1, mode: false
-export const fetchDoctorLite = (search, _page, mode) => {
+export const fetchDoctorLite = (search = {}, _page, mode) => {
   console.log(`Search: ${search} and page: ${_page} and mode: ${mode}`);
-  return dispatch => {
+  return (dispatch) => {
     const params = {
       match: JSON.stringify({
         is_superDoc: mode,
+        ...search,
       }),
       pageNo: _page.toString(),
       size: '5',
@@ -119,23 +141,24 @@ export const fetchDoctorLite = (search, _page, mode) => {
 
     axios
       .post(`${Host}/doctors/searchlite`, params, config)
-      .then(result => {
+      .then((result) => {
         if (result.status) {
           console.log(result.data.data);
           dispatch(setDoctors(result.data.data, searchable));
         }
       })
-      .catch(err => {
+      .catch((err) => {
         dispatch(haveingError(err));
       });
   };
 };
 
-export const fetchMoreDoctorLite = (_page, mode) => {
-  return dispatch => {
+export const fetchMoreDoctorLite = (search = {}, _page, mode) => {
+  return (dispatch) => {
     const params = {
       match: JSON.stringify({
         is_superDoc: mode,
+        ...search,
       }),
       pageNo: _page.toString(),
       size: '5',
@@ -149,36 +172,36 @@ export const fetchMoreDoctorLite = (_page, mode) => {
 
     axios
       .post(`${Host}/doctors/searchlite`, params, config)
-      .then(result => {
+      .then((result) => {
         console.log(result);
         if (result.status) {
           dispatch(setMoreDoctors(result.data.data));
         }
       })
-      .catch(err => {
+      .catch((err) => {
         dispatch(haveingError(err));
       });
   };
 };
 
-export const GettingDoctorProfiles = id => {
-  return dispatch => {
+export const GettingDoctorProfiles = (id) => {
+  return (dispatch) => {
     dispatch(startDoctorLoading());
     axios
       .get(`${Host}/doctors/getdoc/${id}`)
-      .then(result => {
+      .then((result) => {
         if (result.status) {
           dispatch(tempDocStore(result.data.data));
         }
       })
-      .catch(err => {
+      .catch((err) => {
         dispatch(haveingError(err));
       });
   };
 };
 
 export const searchDoctors = (search, page) => {
-  return dispatch => {
+  return (dispatch) => {
     const params = {
       match: JSON.stringify({}),
       pageNo: page.toString(),
@@ -192,19 +215,19 @@ export const searchDoctors = (search, page) => {
     dispatch(searchingDoctors());
     axios
       .post(`${Host}/doctors/searchlite`, params, config)
-      .then(result => {
+      .then((result) => {
         if (result.status) {
           dispatch(setSearchedDoctors(result.data.data));
         }
       })
-      .catch(err => {
+      .catch((err) => {
         dispatch(haveingError(err));
       });
   };
 };
 
 export const fetchSuperDoc = (page, size) => {
-  return dispatch => {
+  return (dispatch) => {
     const params = {
       match: JSON.stringify({
         is_superDoc: true,
@@ -219,13 +242,51 @@ export const fetchSuperDoc = (page, size) => {
     dispatch(superDocLoading());
     axios
       .post(`${Host}/doctors/searchlite`, params, config)
-      .then(result => {
+      .then((result) => {
         if (result.status) {
           dispatch(setSuperDoc(result.data.data));
         }
       })
-      .catch(err => {
+      .catch((err) => {
         dispatch(haveingError(err));
+      });
+  };
+};
+
+export const UploadProfilePic = (id, ImageData) => {
+  return (dispatch) => {
+    dispatch(startUploadingImage());
+    const Image = {
+      uri: ImageData.uri,
+      type: ImageData.type,
+      name: ImageData.fileName,
+    };
+    const data = new FormData();
+    data.append('image', Image);
+    data.append('id', id);
+    const config = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'multipart/form-data',
+      },
+      body: data,
+    };
+    fetch(`${Host}/doctors/upload/image`, config)
+      .then((responseStatus) => {
+        console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
+        console.log(responseStatus);
+        AsyncStorage.setItem('ProfileImage', Image)
+          .then((res) => {
+            dispatch(uploadedImage());
+          })
+          .catch(() => {
+            console.log('error in async storage');
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch(errorUploadingImage(err));
       });
   };
 };

@@ -17,7 +17,7 @@ import TextInputIcon from '../../../components/atoms/TextInputCustom/TextInputIc
 const width = Dimensions.get('screen').width;
 
 export default function SignUpStep3Screen(props) {
-  const {credential, setCredential} = props;
+  const {credential, setCredential, isLoading} = props;
   const handlePhone = (phone) => {
     setCredential({...credential, phone});
   };
@@ -146,6 +146,8 @@ export default function SignUpStep3Screen(props) {
             },
           }}
           text="Complete"
+          isLoading={isLoading}
+          disabled={isLoading}
         />
       </View>
     </View>

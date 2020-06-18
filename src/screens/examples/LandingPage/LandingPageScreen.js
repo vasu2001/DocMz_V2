@@ -19,6 +19,7 @@ import {
   ScrollView,
   ActivityIndicator,
   Text,
+  TouchableWithoutFeedback,
   FlatList,
 } from 'react-native';
 import {
@@ -27,6 +28,7 @@ import {
   searchDoctors,
   fetchSuperDoc,
 } from '../../../redux/action/doctoreAction';
+import {getSpecialty} from '../../../redux/action/doctor/myDoctorAction';
 import {
   RowLoader,
   ListingWithThumbnailLoader,
@@ -34,6 +36,7 @@ import {
 import {GetPatientInfo} from '../../../redux/action/patientAccountAction';
 import _ from 'lodash';
 import LinearGradient from 'react-native-linear-gradient';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 export default function LandingPageScreen({navigation}) {
   const DocCards = ['Family Physicians', 'Pulmonologist', 'Family Physicians'];
@@ -42,6 +45,7 @@ export default function LandingPageScreen({navigation}) {
 
   const [searchKey, setSearchKey] = useState('');
   const PopupTranslateY = useRef(new Animated.Value(0)).current;
+  const [lclSpecialty, setLclSpecialty] = useState('');
   const dispatch = useDispatch();
   const {
     doctors,
@@ -52,6 +56,9 @@ export default function LandingPageScreen({navigation}) {
     superDocsLoading,
     superDocs,
   } = useSelector((state) => state.DoctorReducer);
+  const {specialtyLoading, specialty} = useSelector(
+    (state) => state.MyDoctorReducer,
+  );
   const {isLogedin, isDoctor, data} = useSelector((state) => state.AuthReducer);
   const [activeId, setActiveId] = useState('');
   const [page, setPage] = useState(0);
@@ -65,8 +72,13 @@ export default function LandingPageScreen({navigation}) {
   useEffect(() => {
     dispatch(fetchDoctorLite('', 0, false));
     isLogedin && dispatch(GetPatientInfo(data.id));
+    dispatch(getSpecialty());
   }, []);
 
+  const handleSpecialityFetch = (specialty) => {
+    dispatch(fetchDoctorLite({specialty: specialty.toLowerCase()}, 0, false));
+    setLclSpecialty(specialty.toLowerCase());
+  };
   const onPress = (id) => {
     setActiveId(id);
     __id = id;
@@ -93,7 +105,7 @@ export default function LandingPageScreen({navigation}) {
   };
   const fetch = () => {
     let val = page + 1;
-    dispatch(fetchMoreDoctorLite(page, false));
+    dispatch(fetchMoreDoctorLite({specialty: lclSpecialty}, page, false));
     setPage(val);
   };
 
@@ -212,28 +224,34 @@ export default function LandingPageScreen({navigation}) {
               paddingBottom: 12,
               paddingHorizontal: 25,
             }}>
-            {DocCards.map((u, i) => {
+            {specialty.map((u, i) => {
               return (
-                <BasicCard
-                  style={{
-                    CardContainer: {
-                      elevation: 6,
-                      justifyContent: 'space-around',
-                      paddingHorizontal: 25,
-                      height: 120,
-                      borderRadius: 30,
-                    },
+                <TouchableOpacity
+                  onPress={() => {
+                    handleSpecialityFetch(u);
                   }}>
-                  <Fontisto name="doctor" size={30} color={'#FF7A59'} />
-                  <Text
+                  <BasicCard
                     style={{
-                      fontSize: 18,
-                      color: '#007E96',
-                      fontWeight: 'bold',
+                      CardContainer: {
+                        elevation: 6,
+                        justifyContent: 'space-around',
+                        paddingHorizontal: 25,
+                        height: 120,
+                        borderRadius: 30,
+                        maxWidth: 200,
+                      },
                     }}>
-                    {u}
-                  </Text>
-                </BasicCard>
+                    <Fontisto name="doctor" size={30} color={'#FF7A59'} />
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        color: '#007E96',
+                        fontWeight: 'bold',
+                      }}>
+                      {u.slice(0, 12).concat('...')}
+                    </Text>
+                  </BasicCard>
+                </TouchableOpacity>
               );
             })}
           </ScrollView>

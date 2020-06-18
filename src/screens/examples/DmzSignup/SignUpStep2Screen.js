@@ -8,11 +8,12 @@ import StepsTracker from '../../../components/atoms/StepsTracker/StepsTracker';
 import TextInputIcon from '../../../components/atoms/TextInputCustom/TextInputIcon';
 import DmzButton from '../../../components/atoms/DmzButton/DmzButton';
 import DmzText from '../../../components/atoms/DmzText/DmzText';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const width = Dimensions.get('screen').width;
 
 export default function SignUpStep2Screen(props) {
-  const {credential, setCredential} = props;
+  const {credential, setCredential, onChoosePicture} = props;
   const handleRegistrationNumber = (registration_number) => {
     setCredential({...credential, registration_number});
   };
@@ -82,7 +83,8 @@ export default function SignUpStep2Screen(props) {
           }}
           text="Build your profile"
         />
-        <View
+        <TouchableOpacity
+          onPress={onChoosePicture}
           style={{
             width: 180,
             height: 180,
@@ -110,7 +112,7 @@ export default function SignUpStep2Screen(props) {
             }}>
             Upload {'\n'}Picture/Video
           </Text>
-        </View>
+        </TouchableOpacity>
         <TextInputIcon
           placeholder="Registration Number"
           inputHandler={handleRegistrationNumber}

@@ -16,6 +16,7 @@ import ProfilePic from '../../../components/atoms/ProfilePic/ProfilePic';
 import DmzText from '../../../components/atoms/DmzText/DmzText';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSelector} from 'react-redux';
+import TopNavBar from '../../../components/molecules/TopNavBar/TopNavBar';
 function DoctorProfile(props) {
   const {navigation} = props;
   const dimen = useRef(new Animated.Value(0)).current;
@@ -61,6 +62,7 @@ function DoctorProfile(props) {
         style={{
           Container: {
             height: '40%',
+            position: 'absolute',
             borderBottomRightRadius: 70,
             height: dimen.interpolate({
               inputRange: [0, 1],
@@ -71,117 +73,117 @@ function DoctorProfile(props) {
               outputRange: ['0%', '100%'],
             }),
           },
-        }}>
-        <Animated.View
-          style={{flex: 1, opacity: opacity, transform: [{scale: opacity}]}}>
-          <Text
-            style={{
-              fontSize: 36,
-              fontWeight: '700',
-              alignSelf: 'center',
-              lineHeight: 36,
-              color: 'rgba(0,126,150,1)',
-            }}>
-            Dr.{data.basic.name}
-          </Text>
-          <Text
-            style={{
-              fontSize: 20,
-              fontWeight: '500',
-              alignSelf: 'center',
-              lineHeight: 22,
-              color: 'rgba(0,126,150,0.8)',
-            }}>
-            {data.specialty}
-          </Text>
-          <View style={{alignSelf: 'center', marginTop: 2}}>
-            <RatingStarts
-              rating={4}
-              size={14}
-              filled
-              activeColor={'#FD906A'}
-              passiveColor={'#EBFAFF'}
-            />
-          </View>
-        </Animated.View>
-        <Animated.View
+        }}></SolidHeader>
+      <TopNavBar
+        style={{Container: {marginTop: 5}}}
+        onLeftButtonPress={() => {}}
+        onRightButtonPress={() => {}}
+      />
+      <Animated.View
+        style={{flex: 1, opacity: opacity, transform: [{scale: opacity}]}}>
+        <Text
           style={{
-            flex: 1.5,
-            flexDirection: 'row',
-            opacity: opacity,
-            transform: [{scale: opacity}],
+            fontSize: 36,
+            fontWeight: '700',
+            alignSelf: 'center',
+            lineHeight: 36,
+            color: 'rgba(0,126,150,1)',
           }}>
-          <View style={{flex: 3, alignItems: 'center'}}>
-            <View
-              style={{
-                borderWidth: 10,
-                borderColor: '#fff',
-                borderRadius: 20,
-                height: 180,
-                width: 180,
-                bottom: -15,
-                position: 'relative',
-              }}>
-              <Image
-                style={{
-                  borderRadius: 15,
-                  height: '100%',
-                  width: '100%',
-                }}
-                source={require('../../../assets/jpg/person1.jpg')}
-              />
-              <View
-                style={{
-                  height: 40,
-                  width: 40,
-                  borderRadius: 40,
-                  borderWidth: 2,
-                  borderColor: '#FD906A',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  elevation: 1,
-                  backgroundColor: '#fff',
-                  position: 'absolute',
-                  bottom: 0,
-                  right: -8,
-                  bottom: -8,
-                  zIndex: 9999,
-                }}>
-                <MaterialCommunityIcons
-                  name="heart"
-                  size={24}
-                  color="#FD906A"
-                />
-              </View>
-            </View>
-          </View>
+          Dr.{data.basic.name}
+        </Text>
+        <Text
+          style={{
+            fontSize: 20,
+            fontWeight: '500',
+            alignSelf: 'center',
+            lineHeight: 22,
+            color: 'rgba(0,126,150,0.8)',
+          }}>
+          {data.specialty}
+        </Text>
+        <View style={{alignSelf: 'center', marginTop: 2}}>
+          <RatingStarts
+            rating={4}
+            size={14}
+            filled
+            activeColor={'#FD906A'}
+            passiveColor={'#EBFAFF'}
+          />
+        </View>
+      </Animated.View>
+      <Animated.View
+        style={{
+          flex: 1.5,
+          flexDirection: 'row',
+          opacity: opacity,
+          transform: [{scale: opacity}],
+        }}>
+        <View style={{flex: 3, alignItems: 'center'}}>
           <View
             style={{
-              flex: 2,
-              borderBottomRightRadius: 70,
-              justifyContent: 'center',
+              borderWidth: 10,
+              borderColor: '#fff',
+              borderRadius: 20,
+              height: 180,
+              width: 180,
+              bottom: -15,
+              position: 'relative',
             }}>
-            <View style={Styles.DoctorProfilePatientDetails}>
-              <Fontisto name="doctor" size={32} color="#007E96" />
-              <View style={{marginLeft: 8}}>
-                <Text style={{color: '#007E96', fontSize: 15}}>1.5K</Text>
-                <Text style={{color: '#007E96', fontSize: 12}}>Patients</Text>
-              </View>
-            </View>
-            <View style={Styles.DoctorProfileExperienceDetails}>
-              <MaterialCommunityIcons
-                name="timer-sand"
-                size={30}
-                color="#007E96"
-              />
-              <View style={{marginLeft: 8}}>
-                <Text style={{color: '#007E96', fontSize: 15}}>5 Years</Text>
-                <Text style={{color: '#007E96', fontSize: 12}}>Experience</Text>
-              </View>
+            <Image
+              style={{
+                borderRadius: 15,
+                height: '100%',
+                width: '100%',
+              }}
+              source={require('../../../assets/jpg/person1.jpg')}
+            />
+            <View
+              style={{
+                height: 40,
+                width: 40,
+                borderRadius: 40,
+                borderWidth: 2,
+                borderColor: '#FD906A',
+                alignItems: 'center',
+                justifyContent: 'center',
+                elevation: 1,
+                backgroundColor: '#fff',
+                position: 'absolute',
+                bottom: 0,
+                right: -8,
+                bottom: -8,
+                zIndex: 9999,
+              }}>
+              <MaterialCommunityIcons name="heart" size={24} color="#FD906A" />
             </View>
           </View>
-        </Animated.View>
-      </SolidHeader>
+        </View>
+        <View
+          style={{
+            flex: 2,
+            borderBottomRightRadius: 70,
+            justifyContent: 'center',
+          }}>
+          <View style={Styles.DoctorProfilePatientDetails}>
+            <Fontisto name="doctor" size={32} color="#007E96" />
+            <View style={{marginLeft: 8}}>
+              <Text style={{color: '#007E96', fontSize: 15}}>1.5K</Text>
+              <Text style={{color: '#007E96', fontSize: 12}}>Patients</Text>
+            </View>
+          </View>
+          <View style={Styles.DoctorProfileExperienceDetails}>
+            <MaterialCommunityIcons
+              name="timer-sand"
+              size={30}
+              color="#007E96"
+            />
+            <View style={{marginLeft: 8}}>
+              <Text style={{color: '#007E96', fontSize: 15}}>5 Years</Text>
+              <Text style={{color: '#007E96', fontSize: 12}}>Experience</Text>
+            </View>
+          </View>
+        </View>
+      </Animated.View>
       <View style={Styles.ContentContainer}>
         <View style={Styles.ContentContainerTabs}>
           <View style={{alignItems: 'center', justifyContent: 'flex-end'}}>

@@ -10,7 +10,7 @@ import DmzButton from '../../../components/atoms/DmzButton/DmzButton';
 import StepsTracker from '../../../components/atoms/StepsTracker/StepsTracker';
 
 export default function SignUpStep1Screen(props) {
-  const {credential, setCredential} = props;
+  const {credential, setCredential, isLoading} = props;
   const handleFirstName = (firstName) => {
     setCredential({...credential, firstName});
   };
@@ -158,6 +158,8 @@ export default function SignUpStep1Screen(props) {
             },
           }}
           text="SIGN UP"
+          isLoading={isLoading}
+          disabled={isLoading}
         />
         <DmzText
           onPress={() => {
