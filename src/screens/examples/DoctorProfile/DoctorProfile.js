@@ -115,8 +115,18 @@ function DoctorProfile(props) {
         style={{
           flex: 1.5,
           flexDirection: 'row',
-          opacity: opacity,
-          transform: [{scale: opacity}],
+          opacity: opacity.interpolate({
+            inputRange: [0, 0.99, 1],
+            outputRange: [0, 0.2, 1],
+          }),
+          transform: [
+            {
+              scale: opacity.interpolate({
+                inputRange: [0, 0.99, 1],
+                outputRange: [0, 0.1, 1],
+              }),
+            },
+          ],
         }}>
         <View style={{flex: 3, alignItems: 'center'}}>
           <View

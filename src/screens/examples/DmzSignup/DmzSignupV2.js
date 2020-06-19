@@ -47,8 +47,13 @@ function DmzSignupV2(props) {
 
   const successCallback = () => {
     showTost('account created successfully');
-    dispatch(UploadProfilePic(data.id, imageData));
-    props.navigation.navigate('pageNavigation');
+    AsyncStorage.getItem('userData').then((res) => {
+      const data = JSON.parse(res);
+      console.log(data.id);
+      console.log(imageData);
+      signupAs === 'doctor' && dispatch(UploadProfilePic(data.id, imageData));
+      // props.navigation.navigate('pageNavigation');
+    });
     //   : props.navigation.goBack(null);
     // props.navigation.goBack(null);
   };

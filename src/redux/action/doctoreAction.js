@@ -154,6 +154,10 @@ export const fetchDoctorLite = (search = {}, _page, mode) => {
 };
 
 export const fetchMoreDoctorLite = (search = {}, _page, mode) => {
+  console.log('$$$$$$$$$$$$$$$$$$$$$$');
+  console.log(search);
+  console.log(_page);
+  console.log(mode);
   return (dispatch) => {
     const params = {
       match: JSON.stringify({
@@ -265,26 +269,28 @@ export const UploadProfilePic = (id, ImageData) => {
     data.append('image', Image);
     data.append('id', id);
     const config = {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'multipart/form-data',
-      },
-      body: data,
+      Accept: '*/*',
+      'Content-Type': 'multipart/form-data',
     };
-    fetch(`${Host}/doctors/upload/image`, config)
+    console.log('ppppppppppppppppppppppppppppppppp');
+    console.log(data);
+    console.log(config);
+    console.log(`${Host}/doctors/upload/image`);
+    axios
+      .post(`${Host}/doctors/upload/image`, data, config)
       .then((responseStatus) => {
-        console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
+        console.log('mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm');
         console.log(responseStatus);
-        AsyncStorage.setItem('ProfileImage', Image)
-          .then((res) => {
-            dispatch(uploadedImage());
-          })
-          .catch(() => {
-            console.log('error in async storage');
-          });
+        // AsyncStorage.setItem('ProfileImage', Image)
+        //   .then((res) => {
+        dispatch(uploadedImage());
+        // })
+        // .catch(() => {
+        //   console.log('error in async storage');
+        // });
       })
       .catch((err) => {
+        console.log('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
         console.log(err);
         dispatch(errorUploadingImage(err));
       });

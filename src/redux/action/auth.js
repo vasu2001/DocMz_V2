@@ -109,6 +109,7 @@ export const LoginPatient = (data, success, failed) => {
             email: data.email,
             phone: data.phone,
             name: data.firstName === undefined ? 'No name' : data.firstName,
+            ...data,
           };
 
           dispatch(saveNewUser(_data, 'patient'));
@@ -161,6 +162,7 @@ export const LoginDoctor = (data, success, failed) => {
             name: data.basic.name,
             email: data.email,
             phone: data.phone,
+            ...data,
           };
 
           dispatch(saveNewUser(_data, 'doctor'));
@@ -213,6 +215,7 @@ export const signupDoctor = (data, successCallback, errorCallback) => {
             name: result.data.data.basic.name,
             phone: result.data.data.phone,
             id: result.data.data._id,
+            ...result.data.data,
           };
           //   _save(__data);
 
@@ -248,14 +251,14 @@ export const signupPatient = (data, successCallback, errorCallback) => {
         console.log('result');
         if (result.data.status) {
           const __data = {
-            mode: 'doctor',
             email: result.data.data.email,
-            name: result.data.data.basic.name,
+            name: result.data.data.firstName,
             phone: result.data.data.phone,
             id: result.data.data._id,
+            ...result.data.data,
           };
           AsyncStorage.setItem('userData', JSON.stringify(__data)).then(() => {
-            dispatch(saveNewUser(__data, 'doctor'));
+            dispatch(saveNewUser(__data, 'patient'));
             successCallback();
           });
 

@@ -64,7 +64,7 @@ export default function LandingPageScreen({navigation}) {
   const [page, setPage] = useState(0);
   const [toggle, setToggle] = useState(0);
   const [disEnd, setDisEnd] = useState(0);
-  const [trigger, setTrigger] = useState(true);
+  const [trigger, setTrigger] = useState(false);
   var __id = '';
 
   if (isDoctor && isLogedin) navigation.navigate('doctorHomePage');
@@ -105,7 +105,13 @@ export default function LandingPageScreen({navigation}) {
   };
   const fetch = () => {
     let val = page + 1;
-    dispatch(fetchMoreDoctorLite({specialty: lclSpecialty}, page, false));
+    dispatch(
+      fetchMoreDoctorLite(
+        lclSpecialty && {specialty: lclSpecialty},
+        page,
+        false,
+      ),
+    );
     setPage(val);
   };
 
@@ -220,13 +226,14 @@ export default function LandingPageScreen({navigation}) {
             horizontal
             style={{zIndex: 99999}}
             contentContainerStyle={{
-              paddingTop: '7%',
-              paddingBottom: 12,
+              paddingTop: '4%',
+              paddingBottom: 0,
               paddingHorizontal: 25,
             }}>
             {specialty.map((u, i) => {
               return (
                 <TouchableOpacity
+                  style={{paddingVertical: 10}}
                   onPress={() => {
                     handleSpecialityFetch(u);
                   }}>
@@ -262,15 +269,15 @@ export default function LandingPageScreen({navigation}) {
           useAngle
           angle={120}
           colors={[
-            'rgba(255, 255, 255, 0.9)',
-            'rgba(255, 255, 255, 0.9)',
+            'rgba(2, 126, 151, 0)',
+            'rgba(2, 126, 151, 0)',
             'rgba(2, 126, 151, 0)',
             'rgba(2, 126, 151, 0.12)',
           ]}
           style={{flex: 1}}>
           <Section
             style={{
-              Container: {marginBottom: 40, marginTop: 20},
+              Container: {marginBottom: 40, marginTop: 8},
               Text: {color: '#007E96', fontWeight: '700'},
             }}
             HeaderText={toggle ? 'Available Doctors' : 'Our Doctors'}>
@@ -296,13 +303,14 @@ export default function LandingPageScreen({navigation}) {
               />
             ) : !toggle ? (
               <FlatList
+                style={{backgroundColor: 'transparent'}}
                 initialNumToRender={5}
-                onMomentumScrollBegin={() => setTrigger(false)}
+                // onMomentumScrollBegin={() => setTrigger(false)}
                 onEndReached={({distanceFromEnd}) => {
                   console.log('end reached');
                   // if (!trigger) {
                   fetch();
-                  //   setTrigger(true);
+                  // setTrigger(true);
                   // }
                 }}
                 // onScroll={onScroll}
@@ -316,7 +324,7 @@ export default function LandingPageScreen({navigation}) {
                     <Text>Empty</Text>
                   </View>
                 }
-                onEndReachedThreshold={0.2}
+                onEndReachedThreshold={0.1}
                 ListFooterComponent={moreDoctorLoading && <ActivityIndicator />}
                 // extraData={doctors}
                 data={doctors}
@@ -328,9 +336,7 @@ export default function LandingPageScreen({navigation}) {
                     onPress={() => onPress(item._id)}
                     id={item._id}
                     name={item.basic.name.slice(0, 15).concat('...')}
-                    // schedule={item.output.filter(
-                    //   o => o.bookedFor.slice(0, 10) === '2020-05-07',
-                    // )}
+                    schedule={item.output}
                   />
                 )}
               />

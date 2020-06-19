@@ -16,8 +16,8 @@ import {UploadProfilePic} from '../../../redux/action/patientAccountAction';
 
 function Profile() {
   const dispatch = useDispatch();
-  const {data} = useSelector(state => state.AuthReducer);
-  const {patient} = useSelector(state => state.PatientAccountReducer);
+  const {data} = useSelector((state) => state.AuthReducer);
+  const {patient} = useSelector((state) => state.PatientAccountReducer);
   const dimen = useWindowDimensions();
   const screenWidth = dimen.width;
   const [inputFields, setInputFields] = useState({
@@ -32,17 +32,8 @@ function Profile() {
   });
   useEffect(() => {
     console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
-    const {
-      firstName,
-      lastName,
-      phone,
-      email,
-      sex,
-      dob,
-      bloodGroup,
-      height,
-      weight,
-    } = patient;
+    // const {name, phone, email, sex, dob, bloodGroup, height, weight} = patient;
+    console.log(patient);
     // console.log(patient.name);
     // console.log(patient.phone);
     // console.log(patient.email);
@@ -51,16 +42,16 @@ function Profile() {
     // console.log(patient.bloodGroup);
     // console.log(patient.height);
     // console.log(patient.weight);
-    setInputFields({
-      name: `${firstName} ${lastName}`,
-      phone,
-      email,
-      sex,
-      dob,
-      bloodGroup,
-      height,
-      weight,
-    });
+    // setInputFields({
+    //   name: `${name}`,
+    //   phone,
+    //   email,
+    //   sex,
+    //   dob,
+    //   bloodGroup,
+    //   height,
+    //   weight,
+    // });
   }, []);
   const onChoosePicture = async () => {
     const granted = await PermissionsAndroid.check(
@@ -102,7 +93,7 @@ function Profile() {
         path: 'images',
       },
     };
-    ImagePicker.showImagePicker(options, response => {
+    ImagePicker.showImagePicker(options, (response) => {
       // console.log('Response = ', response);
       if (response.didCancel) {
         console.log('User cancelled image picker');
