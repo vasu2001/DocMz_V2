@@ -30,7 +30,7 @@ import DoctorProfile from '../screens/examples/DoctorProfile/DoctorProfile';
 import Settings from '../screens/examples/Settings/Settings';
 import PatienDashboard from '../screens/examples/PatientDashboard/PatienDashboard';
 import FindADoctor from '../screens/examples/FindADoctor/FindADoctor';
-import QuestionViewPager from '../screens/examples/Questions/QuestionViewPager';
+// import QuestionViewPager from '../screens/examples/Questions/QuestionViewPager';
 import DmzSignupV2 from '../screens/examples/DmzSignup/DmzSignupV2';
 import DmzloginV2 from '../screens/examples/DmzLogin/DmzloginV2';
 import {createAppContainer} from 'react-navigation';

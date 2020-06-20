@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {Component, useState} from 'react';
-import {View, Text, Dimensions} from 'react-native';
+import React, {useState} from 'react';
+import {View, Modal, Text} from 'react-native';
 import LinearGradientBackground from '../../../components/molecules/GradientBackground/LinearGradientBackground';
 import TopNavBar from '../../../components/molecules/TopNavBar/TopNavBar';
 import PatientHistoryCardSmall from '../../../components/molecules/PatientHistoryCards/PatientHistoryCardSmall';
@@ -9,13 +9,22 @@ import Reports from '../../../assets/svg/reports.svg';
 import {ScrollView} from 'react-native-gesture-handler';
 import DmzButton from '../../../components/atoms/SwitchButton/SwitchButton';
 import PatientHistoryCardLarge from '../../../components/molecules/PatientHistoryCards/PatientHistoryCardLarge';
+import {PRIMARY_TEXT, HEADER_TEXT} from '../../../styles/colors';
+import PatientEditScreen from './PatientEditScreen';
 
 export default function PatienDashboard(props) {
   const patientCategories = ['Vitals', 'Surgeries', 'Meds', 'Lifestyle'];
   const [selectedHeader, setHeader] = useState('Vitals');
+  const [editCard, setEditCard] = useState();
+  const [modalVisible, setModal] = useState(false);
   const selecteCategory = (val) => {
     setHeader(val);
     console.log(selectedHeader);
+  };
+
+  const modalVisibility = (item) => {
+    setModal(!modalVisible);
+    setEditCard(item);
   };
 
   const data1 = [
@@ -41,6 +50,26 @@ export default function PatienDashboard(props) {
       infoOne: '80/50',
       infoTwo: 'Optimal',
       infoThree: '',
+      data: [
+        50,
+        10,
+        40,
+        95,
+        -4,
+        -24,
+        35,
+        53,
+        -53,
+        24,
+        50,
+        -20,
+        -80,
+        44,
+        65,
+        35,
+        14,
+        23,
+      ],
     },
     {
       headerOne: 'Heart Rate',
@@ -48,6 +77,48 @@ export default function PatienDashboard(props) {
       infoOne: '65 ',
       infoTwo: 'Normal',
       infoThree: 'bpm',
+      data: [
+        {
+          data: [
+            50,
+            10,
+            40,
+            95,
+            -4,
+            -24,
+            85,
+            91,
+            35,
+            53,
+            -53,
+            24,
+            50,
+            -20,
+            -80,
+          ],
+          svg: {stroke: 'purple'},
+        },
+        {
+          data: [
+            -87,
+            66,
+            -69,
+            92,
+            -40,
+            -61,
+            16,
+            62,
+            20,
+            -93,
+            -54,
+            47,
+            -89,
+            -44,
+            18,
+          ],
+          svg: {stroke: 'green'},
+        },
+      ],
     },
   ];
   const data3 = [
@@ -91,12 +162,12 @@ export default function PatienDashboard(props) {
             <View style={{width: '60%', marginRight: 10}}>
               <DmzText
                 text={'Allen Paul'}
-                style={{color: '#FF7A59', fontSize: 18}}
+                style={{color: PRIMARY_TEXT, fontSize: 18}}
               />
               <DmzText
                 text={'MEDICAL HISTORY'}
                 style={{
-                  color: '#007E96',
+                  color: HEADER_TEXT,
                   lineHeight: 40,
                   fontSize: 38,
                   textTransform: 'uppercase',
@@ -135,13 +206,18 @@ export default function PatienDashboard(props) {
           <View
             style={{
               flexDirection: 'row',
-              marginHorizontal: 10,
+              marginRight: 10,
+              justifyContent: 'center',
               marginBottom: 20,
             }}>
             {data1.map((u, i) => {
               console.log(u);
               return (
                 <PatientHistoryCardSmall
+                  onPress={() => {
+                    modalVisibility(u);
+                  }}
+                  data={data1}
                   style={{
                     Card: {
                       marginLeft: 20,
@@ -167,11 +243,15 @@ export default function PatienDashboard(props) {
               console.log(u);
               return (
                 <PatientHistoryCardLarge
+                  onPress={() => {
+                    modalVisibility(u);
+                  }}
                   headerOne={u.headerOne}
                   headerTwo={u.headerTwo}
                   infoOne={u.infoOne}
                   infoTwo={u.infoTwo}
                   infoThree={u.infoThree}
+                  data={u.data}
                 />
               );
             })}
@@ -179,13 +259,17 @@ export default function PatienDashboard(props) {
           <View
             style={{
               flexDirection: 'row',
-              marginHorizontal: 10,
+              marginRight: 10,
+              justifyContent: 'center',
               marginBottom: 20,
             }}>
             {data3.map((u, i) => {
               console.log(u);
               return (
                 <PatientHistoryCardSmall
+                  onPress={() => {
+                    modalVisibility(u);
+                  }}
                   style={{
                     Card: {
                       marginLeft: 20,
@@ -204,6 +288,15 @@ export default function PatienDashboard(props) {
           </View>
         </ScrollView>
       </LinearGradientBackground>
+      <Modal
+        visible={modalVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={() => {
+          setModal(!modalVisible);
+        }}>
+        <PatientEditScreen data={editCard} />
+      </Modal>
     </View>
   );
 }

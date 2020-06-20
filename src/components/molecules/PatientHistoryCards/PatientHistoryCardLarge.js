@@ -1,10 +1,11 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import Graph from '../../../assets/svg/graph.svg';
+import Graph from '../../atoms/Graphs/Graphs';
 import DmzText from '../../atoms/DmzText/DmzText';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Entypo from 'react-native-vector-icons/Entypo';
+import {PRIMARY_TEXT} from '../../../styles/colors';
 
 export default function PatientHistoryCardLarge({
   style,
@@ -14,6 +15,7 @@ export default function PatientHistoryCardLarge({
   infoTwo,
   infoThree,
   onPress,
+  data,
 }) {
   return (
     <View style={[styles.Card, style ? style.Card : null]}>
@@ -33,7 +35,11 @@ export default function PatientHistoryCardLarge({
           />
         </View>
       </View>
-      <Graph style={{alignSelf: 'center'}} />
+      <Graph
+        data={data}
+        hasAxis={headerOne.toUpperCase() == 'BLOOD PRESSURE'}
+        style={{alignSelf: 'center'}}
+      />
       <DmzText
         style={[styles.HeaderTwo, style ? style.HeaderTwo : null]}
         text={headerTwo}
@@ -90,20 +96,20 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   InfoOne: {
-    color: '#007E96',
+    color:  PRIMARY_TEXT,
     fontSize: 25.5,
     marginRight: 5,
     paddingTop: 8,
     width: 'auto',
   },
   InfoTwo: {
-    color: '#007E96',
+    color:  PRIMARY_TEXT,
     fontSize: 18,
     paddingLeft: 10,
   },
 
   InfoThree: {
-    color: '#007E96',
+    color:  PRIMARY_TEXT,
     fontSize: 13,
     lineHeight: 16,
     paddingTop: 8,

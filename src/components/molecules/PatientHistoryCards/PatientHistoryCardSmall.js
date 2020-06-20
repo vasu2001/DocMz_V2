@@ -8,6 +8,7 @@ import Notepad from '../../../assets/svg/notepad.svg';
 import Height from '../../../assets/svg/height.svg';
 import Temp from '../../../assets/svg/temprature.svg';
 import Microscope from '../../../assets/svg/microscope.svg';
+import {PRIMARY_TEXT} from '../../../styles/colors';
 
 export default function PatientHistoryCardSmall({
   style,
@@ -18,7 +19,6 @@ export default function PatientHistoryCardSmall({
   infoThree,
   onPress,
 }) {
-
   const getIcon = () => {
     if (headerOne == 'Weight') {
       return <Notepad style={{marginRight: 15, marginTop: 10}} />;
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   },
   Container: {
     flexDirection: 'row',
-    borderBottomColor: '#FF7A59',
+    borderBottomColor: '#E7E3FE',
     borderBottomWidth: 1,
     width: '100%',
     paddingBottom: 10,
@@ -96,19 +96,19 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   InfoOne: {
-    color: '#007E96',
+    color: PRIMARY_TEXT,
     fontSize: 24.5,
     paddingLeft: 10,
     width: 'auto',
   },
   InfoTwo: {
-    color: '#007E96',
+    color: PRIMARY_TEXT,
     fontSize: 13,
     marginLeft: '25%',
     fontWeight: 'normal',
   },
   InfoThree: {
-    color: '#007E96',
+    color: PRIMARY_TEXT,
     fontSize: 13,
     paddingLeft: 10,
     lineHeight: 16,
