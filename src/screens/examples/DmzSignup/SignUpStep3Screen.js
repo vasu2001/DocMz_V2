@@ -1,6 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
-import {View, Text, TextInput, Image, Dimensions, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  Image,
+  Dimensions,
+  StyleSheet,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import RadialGradient from 'react-native-radial-gradient';
 import DmzButton from '../../../components/atoms/DmzButton/DmzButton';
@@ -10,8 +17,16 @@ import TextInputIcon from '../../../components/atoms/TextInputCustom/TextInputIc
 const width = Dimensions.get('screen').width;
 
 export default function SignUpStep3Screen(props) {
-  const [email, setEmail] = useState();
-
+  const {credential, setCredential, isLoading} = props;
+  const handlePhone = (phone) => {
+    setCredential({...credential, phone});
+  };
+  const handleCity = (city) => {
+    setCredential({...credential, city});
+  };
+  const handleCountry = (country) => {
+    setCredential({...credential, country});
+  };
   return (
     <View style={{flex: 1}}>
       <LinearGradient
@@ -92,29 +107,27 @@ export default function SignUpStep3Screen(props) {
         </View>
         <TextInputIcon
           placeholder="Contact Number"
-          value={email}
+          inputHandler={handlePhone}
           placeholderTextColor="rgba(0, 0, 0, 0.25)"
           style={styles.inputStyle}
           textStyle={styles.textStyle}
         />
         <TextInputIcon
           placeholder="City of Residence"
-          value={email}
+          inputHandler={handleCity}
           placeholderTextColor="rgba(0, 0, 0, 0.25)"
           style={styles.inputStyle}
           textStyle={styles.textStyle}
         />
         <TextInputIcon
           placeholder="Country"
-          value={email}
+          inputHandler={handleCountry}
           placeholderTextColor="rgba(0, 0, 0, 0.25)"
           style={styles.inputStyle}
           textStyle={styles.textStyle}
         />
         <DmzButton
-          onPress={() => {
-            alert('hello');
-          }}
+          onPress={props.onPress}
           style={{
             Text: {
               width: '100%',
@@ -133,6 +146,8 @@ export default function SignUpStep3Screen(props) {
             },
           }}
           text="Complete"
+          isLoading={isLoading}
+          disabled={isLoading}
         />
       </View>
     </View>

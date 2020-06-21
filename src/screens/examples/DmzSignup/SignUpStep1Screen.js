@@ -10,11 +10,19 @@ import DmzButton from '../../../components/atoms/DmzButton/DmzButton';
 import StepsTracker from '../../../components/atoms/StepsTracker/StepsTracker';
 
 export default function SignUpStep1Screen(props) {
-  const [email, setEmail] = useState('');
-  const [pass, setPass] = useState('');
-  const [fname, setFName] = useState('');
-  const [lname, setLName] = useState('');
-
+  const {credential, setCredential, isLoading} = props;
+  const handleFirstName = (firstName) => {
+    setCredential({...credential, firstName});
+  };
+  const handleLastName = (lastName) => {
+    setCredential({...credential, lastName});
+  };
+  const handleEmail = (email) => {
+    setCredential({...credential, email});
+  };
+  const handlePassword = (password) => {
+    setCredential({...credential, password});
+  };
   return (
     <View style={{flex: 1}}>
       <LinearGradient
@@ -71,7 +79,7 @@ export default function SignUpStep1Screen(props) {
         />
         <TextInputIcon
           placeholder="First Name"
-          value={fname}
+          inputHandler={handleFirstName}
           placeholderTextColor="rgba(0, 0, 0, 0.25)"
           style={{
             width: '70%',
@@ -87,21 +95,21 @@ export default function SignUpStep1Screen(props) {
         />
         <TextInputIcon
           placeholder="Last Name"
-          value={lname}
+          inputHandler={handleLastName}
           placeholderTextColor="rgba(0, 0, 0, 0.25)"
           style={styles.inputStyle}
           textStyle={styles.textStyle}
         />
         <TextInputIcon
           placeholder="Email"
-          value={email}
+          inputHandler={handleEmail}
           placeholderTextColor="rgba(0, 0, 0, 0.25)"
           style={styles.inputStyle}
           textStyle={styles.textStyle}
         />
         <TextInputIcon
           placeholder="Password"
-          value={pass}
+          inputHandler={handlePassword}
           placeholderTextColor="rgba(0, 0, 0, 0.25)"
           style={styles.inputStyle}
           textStyle={styles.textStyle}
@@ -150,10 +158,12 @@ export default function SignUpStep1Screen(props) {
             },
           }}
           text="SIGN UP"
+          isLoading={isLoading}
+          disabled={isLoading}
         />
         <DmzText
           onPress={() => {
-            this.props.navigation.navigate('SignUpStep1Screen');
+            props.navigation.navigate('SignUpStep1Screen');
           }}
           style={{
             // width: '100%',

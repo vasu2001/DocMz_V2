@@ -109,6 +109,7 @@ export const LoginPatient = (data, success, failed) => {
             email: data.email,
             phone: data.phone,
             name: data.firstName === undefined ? 'No name' : data.firstName,
+            ...data,
           };
 
           dispatch(saveNewUser(_data, 'patient'));
@@ -161,6 +162,7 @@ export const LoginDoctor = (data, success, failed) => {
             name: data.basic.name,
             email: data.email,
             phone: data.phone,
+            ...data,
           };
 
           dispatch(saveNewUser(_data, 'doctor'));
@@ -197,22 +199,7 @@ export const signupDoctor = (data, successCallback, errorCallback) => {
       'Content-Type': 'application/x-www-form-urlencoded',
       Accept: '*/*',
     };
-    const _data = {
-      name: data.name,
-      email: data.email,
-      password: data.password,
-      phone: data.phone,
-      registration_number: data.registration_id,
-      specialty: data.specialty,
-      city: data.city,
-      state: data.state,
-      country: data.country,
-      basic: JSON.stringify({}),
-      appointmentsString: data.appointmentsString,
-      firstName: data.firstName,
-      lastName: data.lastName,
-      referralId: data.referralId,
-    };
+    const _data = data;
 
     console.log(_data);
 
@@ -225,9 +212,10 @@ export const signupDoctor = (data, successCallback, errorCallback) => {
           const __data = {
             mode: 'doctor',
             email: result.data.data.email,
-            name: result.data.data.name,
+            name: result.data.data.basic.name,
             phone: result.data.data.phone,
             id: result.data.data._id,
+            ...result.data.data,
           };
           //   _save(__data);
 
@@ -237,15 +225,15 @@ export const signupDoctor = (data, successCallback, errorCallback) => {
               successCallback();
             })
             .catch((err) => {
-              dispatch(haveingError(err));
               errorCallback(err);
+              dispatch(haveingError(err));
             });
         }
         console.log(result.data.status);
       })
       .catch((err) => {
-        dispatch(haveingError(err));
         errorCallback(err);
+        dispatch(haveingError(err));
       });
   };
 };
@@ -262,8 +250,18 @@ export const signupPatient = (data, successCallback, errorCallback) => {
       .then((result) => {
         console.log('result');
         if (result.data.status) {
-          dispatch(stoptLoading());
-          successCallback();
+          const __data = {
+            email: result.data.data.email,
+            name: result.data.data.firstName,
+            phone: result.data.data.phone,
+            id: result.data.data._id,
+            ...result.data.data,
+          };
+          AsyncStorage.setItem('userData', JSON.stringify(__data)).then(() => {
+            dispatch(saveNewUser(__data, 'patient'));
+            successCallback();
+          });
+
           console.log(result.data.status);
         }
       })
