@@ -20,6 +20,8 @@ import {
   ActivityIndicator,
   Text,
   FlatList,
+  Dimensions,
+  PanResponder,
 } from 'react-native';
 import {
   fetchDoctorLite,
@@ -36,9 +38,22 @@ import _ from 'lodash';
 import LinearGradient from 'react-native-linear-gradient';
 
 export default function LandingPageScreen({navigation}) {
+  const height = Dimensions.get('window').height;
   const DocCards = ['Family Physicians', 'Pulmonologist', 'Family Physicians'];
-  const AllDocs = ['Dropkin Jared', 'Co Ekaterine', 'Martin Chein'];
+  const AllDocs = [
+    'Dropkin Jared',
+    'Co Ekaterine',
+    'Martin Chein',
+    'Dropkin Jared',
+    'Co Ekaterine',
+    'Martin Chein',
+    'Dropkin Jared',
+    'Co Ekaterine',
+    'Martin Chein',
+  ];
   const AvailDocs = ['Martin Chein', 'Co Ekaterine', 'Dropkin Jared'];
+
+  const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
   const [searchKey, setSearchKey] = useState('');
   const PopupTranslateY = useRef(new Animated.Value(0)).current;
@@ -65,8 +80,9 @@ export default function LandingPageScreen({navigation}) {
   useEffect(() => {
     dispatch(fetchDoctorLite('', 0, false));
     isLogedin && dispatch(GetPatientInfo(data.id));
+    Animated.timing(headerPos, {toValue: 200, duration: 2000}).start();
   }, []);
-
+  const headerPos = useRef(new Animated.Value(0)).current;
   const onPress = (id) => {
     setActiveId(id);
     __id = id;
@@ -110,15 +126,73 @@ export default function LandingPageScreen({navigation}) {
     }
   };
 
+  const panResponder = PanResponder.create({
+    onStartShouldSetPanResponder: () => false,
+    onMoveShouldSetPanResponder: () => true,
+    onPanResponderGrant: (e, gestureState) => {
+      // console.log(gestureState.dy);
+    },
+    onPanResponderMove: (e, gestureState) => {
+      // console.log(gestureState.dy);
+    },
+    onPanResponderRelease: (e, gestureState) => {
+      console.log(gestureState.moveY);
+      // console.log(height);
+      console.log(headerPos);
+      // if (gestureState.dy > 100) {
+      //   Animated.timing(headerPos, {
+      //     toValue: height * 0.45,
+      //     // useNativeDriver: true,
+      //   }).start();
+      // } else {
+      //   Animated.timing(headerPos, {
+      //     toValue: height * 0.25,
+      //     // useNativeDriver: true,
+      //   }).start();
+      // }
+    },
+  });
+
+  const headerTop = headerPos.interpolate({
+    inputRange: [0, 200],
+    outputRange: [height * 0.4, height * 0.2],
+    extrapolate: 'clamp',
+    //  easing: Easing.sin,
+  });
+  const headerView = headerPos.interpolate({
+    inputRange: [0, 200],
+    outputRange: [height * 0.25, 0],
+    extrapolate: 'clamp',
+    easing: Easing.circle,
+  });
+  const headerViewStyle = headerPos.interpolate({
+    inputRange: [0, 150],
+    outputRange: [1, 0],
+    extrapolate: 'clamp',
+    // easing: Easing.sin,
+  });
+  const headerViewStyle2 = headerPos.interpolate({
+    inputRange: [0, 100],
+    outputRange: [0, 1],
+    extrapolate: 'clamp',
+    //  easing: Easing.linear,
+  });
+
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
-      <RadialGradient
-        style={{width: '100%', height: '45%', zIndex: 0}}
-        colors={['#DEF1F9', '#C0E0EC', '#95CCE0']}
-        stops={[0.0, 0.2, 0.75]}
-        center={[130, 100]}
-        radius={200}
-      />
+      <Animated.View
+        style={{
+          width: '100%',
+          height: headerTop,
+        }}>
+        <RadialGradient
+          style={{width: '100%', height: '100%', zIndex: 0}}
+          colors={['#DEF1F9', '#C0E0EC', '#95CCE0']}
+          stops={[0.0, 0.2, 0.75]}
+          center={[130, 100]}
+          radius={200}
+        />
+      </Animated.View>
       <View
         style={{
           position: 'absolute',
@@ -131,16 +205,35 @@ export default function LandingPageScreen({navigation}) {
           navigation={navigation}
           style={{
             Container: {
-              height: '6%',
-              marginTop: 0,
+              height: '5%',
+              marginTop: 5,
             },
           }}
         />
+        {/* <Animated.View
+          style={{
+            height: headerViewStyle2,
+            opacity: headerViewStyle2,
+            // transform: [{scale: headerViewStyle2}],
+          }}>
+          <Text
+            style={{
+              color: '#007E96',
+              fontSize: 36,
+              fontWeight: 'bold',
+              letterSpacing: 1,
+              width: '100%',
+              textAlign: 'center',
+            }}>
+            Find A Doctor
+          </Text>
+        </Animated.View> */}
+
         <View
           style={{
             flexDirection: 'row',
             paddingHorizontal: 25,
-            height: '18%',
+            height: '20%',
             alignItems: 'center',
             width: '100%',
           }}>
@@ -182,62 +275,79 @@ export default function LandingPageScreen({navigation}) {
               btnStyle={{
                 width: 80,
               }}
-              dotStyle={{backgroundColor: '#FF9B31', height: 25, width: '35%'}}
+              dotStyle={{
+                backgroundColor: '#FF9B31',
+                height: 25,
+                width: '35%',
+              }}
             />
           </View>
         </View>
-        <View
+        <Animated.View
           style={{
-            height: '8%',
-            paddingHorizontal: 25,
+            height: headerView,
             justifyContent: 'center',
+            opacity: headerViewStyle,
+            transform: [{scale: headerViewStyle}],
+            // backgroundColor: 'pink',
           }}>
-          <SearchBarSolid
-            withIcon
-            placeholderTextColor={'#44A1B4'}
-            icon={<Filter height={24} width={24} color={'#000'} />}
-            onEndEditing={onEndEditing}
-            onChangeText={onChangeText}
-          />
-        </View>
-        <View
-          style={{
-            height: 'auto',
-          }}>
-          <ScrollView
-            horizontal
-            style={{zIndex: 99999}}
-            contentContainerStyle={{
-              paddingTop: '7%',
-              paddingBottom: 12,
+          <View
+            style={{
+              height: '8%',
+              // marginTop: '12%',
+
               paddingHorizontal: 25,
+              justifyContent: 'center',
             }}>
-            {DocCards.map((u, i) => {
-              return (
-                <BasicCard
-                  style={{
-                    CardContainer: {
-                      elevation: 6,
-                      justifyContent: 'space-around',
-                      paddingHorizontal: 25,
-                      height: 120,
-                      borderRadius: 30,
-                    },
-                  }}>
-                  <Fontisto name="doctor" size={30} color={'#FF7A59'} />
-                  <Text
+            <SearchBarSolid
+              withIcon
+              placeholderTextColor={'#44A1B4'}
+              icon={<Filter height={24} width={24} color={'#000'} />}
+              onEndEditing={onEndEditing}
+              onChangeText={onChangeText}
+            />
+          </View>
+          <View
+            style={{
+              height: 'auto',
+              marginTop: 10,
+            }}>
+            <ScrollView
+              horizontal
+              style={{zIndex: 99999}}
+              contentContainerStyle={{
+                paddingTop: '7%',
+                paddingBottom: 12,
+                paddingHorizontal: 25,
+              }}>
+              {DocCards.map((u, i) => {
+                return (
+                  <BasicCard
                     style={{
-                      fontSize: 18,
-                      color: '#007E96',
-                      fontWeight: 'bold',
+                      CardContainer: {
+                        elevation: 6,
+                        justifyContent: 'space-around',
+                        paddingHorizontal: 25,
+                        height: 120,
+                        borderRadius: 30,
+                      },
                     }}>
-                    {u}
-                  </Text>
-                </BasicCard>
-              );
-            })}
-          </ScrollView>
-        </View>
+                    <Fontisto name="doctor" size={30} color={'#FF7A59'} />
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        color: '#007E96',
+                        fontWeight: 'bold',
+                      }}>
+                      {u}
+                    </Text>
+                  </BasicCard>
+                );
+              })}
+            </ScrollView>
+          </View>
+        </Animated.View>
+
         <LinearGradient
           start={{x: 0, y: 0}}
           end={{x: 80, y: 0}}
@@ -252,11 +362,15 @@ export default function LandingPageScreen({navigation}) {
           style={{flex: 1}}>
           <Section
             style={{
-              Container: {marginBottom: 40, marginTop: 20},
+              Container: {
+                marginBottom: 40,
+                height: 'auto',
+              },
               Text: {color: '#007E96', fontWeight: '700'},
             }}
             HeaderText={toggle ? 'Available Doctors' : 'Our Doctors'}>
-            {loading || searchDoctorsLoading || superDocsLoading ? (
+            {/* {loading || searchDoctorsLoading || superDocsLoading ? ( */}
+            {false ? (
               <ListingWithThumbnailLoader />
             ) : searchedDoctors.length && searchKey !== '' ? (
               <FlatList
@@ -277,7 +391,7 @@ export default function LandingPageScreen({navigation}) {
                 )}
               />
             ) : !toggle ? (
-              <FlatList
+              <AnimatedFlatList
                 initialNumToRender={5}
                 onMomentumScrollBegin={() => setTrigger(false)}
                 onEndReached={({distanceFromEnd}) => {
@@ -288,14 +402,62 @@ export default function LandingPageScreen({navigation}) {
                   // }
                 }}
                 // onScroll={onScroll}
+                onScroll={Animated.event(
+                  [
+                    {
+                      nativeEvent: {
+                        contentOffset: {y: headerPos},
+                      },
+                    },
+                  ],
+                  // {useNativeDriver: true}, // <-- Add this
+                )}
+                onResponderRelease={() => {
+                  console.log('release');
+                }}
+                scrollEventThrottle={16}
                 ListEmptyComponent={
-                  <View
-                    style={{
-                      height: '100%',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    <Text>Empty</Text>
+                  <View>
+                    <View
+                      style={{
+                        height: 300,
+                        marginTop: 30,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: 'pink',
+                      }}>
+                      <Text>Empty</Text>
+                    </View>
+                    <View
+                      style={{
+                        height: 300,
+                        marginTop: 30,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: 'pink',
+                      }}>
+                      <Text>Empty</Text>
+                    </View>
+                    <View
+                      style={{
+                        height: 300,
+                        marginTop: 30,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: 'pink',
+                      }}>
+                      <Text>Empty</Text>
+                    </View>
+                    <View
+                      style={{
+                        height: 300,
+                        marginTop: 30,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: 'pink',
+                      }}>
+                      <Text>Empty</Text>
+                    </View>
                   </View>
                 }
                 onEndReachedThreshold={0.2}
