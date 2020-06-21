@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import React, {useEffect, useRef} from 'react';
 import {View, StyleSheet, Animated, Dimensions} from 'react-native';
+=======
+import React, {useEffect, useState} from 'react';
+import {View, StyleSheet} from 'react-native';
+>>>>>>> 15732a3524eb859de8b739eaeda2022b46217c67
 import BasicCard from '../../atoms/BasicCard/BasicCard';
 import AvailDoctorContentV2 from '../AvailDoctorContent/AvailDoctorContentV2';
 import ProfilePic from '../../atoms/ProfilePic/ProfilePic';
@@ -7,7 +12,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
-
+import {Host} from '../../../utils/connection';
 function AvailDoctorContainerV2({
   onPress,
   name,
@@ -17,7 +22,13 @@ function AvailDoctorContainerV2({
   data,
   toggle,
 }) {
-  console.log('Navigaton: ', id);
+  // console.log('Navigaton: ', id);
+  // console.log(
+  //   data.picture.length > 0
+  //     ? `${Host}${data.picture[0].replace('public', '').replace(/\\/gi, '/')}`
+  //     : '',
+  // );
+
   useEffect(() => {
     Animated.timing(cardPos, {
       toValue: 1,
@@ -29,6 +40,7 @@ function AvailDoctorContainerV2({
     // console.log(schedule);
     // console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
   }, []);
+<<<<<<< HEAD
 
   const width = Dimensions.get('screen').width;
   const cardPos = useRef(new Animated.Value(0)).current;
@@ -37,6 +49,9 @@ function AvailDoctorContainerV2({
     outputRange: [-1 * width, 0],
   });
 
+=======
+  let imageSource = require('../../../assets/jpg/person1.jpg');
+>>>>>>> 15732a3524eb859de8b739eaeda2022b46217c67
   return (
     <TouchableWithoutFeedback
       style={[
@@ -55,13 +70,21 @@ function AvailDoctorContainerV2({
           DoctorName={`Dr. ${name}`}
           rating={4}
           onPress={onPress}
-          Specialization="General Dentist"
+          Specialization={data.specialty || 'General Dentist'}
           schedule={schedule}
           navigation={navigation}
           data={data}
           Profile={
             <ProfilePic
-              sourceurl={require('../../../assets/jpg/person1.jpg')}
+              sourceurl={
+                data.picture.length > 0
+                  ? {
+                      uri: `${Host}${data.picture[0]
+                        .replace('public', '')
+                        .replace('\\\\', '/')}`,
+                    }
+                  : imageSource
+              }
               style={{
                 Container: {
                   height: 60,

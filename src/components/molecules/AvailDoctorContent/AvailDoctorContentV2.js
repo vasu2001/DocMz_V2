@@ -48,27 +48,20 @@ function AvailDoctorContentV2({
                     item.bookedFor.slice(11, 16) >
                     new Date().toISOString().slice(11, 16),
                 )
-                .slice(0, 3)
-                .map((item) => (
-                  <Text
-                    style={[
-                      CardContentStyles.AvailableDoctorsAvailableTime,
-                      CardContentStyles.AvailableDoctorsAvailableTimeActive,
-                    ]}>
-                    {item.bookedFor.slice(11, 16)}
-                  </Text>
-                ))}
-            <Text
-              style={[
-                CardContentStyles.AvailableDoctorsAvailableTime,
-                CardContentStyles.AvailableDoctorsAvailableTimeActive,
-              ]}>
-              {'11:00'}
-            </Text>
-
-            <Text style={[CardContentStyles.AvailableDoctorsAvailableTime]}>
-              {'16:00'}
-            </Text>
+                .slice(0, 4)
+                .map((item) => {
+                  console.log(item);
+                  return (
+                    <Text
+                      style={[
+                        CardContentStyles.AvailableDoctorsAvailableTime,
+                        item.booked &&
+                          CardContentStyles.AvailableDoctorsAvailableTimeActive,
+                      ]}>
+                      {item.bookedFor.slice(11, 16)}
+                    </Text>
+                  );
+                })}
           </View>
         </View>
       </TouchableOpacity>

@@ -27,14 +27,7 @@ function SolidHeader({children, style}) {
         stops={[0.0, 0.15, 0.2]}
         center={[100, 100]}
         radius={200}
-        style={{height: '100%', width: '100%'}}>
-        <TopNavBar
-          style={{Container: {marginTop: 5}}}
-          onLeftButtonPress={() => {}}
-          onRightButtonPress={() => {}}
-        />
-        {children}
-      </AnimatedRadialGradient>
+        style={{height: '100%', width: '100%'}}></AnimatedRadialGradient>
     </View>
   );
 }

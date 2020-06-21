@@ -19,6 +19,7 @@ import {
   ScrollView,
   ActivityIndicator,
   Text,
+  TouchableWithoutFeedback,
   FlatList,
   Dimensions,
   PanResponder,
@@ -29,6 +30,7 @@ import {
   searchDoctors,
   fetchSuperDoc,
 } from '../../../redux/action/doctoreAction';
+import {getSpecialty} from '../../../redux/action/doctor/myDoctorAction';
 import {
   RowLoader,
   ListingWithThumbnailLoader,
@@ -36,6 +38,7 @@ import {
 import {GetPatientInfo} from '../../../redux/action/patientAccountAction';
 import _ from 'lodash';
 import LinearGradient from 'react-native-linear-gradient';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 export default function LandingPageScreen({navigation}) {
   const height = Dimensions.get('window').height;
@@ -56,6 +59,7 @@ export default function LandingPageScreen({navigation}) {
 
   const [searchKey, setSearchKey] = useState('');
   const PopupTranslateY = useRef(new Animated.Value(0)).current;
+  const [lclSpecialty, setLclSpecialty] = useState('');
   const dispatch = useDispatch();
   const {
     doctors,
@@ -66,12 +70,15 @@ export default function LandingPageScreen({navigation}) {
     superDocsLoading,
     superDocs,
   } = useSelector((state) => state.DoctorReducer);
+  const {specialtyLoading, specialty} = useSelector(
+    (state) => state.MyDoctorReducer,
+  );
   const {isLogedin, isDoctor, data} = useSelector((state) => state.AuthReducer);
   const [activeId, setActiveId] = useState('');
   const [page, setPage] = useState(0);
   const [toggle, setToggle] = useState(0);
   const [disEnd, setDisEnd] = useState(0);
-  const [trigger, setTrigger] = useState(true);
+  const [trigger, setTrigger] = useState(false);
   var __id = '';
 
   if (isDoctor && isLogedin) navigation.navigate('doctorHomePage');
@@ -82,6 +89,13 @@ export default function LandingPageScreen({navigation}) {
     // Animated.timing(headerPos, {toValue: 200, duration: 2000}).start();
   }, []);
   const headerPos = useRef(new Animated.Value(0)).current;
+    dispatch(getSpecialty());
+  }, []);
+
+  const handleSpecialityFetch = (specialty) => {
+    dispatch(fetchDoctorLite({specialty: specialty.toLowerCase()}, 0, false));
+    setLclSpecialty(specialty.toLowerCase());
+  };
   const onPress = (id) => {
     setActiveId(id);
     __id = id;
@@ -108,7 +122,13 @@ export default function LandingPageScreen({navigation}) {
   };
   const fetch = () => {
     let val = page + 1;
-    dispatch(fetchMoreDoctorLite(page, false));
+    dispatch(
+      fetchMoreDoctorLite(
+        lclSpecialty && {specialty: lclSpecialty},
+        page,
+        false,
+      ),
+    );
     setPage(val);
   };
 
@@ -222,7 +242,31 @@ export default function LandingPageScreen({navigation}) {
           />
           <View
             style={{
+<<<<<<< HEAD
               flexDirection: 'row',
+=======
+              height: '8%',
+              // marginTop: '12%',
+
+          <SearchBarSolid
+            withIcon
+            placeholderTextColor={'#44A1B4'}
+            icon={<Filter height={24} width={24} color={'#000'} />}
+            onEndEditing={onEndEditing}
+            onChangeText={onChangeText}
+          />
+        </View>
+        <View
+          style={{
+            height: 'auto',
+          }}>
+          <ScrollView
+            horizontal
+            style={{zIndex: 99999}}
+            contentContainerStyle={{
+              paddingTop: '4%',
+              paddingBottom: 0,
+>>>>>>> 15732a3524eb859de8b739eaeda2022b46217c67
               paddingHorizontal: 25,
               height: '20%',
               alignItems: 'center',
@@ -290,6 +334,7 @@ export default function LandingPageScreen({navigation}) {
                 paddingHorizontal: 25,
                 justifyContent: 'center',
               }}>
+<<<<<<< HEAD
               <SearchBarSolid
                 withIcon
                 placeholderTextColor={'#44A1B4'}
@@ -314,6 +359,30 @@ export default function LandingPageScreen({navigation}) {
                 {DocCards.map((u, i) => {
                   return (
                     <BasicCard
+=======
+              {DocCards.map((u, i) => {
+                return (
+            {specialty.map((u, i) => {
+              return (
+                <TouchableOpacity
+                  style={{paddingVertical: 10}}
+                  onPress={() => {
+                    handleSpecialityFetch(u);
+                  }}>
+                  <BasicCard
+                    style={{
+                      CardContainer: {
+                        elevation: 6,
+                        justifyContent: 'space-around',
+                        paddingHorizontal: 25,
+                        height: 120,
+                        borderRadius: 30,
+                        maxWidth: 200,
+                      },
+                    }}>
+                    <Fontisto name="doctor" size={30} color={'#FF7A59'} />
+                    <Text
+>>>>>>> 15732a3524eb859de8b739eaeda2022b46217c67
                       style={{
                         CardContainer: {
                           elevation: 6,
@@ -323,6 +392,7 @@ export default function LandingPageScreen({navigation}) {
                           borderRadius: 30,
                         },
                       }}>
+<<<<<<< HEAD
                       <Fontisto name="doctor" size={30} color={'#FF7A59'} />
                       <Text
                         style={{
@@ -339,6 +409,36 @@ export default function LandingPageScreen({navigation}) {
             </View>
           </Animated.View>
 
+=======
+                      {u}
+                    </Text>
+                  </BasicCard>
+                );
+              })}
+            </ScrollView>
+          </View>
+        </Animated.View>
+                      {u.slice(0, 12).concat('...')}
+                    </Text>
+                  </BasicCard>
+                </TouchableOpacity>
+              );
+            })}
+          </ScrollView>
+        </View>
+        <LinearGradient
+          start={{x: 0, y: 0}}
+          end={{x: 80, y: 0}}
+          useAngle
+          angle={120}
+          colors={[
+            'rgba(2, 126, 151, 0)',
+            'rgba(2, 126, 151, 0)',
+            'rgba(2, 126, 151, 0)',
+            'rgba(2, 126, 151, 0.12)',
+          ]}
+          style={{flex: 1}}>
+>>>>>>> 15732a3524eb859de8b739eaeda2022b46217c67
           <Section
             style={{
               Container: {
@@ -346,6 +446,7 @@ export default function LandingPageScreen({navigation}) {
                 marginTop: 10,
                 // height: 'auto',
               },
+              Container: {marginBottom: 40, marginTop: 8},
               Text: {color: '#007E96', fontWeight: '700'},
             }}
             HeaderText={toggle ? 'Available Doctors' : 'Our Doctors'}>
@@ -372,13 +473,15 @@ export default function LandingPageScreen({navigation}) {
               />
             ) : !toggle ? (
               <AnimatedFlatList
+              <FlatList
+                style={{backgroundColor: 'transparent'}}
                 initialNumToRender={5}
-                onMomentumScrollBegin={() => setTrigger(false)}
+                // onMomentumScrollBegin={() => setTrigger(false)}
                 onEndReached={({distanceFromEnd}) => {
                   console.log('end reached');
                   // if (!trigger) {
                   fetch();
-                  //   setTrigger(true);
+                  // setTrigger(true);
                   // }
                 }}
                 // onScroll={onScroll}
@@ -435,7 +538,7 @@ export default function LandingPageScreen({navigation}) {
                     </View>
                   </View>
                 }
-                onEndReachedThreshold={0.2}
+                onEndReachedThreshold={0.1}
                 ListFooterComponent={moreDoctorLoading && <ActivityIndicator />}
                 // extraData={doctors}
                 data={doctors}
@@ -447,9 +550,7 @@ export default function LandingPageScreen({navigation}) {
                     onPress={() => onPress(item._id)}
                     id={item._id}
                     name={item.basic.name.slice(0, 15).concat('...')}
-                    // schedule={item.output.filter(
-                    //   o => o.bookedFor.slice(0, 10) === '2020-05-07',
-                    // )}
+                    schedule={item.output}
                   />
                 )}
               />

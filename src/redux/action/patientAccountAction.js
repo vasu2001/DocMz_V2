@@ -9,21 +9,21 @@ const SAVE_FEV_DOC = 'SAVE_PATIENT_FEV_DOC';
 const SAVE_FAMILY_MEMBER = 'SAVE_PATIENT_FAMILY_MEMBER';
 const PROFILE_PIC_UPLOADED = 'PROFILE_PIC_UPLOADED';
 
-const saveUserAccount = data => {
+const saveUserAccount = (data) => {
   return {
     type: SAVE,
     payload: data,
   };
 };
 
-const saveFevDoc = data => {
+const saveFevDoc = (data) => {
   return {
     type: SAVE_FEV_DOC,
     payload: data,
   };
 };
 
-const saveFamilyMember = data => {
+const saveFamilyMember = (data) => {
   return {
     type: SAVE_FAMILY_MEMBER,
     payload: data,
@@ -36,14 +36,14 @@ const startLoading = () => {
   };
 };
 
-const havingError = err => {
+const havingError = (err) => {
   return {
     type: ERRORS,
     payload: err,
   };
 };
 
-const profilePicUploaded = data => {
+const profilePicUploaded = (data) => {
   return {
     type: PROFILE_PIC_UPLOADED,
     payload: data,
@@ -55,27 +55,27 @@ export const resetUserAccountReducer = () => {
   };
 };
 
-export const GetPatientInfo = id => {
-  return dispatch => {
+export const GetPatientInfo = (id) => {
+  return (dispatch) => {
     console.log('authAction > GetPatientInfor');
     dispatch(startLoading());
 
     axios
       .get(`${Host}/patient/getinfo/${id}`)
-      .then(result => {
+      .then((result) => {
         if (result.status) {
           // console.log(result.data.data);
           dispatch(saveUserAccount(result.data.data));
         }
       })
-      .catch(err => {
+      .catch((err) => {
         dispatch(havingError(err));
       });
   };
 };
 
-export const GetFevDoc = docId => {
-  return async dispatch => {
+export const GetFevDoc = (docId) => {
+  return async (dispatch) => {
     const preAdd = {
       specialty: 788,
       city: 'New York',
@@ -84,18 +84,18 @@ export const GetFevDoc = docId => {
 
     await axios
       .post(`${Host}/doctors/search`, preAdd)
-      .then(res => {
+      .then((res) => {
         console.log('************** patientAccotioon **********');
         console.log(res);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
 };
 
 export const AddFevDoc = (docId, patientId) => {
-  return async dispatch => {
+  return async (dispatch) => {
     const config = {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -108,20 +108,20 @@ export const AddFevDoc = (docId, patientId) => {
 
     await axios
       .post(`${Host}/patient/favourite/add`, _data, config)
-      .then(result => {
+      .then((result) => {
         if (result.status) {
           console.log('Successfully Add your fev doctor.');
           GetPatientInfo(patientId);
         }
       })
-      .catch(err => {
+      .catch((err) => {
         dispatch(haveingError(err));
       });
   };
 };
 
 export const RemoveFevDoc = (docId, patientId) => {
-  return async dispatch => {
+  return async (dispatch) => {
     const config = {
       Accept: '*/*',
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -146,8 +146,8 @@ export const RemoveFevDoc = (docId, patientId) => {
   };
 };
 
-export const RemoveAppointment = data => {
-  return async dispatch => {
+export const RemoveAppointment = (data) => {
+  return async (dispatch) => {
     const config = {
       Accept: '*/*',
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -167,8 +167,8 @@ export const RemoveAppointment = data => {
   };
 };
 
-export const GetFamilyMember = id => {
-  return dispatch => {
+export const GetFamilyMember = (id) => {
+  return (dispatch) => {
     dispatch(startLoading());
     console.log(id);
 
@@ -184,19 +184,19 @@ export const GetFamilyMember = id => {
 
     axios
       .post(`${Host}/patient/member/get`, _data, config)
-      .then(res => {
+      .then((res) => {
         console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
         console.log(res.data);
         dispatch(saveFamilyMember(res.data.data.members));
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
 };
 
 export const AddFamilyMember = (obj, success, faild) => {
-  return async dispatch => {
+  return async (dispatch) => {
     dispatch(startLoading());
     const config = {
       Accept: '*/*',
@@ -207,21 +207,21 @@ export const AddFamilyMember = (obj, success, faild) => {
 
     await axios
       .post(`${Host}/patient/member/add`, obj, config)
-      .then(result => {
+      .then((result) => {
         if (result.status) {
           console.log('Successfully Add your Family member.');
           success();
           GetFamilyMember(obj.metaId);
         }
       })
-      .catch(err => {
+      .catch((err) => {
         dispatch(havingError(err));
       });
   };
 };
 
 export const RemoveFamilyMember = (docId, patientId) => {
-  return async dispatch => {
+  return async (dispatch) => {
     const config = {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -234,20 +234,20 @@ export const RemoveFamilyMember = (docId, patientId) => {
 
     await axios
       .post(`${Host}/patient/favourite/remove`, _data, config)
-      .then(result => {
+      .then((result) => {
         if (result.status) {
           console.log('Successfully remove fev doctor.');
           GetPatientInfo(patientId);
         }
       })
-      .catch(err => {
+      .catch((err) => {
         dispatch(haveingError(err));
       });
   };
 };
 
 export const UploadProfilePic = (id, ImageData) => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch(startLoading());
     const Image = {
       uri: ImageData.uri,
@@ -266,12 +266,12 @@ export const UploadProfilePic = (id, ImageData) => {
       body: data,
     };
     fetch(`${Host}/patient/upload/image`, config)
-      .then(responseStatus => {
+      .then((responseStatus) => {
         console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
         console.log(responseStatus);
         dispatch(profilePicUploaded(Image));
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
         dispatch(havingError(err));
       });
