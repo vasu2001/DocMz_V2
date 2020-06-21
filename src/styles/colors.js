@@ -26,3 +26,10 @@ export const header_grad_two = '#904FEC';
 
 // borders
 export const PRIMARY_BORDER_COLOR = '#9D9D9D';
+
+//Text
+
+export const PRIMARY_TEXT = '#937EE7';
+export const HEADER_TEXT = '#6859A2';
+export const SECONDARY_TEXT = '#E7E3FE';
+export const TERTIARY_TEXT = '#9D9D9D';

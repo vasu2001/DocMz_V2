@@ -42,7 +42,7 @@ function ToggleButton({
       ]}>
       <TouchableOpacity onPress={onTouch} style={[btnStyle ? btnStyle : null]}>
         <Text
-          adjustsFontSizeToFit
+          // adjustsFontSizeToFit
           numberOfLines={1}
           style={[ToggleButtonStyles.Text, textStyle ? textStyle : null]}>
           {toggle ? text0 : text1}
