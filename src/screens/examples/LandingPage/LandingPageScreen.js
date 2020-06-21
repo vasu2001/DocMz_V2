@@ -51,7 +51,6 @@ export default function LandingPageScreen({navigation}) {
     'Co Ekaterine',
     'Martin Chein',
   ];
-  const AvailDocs = ['Martin Chein', 'Co Ekaterine', 'Dropkin Jared'];
 
   const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
@@ -80,7 +79,7 @@ export default function LandingPageScreen({navigation}) {
   useEffect(() => {
     dispatch(fetchDoctorLite('', 0, false));
     isLogedin && dispatch(GetPatientInfo(data.id));
-    Animated.timing(headerPos, {toValue: 200, duration: 2000}).start();
+    // Animated.timing(headerPos, {toValue: 200, duration: 2000}).start();
   }, []);
   const headerPos = useRef(new Animated.Value(0)).current;
   const onPress = (id) => {
@@ -126,245 +125,226 @@ export default function LandingPageScreen({navigation}) {
     }
   };
 
-  const panResponder = PanResponder.create({
-    onStartShouldSetPanResponder: () => false,
-    onMoveShouldSetPanResponder: () => true,
-    onPanResponderGrant: (e, gestureState) => {
-      // console.log(gestureState.dy);
-    },
-    onPanResponderMove: (e, gestureState) => {
-      // console.log(gestureState.dy);
-    },
-    onPanResponderRelease: (e, gestureState) => {
-      console.log(gestureState.moveY);
-      // console.log(height);
-      console.log(headerPos);
-      // if (gestureState.dy > 100) {
-      //   Animated.timing(headerPos, {
-      //     toValue: height * 0.45,
-      //     // useNativeDriver: true,
-      //   }).start();
-      // } else {
-      //   Animated.timing(headerPos, {
-      //     toValue: height * 0.25,
-      //     // useNativeDriver: true,
-      //   }).start();
-      // }
-    },
-  });
+  const scrollAnimation = (e) => {
+    console.log('released');
+    console.log(e.nativeEvent.velocity);
+    var vel = e.nativeEvent.velocity.y;
+    if (vel < 0) {
+      console.log('short');
+
+      Animated.timing(headerPos, {
+        toValue: 350,
+        duration: 3000,
+        useNativeDriver: false,
+      }).start();
+    } else {
+      console.log('long');
+      Animated.timing(headerPos, {
+        toValue: 0,
+        duration: 2000,
+        useNativeDriver: false,
+      }).start();
+    }
+  };
 
   const headerTop = headerPos.interpolate({
     inputRange: [0, 200],
-    outputRange: [height * 0.4, height * 0.2],
+    outputRange: [height * 0.4, height * 0.22],
     extrapolate: 'clamp',
-    //  easing: Easing.sin,
+    easing: Easing.linear,
   });
   const headerView = headerPos.interpolate({
-    inputRange: [0, 200],
+    inputRange: [0, 350],
     outputRange: [height * 0.25, 0],
+    // outputRange: [0, -0.45 * height],
     extrapolate: 'clamp',
-    easing: Easing.circle,
+    easing: Easing.linear,
   });
   const headerViewStyle = headerPos.interpolate({
-    inputRange: [0, 150],
+    inputRange: [0, 100],
     outputRange: [1, 0],
     extrapolate: 'clamp',
-    // easing: Easing.sin,
+    easing: Easing.linear,
   });
   const headerViewStyle2 = headerPos.interpolate({
     inputRange: [0, 100],
-    outputRange: [0, 1],
+    outputRange: [0, 60],
     extrapolate: 'clamp',
-    //  easing: Easing.linear,
+    easing: Easing.linear,
   });
 
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
-      <Animated.View
-        style={{
-          width: '100%',
-          height: headerTop,
-        }}>
-        <RadialGradient
-          style={{width: '100%', height: '100%', zIndex: 0}}
-          colors={['#DEF1F9', '#C0E0EC', '#95CCE0']}
-          stops={[0.0, 0.2, 0.75]}
-          center={[130, 100]}
-          radius={200}
-        />
-      </Animated.View>
-      <View
-        style={{
-          position: 'absolute',
-          flex: 1,
-          height: '100%',
-        }}>
-        <TopNavBar
-          onLeftButtonPress={() => {}}
-          // onRightButtonPress={() => {}}
-          navigation={navigation}
-          style={{
-            Container: {
-              height: '5%',
-              marginTop: 5,
-            },
-          }}
-        />
-        {/* <Animated.View
-          style={{
-            height: headerViewStyle2,
-            opacity: headerViewStyle2,
-            // transform: [{scale: headerViewStyle2}],
-          }}>
-          <Text
-            style={{
-              color: '#007E96',
-              fontSize: 36,
-              fontWeight: 'bold',
-              letterSpacing: 1,
-              width: '100%',
-              textAlign: 'center',
-            }}>
-            Find A Doctor
-          </Text>
-        </Animated.View> */}
-
-        <View
-          style={{
-            flexDirection: 'row',
-            paddingHorizontal: 25,
-            height: '20%',
-            alignItems: 'center',
-            width: '100%',
-          }}>
-          <View>
-            <Text
-              style={{
-                color: '#007E96',
-                fontSize: 20,
-                lineHeight: 32,
-                letterSpacing: 0.8,
-              }}>
-              Find a
-            </Text>
-            <Text
-              style={{
-                color: '#007E96',
-                fontSize: 42,
-                lineHeight: 48,
-                fontWeight: 'bold',
-                letterSpacing: 1,
-              }}>
-              Doctor
-            </Text>
-          </View>
-          <View style={{marginLeft: 'auto'}}>
-            <ToggleButton
-              toggle={toggle}
-              onToggle={onToggle}
-              text0="NOW"
-              text1="SCHEDULE"
-              style={{paddingVertical: 4, width: 150}}
-              textStyle={{
-                fontSize: 13,
-                color: '#007E96',
-                fontWeight: 'bold',
-                width: '95%',
-                textAlign: 'center',
-              }}
-              btnStyle={{
-                width: 80,
-              }}
-              dotStyle={{
-                backgroundColor: '#FF9B31',
-                height: 25,
-                width: '35%',
-              }}
-            />
-          </View>
-        </View>
+      <LinearGradient
+        start={{x: 0, y: 0}}
+        end={{x: 80, y: 0}}
+        useAngle
+        angle={120}
+        colors={[
+          'rgba(255, 255, 255, 0.9)',
+          'rgba(255, 255, 255, 0.9)',
+          'rgba(2, 126, 151, 0)',
+          'rgba(2, 126, 151, 0.12)',
+        ]}
+        style={{flex: 1}}>
         <Animated.View
           style={{
-            height: headerView,
-            justifyContent: 'center',
-            opacity: headerViewStyle,
-            transform: [{scale: headerViewStyle}],
-            // backgroundColor: 'pink',
+            width: '100%',
+            height: headerTop,
+            borderBottomRightRadius: headerViewStyle2,
+            borderBottomLeftRadius: headerViewStyle2,
+            overflow: 'hidden',
           }}>
-          <View
-            style={{
-              height: '8%',
-              // marginTop: '12%',
-
-              paddingHorizontal: 25,
-              justifyContent: 'center',
-            }}>
-            <SearchBarSolid
-              withIcon
-              placeholderTextColor={'#44A1B4'}
-              icon={<Filter height={24} width={24} color={'#000'} />}
-              onEndEditing={onEndEditing}
-              onChangeText={onChangeText}
-            />
-          </View>
-          <View
-            style={{
-              height: 'auto',
-              marginTop: 10,
-            }}>
-            <ScrollView
-              horizontal
-              style={{zIndex: 99999}}
-              contentContainerStyle={{
-                paddingTop: '7%',
-                paddingBottom: 12,
-                paddingHorizontal: 25,
-              }}>
-              {DocCards.map((u, i) => {
-                return (
-                  <BasicCard
-                    style={{
-                      CardContainer: {
-                        elevation: 6,
-                        justifyContent: 'space-around',
-                        paddingHorizontal: 25,
-                        height: 120,
-                        borderRadius: 30,
-                      },
-                    }}>
-                    <Fontisto name="doctor" size={30} color={'#FF7A59'} />
-                    <Text
-                      style={{
-                        fontSize: 18,
-                        color: '#007E96',
-                        fontWeight: 'bold',
-                      }}>
-                      {u}
-                    </Text>
-                  </BasicCard>
-                );
-              })}
-            </ScrollView>
-          </View>
+          <RadialGradient
+            style={{width: '100%', height: '100%', zIndex: 0}}
+            colors={['#DEF1F9', '#C0E0EC', '#95CCE0']}
+            stops={[0.0, 0.2, 0.75]}
+            center={[130, 100]}
+            radius={200}
+          />
         </Animated.View>
+        <View
+          style={{
+            position: 'absolute',
+            flex: 1,
+            height: '100%',
+          }}>
+          <TopNavBar
+            onLeftButtonPress={() => {}}
+            // onRightButtonPress={() => {}}
+            navigation={navigation}
+            style={{
+              Container: {
+                height: '5%',
+                marginTop: 5,
+              },
+            }}
+          />
+          <View
+            style={{
+              flexDirection: 'row',
+              paddingHorizontal: 25,
+              height: '20%',
+              alignItems: 'center',
+              width: '100%',
+            }}>
+            <View>
+              <Text
+                style={{
+                  color: '#007E96',
+                  fontSize: 20,
+                  lineHeight: 32,
+                  letterSpacing: 0.8,
+                }}>
+                Find a
+              </Text>
+              <Text
+                style={{
+                  color: '#007E96',
+                  fontSize: 42,
+                  lineHeight: 48,
+                  fontWeight: 'bold',
+                  letterSpacing: 1,
+                }}>
+                Doctor
+              </Text>
+            </View>
+            <View style={{marginLeft: 'auto'}}>
+              <ToggleButton
+                toggle={toggle}
+                onToggle={onToggle}
+                text0="NOW"
+                text1="SCHEDULE"
+                style={{paddingVertical: 4, width: 150}}
+                textStyle={{
+                  fontSize: 13,
+                  color: '#007E96',
+                  fontWeight: 'bold',
+                  width: '95%',
+                  textAlign: 'center',
+                }}
+                btnStyle={{
+                  width: 80,
+                }}
+                dotStyle={{
+                  backgroundColor: '#FF9B31',
+                  height: 25,
+                  width: '35%',
+                }}
+              />
+            </View>
+          </View>
+          <Animated.View
+            style={{
+              height: headerView,
+              justifyContent: 'center',
+              opacity: headerViewStyle,
+              transform: [{scale: headerViewStyle}],
+              // backgroundColor: 'pink',
+            }}>
+            <View
+              style={{
+                height: '8%',
+                // marginTop: '12%',
 
-        <LinearGradient
-          start={{x: 0, y: 0}}
-          end={{x: 80, y: 0}}
-          useAngle
-          angle={120}
-          colors={[
-            'rgba(255, 255, 255, 0.9)',
-            'rgba(255, 255, 255, 0.9)',
-            'rgba(2, 126, 151, 0)',
-            'rgba(2, 126, 151, 0.12)',
-          ]}
-          style={{flex: 1}}>
+                paddingHorizontal: 25,
+                justifyContent: 'center',
+              }}>
+              <SearchBarSolid
+                withIcon
+                placeholderTextColor={'#44A1B4'}
+                icon={<Filter height={24} width={24} color={'#000'} />}
+                onEndEditing={onEndEditing}
+                onChangeText={onChangeText}
+              />
+            </View>
+            <View
+              style={{
+                height: 'auto',
+                marginTop: 10,
+              }}>
+              <ScrollView
+                horizontal
+                style={{zIndex: 99999}}
+                contentContainerStyle={{
+                  paddingTop: '7%',
+                  paddingBottom: 12,
+                  paddingHorizontal: 25,
+                }}>
+                {DocCards.map((u, i) => {
+                  return (
+                    <BasicCard
+                      style={{
+                        CardContainer: {
+                          elevation: 6,
+                          justifyContent: 'space-around',
+                          paddingHorizontal: 25,
+                          height: 120,
+                          borderRadius: 30,
+                        },
+                      }}>
+                      <Fontisto name="doctor" size={30} color={'#FF7A59'} />
+                      <Text
+                        style={{
+                          fontSize: 18,
+                          color: '#007E96',
+                          fontWeight: 'bold',
+                        }}>
+                        {u}
+                      </Text>
+                    </BasicCard>
+                  );
+                })}
+              </ScrollView>
+            </View>
+          </Animated.View>
+
           <Section
             style={{
               Container: {
                 marginBottom: 40,
-                height: 'auto',
+                marginTop: 10,
+                // height: 'auto',
               },
               Text: {color: '#007E96', fontWeight: '700'},
             }}
@@ -402,19 +382,14 @@ export default function LandingPageScreen({navigation}) {
                   // }
                 }}
                 // onScroll={onScroll}
-                onScroll={Animated.event(
-                  [
-                    {
-                      nativeEvent: {
-                        contentOffset: {y: headerPos},
-                      },
+                onScroll={Animated.event([
+                  {
+                    nativeEvent: {
+                      contentOffset: {y: headerPos},
                     },
-                  ],
-                  // {useNativeDriver: true}, // <-- Add this
-                )}
-                onResponderRelease={() => {
-                  console.log('release');
-                }}
+                  },
+                ])}
+                onScrollEndDrag={scrollAnimation}
                 scrollEventThrottle={16}
                 ListEmptyComponent={
                   <View>
@@ -510,8 +485,8 @@ export default function LandingPageScreen({navigation}) {
               />
             )}
           </Section>
-        </LinearGradient>
-      </View>
+        </View>
+      </LinearGradient>
     </View>
   );
 }

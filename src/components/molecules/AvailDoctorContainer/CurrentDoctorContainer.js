@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import {View, StyleSheet} from 'react-native';
+import React, {useEffect, useRef} from 'react';
+import {View, StyleSheet, Animated, Dimensions} from 'react-native';
 import BasicCard from '../../atoms/BasicCard/BasicCard';
 import CurrentDoctorContent from '../AvailDoctorContent/CurrentDoctorContent';
 import ProfilePic from '../../atoms/ProfilePic/ProfilePic';
@@ -16,13 +16,28 @@ function CurrentDoctorContainer({
 }) {
   console.log('Navigaton: ', id);
   useEffect(() => {
-    // console.log('2222222222222222222222222222222222222222222222222');
+    console.log('2222222222222222222222222222222222222222222222222');
+    Animated.timing(cardPos, {
+      toValue: 1,
+      duration: 800,
+      delay: id * 300,
+    }).start();
+
     // console.log(schedule);
     // console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
   }, []);
+  const width = Dimensions.get('screen').width;
+  const cardPos = useRef(new Animated.Value(0)).current;
+  const cardView = cardPos.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-1 * width, 0],
+  });
   return (
-    <View
-      style={Styles.AvailableDoctorsCardContainer}
+    <Animated.View
+      style={[
+        Styles.AvailableDoctorsCardContainer,
+        {transform: [{translateX: cardView}]},
+      ]}
       onPress={() => navigation.navigate('docPatientStrem', {data: data})}>
       <BasicCard
         style={{
@@ -54,7 +69,7 @@ function CurrentDoctorContainer({
           }
         />
       </BasicCard>
-    </View>
+    </Animated.View>
   );
 }
 

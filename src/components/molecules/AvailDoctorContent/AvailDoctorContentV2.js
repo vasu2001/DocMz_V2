@@ -94,7 +94,9 @@ const CardContentStyles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '700',
     color: '#027E97',
+    textTransform: 'capitalize',
   },
+
   AvailableDoctorsSpecialization: {
     color: '#666',
     fontSize: 13,
