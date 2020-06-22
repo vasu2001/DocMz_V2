@@ -141,6 +141,7 @@ const DoctorNavigationContent = createBottomTabNavigator(
     test: {
       // screen: QuestionnairePP,
       screen: LandingPageScreen,
+      // screen: DoctorProfile,
       // screen: FindADoctor,
       // screen: DmzSignupV2,
       // screen: DmzloginV2,

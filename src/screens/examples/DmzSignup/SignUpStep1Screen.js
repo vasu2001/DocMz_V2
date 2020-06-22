@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
-import {View, Text, Image, TouchableHighlight, StyleSheet} from 'react-native';
+import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Svg from 'react-native-svg';
@@ -162,9 +162,6 @@ export default function SignUpStep1Screen(props) {
           disabled={isLoading}
         />
         <DmzText
-          onPress={() => {
-            props.navigation.navigate('SignUpStep1Screen');
-          }}
           style={{
             // width: '100%',
             textAlign: 'center',
@@ -174,16 +171,21 @@ export default function SignUpStep1Screen(props) {
             marginLeft: '20%',
           }}
           text=" Already have an account?">
-          <DmzText
-            style={{
-              color: '#FF7A59',
-              textAlign: 'center',
-              fontSize: 14,
-              marginTop: 10,
-              paddingLeft: 10,
-            }}
-            text="Sign In"
-          />
+          <TouchableOpacity
+            onPress={() => {
+              props.navigation.navigate('loginScreen');
+            }}>
+            <DmzText
+              style={{
+                color: '#FF7A59',
+                textAlign: 'center',
+                fontSize: 14,
+                marginTop: 10,
+                paddingLeft: 10,
+              }}
+              text="Sign In"
+            />
+          </TouchableOpacity>
         </DmzText>
       </View>
     </View>

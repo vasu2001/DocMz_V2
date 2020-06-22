@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState, useRef, useEffect} from 'react';
 import ToggleButton from '../../../components/molecules/ToggleButton/ToggleButton';
 import SearchBarSolid from '../../../components/molecules/SearchBarSolid/SearchBarSolid';
@@ -14,13 +15,11 @@ import {
   View,
   Animated,
   Easing,
-  StyleSheet,
   ScrollView,
   ActivityIndicator,
   Text,
   FlatList,
   Dimensions,
-  PanResponder,
 } from 'react-native';
 import {
   fetchDoctorLite,
@@ -39,17 +38,17 @@ import LinearGradient from 'react-native-linear-gradient';
 export default function LandingPageScreen({navigation}) {
   const height = Dimensions.get('window').height;
   const DocCards = ['Family Physicians', 'Pulmonologist', 'Family Physicians'];
-  const AllDocs = [
-    'Dropkin Jared',
-    'Co Ekaterine',
-    'Martin Chein',
-    'Dropkin Jared',
-    'Co Ekaterine',
-    'Martin Chein',
-    'Dropkin Jared',
-    'Co Ekaterine',
-    'Martin Chein',
-  ];
+  // const AllDocs = [
+  //   'Dropkin Jared',
+  //   'Co Ekaterine',
+  //   'Martin Chein',
+  //   'Dropkin Jared',
+  //   'Co Ekaterine',
+  //   'Martin Chein',
+  //   'Dropkin Jared',
+  //   'Co Ekaterine',
+  //   'Martin Chein',
+  // ];
 
   const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
@@ -78,8 +77,9 @@ export default function LandingPageScreen({navigation}) {
   useEffect(() => {
     dispatch(fetchDoctorLite('', 0, false));
     isLogedin && dispatch(GetPatientInfo(data.id));
-    // Animated.timing(headerPos, {toValue: 200, duration: 2000}).start();
+    console.log('123456789');
   }, []);
+
   const headerPos = useRef(new Animated.Value(0)).current;
   const onPress = (id) => {
     setActiveId(id);
@@ -125,51 +125,52 @@ export default function LandingPageScreen({navigation}) {
   };
 
   const scrollAnimation = (e) => {
-    console.log('released');
-    console.log(e.nativeEvent.velocity);
     var vel = e.nativeEvent.velocity.y;
-    if (vel < 0) {
-      console.log('short');
 
+    if (vel < 0) {
       Animated.timing(headerPos, {
         toValue: 350,
-        duration: 3000,
+        duration: 500,
         useNativeDriver: false,
+        easing: Easing.linear,
       }).start();
     } else {
-      console.log('long');
       Animated.timing(headerPos, {
         toValue: 0,
-        duration: 2000,
+        duration: 500,
         useNativeDriver: false,
+        easing: Easing.linear,
       }).start();
     }
   };
 
   const headerTop = headerPos.interpolate({
-    inputRange: [0, 200],
+    inputRange: [0, 100],
     outputRange: [height * 0.4, height * 0.22],
     extrapolate: 'clamp',
+    useNativeDriver: false,
     easing: Easing.linear,
   });
   const headerView = headerPos.interpolate({
     inputRange: [0, 350],
     outputRange: [height * 0.25, 0],
-    // outputRange: [0, -0.45 * height],
     extrapolate: 'clamp',
     easing: Easing.linear,
+    useNativeDriver: false,
   });
   const headerViewStyle = headerPos.interpolate({
     inputRange: [0, 100],
     outputRange: [1, 0],
     extrapolate: 'clamp',
     easing: Easing.linear,
+    useNativeDriver: true,
   });
   const headerViewStyle2 = headerPos.interpolate({
     inputRange: [0, 100],
     outputRange: [0, 60],
     extrapolate: 'clamp',
     easing: Easing.linear,
+    useNativeDriver: true,
   });
 
   return (
@@ -348,20 +349,36 @@ export default function LandingPageScreen({navigation}) {
               Text: {color: '#007E96', fontWeight: '700'},
             }}
             HeaderText={toggle ? 'Available Doctors' : 'Our Doctors'}>
-            {/* {loading || searchDoctorsLoading || superDocsLoading ? ( */}
-            {false ? (
-              <ListingWithThumbnailLoader />
+            {loading || searchDoctorsLoading || superDocsLoading ? (
+              // {/* {false ? ( }
+              <ListingWithThumbnailLoader style={{marginTop: 20}} />
             ) : searchedDoctors.length && searchKey !== '' ? (
-              <FlatList
+              <AnimatedFlatList
                 // extraData={doctors}
+                keyExtractor={({item, key}) => {
+                  return key;
+                }}
                 data={searchedDoctors}
-                renderItem={({item}) => (
+                onScroll={Animated.event(
+                  [
+                    {
+                      nativeEvent: {
+                        contentOffset: {y: headerPos},
+                      },
+                    },
+                  ],
+                  {useNativeDriver: true},
+                )}
+                onScrollEndDrag={scrollAnimation}
+                scrollEventThrottle={16}
+                renderItem={({item, index}) => (
                   <AvailDoctorContainerV2
                     toggle={toggle}
                     data={item}
                     navigation={navigation}
                     onPress={() => onPress(item._id)}
                     id={item._id}
+                    index={index}
                     name={item.basic.name.slice(0, 15).concat('...')}
                     // schedule={item.output.filter(
                     //   it => it.bookedFor.slice(0, 10) === '2020-05-07',
@@ -381,70 +398,45 @@ export default function LandingPageScreen({navigation}) {
                   // }
                 }}
                 // onScroll={onScroll}
-                onScroll={Animated.event([
-                  {
-                    nativeEvent: {
-                      contentOffset: {y: headerPos},
+                keyExtractor={({item, key}) => {
+                  return key;
+                }}
+                onScroll={Animated.event(
+                  [
+                    {
+                      nativeEvent: {
+                        contentOffset: {y: headerPos},
+                      },
                     },
-                  },
-                ])}
+                  ],
+                  {useNativeDriver: false},
+                )}
                 onScrollEndDrag={scrollAnimation}
                 scrollEventThrottle={16}
                 ListEmptyComponent={
-                  <View>
-                    <View
-                      style={{
-                        height: 300,
-                        marginTop: 30,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        backgroundColor: 'pink',
-                      }}>
-                      <Text>Empty</Text>
-                    </View>
-                    <View
-                      style={{
-                        height: 300,
-                        marginTop: 30,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        backgroundColor: 'pink',
-                      }}>
-                      <Text>Empty</Text>
-                    </View>
-                    <View
-                      style={{
-                        height: 300,
-                        marginTop: 30,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        backgroundColor: 'pink',
-                      }}>
-                      <Text>Empty</Text>
-                    </View>
-                    <View
-                      style={{
-                        height: 300,
-                        marginTop: 30,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        backgroundColor: 'pink',
-                      }}>
-                      <Text>Empty</Text>
-                    </View>
+                  <View
+                    style={{
+                      height: 300,
+                      marginTop: 30,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      backgroundColor: 'pink',
+                    }}>
+                    <Text>Empty</Text>
                   </View>
                 }
-                onEndReachedThreshold={0.2}
+                onEndReachedThreshold={0.1}
                 ListFooterComponent={moreDoctorLoading && <ActivityIndicator />}
                 // extraData={doctors}
                 data={doctors}
-                renderItem={({item}) => (
+                renderItem={({item, index}) => (
                   <AvailDoctorContainerV2
                     toggle={toggle}
                     data={item}
                     navigation={navigation}
                     onPress={() => onPress(item._id)}
                     id={item._id}
+                    index={index}
                     name={item.basic.name.slice(0, 15).concat('...')}
                     // schedule={item.output.filter(
                     //   o => o.bookedFor.slice(0, 10) === '2020-05-07',
@@ -453,7 +445,7 @@ export default function LandingPageScreen({navigation}) {
                 )}
               />
             ) : (
-              <FlatList
+              <AnimatedFlatList
                 initialNumToRender={5}
                 ListEmptyComponent={
                   <View
@@ -467,6 +459,21 @@ export default function LandingPageScreen({navigation}) {
                 }
                 // ListFooterComponent={moreDoctorLoading && <ActivityIndicator />}
                 // extraData={doctors}
+                keyExtractor={({item, key}) => {
+                  return key;
+                }}
+                onScroll={Animated.event(
+                  [
+                    {
+                      nativeEvent: {
+                        contentOffset: {y: headerPos},
+                      },
+                    },
+                  ],
+                  {useNativeDriver: false},
+                )}
+                onScrollEndDrag={scrollAnimation}
+                scrollEventThrottle={16}
                 data={superDocs}
                 renderItem={({item}) => (
                   <AvailDoctorContainerV2

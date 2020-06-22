@@ -1,9 +1,15 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
-import {View, Text, TextInput, StyleSheet, Alert} from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  Alert,
+  TouchableOpacity,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Toast from 'react-native-root-toast';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import DmzText from '../../../components/atoms/DmzText/DmzText';
 import DmzButton from '../../../components/atoms/DmzButton/DmzButton';
 import TextInputIcon from '../../../components/atoms/TextInputCustom/TextInputIcon';
@@ -43,7 +49,9 @@ export default function DmzLoginV2(props) {
       loginAs === 'patient' && handlePatientLogin();
       loginAs === 'doctor' && handleDoctorLogin();
     } else {
-      Alert.alert('input in not correct');
+      reg.test(email)
+        ? Alert.alert('One or more fields empty')
+        : Alert.alert('Not a valid Email.');
     }
   };
   const successCallback = (successResponce) => {

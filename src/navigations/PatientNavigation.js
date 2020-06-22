@@ -105,7 +105,7 @@ const PatientNavigation = createDrawerNavigator(
     headerMode: 'none',
     drawerType: 'none',
     drawerWidth: screenWidth,
-    hideStatusBar: true,
+    // hideStatusBar: true,
     drawerBackgroundColor: 'rgba(255,255,255,.9)',
     contentComponent: (props) => <Custom {...props} />,
     contentOptions: {

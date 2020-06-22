@@ -29,7 +29,7 @@ const Navigation = [
   {
     active: true,
     name: 'Family Member',
-    icon: 'user',
+    icon: 'account-group',
     navigateTo: 'FamilyMember',
   },
   {
@@ -98,7 +98,7 @@ const Navigation = [
   {
     active: true,
     name: 'Help',
-    icon: 'help-rhombus-outlin',
+    icon: 'help-rhombus-outline',
     navigateTo: 'Help',
   },
   // {

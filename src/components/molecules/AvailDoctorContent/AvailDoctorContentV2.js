@@ -95,6 +95,7 @@ const CardContentStyles = StyleSheet.create({
     color: '#666',
     fontSize: 13,
     lineHeight: 18,
+    textTransform: 'capitalize',
   },
   AvailableDoctorsAvailableTimes: {
     flexDirection: 'row',

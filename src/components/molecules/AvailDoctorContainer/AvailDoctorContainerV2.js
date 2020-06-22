@@ -14,6 +14,7 @@ function AvailDoctorContainerV2({
   schedule,
   navigation,
   id,
+  index,
   data,
   toggle,
 }) {
@@ -25,10 +26,12 @@ function AvailDoctorContainerV2({
   // );
 
   useEffect(() => {
+    console.log(index);
     Animated.timing(cardPos, {
       toValue: 1,
       duration: 800,
-      delay: id * 300,
+      delay: index * 300,
+      useNativeDriver: true,
     }).start();
 
     // console.log('2222222222222222222222222222222222222222222222222');

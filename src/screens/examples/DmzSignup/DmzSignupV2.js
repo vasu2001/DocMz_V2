@@ -160,6 +160,7 @@ function DmzSignupV2(props) {
           credential={credential}
           setCredential={setCredential}
           isLoading={isLoading}
+          navigation={props.navigation}
           onPress={signupAs === 'doctor' ? () => nextpage(2) : handleSubmit}
         />
       </View>
