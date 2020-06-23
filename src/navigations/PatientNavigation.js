@@ -24,7 +24,7 @@ import FamilyMember from '../screens/patient/familyMember/FamilyMember';
 import WaitingRoom from '../screens/patient/waitingRoom/WaitingRoom';
 import Profile from '../screens/examples/Profile/Profile';
 import LandingPageScreen from '../screens/examples/LandingPage/LandingPageScreen';
-import GettingStartedScreen from '../screens/examples/GettingStarted/GettingStartedScreen';
+import PatienDashboard from '../screens/examples/PatientDashboard/PatienDashboard';
 import {createAppContainer} from 'react-navigation';
 // const PatientBottomNavigation = createSwitchNavigator(
 //   {
@@ -80,8 +80,8 @@ const screenWidth = Dimensions.get('screen').width;
 const PatientNavigation = createDrawerNavigator(
   {
     // Home,
-    Home: LandingPageScreen,
-    // Home: GettingStartedScreen,
+    // Home: LandingPageScreen,
+    Home: PatienDashboard,
     AppointmentsStack: {
       screen: DocProfileLite,
       // screen: BookingDetails,

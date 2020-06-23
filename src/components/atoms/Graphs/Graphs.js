@@ -3,6 +3,7 @@ import {LineChart, YAxis, Grid, XAxis} from 'react-native-svg-charts';
 import {View} from 'react-native';
 import GraphBackground from '../../../assets/svg/graph.svg';
 import {G, Line} from 'react-native-svg';
+import {TERTIARY_TEXT, PRIMARY_COLOR} from '../../../styles/colors';
 
 export default function Graph({data, hasAxis = true}) {
   const dataval = [50, 10, 40, 95, -4, -24, 35, 53, -53, 24, 50, -20, -80];
@@ -60,7 +61,7 @@ export default function Graph({data, hasAxis = true}) {
           contentInset={contentInset}
           style={{marginLeft: 10}}
           svg={{
-            fill: 'grey',
+            fill: TERTIARY_TEXT,
             fontSize: 10,
           }}
           numberOfTicks={10}
@@ -76,9 +77,10 @@ export default function Graph({data, hasAxis = true}) {
           marginLeft: hasAxis ? 0 : 20,
         }}
         data={data ? data : dataval}
-        svg={{stroke: '#007E96', strokeWidth: 3}}
+        svg={{stroke: PRIMARY_COLOR, strokeWidth: 3}}
         contentInset={contentInset}>
-        <CustomGrid belowChart={true} />
+        {/* <CustomGrid belowChart={true} /> */}
+        <Grid svg={{fill: TERTIARY_TEXT}} />
       </LineChart>
     </View>
   );

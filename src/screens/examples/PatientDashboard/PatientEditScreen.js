@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 import {View, Text, Modal} from 'react-native';
-import TempEditCard from '../../../components/molecules/PatientHistoryCards/TempEditCard';
-import WeightEditCard from '../../../components/molecules/PatientHistoryCards/TempEditCard';
-import HeightEditCard from '../../../components/molecules/PatientHistoryCards/HeightEditCard';
-import BPEditCard from '../../../components/molecules/PatientHistoryCards/BPEditCard';
+import TempEditCard from '../../../components/molecules/PatientVitalCards/TempEditCard';
+import WeightEditCard from '../../../components/molecules/PatientVitalCards/WeightEditCard';
+import HeightEditCard from '../../../components/molecules/PatientVitalCards/HeightEditCard';
+import BPEditCard from '../../../components/molecules/PatientVitalCards/BPEditCard';
+import GlucoseEditCard from '../../../components/molecules/PatientVitalCards/GlucoseEditCard';
+import SurgeryEditCard from '../../../components/molecules/PatientSurgeyCards/SurgeryEditCard';
 
 export default function PatientEditScreen({data}) {
   const getEditScreen = () => {
@@ -19,6 +21,10 @@ export default function PatientEditScreen({data}) {
       data.headerOne == 'Heart Rate'
     ) {
       return <BPEditCard />;
+    } else if (data.headerOne == 'Glucose') {
+      return <GlucoseEditCard />;
+    } else if (data.type == 'Surgery') {
+      return <SurgeryEditCard data={data} />;
     }
   };
   return (
