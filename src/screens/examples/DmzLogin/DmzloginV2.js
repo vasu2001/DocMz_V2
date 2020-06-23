@@ -20,6 +20,11 @@ import {useDispatch} from 'react-redux/lib/hooks/useDispatch';
 import {LoginDoctor, LoginPatient} from '../../../redux/action/auth';
 import {call} from 'react-native-reanimated';
 import {useSelector} from 'react-redux/lib/hooks/useSelector';
+import {
+  HEADER_TEXT,
+  TERTIARY_TEXT,
+  PRIMARY_COLOR,
+} from '../../../styles/colors';
 
 export default function DmzLoginV2(props) {
   const [credential, setCredential] = useState({email: '', password: ''});
@@ -89,8 +94,8 @@ export default function DmzLoginV2(props) {
     callback && callback();
   };
   return (
-    <View style={{flex: 1}}>
-      <LinearGradient
+    <View style={{flex: 1, backgroundColor: '#fff'}}>
+      {/* <LinearGradient
         start={{x: 0, y: 0}}
         end={{x: 80, y: 0}}
         useAngle
@@ -103,7 +108,7 @@ export default function DmzLoginV2(props) {
           'rgba(2, 126, 151, 0.3)',
         ]}
         style={{flex: 1, opacity: 0.4}}
-      />
+      /> */}
       <View style={styles.MainContainer}>
         <DmzText text="Welcome!" style={styles.HeaderText} />
         <DmzText style={styles.HeaderDesc} text="Choose Account Type" />
@@ -149,7 +154,7 @@ export default function DmzLoginV2(props) {
             </View>
             <Text
               style={{
-                color: '#007E96',
+                color: loginAs == 'patient' ? PRIMARY_COLOR : TERTIARY_TEXT,
                 fontSize: 18,
                 fontWeight: 'bold',
                 marginTop: 10,
@@ -194,7 +199,7 @@ export default function DmzLoginV2(props) {
             </View>
             <Text
               style={{
-                color: '#007E96',
+                color: loginAs == 'doctor' ? PRIMARY_COLOR : TERTIARY_TEXT,
                 fontSize: 18,
                 fontWeight: 'bold',
                 marginTop: 10,
@@ -211,7 +216,7 @@ export default function DmzLoginV2(props) {
             fontSize: 16,
             lineHeight: 19,
             textAlign: 'center',
-            color: 'rgba(0, 0, 0, 0.25)',
+            color: 'rgba(0, 0, 0, 0.15)',
             marginTop: 40,
             marginLeft: 'auto',
             marginRight: 'auto',
@@ -231,7 +236,7 @@ export default function DmzLoginV2(props) {
               fontSize: 16,
               lineHeight: 19,
               textAlign: 'center',
-              color: 'rgba(0, 0, 0, 0.25)',
+              color: 'rgba(0, 0, 0, 0.15)',
               marginHorizontal: 15,
             }}
             text="Please fill out the form below to get started"
@@ -243,23 +248,24 @@ export default function DmzLoginV2(props) {
           textContentType="emailAddress"
           textStyle={{
             paddingLeft: 20,
-            color: '#027E97',
+            color: TERTIARY_TEXT,
             fontSize: 14,
             fontWeight: '700',
             flex: 1,
           }}
+          placeholderTextColor="rgba(0, 0, 0, 0.15)"
           hasIcon={true}
           iconName="email"
           placeholder="Email Id"
           iconStyle={{alignSelf: 'center'}}
-          iconColor="rgba(0, 0, 0, 0.15)"
+          iconColor={TERTIARY_TEXT}
           size={30}
         />
         <TextInputIcon
           style={styles.inputContainer}
           textStyle={{
             paddingLeft: 20,
-            color: '#027E97',
+            color: TERTIARY_TEXT,
             fontSize: 14,
             fontWeight: '700',
             flex: 1,
@@ -267,9 +273,10 @@ export default function DmzLoginV2(props) {
           hasIcon={true}
           inputHandler={handlePassword}
           iconName="lock"
+          placeholderTextColor="rgba(0, 0, 0, 0.15)"
           placeholder="Password"
           iconStyle={{alignSelf: 'center'}}
-          iconColor="rgba(0, 0, 0, 0.15)"
+          iconColor={TERTIARY_TEXT}
           size={30}
         />
         <DmzButton
@@ -284,8 +291,8 @@ export default function DmzLoginV2(props) {
             Container: {
               width: 131,
               height: 46,
-              borderRadius: 17,
-              backgroundColor: '#FF7A59',
+              borderRadius: 25,
+              backgroundColor: PRIMARY_COLOR,
               alignSelf: 'center',
               marginTop: 40,
               elevation: 10,
@@ -298,7 +305,7 @@ export default function DmzLoginV2(props) {
         <DmzText
           style={{
             textAlign: 'center',
-            color: 'rgba(0, 0, 0, 0.25)',
+            color: 'rgba(0, 0, 0, 0.15)',
             fontSize: 14,
             marginTop: 10,
             marginLeft: '30%',
@@ -311,7 +318,7 @@ export default function DmzLoginV2(props) {
               }}>
               <DmzText
                 style={{
-                  color: '#FF7A59',
+                  color: HEADER_TEXT,
                   textAlign: 'center',
                   fontSize: 14,
                   marginTop: 10,
@@ -347,7 +354,7 @@ const styles = StyleSheet.create({
   HeaderText: {
     fontSize: 45,
     fontWeight: 'bold',
-    color: '#027E97',
+    color: HEADER_TEXT,
     marginTop: 40,
     width: '100%',
     textAlign: 'center',
@@ -357,7 +364,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'normal',
     lineHeight: 18,
-    color: '#027E97',
+    color: TERTIARY_TEXT,
     marginTop: 10,
     width: '100%',
     textAlign: 'center',

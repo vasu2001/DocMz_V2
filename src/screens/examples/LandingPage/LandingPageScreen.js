@@ -34,6 +34,7 @@ import {
 import {GetPatientInfo} from '../../../redux/action/patientAccountAction';
 import _ from 'lodash';
 import LinearGradient from 'react-native-linear-gradient';
+import {PRIMARY_COLOR, HEADER_TEXT} from '../../../styles/colors';
 
 export default function LandingPageScreen({navigation}) {
   const height = Dimensions.get('window').height;
@@ -174,17 +175,18 @@ export default function LandingPageScreen({navigation}) {
   });
 
   return (
-    <View style={{flex: 1, backgroundColor: '#fff'}}>
+    <View style={{flex: 1, backgroundColor: '#F4F3FF'}}>
       <LinearGradient
         start={{x: 0, y: 0}}
         end={{x: 80, y: 0}}
         useAngle
         angle={120}
         colors={[
-          'rgba(255, 255, 255, 0.9)',
-          'rgba(255, 255, 255, 0.9)',
-          'rgba(2, 126, 151, 0)',
-          'rgba(2, 126, 151, 0.12)',
+          // 'rgba(255, 255, 255, 0.9)',
+          // 'rgba(255, 255, 255, 0.9)',
+          // '#E9E5FF',
+          '#ffffff00',
+          '#ffffff00',
         ]}
         style={{flex: 1}}>
         <Animated.View
@@ -197,7 +199,7 @@ export default function LandingPageScreen({navigation}) {
           }}>
           <RadialGradient
             style={{width: '100%', height: '100%', zIndex: 0}}
-            colors={['#DEF1F9', '#C0E0EC', '#95CCE0']}
+            colors={['#F8F7FF', '#E9E5FF']}
             stops={[0.0, 0.2, 0.75]}
             center={[130, 100]}
             radius={200}
@@ -231,7 +233,7 @@ export default function LandingPageScreen({navigation}) {
             <View>
               <Text
                 style={{
-                  color: '#007E96',
+                  color: PRIMARY_COLOR,
                   fontSize: 20,
                   lineHeight: 32,
                   letterSpacing: 0.8,
@@ -240,7 +242,8 @@ export default function LandingPageScreen({navigation}) {
               </Text>
               <Text
                 style={{
-                  color: '#007E96',
+                  // color: '#5c6bc0',
+                  color: HEADER_TEXT,
                   fontSize: 42,
                   lineHeight: 48,
                   fontWeight: 'bold',
@@ -258,7 +261,7 @@ export default function LandingPageScreen({navigation}) {
                 style={{paddingVertical: 4, width: 150}}
                 textStyle={{
                   fontSize: 13,
-                  color: '#007E96',
+                  color: PRIMARY_COLOR,
                   fontWeight: 'bold',
                   width: '95%',
                   textAlign: 'center',
@@ -267,7 +270,7 @@ export default function LandingPageScreen({navigation}) {
                   width: 80,
                 }}
                 dotStyle={{
-                  backgroundColor: '#FF9B31',
+                  backgroundColor: PRIMARY_COLOR,
                   height: 25,
                   width: '35%',
                 }}
@@ -285,14 +288,12 @@ export default function LandingPageScreen({navigation}) {
             <View
               style={{
                 height: '8%',
-                // marginTop: '12%',
-
                 paddingHorizontal: 25,
                 justifyContent: 'center',
               }}>
               <SearchBarSolid
                 withIcon
-                placeholderTextColor={'#44A1B4'}
+                placeholderTextColor={PRIMARY_COLOR}
                 icon={<Filter height={24} width={24} color={'#000'} />}
                 onEndEditing={onEndEditing}
                 onChangeText={onChangeText}
@@ -323,11 +324,11 @@ export default function LandingPageScreen({navigation}) {
                           borderRadius: 30,
                         },
                       }}>
-                      <Fontisto name="doctor" size={30} color={'#FF7A59'} />
+                      <Fontisto name="doctor" size={30} color={PRIMARY_COLOR} />
                       <Text
                         style={{
                           fontSize: 18,
-                          color: '#007E96',
+                          color: PRIMARY_COLOR,
                           fontWeight: 'bold',
                         }}>
                         {u}
@@ -346,7 +347,7 @@ export default function LandingPageScreen({navigation}) {
                 marginTop: 10,
                 // height: 'auto',
               },
-              Text: {color: '#007E96', fontWeight: '700'},
+              Text: {color: PRIMARY_COLOR, fontWeight: '300'},
             }}
             HeaderText={toggle ? 'Available Doctors' : 'Our Doctors'}>
             {loading || searchDoctorsLoading || superDocsLoading ? (

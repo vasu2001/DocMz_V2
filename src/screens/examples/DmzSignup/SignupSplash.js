@@ -5,6 +5,7 @@ import LoginAsDoctor from '../../../assets/svg/LoginAsDoctor.svg';
 import Check from '../../../assets/svg/check.svg';
 import DmzText from '../../../components/atoms/DmzText/DmzText';
 import DmzButton from '../../../components/atoms/DmzButton/DmzButton';
+import {PRIMARY_COLOR, TERTIARY_TEXT} from '../../../styles/colors';
 function SignupSplash({onPress, signupAs, setSignupAs}) {
   return (
     <>
@@ -52,7 +53,7 @@ function SignupSplash({onPress, signupAs, setSignupAs}) {
           </View>
           <Text
             style={{
-              color: '#007E96',
+              color: signupAs == 'patient' ? PRIMARY_COLOR : TERTIARY_TEXT,
               fontSize: 18,
               fontWeight: 'bold',
               marginTop: 10,
@@ -97,7 +98,7 @@ function SignupSplash({onPress, signupAs, setSignupAs}) {
           </View>
           <Text
             style={{
-              color: '#007E96',
+              color: signupAs == 'doctor' ? PRIMARY_COLOR : TERTIARY_TEXT,
               fontSize: 18,
               fontWeight: 'bold',
               marginTop: 10,
@@ -121,7 +122,7 @@ function SignupSplash({onPress, signupAs, setSignupAs}) {
             width: 131,
             height: 46,
             borderRadius: 17,
-            backgroundColor: '#FF7A59',
+            backgroundColor: PRIMARY_COLOR,
             alignSelf: 'center',
             marginTop: 40,
             elevation: 0,
@@ -139,7 +140,7 @@ const styles = StyleSheet.create({
   HeaderText: {
     fontSize: 45,
     fontWeight: 'bold',
-    color: '#027E97',
+    color: PRIMARY_COLOR,
     marginTop: 40,
     width: '100%',
     textAlign: 'center',
@@ -149,7 +150,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'normal',
     lineHeight: 18,
-    color: '#027E97',
+    color: TERTIARY_TEXT,
     marginTop: 10,
     width: '100%',
     textAlign: 'center',

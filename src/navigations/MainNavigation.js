@@ -16,7 +16,6 @@ import SelectFiles from '../screens/patient/questionnaire/SelectFiles';
 import {useSelector} from 'react-redux';
 import WaitingRoom from '../screens/patient/waitingRoom/WaitingRoom';
 import DoctorProfile from '../screens/examples/DoctorProfile/DoctorProfile';
-import AsyncStorage from '@react-native-community/async-storage';
 
 // check for login status
 const isDoctorLogin = false;

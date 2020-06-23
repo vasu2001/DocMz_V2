@@ -32,4 +32,6 @@ export const PRIMARY_BORDER_COLOR = '#9D9D9D';
 export const PRIMARY_TEXT = '#937EE7';
 export const HEADER_TEXT = '#6859A2';
 export const SECONDARY_TEXT = '#E7E3FE';
-export const TERTIARY_TEXT = '#9D9D9D';
+export const TERTIARY_TEXT = '#AAA4C5';
+export const TERTIARY_TEXT_TWO = '#9D9D9D';
+export const PRIMARY_COLOR = '#9C77BC';

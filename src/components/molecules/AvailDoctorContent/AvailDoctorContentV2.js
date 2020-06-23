@@ -3,6 +3,12 @@ import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import RatingStars from '../../atoms/ratingStars/RatingStarts';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import {
+  HEADER_TEXT,
+  TERTIARY_TEXT_TWO,
+  TERTIARY_TEXT,
+  PRIMARY_COLOR,
+} from '../../../styles/colors';
 function AvailDoctorContentV2({
   Profile,
   DoctorName,
@@ -24,8 +30,8 @@ function AvailDoctorContentV2({
         <RatingStars
           size={14}
           filled
-          activeColor={'#027E97'}
-          passiveColor={'#9D9D9D'}
+          activeColor={'#AAA4C5'}
+          passiveColor={'rgba(0, 0, 0, 0.15)'}
           rating={rating}
         />
       </View>
@@ -68,7 +74,7 @@ function AvailDoctorContentV2({
       </TouchableOpacity>
       <View style={CardContentStyles.AvailableDoctorsContinueButton}>
         <TouchableOpacity onPress={onPress} style={{zIndex: 2000}}>
-          <FontAwesomeIcon name="angle-right" size={22} color="#fafafa" />
+          <FontAwesomeIcon name="angle-right" size={22} color="#ffffff" />
         </TouchableOpacity>
       </View>
     </>
@@ -87,12 +93,12 @@ const CardContentStyles = StyleSheet.create({
   AvailableDoctorsName: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#027E97',
+    color: HEADER_TEXT,
     textTransform: 'capitalize',
   },
 
   AvailableDoctorsSpecialization: {
-    color: '#666',
+    color: TERTIARY_TEXT,
     fontSize: 13,
     lineHeight: 18,
     textTransform: 'capitalize',
@@ -105,17 +111,17 @@ const CardContentStyles = StyleSheet.create({
   AvailableDoctorsAvailableTime: {
     paddingHorizontal: 4,
     borderRadius: 8,
-    color: '#777',
+    color: TERTIARY_TEXT_TWO,
     marginRight: 10,
   },
   AvailableDoctorsAvailableTimeActive: {
-    backgroundColor: '#027E97',
+    backgroundColor: PRIMARY_COLOR,
     color: '#fafafa',
     paddingVertical: 2,
     paddingHorizontal: 8,
   },
   AvailableDoctorsContinueButton: {
-    backgroundColor: '#FF7A59',
+    backgroundColor: '#E7E3FE',
     position: 'absolute',
     bottom: 0,
     right: 0,

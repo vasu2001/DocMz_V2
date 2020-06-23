@@ -8,6 +8,12 @@ import DmzText from '../../../components/atoms/DmzText/DmzText';
 import TextInputIcon from '../../../components/atoms/TextInputCustom/TextInputIcon';
 import DmzButton from '../../../components/atoms/DmzButton/DmzButton';
 import StepsTracker from '../../../components/atoms/StepsTracker/StepsTracker';
+import {
+  TERTIARY_TEXT,
+  HEADER_TEXT,
+  PRIMARY_COLOR,
+} from '../../../styles/colors';
+import {HeaderStyleInterpolators} from 'react-navigation-stack';
 
 export default function SignUpStep1Screen(props) {
   const {credential, setCredential, isLoading} = props;
@@ -24,8 +30,8 @@ export default function SignUpStep1Screen(props) {
     setCredential({...credential, password});
   };
   return (
-    <View style={{flex: 1}}>
-      <LinearGradient
+    <View style={{flex: 1, backgroundColor: '#fff'}}>
+      {/* <LinearGradient
         start={{x: 0, y: 0}}
         end={{x: 1, y: 0}}
         useAngle
@@ -37,7 +43,7 @@ export default function SignUpStep1Screen(props) {
           'rgba(2, 126, 151, 0.31)',
         ]}
         style={{flex: 1, opacity: 0.4}}
-      />
+      /> */}
       <View
         style={{
           position: 'absolute',
@@ -50,17 +56,17 @@ export default function SignUpStep1Screen(props) {
           text="Step 1"
           textStyle={{
             fontSize: 16,
-            color: '#027E97',
+            color: TERTIARY_TEXT,
           }}
           completed={33}
-          completedColor={'#027E97'}
-          incompletedColor={'#D5E9F4'}
+          completedColor={TERTIARY_TEXT}
+          incompletedColor={'#F8F7FF'}
         />
         <DmzText
           style={{
             fontSize: 45,
             fontWeight: 'bold',
-            color: '#027E97',
+            color: HEADER_TEXT,
             marginTop: 20,
             width: '100%',
             textAlign: 'center',
@@ -80,14 +86,8 @@ export default function SignUpStep1Screen(props) {
         <TextInputIcon
           placeholder="First Name"
           inputHandler={handleFirstName}
-          placeholderTextColor="rgba(0, 0, 0, 0.25)"
-          style={{
-            width: '70%',
-            borderBottomColor: 'rgba(2, 126, 151, 0.33)',
-            borderBottomWidth: 2,
-            height: 'auto',
-            alignSelf: 'center',
-          }}
+          placeholderTextColor="rgba(0, 0, 0, 0.15)"
+          style={styles.inputStyle}
           textStyle={{
             color: '#027E97',
             fontSize: 14,
@@ -96,21 +96,21 @@ export default function SignUpStep1Screen(props) {
         <TextInputIcon
           placeholder="Last Name"
           inputHandler={handleLastName}
-          placeholderTextColor="rgba(0, 0, 0, 0.25)"
+          placeholderTextColor="rgba(0, 0, 0, 0.15)"
           style={styles.inputStyle}
           textStyle={styles.textStyle}
         />
         <TextInputIcon
           placeholder="Email"
           inputHandler={handleEmail}
-          placeholderTextColor="rgba(0, 0, 0, 0.25)"
+          placeholderTextColor="rgba(0, 0, 0, 0.15)"
           style={styles.inputStyle}
           textStyle={styles.textStyle}
         />
         <TextInputIcon
           placeholder="Password"
           inputHandler={handlePassword}
-          placeholderTextColor="rgba(0, 0, 0, 0.25)"
+          placeholderTextColor="rgba(0, 0, 0, 0.15)"
           style={styles.inputStyle}
           textStyle={styles.textStyle}
         />
@@ -122,21 +122,9 @@ export default function SignUpStep1Screen(props) {
             alignSelf: 'center',
             marginTop: 30,
           }}>
-          <EvilIcons
-            name="sc-facebook"
-            color="rgba(2, 126, 151, 0.52)"
-            size={35}
-          />
-          <EvilIcons
-            name="sc-twitter"
-            color="rgba(2, 126, 151, 0.52)"
-            size={35}
-          />
-          <EvilIcons
-            name="sc-google-plus"
-            color="rgba(2, 126, 151, 0.52)"
-            size={35}
-          />
+          <EvilIcons name="sc-facebook" color="#EA508F" size={35} />
+          <EvilIcons name="sc-twitter" color="#EA508F" size={35} />
+          <EvilIcons name="sc-google-plus" color="#EA508F" size={35} />
         </View>
         <DmzButton
           onPress={props.onPress}
@@ -151,7 +139,7 @@ export default function SignUpStep1Screen(props) {
               width: 131,
               height: 46,
               borderRadius: 17,
-              backgroundColor: '#FF7A59',
+              backgroundColor: PRIMARY_COLOR,
               alignSelf: 'center',
               marginTop: 10,
               elevation: 10,
@@ -165,7 +153,7 @@ export default function SignUpStep1Screen(props) {
           style={{
             // width: '100%',
             textAlign: 'center',
-            color: 'rgba(0, 0, 0, 0.25)',
+            color: 'rgba(0, 0, 0, 0.15)',
             fontSize: 14,
             marginTop: 10,
             marginLeft: '20%',
@@ -177,7 +165,7 @@ export default function SignUpStep1Screen(props) {
             }}>
             <DmzText
               style={{
-                color: '#FF7A59',
+                color: HEADER_TEXT,
                 textAlign: 'center',
                 fontSize: 14,
                 marginTop: 10,
@@ -195,13 +183,13 @@ export default function SignUpStep1Screen(props) {
 const styles = StyleSheet.create({
   inputStyle: {
     width: '70%',
-    borderBottomColor: 'rgba(2, 126, 151, 0.33)',
+    borderBottomColor: 'rgba(0, 0, 0, 0.15)',
     borderBottomWidth: 2,
     height: 'auto',
     alignSelf: 'center',
   },
   textStyle: {
-    color: '#027E97',
+    color: HEADER_TEXT,
     fontSize: 14,
     marginTop: 20,
   },
