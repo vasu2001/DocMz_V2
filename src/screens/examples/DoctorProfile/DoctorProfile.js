@@ -27,14 +27,14 @@ function DoctorProfile(props) {
         toValue: 1,
         delay: 200,
         duration: 500,
-        easing: Easing.elastic(),
+        easing: Easing.ease,
         useNativeDriver: false,
       }),
       Animated.timing(opacity, {
         toValue: 1,
         delay: 200,
         duration: 500,
-        easing: Easing.back(),
+        easing: Easing.ease,
         useNativeDriver: true,
       }),
     ]).start();
@@ -61,7 +61,7 @@ function DoctorProfile(props) {
       <SolidHeader
         style={{
           Container: {
-            height: '40%',
+            // height: '40%',
             position: 'absolute',
             borderBottomRightRadius: 70,
             height: dimen.interpolate({
@@ -73,10 +73,17 @@ function DoctorProfile(props) {
               outputRange: ['0%', '100%'],
             }),
           },
-        }}></SolidHeader>
+        }}
+      />
       <TopNavBar
         style={{Container: {marginTop: 5}}}
-        onLeftButtonPress={() => {}}
+        onLeftButtonPress={() => {
+          navigation.navigate(
+            'pageNavigation',
+            {},
+            navigation.navigate({routeName: 'patientHomePage'}),
+          );
+        }}
         onRightButtonPress={() => {}}
       />
       <Animated.View
@@ -88,8 +95,9 @@ function DoctorProfile(props) {
             alignSelf: 'center',
             lineHeight: 36,
             color: 'rgba(0,126,150,1)',
+            textTransform: 'capitalize',
           }}>
-          Dr.{data.basic.name}
+          Dr. {data.basic.name}
         </Text>
         <Text
           style={{
@@ -98,6 +106,7 @@ function DoctorProfile(props) {
             alignSelf: 'center',
             lineHeight: 22,
             color: 'rgba(0,126,150,0.8)',
+            textTransform: 'capitalize',
           }}>
           {data.specialty}
         </Text>

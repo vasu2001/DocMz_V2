@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {createAppContainer} from 'react-navigation';
 
 import {createStackNavigator} from 'react-navigation-stack';
@@ -16,6 +16,7 @@ import SelectFiles from '../screens/patient/questionnaire/SelectFiles';
 import {useSelector} from 'react-redux';
 import WaitingRoom from '../screens/patient/waitingRoom/WaitingRoom';
 import DoctorProfile from '../screens/examples/DoctorProfile/DoctorProfile';
+import AsyncStorage from '@react-native-community/async-storage';
 
 // check for login status
 const isDoctorLogin = false;
@@ -43,6 +44,7 @@ const isDoctorLogin = false;
 //   },
 // );
 
+// const newUser = AsyncStorage.getItem('newUser');
 const docMainStream = createStackNavigator(
   {
     AppointmentsStack: {

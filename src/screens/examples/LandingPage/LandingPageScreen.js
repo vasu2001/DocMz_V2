@@ -124,15 +124,15 @@ export default function LandingPageScreen({navigation}) {
     }
   };
 
-  const scrollAnimation = (e) => {
+  const scrollAnimation = async (e) => {
     var vel = e.nativeEvent.velocity.y;
-
     if (vel < 0) {
+      console.log('in');
       Animated.timing(headerPos, {
         toValue: 350,
-        duration: 500,
+        duration: 1000,
         useNativeDriver: false,
-        easing: Easing.linear,
+        // easing: Easing.linear,
       }).start();
     } else {
       Animated.timing(headerPos, {
@@ -159,7 +159,7 @@ export default function LandingPageScreen({navigation}) {
     useNativeDriver: false,
   });
   const headerViewStyle = headerPos.interpolate({
-    inputRange: [0, 100],
+    inputRange: [0, 50],
     outputRange: [1, 0],
     extrapolate: 'clamp',
     easing: Easing.linear,
@@ -369,7 +369,7 @@ export default function LandingPageScreen({navigation}) {
                   ],
                   {useNativeDriver: true},
                 )}
-                onScrollEndDrag={scrollAnimation}
+                onMomentumScrollBegin={scrollAnimation}
                 scrollEventThrottle={16}
                 renderItem={({item, index}) => (
                   <AvailDoctorContainerV2
