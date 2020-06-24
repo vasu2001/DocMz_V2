@@ -15,9 +15,16 @@ import {
 } from '../../../styles/colors';
 import PatienVitalScreen from './PatienVitalScreen';
 import PatienSurgeryScreen from './PatienSurgeryScreen';
+import PatienMedsScreen from './PatienMedsScreen';
 
 export default function PatienDashboard(props) {
-  const patientCategories = ['Vitals', 'Surgeries', 'Meds', 'Lifestyle'];
+  const patientCategories = [
+    'Vitals',
+    'Surgeries',
+    'Meds',
+    'Lifestyle',
+    'Family History',
+  ];
   const [selectedHeader, setHeader] = useState('Vitals');
   const [editCard, setEditCard] = useState();
   const [modalVisible, setModal] = useState(false);
@@ -36,6 +43,8 @@ export default function PatienDashboard(props) {
       return <PatienVitalScreen />;
     } else if (selectedHeader === 'Surgeries') {
       return <PatienSurgeryScreen />;
+    } else if (selectedHeader === 'Meds') {
+      return <PatienMedsScreen />;
     } else {
       return null;
     }
@@ -84,9 +93,9 @@ export default function PatienDashboard(props) {
           <View>
             <ScrollView
               horizontal
-              style={{height: 'auto', marginLeft: '5%', marginTop: 20}}
+              style={{height: 'auto', marginHorizontal: 25, marginTop: 20}}
               contentContainerStyle={{
-                height: 80,
+                height: 70,
               }}>
               {patientCategories.map((u, i) => {
                 return (
@@ -101,6 +110,9 @@ export default function PatienDashboard(props) {
                           selectedHeader == u ? PRIMARY_COLOR : TERTIARY_TEXT,
                         fontSize: 18,
                         fontWeight: selectedHeader == u ? 'bold' : '300',
+                      },
+                      Container: {
+                        marginHorizontal: 10,
                       },
                     }}
                   />

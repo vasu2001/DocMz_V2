@@ -1,12 +1,11 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {View, Modal} from 'react-native';
-import PatientSurgeryDetails from '../../../components/molecules/PatientSurgeyCards/PatientSurgeryDetails';
-import {PRIMARY_COLOR} from '../../../styles/colors';
 import PatientEditScreen from './PatientEditScreen';
 import DmzButton from '../../../components/atoms/DmzButton/DmzButton';
+import PatientMedsDetails from '../../../components/molecules/PatientMedsCards/PatientMedsDetails';
 
-export default function PatienSurgeryScreen(props) {
+export default function PatienMedsScreen(props) {
   const [editCard, setEditCard] = useState();
   const [modalVisible, setModal] = useState(false);
 
@@ -21,20 +20,22 @@ export default function PatienSurgeryScreen(props) {
 
   const data1 = [
     {
-      type: 'Surgery',
-      title: 'Knee Surgery',
+      type: 'Meds',
+      medName: 'Knee Surgery',
       date: '22 May 2020',
-      status: 'Completed',
-      doctorName: 'Constantine',
-      otName: 'Purnam Medicare (Cal)',
+      reason: 'Completed',
+      times: 3,
+      weeks: 2,
+      alarm: false,
     },
     {
-      type: 'Surgery',
-      title: 'Appendix',
+      type: 'Meds',
+      medName: 'Appendix',
       date: '22 May 2020',
-      status: 'Ongoing',
-      doctorName: 'Lance',
-      otName: 'Purnam Medicare (Cal)',
+      reason: 'Ongoing',
+      times: 2,
+      weeks: 1,
+      alarm: true,
     },
   ];
 
@@ -47,7 +48,7 @@ export default function PatienSurgeryScreen(props) {
         {data1.map((u, i) => {
           console.log(u);
           return (
-            <PatientSurgeryDetails
+            <PatientMedsDetails
               onPress={() => {
                 modalVisibility(u);
               }}
@@ -57,11 +58,12 @@ export default function PatienSurgeryScreen(props) {
                   backgroundColor: '#fff',
                 },
               }}
-              title={u.title}
+              medName={u.medName}
               date={u.date}
-              status={u.status}
-              doctorName={u.doctorName}
-              otName={u.otName}
+              reason={u.reason}
+              times={u.times}
+              weeks={u.weeks}
+              alarm={u.alarm}
             />
           );
         })}

@@ -1,19 +1,17 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import {HEADER_TEXT} from '../../../styles/colors';
 
-export default function CircularButton({style}) {
+export default function CircularButton({style, onPress}) {
   return (
     // <View>
-    <TouchableOpacity style={[styles.Btn, style ? style : null]}>
+    <TouchableOpacity
+      onPress={onPress}
+      style={[styles.Btn, style ? style : null]}>
       <MaterialCommunityIcons
-        onPress={() => {
-          alert('asdf');
-        }}
         name="check"
-        // style={[styles.Btn, style ? style : null]}
+        style={{width: '100%', height: '100%'}}
         color="white"
         size={40}
       />

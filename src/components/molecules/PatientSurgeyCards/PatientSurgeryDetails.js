@@ -10,7 +10,7 @@ import {
   PRIMARY_COLOR,
 } from '../../../styles/colors';
 
-export default function PatientHistoryCardSmall({
+export default function PatientSurgeryDetails({
   style,
   title,
   status,
@@ -55,7 +55,6 @@ const styles = StyleSheet.create({
     height: 140,
     elevation: 0,
     width: '80%',
-    // marginHorizontal: '20%',
     paddingHorizontal: 4,
   },
   Container: {

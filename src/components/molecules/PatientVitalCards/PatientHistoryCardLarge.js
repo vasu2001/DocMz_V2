@@ -5,7 +5,11 @@ import Graph from '../../atoms/Graphs/Graphs';
 import DmzText from '../../atoms/DmzText/DmzText';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Entypo from 'react-native-vector-icons/Entypo';
-import {PRIMARY_TEXT, TERTIARY_TEXT, PRIMARY_COLOR} from '../../../styles/colors';
+import {
+  PRIMARY_TEXT,
+  TERTIARY_TEXT,
+  PRIMARY_COLOR,
+} from '../../../styles/colors';
 
 export default function PatientHistoryCardLarge({
   style,

@@ -1,54 +1,73 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View, StyleSheet, TextInput} from 'react-native';
+import {View, StyleSheet, TextInput, Text} from 'react-native';
 import DmzText from '../../atoms/DmzText/DmzText';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CircularButton from '../../atoms/CircularButton/CircularButton';
-import {PRIMARY_TEXT, TERTIARY_TEXT} from '../../../styles/colors';
+import {
+  PRIMARY_TEXT,
+  TERTIARY_TEXT,
+  PRIMARY_COLOR,
+} from '../../../styles/colors';
+import AnimInput from '../AnimInput/AnimInput';
 
-export default function WeightEditCard({style}) {
+export default function WeightEditCard({style, onPress}) {
   return (
-    <View style={[styles.Card, style ? style.Card : null]}>
-      <DmzText
-        text="Enter your Blood Pressure"
-        style={{fontSize: 18, color: PRIMARY_TEXT}}
-      />
-      <View style={{flexDirection: 'row', marginTop: 20}}>
+    <View style={{flex: 1, width: '100%', justifyContent: 'center'}}>
+      <View style={[styles.Card, style ? style.Card : null]}>
         <DmzText
-          text="Systolic"
-          style={{fontSize: 16, color: TERTIARY_TEXT, fontWeight: '300'}}
-          viewStyle={{flexDirection: 'column', width: '50%'}}>
-          <TextInput style={styles.Input} />
-        </DmzText>
-        <DmzText
-          text="Diastolic"
-          style={{fontSize: 16, color: TERTIARY_TEXT, fontWeight: '300'}}
-          viewStyle={{flexDirection: 'column', width: '50%'}}>
-          <TextInput style={styles.Input} />
-        </DmzText>
-      </View>
-      <DmzText
-        text="Heart Rate"
-        style={{fontSize: 16, color: TERTIARY_TEXT, fontWeight: '300'}}
-        viewStyle={{flexDirection: 'column', width: '100%', marginTop: 25}}>
-        <TextInput style={styles.Input2} />
-      </DmzText>
-      <DmzText
-        text="Date"
-        style={{fontSize: 16, color: TERTIARY_TEXT, fontWeight: '300'}}
-        viewStyle={{flexDirection: 'column', width: '100%', marginTop: 25}}>
-        <View style={{flexDirection: 'row'}}>
-          <TextInput style={styles.Input2} />
+          text="Enter your Blood Pressure"
+          style={{fontSize: 18, color: PRIMARY_TEXT}}
+        />
+        <View
+          style={{
+            flexDirection: 'row',
+            marginTop: 20,
+            justifyContent: 'space-between',
+          }}>
+          <AnimInput
+            placeholder="Systolic"
+            style={{
+              Container: {...styles.Container, width: '40%'},
+              Input: styles.Input,
+              Placeholder: styles.Placeholder,
+            }}
+          />
+          <AnimInput
+            placeholder="Diastolic"
+            style={{
+              Container: {...styles.Container, width: '40%'},
+              Input: styles.Input,
+              Placeholder: styles.Placeholder,
+            }}
+          />
+        </View>
+        <AnimInput
+          placeholder="Heart Rate"
+          style={{
+            Container: styles.Container,
+            Input: styles.Input,
+            Placeholder: styles.Placeholder,
+          }}
+        />
+        <View style={{flexDirection: 'row', alignItems: 'baseline'}}>
+          <AnimInput
+            placeholder="Date"
+            style={{
+              Container: styles.Container,
+              Input: styles.Input,
+              Placeholder: styles.Placeholder,
+            }}
+          />
           <MaterialCommunityIcons
             name="calendar"
             size={23}
             color="#A7A7A7"
-            style={{marginLeft: -20}}
+            style={{marginLeft: -20, marginBottom: 15}}
           />
         </View>
-      </DmzText>
-
-      <View style={{position: 'absolute', alignSelf: 'center', bottom: -35}}>
+      </View>
+      <View style={{alignSelf: 'center', marginTop: -35, elevation: 5}}>
         <CircularButton />
       </View>
     </View>
@@ -65,19 +84,20 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignSelf: 'center',
     paddingHorizontal: 30,
-    marginBottom: 100,
     paddingBottom: 70,
   },
+  Container: {height: 60, marginTop: 20, left: 0},
   Input: {
-    elevation: 0,
-    height: 'auto',
-    borderRadius: 0,
-    borderBottomWidth: 1,
-    borderBottomColor: '#E7E3FE',
-    width: '70%',
-    color: PRIMARY_TEXT,
     fontSize: 18,
     fontWeight: 'bold',
+    color: PRIMARY_COLOR,
+    left: 0,
+    marginTop: 15,
+    marginBottom: 0,
+  },
+  Placeholder: {
+    fontSize: 16,
+    color: TERTIARY_TEXT,
   },
   Input2: {
     elevation: 0,
