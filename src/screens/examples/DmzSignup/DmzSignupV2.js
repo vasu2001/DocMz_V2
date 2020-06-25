@@ -39,6 +39,7 @@ function DmzSignupV2(props) {
     signupAs === 'doctor' ? _handleDoctorSignup() : _handlePatientSignup();
   };
   const _handleDoctorSignup = () => {
+    console.log(credential);
     dispatch(signupDoctor(credential, successCallback, errorCallback));
   };
   const _handlePatientSignup = () => {
@@ -52,7 +53,7 @@ function DmzSignupV2(props) {
       console.log(data.id);
       console.log(imageData);
       signupAs === 'doctor' && dispatch(UploadProfilePic(data.id, imageData));
-      // props.navigation.navigate('pageNavigation');
+      props.navigation.navigate('pageNavigation');
     });
     //   : props.navigation.goBack(null);
     // props.navigation.goBack(null);
@@ -160,6 +161,7 @@ function DmzSignupV2(props) {
           credential={credential}
           setCredential={setCredential}
           isLoading={isLoading}
+          signupAs={signupAs}
           navigation={props.navigation}
           onPress={signupAs === 'doctor' ? () => nextpage(2) : handleSubmit}
         />

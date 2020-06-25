@@ -7,15 +7,20 @@ import {
   Image,
   Dimensions,
   StyleSheet,
+  ScrollView,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import RadialGradient from 'react-native-radial-gradient';
 import DmzButton from '../../../components/atoms/DmzButton/DmzButton';
 import StepsTracker from '../../../components/atoms/StepsTracker/StepsTracker';
 import TextInputIcon from '../../../components/atoms/TextInputCustom/TextInputIcon';
-import {TERTIARY_TEXT, HEADER_TEXT, PRIMARY_COLOR} from '../../../styles/colors';
+import {
+  TERTIARY_TEXT,
+  HEADER_TEXT,
+  PRIMARY_COLOR,
+} from '../../../styles/colors';
 
-const width = Dimensions.get('screen').width;
+const height = Dimensions.get('screen').height;
 
 export default function SignUpStep3Screen(props) {
   const {credential, setCredential, isLoading} = props;
@@ -42,33 +47,33 @@ export default function SignUpStep3Screen(props) {
         ]}
         style={{flex: 1, opacity: 0.4}}
       /> */}
-      <View
+
+      <ScrollView
         style={{
-          position: 'absolute',
-          width: '100%',
-          height: '45%',
-          borderBottomRightRadius: 60,
-          overflow: 'hidden',
-        }}>
-        <RadialGradient
-          style={{
-            width: '100%',
-            height: '100%',
-            borderBottomRightRadius: 50,
-          }}
-          colors={['#F8F7FF', '#E9E5FF']}
-          stops={[0.0, 1]}
-          center={[150, 100]}
-          radius={200}
-        />
-      </View>
-      <View
-        style={{
-          position: 'absolute',
           flex: 1,
           width: '100%',
           height: '100%',
         }}>
+        <View
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: height * 0.4,
+            borderBottomRightRadius: 60,
+            overflow: 'hidden',
+          }}>
+          <RadialGradient
+            style={{
+              width: '100%',
+              height: '100%',
+              borderBottomRightRadius: 50,
+            }}
+            colors={['#F8F7FF', '#E9E5FF']}
+            stops={[0.0, 1]}
+            center={[150, 100]}
+            radius={200}
+          />
+        </View>
         <StepsTracker
           text="Step 3"
           textStyle={{
@@ -150,7 +155,7 @@ export default function SignUpStep3Screen(props) {
           isLoading={isLoading}
           disabled={isLoading}
         />
-      </View>
+      </ScrollView>
     </View>
   );
 }

@@ -267,10 +267,10 @@ const Custom = ({
         )}
         {!isLogedin && (
           <ExpandableOption
-            key={'Are you doctor ?'}
+            key={'Sign In'}
             active={!isLogedin}
-            name={'Are you doctor ?'}
-            icon={'doctor'}
+            name={'Sign In'}
+            icon={'door'}
             goto={() => navigation.navigate('loginScreen', {loginAs: 'doctor'})}
             activeItemKey={activeItemKey}
             navigateTo={'loginScreen'}

@@ -1,9 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
-import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+} from 'react-native';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import Svg from 'react-native-svg';
 import DmzText from '../../../components/atoms/DmzText/DmzText';
 import TextInputIcon from '../../../components/atoms/TextInputCustom/TextInputIcon';
 import DmzButton from '../../../components/atoms/DmzButton/DmzButton';
@@ -13,7 +18,9 @@ import {
   HEADER_TEXT,
   PRIMARY_COLOR,
 } from '../../../styles/colors';
-import {HeaderStyleInterpolators} from 'react-navigation-stack';
+import {AccessToken, LoginManager} from 'react-native-fbsdk';
+import {GoogleSignin, statusCodes} from '@react-native-community/google-signin';
+import auth from '@react-native-firebase/auth';
 
 export default function SignUpStep1Screen(props) {
   const {credential, setCredential, isLoading} = props;
@@ -29,6 +36,31 @@ export default function SignUpStep1Screen(props) {
   const handlePassword = (password) => {
     setCredential({...credential, password});
   };
+
+  async function onGoogleButtonPress() {
+    // Get the users ID token
+    const {idToken} = await GoogleSignin.signIn();
+
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(googleCredential);
+  }
+
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId:
+        '842595327422-50cmpri327rrhqgb76o8hn58954l80i1.apps.googleusercontent.com',
+      // '548402708395-t0qn9hg90h8cfaadtg8epf7m0s0uunr4.apps.googleusercontent.com',
+    });
+    const val = async () => {
+      const isSignedIn = await GoogleSignin.isSignedIn();
+      console.log('111111111111', isLoading, '111111111111', isSignedIn);
+    };
+    val();
+  });
+  console.log(props.signupAs);
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       {/* <LinearGradient
@@ -44,9 +76,9 @@ export default function SignUpStep1Screen(props) {
         ]}
         style={{flex: 1, opacity: 0.4}}
       /> */}
-      <View
+      <ScrollView
         style={{
-          position: 'absolute',
+          // position: 'absolute',
           flex: 1,
           width: '100%',
           height: '100%',
@@ -72,7 +104,9 @@ export default function SignUpStep1Screen(props) {
             textAlign: 'center',
             lineHeight: 50,
           }}
-          text="Hello Doctor!"
+          text={
+            props.signupAs === 'patient' ? 'Hello Patient' : 'Hello Doctor!'
+          }
         />
         <Image
           source={require('../../../assets/images/doc_2.png')}
@@ -108,12 +142,14 @@ export default function SignUpStep1Screen(props) {
           textStyle={styles.textStyle}
         />
         <TextInputIcon
+          secureTextEntry={true}
           placeholder="Password"
           inputHandler={handlePassword}
           placeholderTextColor="rgba(0, 0, 0, 0.15)"
           style={styles.inputStyle}
           textStyle={styles.textStyle}
         />
+
         <View
           style={{
             width: '50%',
@@ -122,9 +158,67 @@ export default function SignUpStep1Screen(props) {
             alignSelf: 'center',
             marginTop: 30,
           }}>
-          <EvilIcons name="sc-facebook" color="#EA508F" size={35} />
+          <EvilIcons
+            onPress={() => {
+              LoginManager.logInWithPermissions(['public_profile']).then(
+                function (result) {
+                  if (result.isCancelled) {
+                    console.log('Login cancelled');
+                  } else {
+                    console.log(
+                      'Login success with permissions: ' +
+                        result.grantedPermissions.toString(),
+                    );
+                    AccessToken.getCurrentAccessToken().then((data) => {
+                      console.log(data.accessToken.toString());
+                    });
+                  }
+                },
+                function (error) {
+                  console.log('Login fail with error: ' + error);
+                },
+              );
+            }}
+            name="sc-facebook"
+            color="#EA508F"
+            size={35}
+          />
           <EvilIcons name="sc-twitter" color="#EA508F" size={35} />
-          <EvilIcons name="sc-google-plus" color="#EA508F" size={35} />
+          <EvilIcons
+            onPress={async () => {
+              onGoogleButtonPress().then(() =>
+                console.log('Signed in with Google!'),
+              );
+              // console.log('inGoogle');
+              // try {
+              //   await GoogleSignin.hasPlayServices();
+              //   console.log('inner');
+              //   const userInfo = await GoogleSignin.signIn();
+              //   console.log(userInfo);
+              //   const currentUser = await GoogleSignin.getCurrentUser();
+              //   console.log(currentUser);
+              // } catch (error) {
+              //   if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+              //     // user cancelled the login flow
+              //     console.log(error);
+              //   } else if (error.code === statusCodes.IN_PROGRESS) {
+              //     console.log(error);
+              //     // operation (e.g. sign in) is in progress already
+              //   } else if (
+              //     error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE
+              //   ) {
+              //     console.log(error);
+              //     // play services not available or outdated
+              //   } else {
+              //     console.log(error);
+              //     // some other error happened
+              //   }
+              // }
+            }}
+            name="sc-google-plus"
+            color="#EA508F"
+            size={35}
+          />
         </View>
         <DmzButton
           onPress={props.onPress}
@@ -175,7 +269,7 @@ export default function SignUpStep1Screen(props) {
             />
           </TouchableOpacity>
         </DmzText>
-      </View>
+      </ScrollView>
     </View>
   );
 }

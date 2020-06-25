@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Alert,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Toast from 'react-native-root-toast';
@@ -109,7 +110,7 @@ export default function DmzLoginV2(props) {
         ]}
         style={{flex: 1, opacity: 0.4}}
       /> */}
-      <View style={styles.MainContainer}>
+      <ScrollView style={styles.MainContainer}>
         <DmzText text="Welcome!" style={styles.HeaderText} />
         <DmzText style={styles.HeaderDesc} text="Choose Account Type" />
         <View
@@ -222,7 +223,7 @@ export default function DmzLoginV2(props) {
             marginRight: 'auto',
             alignSelf: 'center',
           }}
-          text="Hello patient"
+          text={loginAs === 'patient' ? 'Hello patient' : 'Hello doctor'}
         />
         <View
           style={{
@@ -270,6 +271,7 @@ export default function DmzLoginV2(props) {
             fontWeight: '700',
             flex: 1,
           }}
+          secureTextEntry={true}
           hasIcon={true}
           inputHandler={handlePassword}
           iconName="lock"
@@ -329,7 +331,7 @@ export default function DmzLoginV2(props) {
             </TouchableOpacity>
           }
         />
-      </View>
+      </ScrollView>
     </View>
   );
 }
