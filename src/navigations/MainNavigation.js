@@ -18,7 +18,7 @@ import WaitingRoom from '../screens/patient/waitingRoom/WaitingRoom';
 import DoctorProfile from '../screens/examples/DoctorProfile/DoctorProfile';
 
 // check for login status
-const isDoctorLogin = false;
+const isDoctorLogin = true;
 // const {isDoctor, isLogedin} = useSelector(state => state.AuthReducer)
 
 // const PageNavigation = createAnimatedSwitchNavigator(
@@ -77,7 +77,6 @@ const questionnaire = createStackNavigator(
 const MainNavigation = createStackNavigator(
   {
     authentication: AuthNavigation,
-    pageNavigation: DoctorNavigation,
     pageNavigation: isDoctorLogin ? DoctorNavigation : PatientNavigation,
     docPatientStrem: docMainStream,
     question: questionnaire,

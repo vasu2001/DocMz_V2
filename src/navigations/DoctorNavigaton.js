@@ -139,11 +139,12 @@ const DoctorNavigationContent = createBottomTabNavigator(
       },
     },
     test: {
-      // screen: QuestionnairePP,
-      screen: LandingPageScreen,
+      screen: QuestionnairePP,
+      // screen: LandingPageScreen,
       // screen: FindADoctor,
       // screen: DmzSignupV2,
       // screen: DmzloginV2,
+      // screen: Collapsible,
       navigationOptions: {
         tabBarIcon: ({focused, tintColor}) => {
           return (
