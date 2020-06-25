@@ -11,6 +11,8 @@ import RadialGradient from 'react-native-radial-gradient';
 import TopNavBar from '../../../components/molecules/TopNavBar/TopNavBar';
 import CurrentDoctorContainer from '../../../components/molecules/AvailDoctorContainer/CurrentDoctorContainer';
 import {useDispatch, useSelector} from 'react-redux';
+import {useBackHandler} from '@react-native-community/hooks';
+
 import {
   View,
   Animated,
@@ -20,6 +22,7 @@ import {
   Text,
   FlatList,
   Dimensions,
+  BackHandler,
 } from 'react-native';
 import {
   fetchDoctorLite,
@@ -35,6 +38,7 @@ import {GetPatientInfo} from '../../../redux/action/patientAccountAction';
 import _ from 'lodash';
 import LinearGradient from 'react-native-linear-gradient';
 import {PRIMARY_COLOR, HEADER_TEXT} from '../../../styles/colors';
+import Toast from 'react-native-root-toast';
 
 export default function LandingPageScreen({navigation}) {
   const height = Dimensions.get('window').height;
@@ -67,6 +71,8 @@ export default function LandingPageScreen({navigation}) {
   } = useSelector((state) => state.DoctorReducer);
   const {isLogedin, isDoctor, data} = useSelector((state) => state.AuthReducer);
   const [activeId, setActiveId] = useState('');
+  const [toastVisible, setToastVisible] = useState(false);
+  const [backCount, setBackCount] = useState(true);
   const [page, setPage] = useState(0);
   const [toggle, setToggle] = useState(0);
   const [disEnd, setDisEnd] = useState(0);
@@ -124,6 +130,35 @@ export default function LandingPageScreen({navigation}) {
       dispatch(fetchSuperDoc(0));
     }
   };
+
+  // useBackHandler(() => {
+  //   if (backCount) {
+  //     setToastVisible(true);
+  //     setBackCount(false);
+  //     setTimeout(() => {
+  //       setToastVisible(false);
+  //     }, 2000);
+  //     console.log('in');
+  //     return true;
+  //   }
+  //   console.log('out');
+  //   // BackHandler.exitApp();
+  //   return false;
+  // });
+  // BackHandler.addEventListener('hardwareBackPress', function () {
+  //   if (backCount) {
+  //     setToastVisible(true);
+  //     setBackCount(false);
+  //     setTimeout(() => {
+  //       setToastVisible(false);
+  //     }, 2000);
+  //     console.log('in');
+  //     return true;
+  //   }
+  //   console.log('out');
+  //   BackHandler.exitApp();
+  //   return true;
+  // });
 
   const scrollAnimation = async (e) => {
     var vel = e.nativeEvent.velocity.y;
@@ -211,7 +246,16 @@ export default function LandingPageScreen({navigation}) {
             flex: 1,
             height: '100%',
           }}>
+          <Toast
+            visible={toastVisible}
+            position={height * 0.9}
+            shadow={true}
+            animation={true}
+            hideOnPress={true}>
+            Press again to Exit
+          </Toast>
           <TopNavBar
+            hideLeftComp={true}
             onLeftButtonPress={() => {}}
             // onRightButtonPress={() => {}}
             navigation={navigation}
@@ -339,7 +383,6 @@ export default function LandingPageScreen({navigation}) {
               </ScrollView>
             </View>
           </Animated.View>
-
           <Section
             style={{
               Container: {

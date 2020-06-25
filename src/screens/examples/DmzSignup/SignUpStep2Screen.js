@@ -114,10 +114,12 @@ export default function SignUpStep2Screen(props) {
         </TouchableOpacity>
         <TextInputIcon
           placeholder="Registration Number"
+          keyboardType="numbers-and-punctuation"
           inputHandler={handleRegistrationNumber}
           placeholderTextColor="rgba(0, 0, 0, 0.15)"
           style={styles.inputStyle}
           textStyle={styles.textStyle}
+          maxLength={15}
         />
 
         <TextInputIcon

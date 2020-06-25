@@ -25,6 +25,7 @@ function AnimInput(props) {
     style,
     inputHandler = () => {},
     value,
+    maxLength,
   } = props;
 
   useEffect(() => {
@@ -49,7 +50,7 @@ function AnimInput(props) {
       }).start();
     }
   };
-  const handleText = text => {
+  const handleText = (text) => {
     setInputText(text);
     inputHandler(text);
   };
@@ -99,6 +100,7 @@ function AnimInput(props) {
         onBlur={onBlur}
         value={inputText}
         onChangeText={handleText}
+        maxLength={maxLength}
       />
     </View>
   );
