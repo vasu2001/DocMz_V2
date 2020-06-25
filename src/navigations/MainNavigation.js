@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {createAppContainer} from 'react-navigation';
 
 import {createStackNavigator} from 'react-navigation-stack';
@@ -16,9 +16,7 @@ import SelectFiles from '../screens/patient/questionnaire/SelectFiles';
 import {useSelector} from 'react-redux';
 import WaitingRoom from '../screens/patient/waitingRoom/WaitingRoom';
 import DoctorProfile from '../screens/examples/DoctorProfile/DoctorProfile';
-
 // check for login status
-const isDoctorLogin = true;
 // const {isDoctor, isLogedin} = useSelector(state => state.AuthReducer)
 
 // const PageNavigation = createAnimatedSwitchNavigator(
@@ -42,6 +40,13 @@ const isDoctorLogin = true;
 //     headerMode: 'none',
 //   },
 // );
+var isDoctorLogin = false;
+(function GetAuth() {
+  // const {isDoctor} = useSelector((state) => state.AuthReducer);
+  console.log('!!!!!!!!!!!!!!  ', isDoctorLogin);
+  // isDoctorLogin = isDoctor;
+  // return isDoctor;
+})();
 
 const docMainStream = createStackNavigator(
   {
@@ -77,7 +82,9 @@ const questionnaire = createStackNavigator(
 const MainNavigation = createStackNavigator(
   {
     authentication: AuthNavigation,
+    // pageNavigation: DoctorNavigation,
     pageNavigation: isDoctorLogin ? DoctorNavigation : PatientNavigation,
+    // pageNavigation: GetAuth ? DoctorNavigation : PatientNavigation,
     docPatientStrem: docMainStream,
     question: questionnaire,
     selectFiles: SelectFiles,

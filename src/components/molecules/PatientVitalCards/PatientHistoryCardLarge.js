@@ -5,7 +5,11 @@ import Graph from '../../atoms/Graphs/Graphs';
 import DmzText from '../../atoms/DmzText/DmzText';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Entypo from 'react-native-vector-icons/Entypo';
-import {PRIMARY_TEXT} from '../../../styles/colors';
+import {
+  PRIMARY_TEXT,
+  TERTIARY_TEXT,
+  PRIMARY_COLOR,
+} from '../../../styles/colors';
 
 export default function PatientHistoryCardLarge({
   style,
@@ -55,7 +59,7 @@ export default function PatientHistoryCardLarge({
           text={infoTwo}
         />
         <TouchableOpacity onPress={onPress} style={{marginRight: 10}}>
-          <Entypo name="chevron-right" size={22} color="#FF7A59" />
+          <Entypo name="chevron-right" size={22} color="#E7E3FE" />
         </TouchableOpacity>
       </View>
     </View>
@@ -76,19 +80,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     paddingBottom: 10,
-    alignItems: 'center',
+    alignItems: 'baseline',
     justifyContent: 'space-between',
     paddingLeft: 20,
   },
   HeaderOne: {
-    color: '#9D9D9D',
+    color: TERTIARY_TEXT,
     fontSize: 16,
     paddingLeft: 10,
     paddingTop: 8,
     fontWeight: '500',
   },
   HeaderTwo: {
-    color: '#9D9D9D',
+    color: TERTIARY_TEXT,
     fontSize: 18,
     paddingLeft: 30,
     lineHeight: 20,
@@ -96,20 +100,19 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   InfoOne: {
-    color:  PRIMARY_TEXT,
-    fontSize: 25.5,
+    color: PRIMARY_COLOR,
+    fontSize: 24,
     marginRight: 5,
     paddingTop: 8,
     width: 'auto',
   },
   InfoTwo: {
-    color:  PRIMARY_TEXT,
+    color: PRIMARY_COLOR,
     fontSize: 18,
     paddingLeft: 10,
   },
-
   InfoThree: {
-    color:  PRIMARY_TEXT,
+    color: PRIMARY_TEXT,
     fontSize: 13,
     lineHeight: 16,
     paddingTop: 8,

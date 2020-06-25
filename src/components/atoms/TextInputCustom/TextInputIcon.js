@@ -23,6 +23,7 @@ function TextInputIcon({
   textStyle,
   size,
   inputHandler,
+  secureTextEntry = false,
 }) {
   return (
     <View
@@ -47,6 +48,7 @@ function TextInputIcon({
         textContentType={textContentType}
         placeholder={placeholder}
         placeholderTextColor={placeholderTextColor}
+        secureTextEntry={secureTextEntry}
         keyboardType={keyboardType}
         onChangeText={(text) => inputHandler(text)}
         style={[textStyle ? textStyle : null]}

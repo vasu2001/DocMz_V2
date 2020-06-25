@@ -141,6 +141,7 @@ const DoctorNavigationContent = createBottomTabNavigator(
     test: {
       screen: QuestionnairePP,
       // screen: LandingPageScreen,
+      // screen: DoctorProfile,
       // screen: FindADoctor,
       // screen: DmzSignupV2,
       // screen: DmzloginV2,
@@ -174,7 +175,7 @@ const DoctorNavigationContent = createBottomTabNavigator(
   },
   {
     // tabBarComponent: props => <BottomTabs {...props} />,
-    initialRouteName: 'test',
+    // initialRouteName: 'test',
     order: ['homeScreen', 'chats', 'doctorProfile', 'test', 'settings'],
     tabBarOptions: {
       showLabel: false,

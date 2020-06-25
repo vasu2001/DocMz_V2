@@ -1,17 +1,22 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {HEADER_TEXT} from '../../../styles/colors';
 
-export default function CircularButton({style}) {
+export default function CircularButton({style, onPress}) {
   return (
-    <View>
+    // <View>
+    <TouchableOpacity
+      onPress={onPress}
+      style={[styles.Btn, style ? style : null]}>
       <MaterialCommunityIcons
         name="check"
-        style={[styles.Btn, style ? style : null]}
+        style={{width: '100%', height: '100%'}}
         color="white"
         size={40}
       />
-    </View>
+    </TouchableOpacity>
+    // </View>
   );
 }
 
@@ -20,11 +25,7 @@ const styles = StyleSheet.create({
     width: 70,
     borderRadius: 35,
     height: 70,
-    backgroundColor: '#6859A2',
-    position: 'absolute',
-    bottom: -105,
-    alignSelf: 'center',
-    alignContent: 'center',
+    backgroundColor: HEADER_TEXT,
     padding: 15,
   },
 });

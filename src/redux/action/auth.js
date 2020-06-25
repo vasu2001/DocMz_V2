@@ -29,10 +29,11 @@ const REMOVE_APPOINTMENT = 'REMOVE_APPOINTMENT';
 const STOP_LOADING = 'STOP_LOADING';
 
 const saveNewUser = (data, type) => {
+  console.log(type.localeCompare('patient'));
   return {
     type: SAVE_USER,
     userData: data,
-    userType: type.localeCompare('doctor') === 0,
+    userType: type.localeCompare('doctor') === 1,
   };
 };
 const haveingError = (err) => {
@@ -120,16 +121,22 @@ export const LoginPatient = (data, success, failed) => {
         } else {
           failed({
             status: false,
-            message: 'something went wrong!! try again',
+            // message: 'something went wrong!! try again',
+            message: result.data.error,
           });
-          dispatch(haveingError({error: 'something went wrong'}));
+          console.log('error 2');
+
+          // dispatch(haveingError({error: 'something went wrong'}));
+          dispatch(haveingError(result.data.error));
         }
       })
       .catch((err) => {
         failed({
           status: false,
-          message: 'something went wrong!! try again',
+          // message: 'something went wrong!! try again',
+          message: err,
         });
+        console.log('error 1', err);
         dispatch(haveingError(err));
       });
   };
@@ -150,7 +157,7 @@ export const LoginDoctor = (data, success, failed) => {
       'Content-Type': 'application/x-www-form-urlencoded',
       Accept: '*/*',
     };
-
+    console.log('1111111111111111111111111', data);
     axios
       .post(`${Host}/doctors/authenticate`, data, config)
       .then((result) => {
@@ -173,21 +180,27 @@ export const LoginDoctor = (data, success, failed) => {
         } else {
           failed({
             status: false,
-            message: 'something went wrong!! try again',
+            // message: 'something went wrong!! try again',
+            message: result.data.error,
           });
+          // dispatch(stoptLoading());
           dispatch(
             haveingError({
               error: 'something went wrong',
             }),
           );
+          // dispatch(haveingError(result.data.error));
         }
       })
       .catch((err) => {
         // console.log('****************** in err *****************', err)
         failed({
+          status: false,
           // message: 'Incorrect Email and/or password'
-          message: 'something went wrong',
+          // message: 'something went wrong',
+          message: err,
         });
+        // dispatch(stoptLoading());
         dispatch(haveingError(err));
       });
   };

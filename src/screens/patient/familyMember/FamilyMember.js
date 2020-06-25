@@ -36,7 +36,7 @@ if (Platform.OS === 'android') {
 
 const FamilyMember = ({navigation}) => {
   const {familyMember, isPatientAccountReducerLoading, patient} = useSelector(
-    state => state.PatientAccountReducer,
+    (state) => state.PatientAccountReducer,
   );
   const [showPopup, setShowPopup] = useState(false);
   const dispatch = useDispatch();
@@ -99,7 +99,11 @@ const FamilyMember = ({navigation}) => {
               {familyMember === null ? (
                 <Text>No member found</Text>
               ) : isPatientAccountReducerLoading ? (
-                <ActivityIndicator size={20} color={'#000'} />
+                <ActivityIndicator
+                  size={25}
+                  color={'#000'}
+                  style={{alignSelf: 'center', width: '100%'}}
+                />
               ) : (
                 familyMember.map(({firstName, relationship}) => (
                   <Person name={firstName} relationship={relationship} />
@@ -133,7 +137,7 @@ const FamilyMember = ({navigation}) => {
                   withAnim={false}
                   placeholder="First name"
                   style={{Container: Styles.AnimInputContainer}}
-                  inputHandler={txt => setState({...state, firstName: txt})}
+                  inputHandler={(txt) => setState({...state, firstName: txt})}
                 />
               </View>
               <View style={Styles.InputContainer}>
@@ -141,7 +145,7 @@ const FamilyMember = ({navigation}) => {
                   withAnim={false}
                   placeholder="Last name"
                   style={{Container: Styles.AnimInputContainer}}
-                  inputHandler={txt => setState({...state, lastName: txt})}
+                  inputHandler={(txt) => setState({...state, lastName: txt})}
                 />
               </View>
               <View style={Styles.InputContainer}>
@@ -149,7 +153,7 @@ const FamilyMember = ({navigation}) => {
                   withAnim={false}
                   placeholder="Email"
                   style={{Container: Styles.AnimInputContainer}}
-                  inputHandler={txt => setState({...state, email: txt})}
+                  inputHandler={(txt) => setState({...state, email: txt})}
                 />
               </View>
               <View style={Styles.InputContainer}>
@@ -157,7 +161,7 @@ const FamilyMember = ({navigation}) => {
                   withAnim={false}
                   placeholder="phone"
                   style={{Container: Styles.AnimInputContainer}}
-                  inputHandler={txt => setState({...state, phone: txt})}
+                  inputHandler={(txt) => setState({...state, phone: txt})}
                 />
               </View>
               <View style={Styles.InputContainer}>
@@ -165,7 +169,7 @@ const FamilyMember = ({navigation}) => {
                   withAnim={false}
                   placeholder="Gender"
                   style={{Container: Styles.AnimInputContainer}}
-                  inputHandler={txt => setState({...state, gender: txt})}
+                  inputHandler={(txt) => setState({...state, gender: txt})}
                 />
               </View>
               <View style={Styles.InputContainer}>
@@ -173,7 +177,7 @@ const FamilyMember = ({navigation}) => {
                   withAnim={false}
                   placeholder="Birth date"
                   style={{Container: Styles.AnimInputContainer}}
-                  inputHandler={txt => setState({...state, birthdate: txt})}
+                  inputHandler={(txt) => setState({...state, birthdate: txt})}
                 />
               </View>
               <View style={Styles.InputContainer}>
@@ -181,7 +185,9 @@ const FamilyMember = ({navigation}) => {
                   withAnim={false}
                   placeholder="Relationship"
                   style={{Container: Styles.AnimInputContainer}}
-                  inputHandler={txt => setState({...state, relationship: txt})}
+                  inputHandler={(txt) =>
+                    setState({...state, relationship: txt})
+                  }
                 />
               </View>
               <View
