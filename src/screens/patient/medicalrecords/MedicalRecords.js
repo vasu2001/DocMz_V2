@@ -41,6 +41,7 @@ import Counter from '../../../components/molecules/Counter/Counter';
 import {TouchableOpacity, ScrollView} from 'react-native-gesture-handler';
 import FancyHeaderLite from '../../../components/organisms/FancyHeaderLite/FancyHeaderLite';
 import Container from '../../../components/organisms/Container/Container';
+import {PRIMARY_COLOR, TERTIARY_TEXT} from '../../../styles/colors';
 function MedicalRecords({navigation}) {
   const [showAddRecord, setShowAddRecord] = useState(false);
   const [review, setReview] = useState(false);
@@ -55,8 +56,8 @@ function MedicalRecords({navigation}) {
       return true;
     }
 
-    navigation.goBack();
-    return true;
+    // navigation.goBack();
+    return false;
   });
 
   return (
@@ -223,9 +224,11 @@ function MedicalRecords({navigation}) {
               </View>
               <AnimInput
                 placeholder="Start Date"
+                keyboardType={'phone-pad'}
                 style={{Container: {height: 60, marginTop: 20}}}
               />
               <AnimInput
+                keyboardType={'phone-pad'}
                 placeholder="End Date (optional)"
                 style={{Container: {height: 60, marginTop: 20}}}
               />
@@ -246,6 +249,23 @@ function MedicalRecords({navigation}) {
                 <Counter />
                 <Counter />
               </View>
+              {/* <DmzButton
+                text="Add"
+                style={{
+                  Container: {
+                    elevation: 0,
+                    backgroundColor: PRIMARY_COLOR,
+                    width: 80,
+                    borderRadius: 30,
+                    marginTop: 20,
+                    alignSelf: 'center',
+                  },
+                  Text: {
+                    color: '#fff',
+                    fontSize: 16,
+                  },
+                }}
+              /> */}
             </ScrollView>
           </BasicCard>
         </Overlay>

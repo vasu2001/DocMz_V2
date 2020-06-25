@@ -7,6 +7,7 @@ import {
   Animated,
   Easing,
   Image,
+  BackHandler,
 } from 'react-native';
 import SolidHeader from '../../../components/organisms/SolidHeader/SolidHeader';
 import RatingStarts from '../../../components/atoms/ratingStars/RatingStarts';
@@ -27,6 +28,7 @@ function DoctorProfile(props) {
   const dimen = useRef(new Animated.Value(0)).current;
   const opacity = useRef(new Animated.Value(0)).current;
   useEffect(() => {
+    BackHandler.removeEventListener();
     Animated.sequence([
       Animated.timing(dimen, {
         toValue: 1,
@@ -61,6 +63,16 @@ function DoctorProfile(props) {
       }
     }
   };
+
+  BackHandler.addEventListener('hardwareBackPress', () => {
+    navigation.navigate(
+      'pageNavigation',
+      {},
+      navigation.navigate({routeName: 'Home'}),
+    );
+    return true;
+  });
+
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       <SolidHeader
@@ -86,7 +98,7 @@ function DoctorProfile(props) {
           navigation.navigate(
             'pageNavigation',
             {},
-            navigation.navigate({routeName: 'patientHomePage'}),
+            navigation.navigate({routeName: 'Home'}),
           );
         }}
         onRightButtonPress={() => {}}
