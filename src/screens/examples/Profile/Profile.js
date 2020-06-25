@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
 import {
   View,
@@ -14,26 +15,28 @@ import {ScrollView} from 'react-native-gesture-handler';
 import {useDispatch, useSelector} from 'react-redux';
 import {UploadProfilePic} from '../../../redux/action/patientAccountAction';
 
-function Profile() {
+function Profile({navigation}) {
   const dispatch = useDispatch();
   const {data} = useSelector((state) => state.AuthReducer);
   const {patient} = useSelector((state) => state.PatientAccountReducer);
   const dimen = useWindowDimensions();
   const screenWidth = dimen.width;
   const [inputFields, setInputFields] = useState({
-    name: '',
-    phone: '',
-    email: '',
-    sex: '',
-    dob: '',
-    bloodGroup: '',
-    height: '',
-    weight: '',
+    name: data.name ? data.name : '',
+    phone: data.phone ? data.phone : '',
+    email: data.email ? data.email : '',
+    sex: data.sex ? data.sex : '',
+    dob: data.dob ? data.dob : '',
+    bloodGroup: data.bloodGroup ? data.bloodGroup : '',
+    height: data.height.val ? data.height.val : '',
+    weight: data.weight.val ? data.weight.val : '',
   });
+
   useEffect(() => {
     console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
     // const {name, phone, email, sex, dob, bloodGroup, height, weight} = patient;
     console.log(patient);
+    console.log('###########', data);
     // console.log(patient.name);
     // console.log(patient.phone);
     // console.log(patient.email);
@@ -134,8 +137,9 @@ function Profile() {
               justifyContent: 'center',
               alignSelf: 'stretch',
             }}
-            // onPress={}
-          >
+            onPress={() => {
+              navigation.navigate('Home');
+            }}>
             <FontAwesome size={30} color={'#ff1f75'} name="angle-left" />
           </TouchableOpacity>
           <Text style={{fontSize: 18, marginLeft: 15}}>Profile</Text>
@@ -188,43 +192,99 @@ function Profile() {
           }}>
           <AnimInput
             placeholder="Name"
+            inputHandler={(txt) => setInputFields({...data, name: txt})}
             value={inputFields.name}
-            style={{Container: {marginBottom: 5, borderBottomWidth: 0.5}}}
+            style={{
+              Container: {
+                marginBottom: 5,
+                borderBottomWidth: 0.5,
+                marginTop: 20,
+              },
+            }}
           />
           <AnimInput
             placeholder="Contact Number"
+            inputHandler={(txt) => setInputFields({...data, phone: txt})}
             value={inputFields.phone}
-            style={{Container: {marginBottom: 5, borderBottomWidth: 0.5}}}
+            style={{
+              Container: {
+                marginBottom: 5,
+                borderBottomWidth: 0.5,
+                marginTop: 20,
+              },
+            }}
           />
           <AnimInput
             placeholder="Email Id"
+            inputHandler={(txt) => setInputFields({...data, email: txt})}
             value={inputFields.email}
-            style={{Container: {marginBottom: 5, borderBottomWidth: 0.5}}}
+            style={{
+              Container: {
+                marginBottom: 5,
+                borderBottomWidth: 0.5,
+                marginTop: 20,
+              },
+            }}
           />
           <AnimInput
             placeholder="Gender"
+            inputHandler={(txt) => setInputFields({...data, sex: txt})}
             value={inputFields.sex}
-            style={{Container: {marginBottom: 5, borderBottomWidth: 0.5}}}
+            style={{
+              Container: {
+                marginBottom: 5,
+                borderBottomWidth: 0.5,
+                marginTop: 20,
+              },
+            }}
           />
           <AnimInput
             placeholder="Date of Birth"
+            inputHandler={(txt) => setInputFields({...data, dob: txt})}
             value={inputFields.dob}
-            style={{Container: {marginBottom: 5, borderBottomWidth: 0.5}}}
+            style={{
+              Container: {
+                marginBottom: 5,
+                borderBottomWidth: 0.5,
+                marginTop: 20,
+              },
+            }}
           />
           <AnimInput
             placeholder="Blood Group"
+            inputHandler={(txt) => setInputFields({...data, bloodGroup: txt})}
             value={inputFields.bloodGroup}
-            style={{Container: {marginBottom: 5, borderBottomWidth: 0.5}}}
+            style={{
+              Container: {
+                marginBottom: 5,
+                borderBottomWidth: 0.5,
+                marginTop: 20,
+              },
+            }}
           />
           <AnimInput
-            placeholder="Height"
+            placeholder="Height (in cm)"
+            inputHandler={(txt) => setInputFields({...data, height: txt})}
             value={inputFields.height}
-            style={{Container: {marginBottom: 5, borderBottomWidth: 0.5}}}
+            style={{
+              Container: {
+                marginBottom: 5,
+                borderBottomWidth: 0.5,
+                marginTop: 20,
+              },
+            }}
           />
           <AnimInput
-            placeholder="Weight"
+            placeholder="Weight (in Kgs)"
+            inputHandler={(txt) => setInputFields({...data, weight: txt})}
             value={inputFields.weight}
-            style={{Container: {marginBottom: 5, borderBottomWidth: 0.5}}}
+            style={{
+              Container: {
+                marginBottom: 5,
+                borderBottomWidth: 0.5,
+                marginTop: 20,
+              },
+            }}
           />
 
           <TouchableOpacity

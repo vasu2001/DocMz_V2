@@ -18,7 +18,7 @@ import {
   HEADER_TEXT,
   PRIMARY_COLOR,
 } from '../../../styles/colors';
-import {AccessToken, LoginManager} from 'react-native-fbsdk';
+import {AccessToken, LoginManager, LoginButton} from 'react-native-fbsdk';
 import {GoogleSignin, statusCodes} from '@react-native-community/google-signin';
 import auth from '@react-native-firebase/auth';
 
@@ -159,7 +159,6 @@ export default function SignUpStep1Screen(props) {
           }}
           textStyle={[styles.textStyle, {width: '83%'}]}
         />
-
         <View
           style={{
             width: '50%',
@@ -181,6 +180,18 @@ export default function SignUpStep1Screen(props) {
                     );
                     AccessToken.getCurrentAccessToken().then((data) => {
                       console.log(data.accessToken.toString());
+                      fetch(
+                        'https://graph.facebook.com/v2.5/me?fields=email,name,friends&access_token=' +
+                          data.accessToken.toString(),
+                      )
+                        .then((response) => response.json())
+                        .then((json) => {
+                          // Some user object has been set up somewhere, build that user here
+                          console.log(json);
+                        })
+                        .catch(() => {
+                          alert('ERROR GETTING DATA FROM FACEBOOK');
+                        });
                     });
                   }
                 },
