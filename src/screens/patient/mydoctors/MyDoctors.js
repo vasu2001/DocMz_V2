@@ -55,7 +55,7 @@ const MyDoctors = ({navigation}) => {
             color="#000"
             style={{marginTop: '50%'}}
           />
-        ) : patient.favourites.length ? (
+        ) : !patient.favourites.length ? (
           <NotFound />
         ) : (
           <FlatList

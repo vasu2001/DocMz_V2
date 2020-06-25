@@ -145,14 +145,21 @@ function DocProfileLite({navigation}) {
         ])}>
         <FancyHeader
           profileMode={true}
-          leftButtonClick={() => navigation.navigate('Home')}
-          rightButtonClick={() =>
+          // leftButtonClick={() => navigation.navigate('Home')}
+          leftButtonClick={() =>
             navigation.navigate(
               'pageNavigation',
               {},
               navigation.navigate({routeName: 'patientHomePage'}),
             )
           }
+          // rightButtonClick={() =>
+          //   navigation.navigate(
+          //     'pageNavigation',
+          //     {},
+          //     navigation.navigate({routeName: 'patientHomePage'}),
+          //   )
+          // }
           navigation={navigation}
           style={{
             Container: DoctorDetailsScreenStyles.HeaderContainer,

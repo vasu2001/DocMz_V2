@@ -8,7 +8,7 @@ import Notepad from '../../../assets/svg/notepad.svg';
 import Height from '../../../assets/svg/height.svg';
 import Temp from '../../../assets/svg/temprature.svg';
 import Microscope from '../../../assets/svg/microscope.svg';
-import {PRIMARY_TEXT} from '../../../styles/colors';
+import {PRIMARY_TEXT, TERTIARY_TEXT} from '../../../styles/colors';
 
 export default function PatientHistoryCardSmall({
   style,
@@ -37,7 +37,7 @@ export default function PatientHistoryCardSmall({
           style={[styles.HeaderOne, style ? style.HeaderOne : null]}
           text={headerOne}
         />
-        {getIcon()}
+        {/* {getIcon()} */}
       </View>
       <View style={styles.Container}>
         <DmzText
@@ -59,7 +59,7 @@ export default function PatientHistoryCardSmall({
           text={infoThree}
         />
         <TouchableOpacity onPress={onPress} style={{marginRight: 10}}>
-          <Entypo name="chevron-right" size={22} color="#FF7A59" />
+          <Entypo name="chevron-right" size={22} color="#E7E3FE" />
         </TouchableOpacity>
       </View>
     </View>
@@ -82,14 +82,14 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   HeaderOne: {
-    color: '#9D9D9D',
+    color: TERTIARY_TEXT,
     fontSize: 16,
     paddingLeft: 10,
     paddingTop: 8,
     fontWeight: '500',
   },
   HeaderTwo: {
-    color: '#9D9D9D',
+    color: TERTIARY_TEXT,
     fontSize: 13,
     paddingLeft: 10,
     lineHeight: 16,

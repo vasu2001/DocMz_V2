@@ -14,7 +14,12 @@ function Counter() {
     <View style={Styles.Container}>
       <CounterButton type={1} onPress={onDec} />
       <View style={Styles.LabelContainer}>
-        <DmzText text={value} lite gap_small style={{color: '#666'}} />
+        <DmzText
+          text={value}
+          lite
+          gap_small
+          style={{color: '#666', fontSize: 14}}
+        />
       </View>
       <CounterButton type={0} onPress={onInc} />
     </View>
@@ -28,7 +33,7 @@ const Styles = StyleSheet.create({
   },
   LabelContainer: {
     alignSelf: 'flex-end',
-    width: 60,
+    width: 40,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
     alignItems: 'center',

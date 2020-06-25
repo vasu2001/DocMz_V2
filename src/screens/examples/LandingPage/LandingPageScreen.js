@@ -15,14 +15,11 @@ import {
   View,
   Animated,
   Easing,
-  StyleSheet,
   ScrollView,
   ActivityIndicator,
   Text,
-  TouchableWithoutFeedback,
   FlatList,
   Dimensions,
-  PanResponder,
 } from 'react-native';
 import {
   fetchDoctorLite,
@@ -30,7 +27,6 @@ import {
   searchDoctors,
   fetchSuperDoc,
 } from '../../../redux/action/doctoreAction';
-import {getSpecialty} from '../../../redux/action/doctor/myDoctorAction';
 import {
   RowLoader,
   ListingWithThumbnailLoader,
@@ -38,29 +34,27 @@ import {
 import {GetPatientInfo} from '../../../redux/action/patientAccountAction';
 import _ from 'lodash';
 import LinearGradient from 'react-native-linear-gradient';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {PRIMARY_COLOR, HEADER_TEXT} from '../../../styles/colors';
 
 export default function LandingPageScreen({navigation}) {
   const height = Dimensions.get('window').height;
   const DocCards = ['Family Physicians', 'Pulmonologist', 'Family Physicians'];
-  const AllDocs = [
-    'Dropkin Jared',
-    'Co Ekaterine',
-    'Martin Chein',
-    'Dropkin Jared',
-    'Co Ekaterine',
-    'Martin Chein',
-    'Dropkin Jared',
-    'Co Ekaterine',
-    'Martin Chein',
-  ];
-  const AvailDocs = ['Martin Chein', 'Co Ekaterine', 'Dropkin Jared'];
+  // const AllDocs = [
+  //   'Dropkin Jared',
+  //   'Co Ekaterine',
+  //   'Martin Chein',
+  //   'Dropkin Jared',
+  //   'Co Ekaterine',
+  //   'Martin Chein',
+  //   'Dropkin Jared',
+  //   'Co Ekaterine',
+  //   'Martin Chein',
+  // ];
 
   const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
   const [searchKey, setSearchKey] = useState('');
   const PopupTranslateY = useRef(new Animated.Value(0)).current;
-  const [lclSpecialty, setLclSpecialty] = useState('');
   const dispatch = useDispatch();
   const {
     doctors,
@@ -71,15 +65,12 @@ export default function LandingPageScreen({navigation}) {
     superDocsLoading,
     superDocs,
   } = useSelector((state) => state.DoctorReducer);
-  const {specialtyLoading, specialty} = useSelector(
-    (state) => state.MyDoctorReducer,
-  );
   const {isLogedin, isDoctor, data} = useSelector((state) => state.AuthReducer);
   const [activeId, setActiveId] = useState('');
   const [page, setPage] = useState(0);
   const [toggle, setToggle] = useState(0);
   const [disEnd, setDisEnd] = useState(0);
-  const [trigger, setTrigger] = useState(false);
+  const [trigger, setTrigger] = useState(true);
   var __id = '';
 
   if (isDoctor && isLogedin) navigation.navigate('doctorHomePage');
@@ -87,16 +78,10 @@ export default function LandingPageScreen({navigation}) {
   useEffect(() => {
     dispatch(fetchDoctorLite('', 0, false));
     isLogedin && dispatch(GetPatientInfo(data.id));
-    Animated.timing(headerPos, {toValue: 200, duration: 2000}).start();
-  }, []);
-  const headerPos = useRef(new Animated.Value(0)).current;
-    dispatch(getSpecialty());
+    console.log('123456789');
   }, []);
 
-  const handleSpecialityFetch = (specialty) => {
-    dispatch(fetchDoctorLite({specialty: specialty.toLowerCase()}, 0, false));
-    setLclSpecialty(specialty.toLowerCase());
-  };
+  const headerPos = useRef(new Animated.Value(0)).current;
   const onPress = (id) => {
     setActiveId(id);
     __id = id;
@@ -123,13 +108,7 @@ export default function LandingPageScreen({navigation}) {
   };
   const fetch = () => {
     let val = page + 1;
-    dispatch(
-      fetchMoreDoctorLite(
-        lclSpecialty && {specialty: lclSpecialty},
-        page,
-        false,
-      ),
-    );
+    dispatch(fetchMoreDoctorLite(page, false));
     setPage(val);
   };
 
@@ -146,297 +125,261 @@ export default function LandingPageScreen({navigation}) {
     }
   };
 
-  const panResponder = PanResponder.create({
-    onStartShouldSetPanResponder: () => false,
-    onMoveShouldSetPanResponder: () => true,
-    onPanResponderGrant: (e, gestureState) => {
-      // console.log(gestureState.dy);
-    },
-    onPanResponderMove: (e, gestureState) => {
-      // console.log(gestureState.dy);
-    },
-    onPanResponderRelease: (e, gestureState) => {
-      console.log(gestureState.moveY);
-      // console.log(height);
-      console.log(headerPos);
-      // if (gestureState.dy > 100) {
-      //   Animated.timing(headerPos, {
-      //     toValue: height * 0.45,
-      //     // useNativeDriver: true,
-      //   }).start();
-      // } else {
-      //   Animated.timing(headerPos, {
-      //     toValue: height * 0.25,
-      //     // useNativeDriver: true,
-      //   }).start();
-      // }
-    },
-  });
+  const scrollAnimation = async (e) => {
+    var vel = e.nativeEvent.velocity.y;
+    if (vel < 0) {
+      console.log('in');
+      Animated.timing(headerPos, {
+        toValue: 350,
+        duration: 1000,
+        useNativeDriver: false,
+        // easing: Easing.linear,
+      }).start();
+    } else {
+      Animated.timing(headerPos, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: false,
+        easing: Easing.linear,
+      }).start();
+    }
+  };
 
   const headerTop = headerPos.interpolate({
-    inputRange: [0, 200],
-    outputRange: [height * 0.4, height * 0.2],
+    inputRange: [0, 100],
+    outputRange: [height * 0.4, height * 0.22],
     extrapolate: 'clamp',
-    //  easing: Easing.sin,
+    useNativeDriver: false,
+    easing: Easing.linear,
   });
   const headerView = headerPos.interpolate({
-    inputRange: [0, 200],
+    inputRange: [0, 350],
     outputRange: [height * 0.25, 0],
     extrapolate: 'clamp',
-    easing: Easing.circle,
+    easing: Easing.linear,
+    useNativeDriver: false,
   });
   const headerViewStyle = headerPos.interpolate({
-    inputRange: [0, 150],
+    inputRange: [0, 50],
     outputRange: [1, 0],
     extrapolate: 'clamp',
-    // easing: Easing.sin,
+    easing: Easing.linear,
+    useNativeDriver: true,
   });
   const headerViewStyle2 = headerPos.interpolate({
     inputRange: [0, 100],
-    outputRange: [0, 1],
+    outputRange: [0, 60],
     extrapolate: 'clamp',
-    //  easing: Easing.linear,
+    easing: Easing.linear,
+    useNativeDriver: true,
   });
 
   return (
-    <View style={{flex: 1, backgroundColor: '#fff'}}>
-      <Animated.View
-        style={{
-          width: '100%',
-          height: headerTop,
-        }}>
-        <RadialGradient
-          style={{width: '100%', height: '100%', zIndex: 0}}
-          colors={['#DEF1F9', '#C0E0EC', '#95CCE0']}
-          stops={[0.0, 0.2, 0.75]}
-          center={[130, 100]}
-          radius={200}
-        />
-      </Animated.View>
-      <View
-        style={{
-          position: 'absolute',
-          flex: 1,
-          height: '100%',
-        }}>
-        <TopNavBar
-          onLeftButtonPress={() => {}}
-          // onRightButtonPress={() => {}}
-          navigation={navigation}
-          style={{
-            Container: {
-              height: '5%',
-              marginTop: 5,
-            },
-          }}
-        />
-        {/* <Animated.View
-          style={{
-            height: headerViewStyle2,
-            opacity: headerViewStyle2,
-            // transform: [{scale: headerViewStyle2}],
-          }}>
-          <Text
-            style={{
-              color: '#007E96',
-              fontSize: 36,
-              fontWeight: 'bold',
-              letterSpacing: 1,
-              width: '100%',
-              textAlign: 'center',
-            }}>
-            Find A Doctor
-          </Text>
-        </Animated.View> */}
-
-        <View
-          style={{
-            flexDirection: 'row',
-            paddingHorizontal: 25,
-            height: '20%',
-            alignItems: 'center',
-            width: '100%',
-          }}>
-          <View>
-            <Text
-              style={{
-                color: '#007E96',
-                fontSize: 20,
-                lineHeight: 32,
-                letterSpacing: 0.8,
-              }}>
-              Find a
-            </Text>
-            <Text
-              style={{
-                color: '#007E96',
-                fontSize: 42,
-                lineHeight: 48,
-                fontWeight: 'bold',
-                letterSpacing: 1,
-              }}>
-              Doctor
-            </Text>
-          </View>
-          <View style={{marginLeft: 'auto'}}>
-            <ToggleButton
-              toggle={toggle}
-              onToggle={onToggle}
-              text0="NOW"
-              text1="SCHEDULE"
-              style={{paddingVertical: 4, width: 150}}
-              textStyle={{
-                fontSize: 13,
-                color: '#007E96',
-                fontWeight: 'bold',
-                width: '95%',
-                textAlign: 'center',
-              }}
-              btnStyle={{
-                width: 80,
-              }}
-              dotStyle={{
-                backgroundColor: '#FF9B31',
-                height: 25,
-                width: '35%',
-              }}
-            />
-          </View>
-        </View>
+    <View style={{flex: 1, backgroundColor: '#F4F3FF'}}>
+      <LinearGradient
+        start={{x: 0, y: 0}}
+        end={{x: 80, y: 0}}
+        useAngle
+        angle={120}
+        colors={[
+          // 'rgba(255, 255, 255, 0.9)',
+          // 'rgba(255, 255, 255, 0.9)',
+          // '#E9E5FF',
+          '#ffffff00',
+          '#ffffff00',
+        ]}
+        style={{flex: 1}}>
         <Animated.View
           style={{
-            height: headerView,
-            justifyContent: 'center',
-            opacity: headerViewStyle,
-            transform: [{scale: headerViewStyle}],
-            // backgroundColor: 'pink',
+            width: '100%',
+            height: headerTop,
+            borderBottomRightRadius: headerViewStyle2,
+            borderBottomLeftRadius: headerViewStyle2,
+            overflow: 'hidden',
           }}>
-          <View
-            style={{
-              height: '8%',
-              // marginTop: '12%',
-
-          <SearchBarSolid
-            withIcon
-            placeholderTextColor={'#44A1B4'}
-            icon={<Filter height={24} width={24} color={'#000'} />}
-            onEndEditing={onEndEditing}
-            onChangeText={onChangeText}
+          <RadialGradient
+            style={{width: '100%', height: '100%', zIndex: 0}}
+            colors={['#F8F7FF', '#E9E5FF']}
+            stops={[0.0, 0.2, 0.75]}
+            center={[130, 100]}
+            radius={200}
           />
-        </View>
+        </Animated.View>
         <View
           style={{
-            height: 'auto',
+            position: 'absolute',
+            flex: 1,
+            height: '100%',
           }}>
-          <ScrollView
-            horizontal
-            style={{zIndex: 99999}}
-            contentContainerStyle={{
-              paddingTop: '4%',
-              paddingBottom: 0,
-              paddingHorizontal: 25,
-              justifyContent: 'center',
-            }}>
-            <SearchBarSolid
-              withIcon
-              placeholderTextColor={'#44A1B4'}
-              icon={<Filter height={24} width={24} color={'#000'} />}
-              onEndEditing={onEndEditing}
-              onChangeText={onChangeText}
-            />
-          </View>
+          <TopNavBar
+            onLeftButtonPress={() => {}}
+            // onRightButtonPress={() => {}}
+            navigation={navigation}
+            style={{
+              Container: {
+                height: '5%',
+                marginTop: 5,
+              },
+            }}
+          />
           <View
             style={{
-              height: 'auto',
-              marginTop: 10,
+              flexDirection: 'row',
+              paddingHorizontal: 25,
+              height: '20%',
+              alignItems: 'center',
+              width: '100%',
             }}>
-            <ScrollView
-              horizontal
-              style={{zIndex: 99999}}
-              contentContainerStyle={{
-                paddingTop: '7%',
-                paddingBottom: 12,
-                paddingHorizontal: 25,
-              }}>
-              {DocCards.map((u, i) => {
-                return (
-            {specialty.map((u, i) => {
-              return (
-                <TouchableOpacity
-                  style={{paddingVertical: 10}}
-                  onPress={() => {
-                    handleSpecialityFetch(u);
-                  }}>
-                  <BasicCard
-                    style={{
-                      CardContainer: {
-                        elevation: 6,
-                        justifyContent: 'space-around',
-                        paddingHorizontal: 25,
-                        height: 120,
-                        borderRadius: 30,
-                        maxWidth: 200,
-                      },
-                    }}>
-                    <Fontisto name="doctor" size={30} color={'#FF7A59'} />
-                    <Text
-                      style={{
-                        fontSize: 18,
-                        color: '#007E96',
-                        fontWeight: 'bold',
-                      }}>
-                      {u}
-                    </Text>
-                  </BasicCard>
-                );
-              })}
-            </ScrollView>
+            <View>
+              <Text
+                style={{
+                  color: PRIMARY_COLOR,
+                  fontSize: 20,
+                  lineHeight: 32,
+                  letterSpacing: 0.8,
+                }}>
+                Find a
+              </Text>
+              <Text
+                style={{
+                  // color: '#5c6bc0',
+                  color: HEADER_TEXT,
+                  fontSize: 42,
+                  lineHeight: 48,
+                  fontWeight: 'bold',
+                  letterSpacing: 1,
+                }}>
+                Doctor
+              </Text>
+            </View>
+            <View style={{marginLeft: 'auto'}}>
+              <ToggleButton
+                toggle={toggle}
+                onToggle={onToggle}
+                text0="NOW"
+                text1="SCHEDULE"
+                style={{paddingVertical: 4, width: 150}}
+                textStyle={{
+                  fontSize: 13,
+                  color: PRIMARY_COLOR,
+                  fontWeight: 'bold',
+                  width: '95%',
+                  textAlign: 'center',
+                }}
+                btnStyle={{
+                  width: 80,
+                }}
+                dotStyle={{
+                  backgroundColor: PRIMARY_COLOR,
+                  height: 25,
+                  width: '35%',
+                }}
+              />
+            </View>
           </View>
-        </Animated.View>
-                      {u.slice(0, 12).concat('...')}
-                    </Text>
-                  </BasicCard>
-                </TouchableOpacity>
-              );
-            })}
-          </ScrollView>
-        </View>
-        <LinearGradient
-          start={{x: 0, y: 0}}
-          end={{x: 80, y: 0}}
-          useAngle
-          angle={120}
-          colors={[
-            'rgba(2, 126, 151, 0)',
-            'rgba(2, 126, 151, 0)',
-            'rgba(2, 126, 151, 0)',
-            'rgba(2, 126, 151, 0.12)',
-          ]}
-          style={{flex: 1}}>
+          <Animated.View
+            style={{
+              height: headerView,
+              justifyContent: 'center',
+              opacity: headerViewStyle,
+              transform: [{scale: headerViewStyle}],
+              // backgroundColor: 'pink',
+            }}>
+            <View
+              style={{
+                height: '8%',
+                paddingHorizontal: 25,
+                justifyContent: 'center',
+              }}>
+              <SearchBarSolid
+                withIcon
+                placeholderTextColor={PRIMARY_COLOR}
+                icon={<Filter height={24} width={24} color={'#000'} />}
+                onEndEditing={onEndEditing}
+                onChangeText={onChangeText}
+              />
+            </View>
+            <View
+              style={{
+                height: 'auto',
+                marginTop: 10,
+              }}>
+              <ScrollView
+                horizontal
+                style={{zIndex: 99999}}
+                contentContainerStyle={{
+                  paddingTop: '7%',
+                  paddingBottom: 12,
+                  paddingHorizontal: 25,
+                }}>
+                {DocCards.map((u, i) => {
+                  return (
+                    <BasicCard
+                      style={{
+                        CardContainer: {
+                          elevation: 6,
+                          justifyContent: 'space-around',
+                          paddingHorizontal: 25,
+                          height: 120,
+                          borderRadius: 30,
+                        },
+                      }}>
+                      <Fontisto name="doctor" size={30} color={PRIMARY_COLOR} />
+                      <Text
+                        style={{
+                          fontSize: 18,
+                          color: PRIMARY_COLOR,
+                          fontWeight: 'bold',
+                        }}>
+                        {u}
+                      </Text>
+                    </BasicCard>
+                  );
+                })}
+              </ScrollView>
+            </View>
+          </Animated.View>
+
           <Section
             style={{
               Container: {
                 marginBottom: 40,
-                height: 'auto',
+                marginTop: 10,
+                // height: 'auto',
               },
-              Container: {marginBottom: 40, marginTop: 8},
-              Text: {color: '#007E96', fontWeight: '700'},
+              Text: {color: PRIMARY_COLOR, fontWeight: '300'},
             }}
             HeaderText={toggle ? 'Available Doctors' : 'Our Doctors'}>
-            {/* {loading || searchDoctorsLoading || superDocsLoading ? ( */}
-            {false ? (
-              <ListingWithThumbnailLoader />
+            {loading || searchDoctorsLoading || superDocsLoading ? (
+              // {/* {false ? ( }
+              <ListingWithThumbnailLoader style={{marginTop: 20}} />
             ) : searchedDoctors.length && searchKey !== '' ? (
-              <FlatList
+              <AnimatedFlatList
                 // extraData={doctors}
+                keyExtractor={({item, key}) => {
+                  return key;
+                }}
                 data={searchedDoctors}
-                renderItem={({item}) => (
+                onScroll={Animated.event(
+                  [
+                    {
+                      nativeEvent: {
+                        contentOffset: {y: headerPos},
+                      },
+                    },
+                  ],
+                  {useNativeDriver: true},
+                )}
+                onMomentumScrollBegin={scrollAnimation}
+                scrollEventThrottle={16}
+                renderItem={({item, index}) => (
                   <AvailDoctorContainerV2
                     toggle={toggle}
                     data={item}
                     navigation={navigation}
                     onPress={() => onPress(item._id)}
                     id={item._id}
+                    index={index}
                     name={item.basic.name.slice(0, 15).concat('...')}
                     // schedule={item.output.filter(
                     //   it => it.bookedFor.slice(0, 10) === '2020-05-07',
@@ -446,18 +389,19 @@ export default function LandingPageScreen({navigation}) {
               />
             ) : !toggle ? (
               <AnimatedFlatList
-              <FlatList
-                style={{backgroundColor: 'transparent'}}
                 initialNumToRender={5}
-                // onMomentumScrollBegin={() => setTrigger(false)}
+                onMomentumScrollBegin={() => setTrigger(false)}
                 onEndReached={({distanceFromEnd}) => {
                   console.log('end reached');
                   // if (!trigger) {
                   fetch();
-                  // setTrigger(true);
+                  //   setTrigger(true);
                   // }
                 }}
                 // onScroll={onScroll}
+                keyExtractor={({item, key}) => {
+                  return key;
+                }}
                 onScroll={Animated.event(
                   [
                     {
@@ -466,74 +410,43 @@ export default function LandingPageScreen({navigation}) {
                       },
                     },
                   ],
-                  // {useNativeDriver: true}, // <-- Add this
+                  {useNativeDriver: false},
                 )}
-                onResponderRelease={() => {
-                  console.log('release');
-                }}
+                onScrollEndDrag={scrollAnimation}
                 scrollEventThrottle={16}
                 ListEmptyComponent={
-                  <View>
-                    <View
-                      style={{
-                        height: 300,
-                        marginTop: 30,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        backgroundColor: 'pink',
-                      }}>
-                      <Text>Empty</Text>
-                    </View>
-                    <View
-                      style={{
-                        height: 300,
-                        marginTop: 30,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        backgroundColor: 'pink',
-                      }}>
-                      <Text>Empty</Text>
-                    </View>
-                    <View
-                      style={{
-                        height: 300,
-                        marginTop: 30,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        backgroundColor: 'pink',
-                      }}>
-                      <Text>Empty</Text>
-                    </View>
-                    <View
-                      style={{
-                        height: 300,
-                        marginTop: 30,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        backgroundColor: 'pink',
-                      }}>
-                      <Text>Empty</Text>
-                    </View>
+                  <View
+                    style={{
+                      height: 300,
+                      marginTop: 30,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      backgroundColor: 'pink',
+                    }}>
+                    <Text>Empty</Text>
                   </View>
                 }
                 onEndReachedThreshold={0.1}
                 ListFooterComponent={moreDoctorLoading && <ActivityIndicator />}
                 // extraData={doctors}
                 data={doctors}
-                renderItem={({item}) => (
+                renderItem={({item, index}) => (
                   <AvailDoctorContainerV2
                     toggle={toggle}
                     data={item}
                     navigation={navigation}
                     onPress={() => onPress(item._id)}
                     id={item._id}
+                    index={index}
                     name={item.basic.name.slice(0, 15).concat('...')}
-                    schedule={item.output}
+                    // schedule={item.output.filter(
+                    //   o => o.bookedFor.slice(0, 10) === '2020-05-07',
+                    // )}
                   />
                 )}
               />
             ) : (
-              <FlatList
+              <AnimatedFlatList
                 initialNumToRender={5}
                 ListEmptyComponent={
                   <View
@@ -547,6 +460,21 @@ export default function LandingPageScreen({navigation}) {
                 }
                 // ListFooterComponent={moreDoctorLoading && <ActivityIndicator />}
                 // extraData={doctors}
+                keyExtractor={({item, key}) => {
+                  return key;
+                }}
+                onScroll={Animated.event(
+                  [
+                    {
+                      nativeEvent: {
+                        contentOffset: {y: headerPos},
+                      },
+                    },
+                  ],
+                  {useNativeDriver: false},
+                )}
+                onScrollEndDrag={scrollAnimation}
+                scrollEventThrottle={16}
                 data={superDocs}
                 renderItem={({item}) => (
                   <AvailDoctorContainerV2
@@ -564,8 +492,8 @@ export default function LandingPageScreen({navigation}) {
               />
             )}
           </Section>
-        </LinearGradient>
-      </View>
+        </View>
+      </LinearGradient>
     </View>
   );
 }

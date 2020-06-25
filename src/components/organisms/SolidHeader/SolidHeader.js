@@ -23,11 +23,12 @@ function SolidHeader({children, style}) {
         style ? style.Container : null,
       ]}>
       <AnimatedRadialGradient
-        colors={['#DEF1F9', '#C0E0EC', '#95CCE0']}
-        stops={[0.0, 0.15, 0.2]}
+        colors={['#F8F7FF', '#E9E5FF']}
+        stops={[0.0, 1]}
         center={[100, 100]}
         radius={200}
-        style={{height: '100%', width: '100%'}}></AnimatedRadialGradient>
+        style={{height: '100%', width: '100%'}}
+      />
     </View>
   );
 }

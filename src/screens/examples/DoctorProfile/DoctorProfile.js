@@ -17,6 +17,11 @@ import DmzText from '../../../components/atoms/DmzText/DmzText';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSelector} from 'react-redux';
 import TopNavBar from '../../../components/molecules/TopNavBar/TopNavBar';
+import {
+  HEADER_TEXT,
+  PRIMARY_COLOR,
+  TERTIARY_TEXT,
+} from '../../../styles/colors';
 function DoctorProfile(props) {
   const {navigation} = props;
   const dimen = useRef(new Animated.Value(0)).current;
@@ -27,14 +32,14 @@ function DoctorProfile(props) {
         toValue: 1,
         delay: 200,
         duration: 500,
-        easing: Easing.elastic(),
+        easing: Easing.ease,
         useNativeDriver: false,
       }),
       Animated.timing(opacity, {
         toValue: 1,
         delay: 200,
         duration: 500,
-        easing: Easing.back(),
+        easing: Easing.ease,
         useNativeDriver: true,
       }),
     ]).start();
@@ -61,7 +66,7 @@ function DoctorProfile(props) {
       <SolidHeader
         style={{
           Container: {
-            height: '40%',
+            // height: '40%',
             position: 'absolute',
             borderBottomRightRadius: 70,
             height: dimen.interpolate({
@@ -73,10 +78,17 @@ function DoctorProfile(props) {
               outputRange: ['0%', '100%'],
             }),
           },
-        }}></SolidHeader>
+        }}
+      />
       <TopNavBar
         style={{Container: {marginTop: 5}}}
-        onLeftButtonPress={() => {}}
+        onLeftButtonPress={() => {
+          navigation.navigate(
+            'pageNavigation',
+            {},
+            navigation.navigate({routeName: 'patientHomePage'}),
+          );
+        }}
         onRightButtonPress={() => {}}
       />
       <Animated.View
@@ -87,9 +99,10 @@ function DoctorProfile(props) {
             fontWeight: '700',
             alignSelf: 'center',
             lineHeight: 36,
-            color: 'rgba(0,126,150,1)',
+            color: HEADER_TEXT,
+            textTransform: 'capitalize',
           }}>
-          Dr.{data.basic.name}
+          Dr. {data.basic.name}
         </Text>
         <Text
           style={{
@@ -97,7 +110,8 @@ function DoctorProfile(props) {
             fontWeight: '500',
             alignSelf: 'center',
             lineHeight: 22,
-            color: 'rgba(0,126,150,0.8)',
+            color: PRIMARY_COLOR,
+            textTransform: 'capitalize',
           }}>
           {data.specialty}
         </Text>
@@ -106,7 +120,7 @@ function DoctorProfile(props) {
             rating={4}
             size={14}
             filled
-            activeColor={'#FD906A'}
+            activeColor={PRIMARY_COLOR}
             passiveColor={'#EBFAFF'}
           />
         </View>
@@ -175,21 +189,37 @@ function DoctorProfile(props) {
             justifyContent: 'center',
           }}>
           <View style={Styles.DoctorProfilePatientDetails}>
-            <Fontisto name="doctor" size={32} color="#007E96" />
-            <View style={{marginLeft: 8}}>
-              <Text style={{color: '#007E96', fontSize: 15}}>1.5K</Text>
-              <Text style={{color: '#007E96', fontSize: 12}}>Patients</Text>
+            <Fontisto name="doctor" size={32} color={PRIMARY_COLOR} />
+            <View style={{marginLeft: 15}}>
+              <Text
+                style={{
+                  color: PRIMARY_COLOR,
+                  fontSize: 24,
+                  fontWeight: 'bold',
+                }}>
+                1.5K
+              </Text>
+              <Text style={{color: PRIMARY_COLOR, fontSize: 12}}>Patients</Text>
             </View>
           </View>
           <View style={Styles.DoctorProfileExperienceDetails}>
             <MaterialCommunityIcons
               name="timer-sand"
               size={30}
-              color="#007E96"
+              color={PRIMARY_COLOR}
             />
-            <View style={{marginLeft: 8}}>
-              <Text style={{color: '#007E96', fontSize: 15}}>5 Years</Text>
-              <Text style={{color: '#007E96', fontSize: 12}}>Experience</Text>
+            <View style={{marginLeft: 15}}>
+              <Text
+                style={{
+                  color: PRIMARY_COLOR,
+                  fontSize: 24,
+                  fontWeight: 'bold',
+                }}>
+                5 Years
+              </Text>
+              <Text style={{color: PRIMARY_COLOR, fontSize: 12}}>
+                Experience
+              </Text>
             </View>
           </View>
         </View>
@@ -199,7 +229,7 @@ function DoctorProfile(props) {
           <View style={{alignItems: 'center', justifyContent: 'flex-end'}}>
             <Text
               style={{
-                color: '#FD906A',
+                color: PRIMARY_COLOR,
                 fontSize: 16,
                 lineHeight: 16,
                 fontWeight: '700',
@@ -211,7 +241,7 @@ function DoctorProfile(props) {
                 height: 6,
                 width: 6,
                 borderRadius: 6,
-                backgroundColor: '#FD906A',
+                backgroundColor: PRIMARY_COLOR,
                 marginBottom: -8,
                 marginTop: 2,
               }}
@@ -220,7 +250,7 @@ function DoctorProfile(props) {
           <View>
             <Text
               style={{
-                color: '#aaa',
+                color: TERTIARY_TEXT,
                 fontSize: 16,
                 lineHeight: 16,
                 fontWeight: '500',
@@ -231,7 +261,7 @@ function DoctorProfile(props) {
           <View>
             <Text
               style={{
-                color: '#aaa',
+                color: TERTIARY_TEXT,
                 fontSize: 16,
                 lineHeight: 16,
                 fontWeight: '500',
@@ -242,7 +272,7 @@ function DoctorProfile(props) {
           <View>
             <Text
               style={{
-                color: '#aaa',
+                color: TERTIARY_TEXT,
                 fontSize: 16,
                 lineHeight: 16,
                 fontWeight: '500',
@@ -252,8 +282,9 @@ function DoctorProfile(props) {
           </View>
         </View>
         <ScrollView style={Styles.DoctorInfoScroll}>
-          <View style={{flex: 1, paddingHorizontal: 25}}>
-            <Text style={{letterSpacing: 0.3, lineHeight: 20}}>
+          <View style={{flex: 1, paddingHorizontal: 20}}>
+            <Text
+              style={{letterSpacing: 0.3, lineHeight: 20, color: HEADER_TEXT}}>
               Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sedLorem
               ipsum dolor sit amet, consetetur sadipscing elitr, sed Lorem ipsum
               dolor sit amet, consetetur sadipscing elitr, sed Lorem ipsum dolor
@@ -274,7 +305,7 @@ function DoctorProfile(props) {
             height: 40,
             width: 180,
             borderRadius: 40,
-            backgroundColor: '#FD906A',
+            backgroundColor: PRIMARY_COLOR,
             alignItems: 'center',
             justifyContent: 'center',
             elevation: 5,
