@@ -28,7 +28,7 @@ function QuestionnairePP() {
 
   useEffect(() => {
     !gettingQuestionnaire && dispatch(GetQuestion(id));
-    !gettingQuestionnaire && setLocalQuestion(questions);
+    // !gettingQuestionnaire && setLocalQuestion(questions);
   }, []);
 
   return (
@@ -84,7 +84,7 @@ export default QuestionnairePP;
 const QuestionController = ({questions, nested, nextQuestionParent}) => {
   console.log('called');
   const [count, setCount] = useState(0);
-  const [root, setRoot] = useState(false);
+  const [root, setRoot] = useState(true);
   const ScrollRef = useRef(null);
   useEffect(() => {
     console.log('mounted');
@@ -92,7 +92,7 @@ const QuestionController = ({questions, nested, nextQuestionParent}) => {
     const root = questions.every((item) => item.root);
     setRoot(root);
     console.log('root', root);
-  });
+  }, [questions, count]);
   const nextQuestion = () => {
     if (count < questions.length - 1) {
       // const root = questions.every((item) => item.root);
@@ -115,20 +115,20 @@ const QuestionController = ({questions, nested, nextQuestionParent}) => {
   //   }
   // };
 
-  if (root) {
-    return (
-      <>
-        <ScrollView
-          ref={ScrollRef}
-          onContentSizeChange={() => {
-            ScrollRef.current.scrollToEnd({animated: true});
-          }}>
-          <QuestionViewer
-            question={questions[count]}
-            nextQuestion={nextQuestion}
-          />
-        </ScrollView>
-        <View style={{marginBottom: 30}}>
+  return (
+    <>
+      <ScrollView
+        ref={ScrollRef}
+        onContentSizeChange={() => {
+          ScrollRef.current.scrollToEnd({animated: true});
+        }}>
+        <QuestionViewer
+          question={questions[count]}
+          nextQuestion={nextQuestion}
+        />
+      </ScrollView>
+      <View style={{marginBottom: 30}}>
+        {root && (
           <TouchableOpacity
             style={{
               backgroundColor: '#AAA4C5',
@@ -149,6 +149,8 @@ const QuestionController = ({questions, nested, nextQuestionParent}) => {
               Skip
             </Text>
           </TouchableOpacity>
+        )}
+        {root && (
           <StepsTracker
             incompletedColor={'#fff'}
             completedColor={'#9C77BC'}
@@ -156,14 +158,8 @@ const QuestionController = ({questions, nested, nextQuestionParent}) => {
             completed={((count + 1) / questions.length) * 100}
             textStyle={{fontSize: 20, fontWeight: 'bold', color: '#9C77BC'}}
           />
-        </View>
-      </>
-    );
-  }
-
-  return (
-    <>
-      <QuestionViewer question={questions[count]} nextQuestion={nextQuestion} />
+        )}
+      </View>
     </>
   );
 };
@@ -171,11 +167,11 @@ const QuestionViewer = ({question, nextQuestion}) => {
   const [currentOptionId, setCurrentOptionId] = useState('');
   const [filteredLinkedQuestion, setFilteredLinkedQuestion] = useState([]);
 
-  // useState(() => {
-  //   setFilteredLinkedQuestion([]); //
-  //   ///deal with state,,
-  //   //state is getting persist that's why the previous question is remains on there
-  // }, []);
+  useEffect(() => {
+    setFilteredLinkedQuestion([]);
+    ///deal with state,,
+    //state is getting persist that's why the previous question is remains on there
+  }, []);
   const onSetCurrentOptionId = (id) => {
     console.log(id);
     setCurrentOptionId(id);
@@ -205,7 +201,7 @@ const QuestionViewer = ({question, nextQuestion}) => {
       marginTop: question && question.root ? 0 : 10,
     },
   ];
-  console.log(question);
+
   return (
     <View style={customViewStyle}>
       <Text style={customTitleStyle}>{question ? question.title : ''}</Text>

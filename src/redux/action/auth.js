@@ -33,7 +33,7 @@ const saveNewUser = (data, type) => {
   return {
     type: SAVE_USER,
     userData: data,
-    userType: type.localeCompare('doctor') === 1,
+    userType: type.localeCompare('doctor') === 0,
   };
 };
 const haveingError = (err) => {
@@ -122,19 +122,19 @@ export const LoginPatient = (data, success, failed) => {
           failed({
             status: false,
             // message: 'something went wrong!! try again',
-            message: result.data.error,
+            message: result.data.error.slice(0, 20),
           });
           console.log('error 2');
 
           // dispatch(haveingError({error: 'something went wrong'}));
-          dispatch(haveingError(result.data.error));
+          dispatch(haveingError(result.data.error.slice(0, 20)));
         }
       })
       .catch((err) => {
         failed({
           status: false,
-          // message: 'something went wrong!! try again',
-          message: err,
+          message: 'something went wrong!! try again',
+          // message: err.slice(0, 20),
         });
         console.log('error 1', err);
         dispatch(haveingError(err));
@@ -181,7 +181,7 @@ export const LoginDoctor = (data, success, failed) => {
           failed({
             status: false,
             // message: 'something went wrong!! try again',
-            message: result.data.error,
+            message: result.data.error.slice(0, 20),
           });
           // dispatch(stoptLoading());
           dispatch(
@@ -197,8 +197,8 @@ export const LoginDoctor = (data, success, failed) => {
         failed({
           status: false,
           // message: 'Incorrect Email and/or password'
-          // message: 'something went wrong',
-          message: err,
+          message: 'something went wrong',
+          // message: err.slice(0, 20),
         });
         // dispatch(stoptLoading());
         dispatch(haveingError(err));

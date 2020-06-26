@@ -10,8 +10,6 @@ const initialState = {
 const AuthReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'SAVE_USER':
-      console.log('SAVE_USER');
-      console.log('cgfhjnm;lk', action.userType);
       return {
         ...state,
         isDoctor: action.userType,

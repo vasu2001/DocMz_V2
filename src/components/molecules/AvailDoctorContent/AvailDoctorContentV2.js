@@ -50,11 +50,14 @@ function AvailDoctorContentV2({
           <View style={CardContentStyles.AvailableDoctorsAvailableTimes}>
             {schedule &&
               schedule
-                .filter(
-                  (item) =>
-                    item.bookedFor.slice(11, 16) >
-                    new Date().toISOString().slice(11, 16),
-                )
+                .filter((item) => {
+                  if (item.bookedFor) {
+                    return (
+                      item.bookedFor.slice(11, 16) >
+                      new Date().toISOString().slice(11, 16)
+                    );
+                  } else false;
+                })
                 .slice(0, 4)
                 .map((item) => {
                   console.log(item);

@@ -62,7 +62,7 @@ export default function DmzLoginV2(props) {
   };
   const successCallback = (successResponce) => {
     showTost(successResponce.message.toString(), () => {
-      props.navigation.navigate('pageNavigation');
+      props.navigation.navigate('PatientHomePage');
     });
   };
 
