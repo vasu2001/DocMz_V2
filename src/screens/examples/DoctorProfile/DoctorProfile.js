@@ -6,6 +6,7 @@ import {
   ScrollView,
   Animated,
   Easing,
+  Image,
 } from 'react-native';
 import SolidHeader from '../../../components/organisms/SolidHeader/SolidHeader';
 import RatingStarts from '../../../components/atoms/ratingStars/RatingStarts';
@@ -14,7 +15,15 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import ProfilePic from '../../../components/atoms/ProfilePic/ProfilePic';
 import DmzText from '../../../components/atoms/DmzText/DmzText';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-function DoctorProfile() {
+import {useSelector} from 'react-redux';
+import TopNavBar from '../../../components/molecules/TopNavBar/TopNavBar';
+import {
+  HEADER_TEXT,
+  PRIMARY_COLOR,
+  TERTIARY_TEXT,
+} from '../../../styles/colors';
+function DoctorProfile(props) {
+  const {navigation} = props;
   const dimen = useRef(new Animated.Value(0)).current;
   const opacity = useRef(new Animated.Value(0)).current;
   useEffect(() => {
@@ -23,24 +32,42 @@ function DoctorProfile() {
         toValue: 1,
         delay: 200,
         duration: 500,
-        easing: Easing.elastic(),
+        easing: Easing.ease,
         useNativeDriver: false,
       }),
       Animated.timing(opacity, {
         toValue: 1,
         delay: 200,
         duration: 500,
-        easing: Easing.back(),
+        easing: Easing.ease,
         useNativeDriver: true,
       }),
     ]).start();
   });
+  const {data} = props.navigation.state.params;
+  const authData = useSelector((state) => state.AuthReducer);
+
+  const _checkLogedinAndDoTheStuff = () => {
+    console.log('bug bug ', authData.isLogedin);
+    if (!authData.isLogedin) {
+      console.log('>> authentication.');
+      navigation.navigate('authentication');
+    } else {
+      // navigation.navigate('ConfirmAppointment', {data: data});
+      if (data.toggle === 0) {
+        navigation.navigate('question', {data: data});
+      } else {
+        alert('open schedule popup');
+      }
+    }
+  };
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       <SolidHeader
         style={{
           Container: {
-            height: '40%',
+            // height: '40%',
+            position: 'absolute',
             borderBottomRightRadius: 70,
             height: dimen.interpolate({
               inputRange: [0, 1],
@@ -51,92 +78,158 @@ function DoctorProfile() {
               outputRange: ['0%', '100%'],
             }),
           },
-        }}>
-        <Animated.View
-          style={{flex: 1, opacity: opacity, transform: [{scale: opacity}]}}>
-          <Text
-            style={{
-              fontSize: 36,
-              fontWeight: '700',
-              alignSelf: 'center',
-              lineHeight: 36,
-              color: '#fafafa',
-            }}>
-            Dr.Ekaterine
-          </Text>
-          <Text
-            style={{
-              fontSize: 20,
-              fontWeight: '500',
-              alignSelf: 'center',
-              lineHeight: 22,
-              color: '#f1f1f1',
-            }}>
-            Gynacologist
-          </Text>
-          <View style={{alignSelf: 'center', marginTop: 2}}>
-            <RatingStarts rating={4} size={14} filled />
-          </View>
-        </Animated.View>
-        <Animated.View
+        }}
+      />
+      <TopNavBar
+        style={{Container: {marginTop: 5}}}
+        onLeftButtonPress={() => {
+          navigation.navigate(
+            'pageNavigation',
+            {},
+            navigation.navigate({routeName: 'patientHomePage'}),
+          );
+        }}
+        onRightButtonPress={() => {}}
+      />
+      <Animated.View
+        style={{flex: 1, opacity: opacity, transform: [{scale: opacity}]}}>
+        <Text
           style={{
-            flex: 1.5,
-            flexDirection: 'row',
-            opacity: opacity,
-            transform: [{scale: opacity}],
+            fontSize: 36,
+            fontWeight: '700',
+            alignSelf: 'center',
+            lineHeight: 36,
+            color: HEADER_TEXT,
+            textTransform: 'capitalize',
           }}>
-          <View style={{flex: 3, alignItems: 'center'}}>
-            <ProfilePic
-              style={{
-                Container: {
-                  borderWidth: 10,
-                  borderColor: '#fff',
-                  borderRadius: 15,
-                  height: 180,
-                  width: 180,
-                  bottom: -15,
-                },
-                Image: {
-                  borderRadius: 10,
-                  resizeMode: 'cover',
-                },
-              }}
-              sourceurl={require('../../../assets/jpg/person1.jpg')}
-            />
-          </View>
+          Dr. {data.basic.name}
+        </Text>
+        <Text
+          style={{
+            fontSize: 20,
+            fontWeight: '500',
+            alignSelf: 'center',
+            lineHeight: 22,
+            color: PRIMARY_COLOR,
+            textTransform: 'capitalize',
+          }}>
+          {data.specialty}
+        </Text>
+        <View style={{alignSelf: 'center', marginTop: 2}}>
+          <RatingStarts
+            rating={4}
+            size={14}
+            filled
+            activeColor={PRIMARY_COLOR}
+            passiveColor={'#EBFAFF'}
+          />
+        </View>
+      </Animated.View>
+      <Animated.View
+        style={{
+          flex: 1.5,
+          flexDirection: 'row',
+          opacity: opacity.interpolate({
+            inputRange: [0, 0.99, 1],
+            outputRange: [0, 0.2, 1],
+          }),
+          transform: [
+            {
+              scale: opacity.interpolate({
+                inputRange: [0, 0.99, 1],
+                outputRange: [0, 0.1, 1],
+              }),
+            },
+          ],
+        }}>
+        <View style={{flex: 3, alignItems: 'center'}}>
           <View
             style={{
-              flex: 2,
-              borderBottomRightRadius: 70,
-              justifyContent: 'center',
+              borderWidth: 10,
+              borderColor: '#fff',
+              borderRadius: 20,
+              height: 180,
+              width: 180,
+              bottom: -15,
+              position: 'relative',
             }}>
-            <View style={Styles.DoctorProfilePatientDetails}>
-              <Fontisto name="doctor" size={32} color="#e1e1e1" />
-              <View style={{marginLeft: 8}}>
-                <Text style={{color: '#fff', fontSize: 15}}>1.5K</Text>
-                <Text style={{color: '#e1e1e1', fontSize: 12}}>Patients</Text>
-              </View>
-            </View>
-            <View style={Styles.DoctorProfileExperienceDetails}>
-              <MaterialCommunityIcons
-                name="timer-sand"
-                size={30}
-                color="#e1e1e1"
-              />
-              <View style={{marginLeft: 8}}>
-                <Text style={{color: '#fff', fontSize: 15}}>5 Years</Text>
-                <Text style={{color: '#e1e1e1', fontSize: 12}}>Experience</Text>
-              </View>
+            <Image
+              style={{
+                borderRadius: 15,
+                height: '100%',
+                width: '100%',
+              }}
+              source={require('../../../assets/jpg/person1.jpg')}
+            />
+            <View
+              style={{
+                height: 40,
+                width: 40,
+                borderRadius: 40,
+                borderWidth: 2,
+                borderColor: '#FD906A',
+                alignItems: 'center',
+                justifyContent: 'center',
+                elevation: 1,
+                backgroundColor: '#fff',
+                position: 'absolute',
+                bottom: 0,
+                right: -8,
+                bottom: -8,
+                zIndex: 9999,
+              }}>
+              <MaterialCommunityIcons name="heart" size={24} color="#FD906A" />
             </View>
           </View>
-        </Animated.View>
-      </SolidHeader>
+        </View>
+        <View
+          style={{
+            flex: 2,
+            borderBottomRightRadius: 70,
+            justifyContent: 'center',
+          }}>
+          <View style={Styles.DoctorProfilePatientDetails}>
+            <Fontisto name="doctor" size={32} color={PRIMARY_COLOR} />
+            <View style={{marginLeft: 15}}>
+              <Text
+                style={{
+                  color: PRIMARY_COLOR,
+                  fontSize: 24,
+                  fontWeight: 'bold',
+                }}>
+                1.5K
+              </Text>
+              <Text style={{color: PRIMARY_COLOR, fontSize: 12}}>Patients</Text>
+            </View>
+          </View>
+          <View style={Styles.DoctorProfileExperienceDetails}>
+            <MaterialCommunityIcons
+              name="timer-sand"
+              size={30}
+              color={PRIMARY_COLOR}
+            />
+            <View style={{marginLeft: 15}}>
+              <Text
+                style={{
+                  color: PRIMARY_COLOR,
+                  fontSize: 24,
+                  fontWeight: 'bold',
+                }}>
+                5 Years
+              </Text>
+              <Text style={{color: PRIMARY_COLOR, fontSize: 12}}>
+                Experience
+              </Text>
+            </View>
+          </View>
+        </View>
+      </Animated.View>
       <View style={Styles.ContentContainer}>
         <View style={Styles.ContentContainerTabs}>
           <View style={{alignItems: 'center', justifyContent: 'flex-end'}}>
             <Text
               style={{
-                color: '#F09E4A',
+                color: PRIMARY_COLOR,
                 fontSize: 16,
                 lineHeight: 16,
                 fontWeight: '700',
@@ -148,7 +241,7 @@ function DoctorProfile() {
                 height: 6,
                 width: 6,
                 borderRadius: 6,
-                backgroundColor: '#F09E4A',
+                backgroundColor: PRIMARY_COLOR,
                 marginBottom: -8,
                 marginTop: 2,
               }}
@@ -157,7 +250,7 @@ function DoctorProfile() {
           <View>
             <Text
               style={{
-                color: '#aaa',
+                color: TERTIARY_TEXT,
                 fontSize: 16,
                 lineHeight: 16,
                 fontWeight: '500',
@@ -168,7 +261,7 @@ function DoctorProfile() {
           <View>
             <Text
               style={{
-                color: '#aaa',
+                color: TERTIARY_TEXT,
                 fontSize: 16,
                 lineHeight: 16,
                 fontWeight: '500',
@@ -179,7 +272,7 @@ function DoctorProfile() {
           <View>
             <Text
               style={{
-                color: '#aaa',
+                color: TERTIARY_TEXT,
                 fontSize: 16,
                 lineHeight: 16,
                 fontWeight: '500',
@@ -189,8 +282,9 @@ function DoctorProfile() {
           </View>
         </View>
         <ScrollView style={Styles.DoctorInfoScroll}>
-          <View style={{flex: 1, paddingHorizontal: 25}}>
-            <Text style={{letterSpacing: 0.3, lineHeight: 20}}>
+          <View style={{flex: 1, paddingHorizontal: 20}}>
+            <Text
+              style={{letterSpacing: 0.3, lineHeight: 20, color: HEADER_TEXT}}>
               Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sedLorem
               ipsum dolor sit amet, consetetur sadipscing elitr, sed Lorem ipsum
               dolor sit amet, consetetur sadipscing elitr, sed Lorem ipsum dolor
@@ -206,26 +300,12 @@ function DoctorProfile() {
           flexDirection: 'row',
         }}>
         <TouchableOpacity
-          style={{
-            height: 40,
-            width: 40,
-            borderRadius: 40,
-            borderWidth: 2,
-            borderColor: '#F09E4A',
-            alignItems: 'center',
-            justifyContent: 'center',
-            elevation: 2,
-            backgroundColor: '#fff',
-            marginRight: 8,
-          }}>
-          <MaterialCommunityIcons name="heart" size={28} color="#F09E4A" />
-        </TouchableOpacity>
-        <TouchableOpacity
+          onPress={_checkLogedinAndDoTheStuff}
           style={{
             height: 40,
             width: 180,
             borderRadius: 40,
-            backgroundColor: '#F09E4A',
+            backgroundColor: PRIMARY_COLOR,
             alignItems: 'center',
             justifyContent: 'center',
             elevation: 5,

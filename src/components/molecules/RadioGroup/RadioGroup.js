@@ -4,8 +4,12 @@ import RadioBtn from '../../atoms/RadioBtn/RadioBtn';
 
 function RadioGroup({Item = [], horizontal, activeKey, setActiveKey}) {
   return (
-    <View style={{flexDirection: horizontal && 'row'}}>
-      {Item.map(item =>
+    <View
+      style={{
+        flexDirection: horizontal && 'row',
+        flexWrap: horizontal && 'wrap',
+      }}>
+      {Item.map((item) =>
         item ? (
           <RadioBtn
             key={item.id}

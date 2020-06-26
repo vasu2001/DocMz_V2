@@ -23,9 +23,9 @@ function CounterButton({type, style, onPress}) {
 
 const Styles = StyleSheet.create({
   Container: {
-    height: 15,
-    width: 15,
-    borderRadius: 15,
+    height: 20,
+    width: 20,
+    borderRadius: 20,
     backgroundColor: '#F4C130',
     alignItems: 'center',
     justifyContent: 'center',

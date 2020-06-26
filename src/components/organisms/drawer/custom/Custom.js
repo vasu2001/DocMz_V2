@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, {useEffect} from 'react';
 import {
   View,
@@ -28,7 +29,7 @@ const Navigation = [
   {
     active: true,
     name: 'Family Member',
-    icon: 'user',
+    icon: 'account-group',
     navigateTo: 'FamilyMember',
   },
   {
@@ -97,7 +98,7 @@ const Navigation = [
   {
     active: true,
     name: 'Help',
-    icon: 'help-rhombus-outlin',
+    icon: 'help-rhombus-outline',
     navigateTo: 'Help',
   },
   // {
@@ -114,7 +115,7 @@ const Custom = ({
   phone_num = '8001981993',
   activeItemKey,
 }) => {
-  const {isLogedin, isDoctor, data} = useSelector(state => state.AuthReducer);
+  const {isLogedin, isDoctor, data} = useSelector((state) => state.AuthReducer);
   const dispatch = useDispatch();
   console.log(navigation);
   console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&');
@@ -266,10 +267,10 @@ const Custom = ({
         )}
         {!isLogedin && (
           <ExpandableOption
-            key={'Are you doctor ?'}
+            key={'Sign In'}
             active={!isLogedin}
-            name={'Are you doctor ?'}
-            icon={'doctor'}
+            name={'Sign In'}
+            icon={'door'}
             goto={() => navigation.navigate('loginScreen', {loginAs: 'doctor'})}
             activeItemKey={activeItemKey}
             navigateTo={'loginScreen'}

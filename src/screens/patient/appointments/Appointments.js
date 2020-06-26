@@ -24,7 +24,7 @@ if (Platform.OS === 'android') {
 }
 const Appointments = ({navigation}) => {
   const {patient, isPatientAccountReducerLoading} = useSelector(
-    state => state.PatientAccountReducer,
+    (state) => state.PatientAccountReducer,
   );
   const dispatch = useDispatch();
   const [timeline, setTimeline] = useState(-1);
@@ -32,9 +32,9 @@ const Appointments = ({navigation}) => {
   useEffect(() => {
     !isPatientAccountReducerLoading && dispatch(GetPatientInfo(patient._id));
     console.log('###########################');
-    console.log(patient.appointments);
+    console.log(patient.favourites.length);
   }, []);
-  const onPressRemove = id => {
+  const onPressRemove = (id) => {
     const data = {
       byPatient: false,
       byDoctor: false,
@@ -62,13 +62,15 @@ const Appointments = ({navigation}) => {
           paddingTop: 15,
         }}>
         {isPatientAccountReducerLoading ? (
-          <ActivityIndicator />
-        ) : patient.favourites.length ? (
+          <ActivityIndicator
+            style={{flex: 1, alignSelf: 'center', justifyContent: 'center'}}
+          />
+        ) : !patient.favourites.length ? (
           <NotFound />
         ) : (
           <FlatList
             onEndReached={() => console.log('rech end.......')}
-            data={patient.appointments.filter(item => item.booked)}
+            data={patient.appointments.filter((item) => item.booked)}
             // data={[1, 2, 3, 4, 5, 6, 7, 8, 9]}
             renderItem={({item}) => (
               <TimelineContainer

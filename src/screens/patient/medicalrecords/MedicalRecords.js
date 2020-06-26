@@ -19,7 +19,7 @@
 // export default MedicalRecords
 
 import React, {useState} from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet, Text, BackHandler} from 'react-native';
 import GradientTopNavBar from '../../../components/molecules/TopNavBar/GradientTopNavBar';
 import ProfilePic from '../../../components/atoms/ProfilePic/ProfilePic';
 import Ham from '../../../assets/svg/hamburger.svg';
@@ -38,7 +38,7 @@ import IconsRow from '../../../components/atoms/IconsRow/IconsRow';
 import Dot from '../../../components/atoms/ToggleDot/ToggleDot';
 import VerticleText from '../../../components/atoms/VerticalText/VerticalText';
 import Counter from '../../../components/molecules/Counter/Counter';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {TouchableOpacity, ScrollView} from 'react-native-gesture-handler';
 import FancyHeaderLite from '../../../components/organisms/FancyHeaderLite/FancyHeaderLite';
 import Container from '../../../components/organisms/Container/Container';
 function MedicalRecords({navigation}) {
@@ -47,6 +47,18 @@ function MedicalRecords({navigation}) {
   const onPress = () => {
     setShowAddRecord(true);
   };
+
+  BackHandler.addEventListener('hardwareBackPress', function () {
+    if (showAddRecord) {
+      setShowAddRecord(false);
+
+      return true;
+    }
+
+    navigation.goBack();
+    return true;
+  });
+
   return (
     <View style={Styles.Container}>
       <FancyHeaderLite
@@ -142,78 +154,99 @@ function MedicalRecords({navigation}) {
                 alignItems: null,
                 padding: 20,
                 borderRadius: 20,
-                zIndex: 9999,
+                overflow: 'hidden',
+                // zIndex: 9999,
               },
             }}>
-            <DmzSearchbar
-              style={{marginBottom: 10, marginTop: null, width: '95%'}}
-              placeholder="search medicine"
-            />
-            <DmzText
-              lite
-              type={3}
-              gap_small
-              text="Dose Appearance"
-              style={{color: '#555'}}
-            />
-            <IconsRow
-              Icon={<FontAwesome name="heart" size={20} color="#ccc" />}
-              number={6}
-            />
-            <View style={Styles.ColorContainer}>
-              <View style={{flex: 1}}>
-                <DmzText lite gap_small text="Colors" style={{color: '#777'}} />
+            <ScrollView>
+              <DmzSearchbar
+                style={{marginBottom: 10, marginTop: null, width: '95%'}}
+                placeholder="search medicine"
+              />
+              <DmzText
+                lite
+                type={3}
+                gap_small
+                text="Dose Appearance"
+                style={{color: '#555', marginRight: 15}}>
+                <IconsRow
+                  Icon={
+                    <FontAwesome
+                      name="heart"
+                      size={20}
+                      color="#ccc"
+                      style={{marginHorizontal: 10}}
+                    />
+                  }
+                  number={8}
+                />
+              </DmzText>
+              <View style={Styles.ColorContainer}>
+                <View style={{flex: 1}}>
+                  <DmzText
+                    lite
+                    gap_small
+                    text="Colors"
+                    style={{color: '#777'}}
+                  />
+                </View>
+                <View style={Styles.Colors}>
+                  <Dot style={{height: 10, width: 10}} />
+                  <Dot style={{height: 10, width: 10}} />
+                  <Dot style={{height: 10, width: 10}} />
+                  <Dot style={{height: 10, width: 10}} />
+                  <Dot style={{height: 10, width: 10}} />
+                </View>
               </View>
-              <View style={Styles.Colors}>
-                <Dot style={{height: 10, width: 10}} />
-                <Dot style={{height: 10, width: 10}} />
-                <Dot style={{height: 10, width: 10}} />
-                <Dot style={{height: 10, width: 10}} />
-                <Dot style={{height: 10, width: 10}} />
+              <DmzText
+                lite
+                type={3}
+                style={{color: '#555'}}
+                gap_small
+                text="Take as per needed"
+              />
+              <DmzText
+                lite
+                gap_small
+                text="Schedule"
+                type={3}
+                style={{color: '#555'}}
+              />
+              <View style={Styles.DayContainer}>
+                <VerticleText text={{Top: 'M', Bottom: '7'}} />
+                <VerticleText text={{Top: 'Tu', Bottom: '8'}} />
+                <VerticleText isActive text={{Top: 'W', Bottom: '9'}} />
+                <VerticleText isActive text={{Top: 'Th', Bottom: '10'}} />
+                <VerticleText text={{Top: 'F', Bottom: '11'}} />
+                <VerticleText isActive text={{Top: 'Sa', Bottom: '12'}} />
+                <VerticleText isActive text={{Top: 'Su', Bottom: '13'}} />
               </View>
-            </View>
-            <DmzText
-              lite
-              type={3}
-              style={{color: '#555'}}
-              gap_small
-              text="Take as per needed"
-            />
-            <DmzText
-              lite
-              gap_small
-              text="Schedule"
-              type={3}
-              style={{color: '#555'}}
-            />
-            <View style={Styles.DayContainer}>
-              <VerticleText text={{Top: 'M', Bottom: '7'}} />
-              <VerticleText text={{Top: 'Tu', Bottom: '8'}} />
-              <VerticleText isActive text={{Top: 'W', Bottom: '9'}} />
-              <VerticleText isActive text={{Top: 'Th', Bottom: '10'}} />
-              <VerticleText text={{Top: 'F', Bottom: '11'}} />
-              <VerticleText isActive text={{Top: 'Sa', Bottom: '12'}} />
-              <VerticleText isActive text={{Top: 'Su', Bottom: '13'}} />
-            </View>
-            <AnimInput placeholder="Start Date" />
-            <AnimInput placeholder="End Date (optional)" />
-            <DmzText
-              lite
-              gap_small
-              text="Reminders & Dosage"
-              type={3}
-              style={{color: '#555'}}
-            />
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                marginTop: 20,
-              }}>
-              <Counter />
-              <Counter />
-              <Counter />
-            </View>
+              <AnimInput
+                placeholder="Start Date"
+                style={{Container: {height: 60, marginTop: 20}}}
+              />
+              <AnimInput
+                placeholder="End Date (optional)"
+                style={{Container: {height: 60, marginTop: 20}}}
+              />
+              <DmzText
+                lite
+                gap_small
+                text="Reminders & Dosage"
+                type={3}
+                style={{color: '#555', marginTop: 20}}
+              />
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginTop: 20,
+                }}>
+                <Counter />
+                <Counter />
+                <Counter />
+              </View>
+            </ScrollView>
           </BasicCard>
         </Overlay>
       )}

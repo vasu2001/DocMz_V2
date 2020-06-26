@@ -30,7 +30,7 @@ function AvailDoctorContainer({
         }}>
         <AvailDoctorContent
           toggle={toggle}
-          DoctorName={`Dr.${name}`}
+          DoctorName={`Dr. ${name}`}
           rating={4}
           onPress={onPress}
           Specialization="General Dentist"

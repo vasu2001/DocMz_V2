@@ -10,8 +10,6 @@ const initialState = {
 const AuthReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'SAVE_USER':
-      console.log('SAVE_USER');
-      console.log(action.userData);
       return {
         ...state,
         isDoctor: action.userType,
@@ -23,7 +21,7 @@ const AuthReducer = (state = initialState, action) => {
     case 'HAVEING_ERROR':
       return {
         ...state,
-        error: action.error, 
+        error: action.error,
         isLoading: false,
       };
     case 'LOADING':
@@ -34,8 +32,8 @@ const AuthReducer = (state = initialState, action) => {
     case 'STOP_LOADING':
       return {
         ...state,
-        isLoading: false
-      }
+        isLoading: false,
+      };
     case 'REMOVE_USER':
       return {
         ...state,
@@ -57,7 +55,7 @@ const AuthReducer = (state = initialState, action) => {
       return {
         ...state,
         appointment: state.appointment.filter(
-          xappointment => !xappointment.cancelledByPatient,
+          (xappointment) => !xappointment.cancelledByPatient,
         ),
       };
     default:

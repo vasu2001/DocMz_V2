@@ -1,4 +1,5 @@
-import {createAppContainer, createSwitchNavigator} from 'react-navigation';
+import React, {useEffect} from 'react';
+import {createAppContainer} from 'react-navigation';
 
 import {createStackNavigator} from 'react-navigation-stack';
 import AuthNavigation from './AuthNavigation';
@@ -14,27 +15,48 @@ import AllAnswer from '../screens/patient/questionnaire/AllAnswer';
 import SelectFiles from '../screens/patient/questionnaire/SelectFiles';
 import {useSelector} from 'react-redux';
 import WaitingRoom from '../screens/patient/waitingRoom/WaitingRoom';
-
+import DoctorProfile from '../screens/examples/DoctorProfile/DoctorProfile';
 // check for login status
-const isDoctorLogin = false;
 // const {isDoctor, isLogedin} = useSelector(state => state.AuthReducer)
 
-const PageNavigation = createSwitchNavigator(
-  {
-    patientHomePage: PatientNavigation,
-    doctorHomePage: DoctorNavigation,
-  },
-  {
-    initialRouteName: isDoctorLogin ? 'doctorHomePage' : 'patientHomePage',
-    // initialRouteName: 'doctorHomePage',
-    headerMode: 'none',
-  },
-);
+// const PageNavigation = createAnimatedSwitchNavigator(
+//   {
+//     patientHomePage: PatientNavigation,
+//     doctorHomePage: DoctorNavigation,
+//   },
+//   {
+//     transition: (
+//       <Transition.Together>
+//         <Transition.Out
+//           type="slide-bottom"
+//           durationMs={400}
+//           interpolation="easeIn"
+//         />
+//         <Transition.In type="fade" durationMs={500} />
+//       </Transition.Together>
+//     ),
+//     initialRouteName: isDoctorLogin ? 'doctorHomePage' : 'patientHomePage',
+//     // initialRouteName: 'doctorHomePage',
+//     headerMode: 'none',
+//   },
+// );
+
+function GetAuth({navigation}) {
+  const {isDoctor} = useSelector((state) => state.AuthReducer);
+
+  if (isDoctor) {
+    navigation.replace('DoctorHomePage');
+  } else {
+    navigation.replace('PatientHomePage');
+  }
+  return null;
+}
 
 const docMainStream = createStackNavigator(
   {
     AppointmentsStack: {
-      screen: DocProfileLite,
+      // screen: DocProfileLite,
+      screen: DoctorProfile,
     },
     ConfirmAppointment,
     AppointmentForm,
@@ -64,7 +86,9 @@ const questionnaire = createStackNavigator(
 const MainNavigation = createStackNavigator(
   {
     authentication: AuthNavigation,
-    pageNavigation: PageNavigation,
+    pageNavigation: GetAuth,
+    DoctorHomePage: DoctorNavigation,
+    PatientHomePage: PatientNavigation,
     docPatientStrem: docMainStream,
     question: questionnaire,
     selectFiles: SelectFiles,

@@ -6,14 +6,14 @@ import {resetDataStore} from './dataStore';
 import {resetDoctor} from './doctoreAction';
 import {resetQuestion} from './questionAction';
 
-export const addUserToRedux = data => {
+export const addUserToRedux = (data) => {
   return {
     type: 'AUTHENTICATED',
     data: data,
   };
 };
 
-export const addUserFullData = data => {
+export const addUserFullData = (data) => {
   return {
     type: 'FULLDATA',
     data: data,
@@ -29,13 +29,14 @@ const REMOVE_APPOINTMENT = 'REMOVE_APPOINTMENT';
 const STOP_LOADING = 'STOP_LOADING';
 
 const saveNewUser = (data, type) => {
+  console.log(type.localeCompare('patient'));
   return {
     type: SAVE_USER,
     userData: data,
     userType: type.localeCompare('doctor') === 0,
   };
 };
-const haveingError = err => {
+const haveingError = (err) => {
   return {
     type: ERROR,
     error: err,
@@ -60,14 +61,14 @@ export const removeUser = () => {
   };
 };
 
-const setAppointment = appointment => {
+const setAppointment = (appointment) => {
   return {
     type: SAVE_APPOINTMENT,
     payload: appointment,
   };
 };
 
-const removeAppointment = id => {
+const removeAppointment = (id) => {
   return {
     type: REMOVE_APPOINTMENT,
     payload: id,
@@ -75,7 +76,7 @@ const removeAppointment = id => {
 };
 
 export const resetStore = () => {
-  return async dispatch => {
+  return async (dispatch) => {
     await dispatch(removeUser());
     // await dispatch(resetDoctor())
     await dispatch(resetDataStore());
@@ -83,8 +84,8 @@ export const resetStore = () => {
   };
 };
 
-export const LoginPatient = (data, success, faild) => {
-  return dispatch => {
+export const LoginPatient = (data, success, failed) => {
+  return (dispatch) => {
     // setup loading screen
     dispatch(startLoading());
     console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
@@ -99,7 +100,7 @@ export const LoginPatient = (data, success, faild) => {
 
     axios
       .post(`${Host}/patient/authenticate`, data, config)
-      .then(result => {
+      .then((result) => {
         console.log(result.data);
         if (result.data.status) {
           const data = result.data.user;
@@ -109,6 +110,7 @@ export const LoginPatient = (data, success, faild) => {
             email: data.email,
             phone: data.phone,
             name: data.firstName === undefined ? 'No name' : data.firstName,
+            ...data,
           };
 
           dispatch(saveNewUser(_data, 'patient'));
@@ -117,13 +119,24 @@ export const LoginPatient = (data, success, faild) => {
             message: 'patient add successfully.',
           });
         } else {
-          faild({
+          failed({
             status: false,
-            message: result.data.error,
+            // message: 'something went wrong!! try again',
+            message: result.data.error.slice(0, 20),
           });
+          console.log('error 2');
+
+          // dispatch(haveingError({error: 'something went wrong'}));
+          dispatch(haveingError(result.data.error.slice(0, 20)));
         }
       })
-      .catch(err => {
+      .catch((err) => {
+        failed({
+          status: false,
+          message: 'something went wrong!! try again',
+          // message: err.slice(0, 20),
+        });
+        console.log('error 1', err);
         dispatch(haveingError(err));
       });
   };
@@ -136,18 +149,18 @@ function ValidateEmail(mail) {
   return false;
 }
 
-export const LoginDoctor = (data, success, faild) => {
-  return dispatch => {
+export const LoginDoctor = (data, success, failed) => {
+  return (dispatch) => {
     dispatch(startLoading());
     // setting header
     const config = {
       'Content-Type': 'application/x-www-form-urlencoded',
       Accept: '*/*',
     };
-
+    console.log('1111111111111111111111111', data);
     axios
       .post(`${Host}/doctors/authenticate`, data, config)
-      .then(result => {
+      .then((result) => {
         if (result.data.status) {
           const data = result.data.user;
 
@@ -156,6 +169,7 @@ export const LoginDoctor = (data, success, faild) => {
             name: data.basic.name,
             email: data.email,
             phone: data.phone,
+            ...data,
           };
 
           dispatch(saveNewUser(_data, 'doctor'));
@@ -164,60 +178,57 @@ export const LoginDoctor = (data, success, faild) => {
             message: 'Doctor Login successfully.',
           });
         } else {
-          faild({
+          failed({
             status: false,
-            message: result.data.error,
+            // message: 'something went wrong!! try again',
+            message: result.data.error.slice(0, 20),
           });
+          // dispatch(stoptLoading());
+          dispatch(
+            haveingError({
+              error: 'something went wrong',
+            }),
+          );
+          // dispatch(haveingError(result.data.error));
         }
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log('****************** in err *****************', err)
-        faild({
+        failed({
+          status: false,
           // message: 'Incorrect Email and/or password'
-          message: err,
+          message: 'something went wrong',
+          // message: err.slice(0, 20),
         });
+        // dispatch(stoptLoading());
         dispatch(haveingError(err));
       });
   };
 };
 
 export const signupDoctor = (data, successCallback, errorCallback) => {
-  return dispatch => {
+  return (dispatch) => {
     const config = {
       'Content-Type': 'application/x-www-form-urlencoded',
       Accept: '*/*',
     };
-    const _data = {
-      name: data.name,
-      email: data.email,
-      password: data.password,
-      phone: data.phone,
-      registration_number: data.registration_id,
-      specialty: data.specialty,
-      city: data.city,
-      state: data.state,
-      country: data.country,
-      basic: JSON.stringify({}),
-      appointmentsString: data.appointmentsString,
-      firstName: data.firstName,
-      lastName: data.lastName,
-      referralId: data.referralId,
-    };
+    const _data = data;
 
     console.log(_data);
 
     dispatch(startLoading());
     axios
       .post(`${Host}/doctors/register`, _data, config)
-      .then(result => {
+      .then((result) => {
         // console.log(result);
         if (result.data.status) {
           const __data = {
             mode: 'doctor',
             email: result.data.data.email,
-            name: result.data.data.name,
+            name: result.data.data.basic.name,
             phone: result.data.data.phone,
             id: result.data.data._id,
+            ...result.data.data,
           };
           //   _save(__data);
 
@@ -226,22 +237,22 @@ export const signupDoctor = (data, successCallback, errorCallback) => {
               dispatch(saveNewUser(__data, 'doctor'));
               successCallback();
             })
-            .catch(err => {
-              dispatch(haveingError(err));
+            .catch((err) => {
               errorCallback(err);
+              dispatch(haveingError(err));
             });
         }
         console.log(result.data.status);
       })
-      .catch(err => {
-        dispatch(haveingError(err));
+      .catch((err) => {
         errorCallback(err);
+        dispatch(haveingError(err));
       });
   };
 };
 
 export const signupPatient = (data, successCallback, errorCallback) => {
-  return dispatch => {
+  return (dispatch) => {
     const config = {
       'Content-Type': 'application/x-www-form-urlencoded',
       Accept: '*/*',
@@ -249,15 +260,25 @@ export const signupPatient = (data, successCallback, errorCallback) => {
     dispatch(startLoading());
     axios
       .post(`${Host}/patient/register`, data, config)
-      .then(result => {
+      .then((result) => {
         console.log('result');
         if (result.data.status) {
-          dispatch(stoptLoading());
-          successCallback();
+          const __data = {
+            email: result.data.data.email,
+            name: result.data.data.firstName,
+            phone: result.data.data.phone,
+            id: result.data.data._id,
+            ...result.data.data,
+          };
+          AsyncStorage.setItem('userData', JSON.stringify(__data)).then(() => {
+            dispatch(saveNewUser(__data, 'patient'));
+            successCallback();
+          });
+
           console.log(result.data.status);
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
         dispatch(haveingError(err.message));
         errorCallback(err.message);
@@ -265,26 +286,26 @@ export const signupPatient = (data, successCallback, errorCallback) => {
   };
 };
 
-export const GetAppointmentData = id => {
-  return dispatch => {
+export const GetAppointmentData = (id) => {
+  return (dispatch) => {
     dispatch(startLoading());
     console.log('works...');
     axios
       .get(`${Host}/patient/getinfo/${id}`)
-      .then(result => {
+      .then((result) => {
         if (result.status) {
           console.log(result.data.data.appointments);
           dispatch(setAppointment(result.data.data.appointments));
         }
       })
-      .catch(err => {
+      .catch((err) => {
         dispatch(haveingError(err));
       });
   };
 };
 
-export const RemoveAppointmentData = id => {
-  return async dispatch => {
+export const RemoveAppointmentData = (id) => {
+  return async (dispatch) => {
     const config = {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -299,13 +320,13 @@ export const RemoveAppointmentData = id => {
 
     await axios
       .post(`${Host}/appointment/cancel`, _data, config)
-      .then(result => {
+      .then((result) => {
         if (result.status) {
           console.log('Successfully cancel your appointment.');
           dispatch(removeAppointment(id));
         }
       })
-      .catch(err => {
+      .catch((err) => {
         dispatch(haveingError(err));
       });
   };

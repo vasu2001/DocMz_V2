@@ -31,13 +31,19 @@ function TopNavBar({
           marginTop: 0,
         },
         hideLeftComp && hideRightComp ? {justifyContent: 'center'} : null,
-        style ? style : null,
+        style ? style.Container : null,
       ]}>
       {!hideLeftComp && (
         <TouchableOpacity
           style={Styles.TouchableOpacity}
           onPress={onLeftButtonPress}>
-          {!LeftComp ? <NavBackButton style={Styles.BackButton} /> : LeftComp}
+          {!LeftComp ? (
+            <NavBackButton
+              style={[Styles.BackButton, style ? style.BackButton : null]}
+            />
+          ) : (
+            LeftComp
+          )}
         </TouchableOpacity>
       )}
       <DmzText
@@ -54,7 +60,12 @@ function TopNavBar({
           // onPress={() => onRightButtonPress()}>
           onPress={() => onRightButtonPress()}>
           {!RightComp ? (
-            <NavHamButton style={Styles.HamburgerButton} />
+            <NavHamButton
+              style={[
+                Styles.HamburgerButton,
+                style ? style.HamburgerButton : null,
+              ]}
+            />
           ) : (
             RightComp
           )}
@@ -77,7 +88,7 @@ const Styles = StyleSheet.create({
     padding: 10,
     borderRadius: 20,
   },
-  BackButton: {height: 20},
-  HamburgerButton: {height: 20, width: 20, marginRight: 5},
+  BackButton: {height: 20, marginLeft: 10},
+  HamburgerButton: {height: 20, width: 20, marginRight: 15},
 });
 export default TopNavBar;

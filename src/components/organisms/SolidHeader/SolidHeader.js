@@ -3,23 +3,33 @@ import {StyleSheet, Animated} from 'react-native';
 import TopNavBar from '../../molecules/TopNavBar/TopNavBar';
 import AsyncStorage from '@react-native-community/async-storage';
 import {useSelector} from 'react-redux';
+import RadialGradient from 'react-native-radial-gradient';
+import {View} from 'react-native-animatable';
 
 function SolidHeader({children, style}) {
-  const {theme, isThemeChanging} = useSelector(state => state.themeReducer);
+  const {theme, isThemeChanging} = useSelector((state) => state.themeReducer);
+  const AnimatedRadialGradient = Animated.createAnimatedComponent(
+    RadialGradient,
+  );
+
   return (
-    <Animated.View
+    <View
       style={[
+        {
+          overflow: 'hidden',
+          backgroundColor: 'red',
+        },
         Styles.Container,
-        theme === 1 ? Styles.themeOne : Styles.themeTwo,
         style ? style.Container : null,
       ]}>
-      <TopNavBar
-        style={{marginTop: 15}}
-        onLeftButtonPress={() => {}}
-        onRightButtonPress={() => {}}
+      <AnimatedRadialGradient
+        colors={['#F8F7FF', '#E9E5FF']}
+        stops={[0.0, 1]}
+        center={[100, 100]}
+        radius={200}
+        style={{height: '100%', width: '100%'}}
       />
-      {children}
-    </Animated.View>
+    </View>
   );
 }
 

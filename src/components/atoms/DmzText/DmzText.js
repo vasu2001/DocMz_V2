@@ -10,7 +10,7 @@ import {Text, StyleSheet, View} from 'react-native';
  * * * * * @param {custom styles} param4
  */
 
-const DmzText = props => {
+const DmzText = (props) => {
   const size = [8, 10, 12, 15, 20, 30, 40];
   const weight = [300, 500, 700, 800, 900];
 
@@ -33,6 +33,7 @@ const DmzText = props => {
 
     children,
     style,
+    viewStyle,
   } = props;
 
   const customStyles = [
@@ -54,7 +55,7 @@ const DmzText = props => {
   ];
 
   return (
-    <View style={{flexDirection: 'row'}}>
+    <View style={[{flexDirection: 'row'}, viewStyle ? viewStyle : null]}>
       <Text style={customStyles}>{text}</Text>
       {children}
     </View>

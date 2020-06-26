@@ -8,6 +8,9 @@ const inititalState = {
   allAppointmentLoading: false,
   allAppointments: [],
   allAppointmentFetchError: '',
+  specialtyLoading: false,
+  specialty: [],
+  specialtyLoadingError: '',
 };
 
 const MyDoctorReducer = (state = inititalState, action) => {
@@ -70,6 +73,23 @@ const MyDoctorReducer = (state = inititalState, action) => {
         ...state,
         allAppointmentLoading: false,
         allAppointmentFetchError: action.payload,
+      };
+    case 'SPECIALTY_LOADING':
+      return {
+        ...state,
+        specialtyLoading: true,
+      };
+    case 'SPECIALTY_LOADED':
+      return {
+        ...state,
+        specialtyLoading: false,
+        specialty: action.payload,
+      };
+    case 'SPECIALTY_ERROR':
+      return {
+        ...state,
+        specialtyLoading: false,
+        specialtyLoadingError: action.payload,
       };
     default:
       return state;

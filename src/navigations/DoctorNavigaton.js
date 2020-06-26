@@ -28,7 +28,13 @@ import AddQuestionnaire from '../screens/doctor/AddQuestionnaire/AddQuestionnair
 import QuestionnairePP from '../screens/patient/questionnaire/QuestionnairePP';
 import DoctorProfile from '../screens/examples/DoctorProfile/DoctorProfile';
 import Settings from '../screens/examples/Settings/Settings';
+import LandingPageScreen from '../screens/examples/LandingPage/LandingPageScreen';
 import FindADoctor from '../screens/examples/FindADoctor/FindADoctor';
+// import QuestionViewPager from '../screens/examples/Questions/QuestionViewPager';
+import DmzSignupV2 from '../screens/examples/DmzSignup/DmzSignupV2';
+import DmzloginV2 from '../screens/examples/DmzLogin/DmzloginV2';
+import {createAppContainer} from 'react-navigation';
+
 // import Login from '../screens/examples/Login/Login';
 // import FallBg from '../screens/examples/FallBg/FallBg';
 
@@ -60,7 +66,7 @@ import FindADoctor from '../screens/examples/FindADoctor/FindADoctor';
 
 // export default DoctorNavigation;
 
-export default createBottomTabNavigator(
+const DoctorNavigationContent = createBottomTabNavigator(
   {
     homeScreen: {
       screen: Home,
@@ -119,7 +125,7 @@ export default createBottomTabNavigator(
       },
     },
     doctorProfile: {
-      screen: () => <DoctorProfileNavigator />,
+      screen: () => <DoctorProfileNavigatorContainer />,
       navigationOptions: {
         tabBarIcon: ({focused, tintColor}) => {
           return (
@@ -133,9 +139,13 @@ export default createBottomTabNavigator(
       },
     },
     test: {
-      // screen: QuestionnairePP,
+      screen: QuestionnairePP,
+      // screen: LandingPageScreen,
       // screen: DoctorProfile,
-      screen: FindADoctor,
+      // screen: FindADoctor,
+      // screen: DmzSignupV2,
+      // screen: DmzloginV2,
+      // screen: Collapsible,
       navigationOptions: {
         tabBarIcon: ({focused, tintColor}) => {
           return (
@@ -165,7 +175,7 @@ export default createBottomTabNavigator(
   },
   {
     // tabBarComponent: props => <BottomTabs {...props} />,
-    initialRouteName: 'test',
+    // initialRouteName: 'test',
     order: ['homeScreen', 'chats', 'doctorProfile', 'test', 'settings'],
     tabBarOptions: {
       showLabel: false,
@@ -184,6 +194,11 @@ const DoctorProfileNavigator = createStackNavigator(
     headerMode: 'none',
   },
 );
+const DoctorProfileNavigatorContainer = createAppContainer(
+  DoctorProfileNavigator,
+);
+
+export default createAppContainer(DoctorNavigationContent);
 // const BottomTabs = props => {
 //   console.log('#######------------#########--------#####');
 //   console.log(props.navigation.state);

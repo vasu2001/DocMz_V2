@@ -102,8 +102,8 @@ const Home = ({navigation}) => {
     searchedDoctors,
     superDocsLoading,
     superDocs,
-  } = useSelector(state => state.DoctorReducer);
-  const {isLogedin, isDoctor, data} = useSelector(state => state.AuthReducer);
+  } = useSelector((state) => state.DoctorReducer);
+  const {isLogedin, isDoctor, data} = useSelector((state) => state.AuthReducer);
   const [activeId, setActiveId] = useState('');
   const [page, setPage] = useState(0);
   const [toggle, setToggle] = useState(0);
@@ -123,7 +123,7 @@ const Home = ({navigation}) => {
     isLogedin && dispatch(GetPatientInfo(data.id));
   }, []);
 
-  const onPress = id => {
+  const onPress = (id) => {
     setActiveId(id);
     __id = id;
     Animated.sequence([
@@ -137,7 +137,7 @@ const Home = ({navigation}) => {
     setShowPopup(!showPopup);
   };
 
-  const fetchMore = e => {
+  const fetchMore = (e) => {
     //console.log(`reached end ${e.distanceFromEnd}`);
     setDisEnd(disEnd + e.distanceFromEnd);
     setPage(page + 1);
@@ -164,10 +164,9 @@ const Home = ({navigation}) => {
   };
 
   const onEndEditing = ({nativeEvent}) => {
-    //console.log('ended');
     dispatch(searchDoctors(searchKey, 0));
   };
-  const onChangeText = text => {
+  const onChangeText = (text) => {
     setSearchKey(text);
   };
   const onToggle = () => {
