@@ -11,7 +11,6 @@ import RadialGradient from 'react-native-radial-gradient';
 import TopNavBar from '../../../components/molecules/TopNavBar/TopNavBar';
 import CurrentDoctorContainer from '../../../components/molecules/AvailDoctorContainer/CurrentDoctorContainer';
 import {useDispatch, useSelector} from 'react-redux';
-import {useBackHandler} from '@react-native-community/hooks';
 
 import {
   View,
@@ -131,20 +130,6 @@ export default function LandingPageScreen({navigation}) {
     }
   };
 
-  // useBackHandler(() => {
-  //   if (backCount) {
-  //     setToastVisible(true);
-  //     setBackCount(false);
-  //     setTimeout(() => {
-  //       setToastVisible(false);
-  //     }, 2000);
-  //     console.log('in');
-  //     return true;
-  //   }
-  //   console.log('out');
-  //   // BackHandler.exitApp();
-  //   return false;
-  // });
   // BackHandler.addEventListener('hardwareBackPress', function () {
   //   if (backCount) {
   //     setToastVisible(true);
@@ -181,21 +166,28 @@ export default function LandingPageScreen({navigation}) {
   };
 
   const headerTop = headerPos.interpolate({
-    inputRange: [0, 100],
+    inputRange: [0, 500],
     outputRange: [height * 0.4, height * 0.22],
     extrapolate: 'clamp',
     useNativeDriver: false,
     easing: Easing.linear,
   });
   const headerView = headerPos.interpolate({
-    inputRange: [0, 350],
-    outputRange: [height * 0.25, 0],
+    inputRange: [1, 50],
+    outputRange: [0, 1],
     extrapolate: 'clamp',
     easing: Easing.linear,
     useNativeDriver: false,
   });
+  const headerView2 = headerPos.interpolate({
+    inputRange: [0, 550],
+    outputRange: [0, height * -0.3],
+    extrapolate: 'clamp',
+    easing: Easing.ease,
+    useNativeDriver: false,
+  });
   const headerViewStyle = headerPos.interpolate({
-    inputRange: [0, 50],
+    inputRange: [0, 1],
     outputRange: [1, 0],
     extrapolate: 'clamp',
     easing: Easing.linear,
@@ -208,6 +200,55 @@ export default function LandingPageScreen({navigation}) {
     easing: Easing.linear,
     useNativeDriver: true,
   });
+
+  const getScrollHeader = () => {
+    return (
+      <Animated.View
+        style={{
+          position: 'absolute',
+          width: '90%',
+          marginTop: 25,
+          alignSelf: 'center',
+          opacity: headerView,
+        }}>
+        <TopNavBar
+          hideLeftComp={true}
+          onLeftButtonPress={() => {}}
+          // onRightButtonPress={() => {}}
+          navigation={navigation}
+          style={{
+            Container: {
+              height: '5%',
+              marginTop: 5,
+            },
+          }}
+        />
+
+        <View>
+          <Text
+            style={{
+              color: PRIMARY_COLOR,
+              fontSize: 20,
+              lineHeight: 32,
+              letterSpacing: 0.8,
+            }}>
+            Find a
+          </Text>
+          <Text
+            style={{
+              // color: '#5c6bc0',
+              color: HEADER_TEXT,
+              fontSize: 42,
+              lineHeight: 48,
+              fontWeight: 'bold',
+              letterSpacing: 1,
+            }}>
+            Doctor
+          </Text>
+        </View>
+      </Animated.View>
+    );
+  };
 
   return (
     <View style={{flex: 1, backgroundColor: '#F4F3FF'}}>
@@ -240,95 +281,95 @@ export default function LandingPageScreen({navigation}) {
             radius={200}
           />
         </Animated.View>
-        <View
+        <Toast
+          visible={toastVisible}
+          position={height * 0.9}
+          shadow={true}
+          animation={true}
+          hideOnPress={true}>
+          Press again to Exit
+        </Toast>
+        {getScrollHeader()}
+        <Animated.View
           style={{
             position: 'absolute',
             flex: 1,
             height: '100%',
+            transform: [{translateY: headerView2}],
           }}>
-          <Toast
-            visible={toastVisible}
-            position={height * 0.9}
-            shadow={true}
-            animation={true}
-            hideOnPress={true}>
-            Press again to Exit
-          </Toast>
-          <TopNavBar
-            hideLeftComp={true}
-            onLeftButtonPress={() => {}}
-            // onRightButtonPress={() => {}}
-            navigation={navigation}
-            style={{
-              Container: {
-                height: '5%',
-                marginTop: 5,
-              },
-            }}
-          />
-          <View
-            style={{
-              flexDirection: 'row',
-              paddingHorizontal: 25,
-              height: '20%',
-              alignItems: 'center',
-              width: '100%',
-            }}>
-            <View>
-              <Text
-                style={{
-                  color: PRIMARY_COLOR,
-                  fontSize: 20,
-                  lineHeight: 32,
-                  letterSpacing: 0.8,
-                }}>
-                Find a
-              </Text>
-              <Text
-                style={{
-                  // color: '#5c6bc0',
-                  color: HEADER_TEXT,
-                  fontSize: 42,
-                  lineHeight: 48,
-                  fontWeight: 'bold',
-                  letterSpacing: 1,
-                }}>
-                Doctor
-              </Text>
-            </View>
-            <View style={{marginLeft: 'auto'}}>
-              <ToggleButton
-                toggle={toggle}
-                onToggle={onToggle}
-                text0="NOW"
-                text1="SCHEDULE"
-                style={{paddingVertical: 4, width: 150}}
-                textStyle={{
-                  fontSize: 13,
-                  color: PRIMARY_COLOR,
-                  fontWeight: 'bold',
-                  width: '95%',
-                  textAlign: 'center',
-                }}
-                btnStyle={{
-                  width: 80,
-                }}
-                dotStyle={{
-                  backgroundColor: PRIMARY_COLOR,
-                  height: 25,
-                  width: '35%',
-                }}
-              />
-            </View>
-          </View>
           <Animated.View
             style={{
-              height: headerView,
-              justifyContent: 'center',
               opacity: headerViewStyle,
-              transform: [{scale: headerViewStyle}],
-              // backgroundColor: 'pink',
             }}>
+            <TopNavBar
+              hideLeftComp={true}
+              onLeftButtonPress={() => {}}
+              // onRightButtonPress={() => {}}
+              navigation={navigation}
+              style={{
+                Container: {
+                  height: '5%',
+                  marginTop: 15,
+                },
+              }}
+            />
+            <View
+              style={{
+                flexDirection: 'row',
+                paddingHorizontal: 25,
+                height: '20%',
+                alignItems: 'center',
+                width: '100%',
+                marginVertical: 20,
+              }}>
+              <View>
+                <Text
+                  style={{
+                    color: PRIMARY_COLOR,
+                    fontSize: 20,
+                    lineHeight: 32,
+                    letterSpacing: 0.8,
+                  }}>
+                  Find a
+                </Text>
+                <Text
+                  style={{
+                    // color: '#5c6bc0',
+                    color: HEADER_TEXT,
+                    fontSize: 42,
+                    lineHeight: 48,
+                    fontWeight: 'bold',
+                    letterSpacing: 1,
+                  }}>
+                  Doctor
+                </Text>
+              </View>
+              <View style={{marginLeft: 'auto'}}>
+                <ToggleButton
+                  toggle={toggle}
+                  onToggle={onToggle}
+                  text0="NOW"
+                  text1="SCHEDULE"
+                  style={{paddingVertical: 4, width: 150}}
+                  textStyle={{
+                    fontSize: 13,
+                    color: PRIMARY_COLOR,
+                    fontWeight: 'bold',
+                    width: '95%',
+                    textAlign: 'center',
+                  }}
+                  btnStyle={{
+                    width: 80,
+                  }}
+                  dotStyle={{
+                    backgroundColor: PRIMARY_COLOR,
+                    height: 25,
+                    width: '35%',
+                  }}
+                />
+              </View>
+            </View>
+
             <View
               style={{
                 height: '8%',
@@ -387,8 +428,7 @@ export default function LandingPageScreen({navigation}) {
             style={{
               Container: {
                 marginBottom: 40,
-                marginTop: 10,
-                // height: 'auto',
+                marginTop: -70,
               },
               Text: {color: PRIMARY_COLOR, fontWeight: '300'},
             }}
@@ -535,7 +575,7 @@ export default function LandingPageScreen({navigation}) {
               />
             )}
           </Section>
-        </View>
+        </Animated.View>
       </LinearGradient>
     </View>
   );
