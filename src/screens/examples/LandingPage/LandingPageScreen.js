@@ -10,7 +10,6 @@ import RadialGradient from 'react-native-radial-gradient';
 import TopNavBar from '../../../components/molecules/TopNavBar/TopNavBar';
 import CurrentDoctorContainer from '../../../components/molecules/AvailDoctorContainer/CurrentDoctorContainer';
 import {useDispatch, useSelector} from 'react-redux';
-import {useBackHandler} from '@react-native-community/hooks';
 
 import {
   View,
