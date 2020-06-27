@@ -18,9 +18,9 @@ import {
   HEADER_TEXT,
   PRIMARY_COLOR,
 } from '../../../styles/colors';
-import {AccessToken, LoginManager} from 'react-native-fbsdk';
-import {GoogleSignin, statusCodes} from '@react-native-community/google-signin';
-import auth from '@react-native-firebase/auth';
+// import {AccessToken, LoginManager} from 'react-native-fbsdk';
+// import {GoogleSignin, statusCodes} from '@react-native-community/google-signin';
+// import auth from '@react-native-firebase/auth';
 
 export default function SignUpStep1Screen(props) {
   const {credential, setCredential, isLoading} = props;
@@ -36,6 +36,7 @@ export default function SignUpStep1Screen(props) {
   const handlePassword = (password) => {
     setCredential({...credential, password});
   };
+<<<<<<< HEAD
   const [passVisible, setPass] = useState(false);
   const viewPassword = () => {
     setPass(!passVisible);
@@ -43,26 +44,32 @@ export default function SignUpStep1Screen(props) {
   async function onGoogleButtonPress() {
     // Get the users ID token
     const {idToken} = await GoogleSignin.signIn();
+=======
 
-    // Create a Google credential with the token
-    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+  // async function onGoogleButtonPress() {
+  //   // Get the users ID token
+  //   const {idToken} = await GoogleSignin.signIn();
+>>>>>>> e4cc152f97dbc7279a2498561977470a1047f83c
 
-    // Sign-in the user with the credential
-    return auth().signInWithCredential(googleCredential);
-  }
+  //   // Create a Google credential with the token
+  //   const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
-  useEffect(() => {
-    GoogleSignin.configure({
-      webClientId:
-        '842595327422-50cmpri327rrhqgb76o8hn58954l80i1.apps.googleusercontent.com',
-      // '548402708395-t0qn9hg90h8cfaadtg8epf7m0s0uunr4.apps.googleusercontent.com',
-    });
-    const val = async () => {
-      const isSignedIn = await GoogleSignin.isSignedIn();
-      console.log('111111111111', isLoading, '111111111111', isSignedIn);
-    };
-    val();
-  });
+  //   // Sign-in the user with the credential
+  //   return auth().signInWithCredential(googleCredential);
+  // }
+
+  // useEffect(() => {
+  //   GoogleSignin.configure({
+  //     webClientId:
+  //       '842595327422-50cmpri327rrhqgb76o8hn58954l80i1.apps.googleusercontent.com',
+  //     // '548402708395-t0qn9hg90h8cfaadtg8epf7m0s0uunr4.apps.googleusercontent.com',
+  //   });
+  //   const val = async () => {
+  //     const isSignedIn = await GoogleSignin.isSignedIn();
+  //     console.log('111111111111', isLoading, '111111111111', isSignedIn);
+  //   };
+  //   val();
+  // });
   console.log(props.signupAs);
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
@@ -168,7 +175,7 @@ export default function SignUpStep1Screen(props) {
             alignSelf: 'center',
             marginTop: 30,
           }}>
-          <EvilIcons
+          {/* <EvilIcons
             onPress={() => {
               LoginManager.logInWithPermissions(['public_profile']).then(
                 function (result) {
@@ -228,7 +235,7 @@ export default function SignUpStep1Screen(props) {
             name="sc-google-plus"
             color="#EA508F"
             size={35}
-          />
+          /> */}
         </View>
         <DmzButton
           onPress={props.onPress}

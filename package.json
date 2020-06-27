@@ -11,8 +11,11 @@
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.11.0",
+<<<<<<< HEAD
     "@react-native-community/google-signin": "^4.0.3",
     "@react-native-community/hooks": "^2.6.0",
+=======
+>>>>>>> e4cc152f97dbc7279a2498561977470a1047f83c
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/picker": "^1.6.1",
     "@react-native-community/viewpager": "^4.0.1",

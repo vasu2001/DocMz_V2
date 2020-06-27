@@ -56,7 +56,7 @@ function DmzSignupV2(props) {
       console.log(data.id);
       console.log(imageData);
       signupAs === 'doctor' && dispatch(UploadProfilePic(data.id, imageData));
-      props.navigation.navigate('pageNavigation');
+      props.navigation.navigate('PatientHomePage');
     });
     //   : props.navigation.goBack(null);
     // props.navigation.goBack(null);
