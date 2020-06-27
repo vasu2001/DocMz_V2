@@ -28,6 +28,7 @@ import {
   PRIMARY_COLOR,
 } from '../../../styles/colors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import TopNavBar from '../../../components/molecules/TopNavBar/TopNavBar';
 export default function DmzLoginV2(props) {
   const [credential, setCredential] = useState({email: '', password: ''});
   const [loginAs, setLoginAs] = useState('patient');
@@ -128,6 +129,20 @@ export default function DmzLoginV2(props) {
         style={{flex: 1, opacity: 0.4}}
       /> */}
       <ScrollView style={styles.MainContainer}>
+        <TopNavBar
+          hideRightComp={true}
+          // onLeftButtonPress={() => {}}
+          onRightButtonPress={() => {
+            props.navigation.navigate('pageNavigation');
+          }}
+          navigation={props.navigation}
+          style={{
+            Container: {
+              height: '5%',
+              marginTop: 5,
+            },
+          }}
+        />
         <DmzText text="Welcome!" style={styles.HeaderText} />
         <DmzText style={styles.HeaderDesc} text="Choose Account Type" />
         <View

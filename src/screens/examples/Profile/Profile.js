@@ -7,6 +7,9 @@ import {
   Text,
   useWindowDimensions,
   PermissionsAndroid,
+  StyleSheet,
+  Button,
+  Platform,
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -14,6 +17,10 @@ import AnimInput from '../../../components/molecules/AnimInput/AnimInput';
 import {ScrollView} from 'react-native-gesture-handler';
 import {useDispatch, useSelector} from 'react-redux';
 import {UploadProfilePic} from '../../../redux/action/patientAccountAction';
+import {TERTIARY_TEXT, PRIMARY_COLOR} from '../../../styles/colors';
+import {Picker} from '@react-native-community/picker';
+import DmzText from '../../../components/atoms/DmzText/DmzText';
+import DatePicker from 'react-native-datepicker';
 
 function Profile({navigation}) {
   const dispatch = useDispatch();
@@ -106,7 +113,7 @@ function Profile({navigation}) {
         // const source = {uri: response.uri};
         // console.log(source);
         // const path = response.fileName;
-        // setData({...data, imagePath: path});
+        // setData({...inputFields, imagePath: path});
         dispatch(UploadProfilePic(data.id, response));
         // console.log(
         //   '###################---------------------------------#############################################--------------------------------------###',
@@ -121,7 +128,7 @@ function Profile({navigation}) {
   };
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
-      <ScrollView>
+      <ScrollView style={{marginBottom: 70, flex: 1}}>
         <View
           style={{
             flex: 1,
@@ -175,7 +182,7 @@ function Profile({navigation}) {
                   width: '100%',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  backgroundColor: 'rgba(80,80,80,0.3)',
+                  backgroundColor: 'rgba(80,80,80,0.7)',
                 }}>
                 <Text style={{color: '#f2f2f2', fontSize: 12}}>Upload</Text>
               </View>
@@ -192,122 +199,194 @@ function Profile({navigation}) {
           }}>
           <AnimInput
             placeholder="Name"
-            inputHandler={(txt) => setInputFields({...data, name: txt})}
+            inputHandler={(txt) => setInputFields({...inputFields, name: txt})}
             value={inputFields.name}
             style={{
-              Container: {
-                marginBottom: 5,
-                borderBottomWidth: 0.5,
-                marginTop: 20,
-              },
+              Container: styles.Container,
+              Input: styles.Input,
+              Placeholder: styles.Placeholder,
             }}
           />
           <AnimInput
             placeholder="Contact Number"
-            inputHandler={(txt) => setInputFields({...data, phone: txt})}
+            keyboardType="number-pad"
+            maxLength={10}
+            inputHandler={(txt) => setInputFields({...inputFields, phone: txt})}
             value={inputFields.phone}
             style={{
-              Container: {
-                marginBottom: 5,
-                borderBottomWidth: 0.5,
-                marginTop: 20,
-              },
+              Container: styles.Container,
+              Input: styles.Input,
+              Placeholder: styles.Placeholder,
             }}
           />
           <AnimInput
             placeholder="Email Id"
-            inputHandler={(txt) => setInputFields({...data, email: txt})}
+            inputHandler={(txt) => setInputFields({...inputFields, email: txt})}
             value={inputFields.email}
             style={{
-              Container: {
-                marginBottom: 5,
-                borderBottomWidth: 0.5,
-                marginTop: 20,
-              },
+              Container: styles.Container,
+              Input: styles.Input,
+              Placeholder: styles.Placeholder,
             }}
           />
-          <AnimInput
-            placeholder="Gender"
-            inputHandler={(txt) => setInputFields({...data, sex: txt})}
-            value={inputFields.sex}
+          <View
             style={{
-              Container: {
-                marginBottom: 5,
-                borderBottomWidth: 0.5,
+              borderBottomWidth: 1,
+              borderBottomColor: '#ccc',
+            }}>
+            <DmzText
+              lite
+              text="Gender"
+              style={[styles.Placeholder, {marginTop: 20}]}
+            />
+            <Picker
+              selectedValue={inputFields.sex}
+              onValueChange={(txt) =>
+                setInputFields({...inputFields, sex: txt})
+              }>
+              <Picker.Item label="Select Gender" value={null} />
+              <Picker.Item label="Male" value="Male" />
+              <Picker.Item label="Female" value="Female" />
+              <Picker.Item label="Transgender" value="Transgender" />
+            </Picker>
+          </View>
+          <View>
+            <DmzText
+              lite
+              text="Date of Birth"
+              style={[styles.Placeholder, {marginTop: 20}]}
+            />
+            <DatePicker
+              // style={{width: 200}}
+              date={inputFields.dob}
+              mode="date"
+              placeholder="Select date of birth"
+              format="DD-MM-YYYY"
+              minDate="01-01-1950"
+              maxDate="01-01-2019"
+              confirmBtnText="Confirm"
+              cancelBtnText="Cancel"
+              allowFontScaling={true}
+              customStyles={{
+                dateIcon: {
+                  position: 'absolute',
+                  left: 0,
+                  top: 4,
+                  marginLeft: 0,
+                },
+                dateInput: {
+                  borderWidth: 0,
+                  fontSize: 15,
+                  height: 40,
+                },
+              }}
+              style={{
+                borderBottomWidth: 1,
+                borderBottomColor: '#ccc',
+                width: '100%',
                 marginTop: 20,
-              },
-            }}
-          />
-          <AnimInput
-            placeholder="Date of Birth"
-            inputHandler={(txt) => setInputFields({...data, dob: txt})}
-            value={inputFields.dob}
+                alignItems: 'center',
+              }}
+              onDateChange={(date) => {
+                console.log(date);
+                setInputFields({...inputFields, dob: date});
+              }}
+            />
+          </View>
+          <View
             style={{
-              Container: {
-                marginBottom: 5,
-                borderBottomWidth: 0.5,
-                marginTop: 20,
-              },
-            }}
-          />
-          <AnimInput
-            placeholder="Blood Group"
-            inputHandler={(txt) => setInputFields({...data, bloodGroup: txt})}
-            value={inputFields.bloodGroup}
-            style={{
-              Container: {
-                marginBottom: 5,
-                borderBottomWidth: 0.5,
-                marginTop: 20,
-              },
-            }}
-          />
+              borderBottomWidth: 1,
+              borderBottomColor: '#ccc',
+            }}>
+            <DmzText
+              lite
+              text="Blood Group"
+              style={[styles.Placeholder, {marginTop: 20}]}
+            />
+            <Picker
+              selectedValue={inputFields.bloodGroup}
+              mode={'dropdown'}
+              onValueChange={(txt) =>
+                setInputFields({...inputFields, bloodGroup: txt})
+              }>
+              <Picker.Item label="Select Blood Group" value={null} />
+              <Picker.Item label="A+" value="A+" />
+              <Picker.Item label="A-" value="A-" />
+              <Picker.Item label="B+" value="B+" />
+              <Picker.Item label="B-" value="B-" />
+              <Picker.Item label="O+" value="O+" />
+              <Picker.Item label="O-" value="O-" />
+              <Picker.Item label="AB+" value="AB+" />
+              <Picker.Item label="AB-" value="A-B" />
+            </Picker>
+          </View>
           <AnimInput
             placeholder="Height (in cm)"
-            inputHandler={(txt) => setInputFields({...data, height: txt})}
+            keyboardType="number-pad"
+            inputHandler={(txt) =>
+              setInputFields({...inputFields, height: txt})
+            }
             value={inputFields.height}
             style={{
-              Container: {
-                marginBottom: 5,
-                borderBottomWidth: 0.5,
-                marginTop: 20,
-              },
+              Container: styles.Container,
+              Input: styles.Input,
+              Placeholder: styles.Placeholder,
             }}
           />
           <AnimInput
             placeholder="Weight (in Kgs)"
-            inputHandler={(txt) => setInputFields({...data, weight: txt})}
+            keyboardType="number-pad"
+            inputHandler={(txt) =>
+              setInputFields({...inputFields, weight: txt})
+            }
             value={inputFields.weight}
             style={{
-              Container: {
-                marginBottom: 5,
-                borderBottomWidth: 0.5,
-                marginTop: 20,
-              },
+              Container: styles.Container,
+              Input: styles.Input,
+              Placeholder: styles.Placeholder,
             }}
           />
-
-          <TouchableOpacity
-            style={{
-              width: screenWidth * 0.6,
-              height: 52,
-              backgroundColor: '#ff1f75',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginLeft: 'auto',
-              marginRight: 'auto',
-              marginTop: 40,
-              borderRadius: 15,
-              elevation: 3,
-              display: 'flex',
-              flexDirection: 'row',
-            }}>
-            <Text style={{color: '#f1f1f1'}}>Save</Text>
-          </TouchableOpacity>
         </View>
       </ScrollView>
+      <View
+        style={{
+          position: 'absolute',
+          paddingBottom: 10,
+          bottom: 0,
+          width: '100%',
+        }}>
+        <TouchableOpacity
+          style={{
+            width: screenWidth * 0.6,
+            height: 52,
+            backgroundColor: '#ff1f75',
+            alignItems: 'center',
+            justifyContent: 'center',
+            alignSelf: 'center',
+            borderRadius: 15,
+            elevation: 3,
+          }}>
+          <Text style={{color: '#f1f1f1'}}>Save</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
 
 export default Profile;
+
+const styles = StyleSheet.create({
+  Container: {height: 60, marginTop: 20, left: 0},
+  Input: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: PRIMARY_COLOR,
+    left: 0,
+    marginTop: 15,
+    marginBottom: 0,
+  },
+  Placeholder: {
+    fontSize: 16,
+    color: TERTIARY_TEXT,
+  },
+});

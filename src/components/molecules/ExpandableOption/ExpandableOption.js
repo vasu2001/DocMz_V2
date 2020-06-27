@@ -10,6 +10,7 @@ import {
   LayoutAnimation,
 } from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icons from 'react-native-vector-icons/MaterialIcons';
 import DmzText from '../../atoms/DmzText/DmzText';
 import {
   BIG_ICON_SIZE,
@@ -17,7 +18,7 @@ import {
   SMALL_ICON_SIZE,
   MEDIUM_ICON_SIZE,
 } from '../../../styles/size';
-import {MAIN_ICON, SECONDARY_ICON} from '../../../styles/colors';
+import {MAIN_ICON, SECONDARY_ICON, PRIMARY_COLOR} from '../../../styles/colors';
 import {
   TouchableOpacity,
   TouchableNativeFeedback,
@@ -57,6 +58,8 @@ const ExpandableOption = (props) => {
     isNested,
     nestedRoutes,
     navigation,
+    type1 = true,
+    logOut,
   } = props;
 
   console.log('.....................');
@@ -75,18 +78,28 @@ const ExpandableOption = (props) => {
         <DmzText
           text={name}
           type={fontSize}
-          normal
+          // normal
           gap_small
           style={{
-            color: showContent && isNested ? '#007E96' : '#222',
+            color: showContent && isNested ? '#007E96' : PRIMARY_COLOR,
+            fontSize: 18,
           }}
         />
-        <MaterialIcon
-          name={icon}
-          size={MEDIUM_ICON_SIZE}
-          style={styles.icon}
-          color={showContent && isNested ? '#007E96' : SECONDARY_ICON}
-        />
+        {type1 ? (
+          <MaterialIcon
+            name={icon}
+            size={MEDIUM_ICON_SIZE}
+            style={styles.icon}
+            color={showContent && isNested ? '#007E96' : PRIMARY_COLOR}
+          />
+        ) : (
+          <Icons
+            name={icon}
+            size={BIG_ICON_SIZE}
+            style={styles.icon}
+            color={showContent && isNested ? '#007E96' : PRIMARY_COLOR}
+          />
+        )}
       </TouchableOpacity>
       {showContent && (
         <View style={styles.nestedContainer}>
@@ -95,10 +108,17 @@ const ExpandableOption = (props) => {
               return (
                 <TouchableOpacity
                   key={`${row.navigateTo}${index}`}
-                  onPress={() => navigation.navigate(row.navigateTo)}
+                  onPress={
+                    row.name == 'LogOut'
+                      ? () => {
+                          logOut();
+                          setShowContent(false);
+                        }
+                      : () => navigation.navigate(row.navigateTo)
+                  }
                   style={styles.nestedOption}>
-                  <Text style={{color: '#555'}}>{row.name}</Text>
-                  <MaterialIcon name="chevron-right" size={20} />
+                  <Text style={{color: PRIMARY_COLOR}}>{row.name}</Text>
+                  <MaterialIcon name="chevron-right" size={22} />
                 </TouchableOpacity>
               );
             })}
@@ -114,7 +134,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   AlignCenter: {alignItems: 'center'},
-  Wrapper: {backgroundColor: '#fafafa', overflow: 'hidden'},
+  Wrapper: {backgroundColor: '#E9E5FF', overflow: 'hidden'},
   container: {
     padding: 10,
     paddingLeft: 30,

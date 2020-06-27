@@ -428,7 +428,7 @@ export default function LandingPageScreen({navigation}) {
             style={{
               Container: {
                 marginBottom: 40,
-                marginTop: -70,
+                marginTop: -20,
               },
               Text: {color: PRIMARY_COLOR, fontWeight: '300'},
             }}

@@ -41,6 +41,7 @@ import DmzHeaderAtom from '../../../components/atoms/DmzHeader/DmzHeaderAtom';
 import AnimInput from '../../../components/molecules/AnimInput/AnimInput';
 import DmzButton from '../../../components/atoms/DmzButton/DmzButton';
 import FancyHeaderLite from '../../../components/organisms/FancyHeaderLite/FancyHeaderLite';
+import DatePicker from 'react-native-datepicker';
 function Payments({navigation}) {
   const [myCardInput, setMyCardInput] = useState({
     number: '',
@@ -245,6 +246,7 @@ function Payments({navigation}) {
                       setMyCardInput({...myCardInput, number: txt})
                     }
                     withAnim={false}
+                    keyboardType={'phone-pad'}
                     placeholder={'card number'}
                     style={{
                       Container: {
@@ -263,19 +265,33 @@ function Payments({navigation}) {
                   }}>
                   <View style={{width: '55%'}}>
                     <DmzText text="Expiry Date" type={3} semi_bold gap_small />
-                    <AnimInput
-                      inputHandler={(txt) =>
-                        setMyCardInput({...myCardInput, expDate: txt})
-                      }
-                      withAnim={false}
-                      keyboardType={'phone-pad'}
-                      placeholder={'Exp. Date (dd/mm/yyyy)'}
-                      style={{
-                        Container: {
-                          borderWidth: 1,
-                          borderColor: '#ccc',
-                          borderRadius: 10,
+                    <DatePicker
+                      // style={{width: 200}}
+                      date={myCardInput.expDate}
+                      mode="date"
+                      placeholder="Expiry Date"
+                      format="DD-MM-YYYY"
+                      minDate="01-01-2019"
+                      maxDate="01-01-2040"
+                      showIcon={false}
+                      allowFontScaling={true}
+                      customStyles={{
+                        dateInput: {
+                          borderWidth: 0,
+                          fontSize: 15,
+                          height: 40,
                         },
+                      }}
+                      style={{
+                        borderWidth: 1,
+                        borderColor: '#ccc',
+                        width: '100%',
+                        alignItems: 'center',
+                        borderRadius: 10,
+                      }}
+                      onDateChange={(date) => {
+                        console.log(date);
+                        setMyCardInput({...myCardInput, expDate: date});
                       }}
                     />
                   </View>

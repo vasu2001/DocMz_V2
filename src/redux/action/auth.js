@@ -252,6 +252,7 @@ export const signupDoctor = (data, successCallback, errorCallback) => {
 };
 
 export const signupPatient = (data, successCallback, errorCallback) => {
+  console.log('signingin');
   return (dispatch) => {
     const config = {
       'Content-Type': 'application/x-www-form-urlencoded',

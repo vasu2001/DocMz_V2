@@ -39,6 +39,7 @@ function DmzSignupV2(props) {
   // const initialCredential = credential;
 
   const handleSubmit = () => {
+    console.log('in submit');
     signupAs === 'doctor' ? _handleDoctorSignup() : _handlePatientSignup();
   };
   const _handleDoctorSignup = () => {
@@ -46,6 +47,7 @@ function DmzSignupV2(props) {
     dispatch(signupDoctor(credential, successCallback, errorCallback));
   };
   const _handlePatientSignup = () => {
+    console.log('in patient submit');
     dispatch(signupPatient(credential, successCallback, errorCallback));
   };
 
@@ -180,7 +182,7 @@ function DmzSignupV2(props) {
               lastName != '' &&
               firstName != ''
             ) {
-              signupAs === 'doctor' ? nextpage(2) : handleSubmit;
+              signupAs === 'doctor' ? nextpage(2) : handleSubmit();
             } else {
               lastName == '' && firstName == ''
                 ? Alert.alert('One or more fields empty')
