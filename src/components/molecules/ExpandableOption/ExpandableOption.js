@@ -109,7 +109,7 @@ const ExpandableOption = (props) => {
                 <TouchableOpacity
                   key={`${row.navigateTo}${index}`}
                   onPress={
-                    row.name == 'LogOut'
+                    row.name == 'Logout'
                       ? () => {
                           logOut();
                           setShowContent(false);

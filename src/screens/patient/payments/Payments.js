@@ -42,6 +42,8 @@ import AnimInput from '../../../components/molecules/AnimInput/AnimInput';
 import DmzButton from '../../../components/atoms/DmzButton/DmzButton';
 import FancyHeaderLite from '../../../components/organisms/FancyHeaderLite/FancyHeaderLite';
 import DatePicker from 'react-native-datepicker';
+import Moment from 'moment';
+
 function Payments({navigation}) {
   const [myCardInput, setMyCardInput] = useState({
     number: '',
@@ -246,6 +248,7 @@ function Payments({navigation}) {
                       setMyCardInput({...myCardInput, number: txt})
                     }
                     withAnim={false}
+                    maxLength={16}
                     keyboardType={'phone-pad'}
                     placeholder={'card number'}
                     style={{
@@ -253,6 +256,7 @@ function Payments({navigation}) {
                         borderWidth: 1,
                         borderColor: '#ccc',
                         borderRadius: 10,
+                        paddingRight: 20,
                       },
                     }}
                   />
@@ -263,16 +267,16 @@ function Payments({navigation}) {
                     justifyContent: 'space-between',
                     marginBottom: 10,
                   }}>
-                  <View style={{width: '55%'}}>
+                  <View style={{width: '35%'}}>
                     <DmzText text="Expiry Date" type={3} semi_bold gap_small />
                     <DatePicker
-                      // style={{width: 200}}
                       date={myCardInput.expDate}
                       mode="date"
+                      androidMode="spinner"
                       placeholder="Expiry Date"
-                      format="DD-MM-YYYY"
-                      minDate="01-01-2019"
-                      maxDate="01-01-2040"
+                      format="MM-YY"
+                      minDate={Moment(new Date(), 'MM-YY')}
+                      maxDate={Moment(new Date(2050, 12), 'MM-YY')}
                       showIcon={false}
                       allowFontScaling={true}
                       customStyles={{
@@ -295,12 +299,14 @@ function Payments({navigation}) {
                       }}
                     />
                   </View>
-                  <View style={{width: '35%'}}>
+                  <View style={{width: '45%'}}>
                     <DmzText text="Secure Code" type={3} semi_bold gap_small />
                     <AnimInput
                       inputHandler={(txt) =>
                         setMyCardInput({...myCardInput, secCode: txt})
                       }
+                      textContentType="password"
+                      secureTextEntry={true}
                       withAnim={false}
                       keyboardType={'number-pad'}
                       placeholder={'Secure Code'}
@@ -333,6 +339,7 @@ function Payments({navigation}) {
                         borderWidth: 1,
                         borderColor: '#ccc',
                         borderRadius: 10,
+                        paddingRight: 20,
                       },
                     }}
                   />

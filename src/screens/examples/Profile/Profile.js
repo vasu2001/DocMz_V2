@@ -21,6 +21,7 @@ import {TERTIARY_TEXT, PRIMARY_COLOR} from '../../../styles/colors';
 import {Picker} from '@react-native-community/picker';
 import DmzText from '../../../components/atoms/DmzText/DmzText';
 import DatePicker from 'react-native-datepicker';
+import Moment from 'moment';
 
 function Profile({navigation}) {
   const dispatch = useDispatch();
@@ -262,8 +263,8 @@ function Profile({navigation}) {
               mode="date"
               placeholder="Select date of birth"
               format="DD-MM-YYYY"
-              minDate="01-01-1950"
-              maxDate="01-01-2019"
+              minDate="01-01-1930"
+              maxDate={Moment(new Date(), 'DD-MM-YYYY')}
               confirmBtnText="Confirm"
               cancelBtnText="Cancel"
               allowFontScaling={true}

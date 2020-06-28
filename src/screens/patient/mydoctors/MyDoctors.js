@@ -15,7 +15,7 @@ import DmzText from '../../../components/atoms/DmzText/DmzText';
 
 const MyDoctors = ({navigation}) => {
   const {patient, isPatientAccountReducerLoading} = useSelector(
-    state => state.PatientAccountReducer,
+    (state) => state.PatientAccountReducer,
   );
   const dispatch = useDispatch();
 
@@ -25,7 +25,7 @@ const MyDoctors = ({navigation}) => {
     console.log(patient.favourites);
   }, []);
 
-  const removeFevDoc = id => {
+  const removeFevDoc = (id) => {
     console.log('clicked');
     console.log(id);
     dispatch(RemoveFevDoc(id, patient._id));
@@ -55,6 +55,8 @@ const MyDoctors = ({navigation}) => {
             color="#000"
             style={{marginTop: '50%'}}
           />
+        ) : patient.favourites == null ? (
+          <NotFound />
         ) : !patient.favourites.length ? (
           <NotFound />
         ) : (

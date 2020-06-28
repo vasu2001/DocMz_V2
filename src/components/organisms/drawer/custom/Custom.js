@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import Avater from '../../../atoms/Avater/Avater';
 import DmzText from '../../../atoms/DmzText/DmzText';
@@ -14,15 +14,10 @@ import ExpandableOption from '../../../molecules/ExpandableOption/ExpandableOpti
 import FancyHeaderLite from '../../../organisms/FancyHeaderLite/FancyHeaderLite';
 import {HEADER_TEXT, TERTIARY_TEXT} from '../../../../styles/colors';
 import StepsTracker from '../../../atoms/StepsTracker/StepsTracker';
+import SlidingUpPanel from 'rn-sliding-up-panel';
+import PatientLocation from '../../../../screens/examples/PatientLocation/PatientLocation';
 
 const Navigation = [
-  {
-    active: true,
-    name: 'Location',
-    icon: 'location-on',
-    navigateTo: 'Appointments',
-    type1: false,
-  },
   {
     active: true,
     name: 'Account',
@@ -49,7 +44,7 @@ const Navigation = [
       },
       {
         active: true,
-        name: 'LogOut',
+        name: 'Logout',
         icon: 'book',
       },
     ],
@@ -149,12 +144,21 @@ const Custom = ({
     dispatch(resetStore());
     navigation.navigate('Home');
   };
+  const [location, setLocation] = useState('Bangalore');
+  const [showLocation, setShowLocation] = useState(false);
   const closeDrawer = () => {
     navigation.closeDrawer();
   };
   const onProfileClick = () => {
     console.log('tapped user rofile');
     navigation.navigate('Profile');
+  };
+
+  const closeLocPanel = () => {
+    setShowLocation(!showLocation);
+  };
+  const setLoc = (i) => {
+    setLocation(i);
   };
 
   return (
@@ -239,6 +243,18 @@ const Custom = ({
         <ScrollView
           style={{flex: 1, backgroundColor: 'transparent'}}
           contentContainerStyle={{}}>
+          <ExpandableOption
+            key={'Location'}
+            active={isLogedin}
+            name={`Location | ${location}`}
+            icon={'location-on'}
+            goto={() => {
+              setShowLocation(true);
+            }}
+            type1={false}
+            activeItemKey={activeItemKey}
+            navigateTo={'loginScreen'}
+          />
           {Navigation.map((row, index) => {
             if (row.isNested) {
               return (
@@ -301,6 +317,13 @@ const Custom = ({
           )}
         </ScrollView>
       </View>
+      {showLocation && (
+        <PatientLocation
+          onPress={setLoc}
+          location={location}
+          closePanel={closeLocPanel}
+        />
+      )}
     </View>
   );
 };
@@ -345,7 +368,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: -35,
     alignSelf: 'center',
-    zIndex: 10,
+    zIndex: 1,
   },
   floatingCardSection: {
     flex: 1,

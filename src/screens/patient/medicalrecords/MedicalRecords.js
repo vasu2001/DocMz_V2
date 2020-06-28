@@ -44,10 +44,15 @@ import Container from '../../../components/organisms/Container/Container';
 import {PRIMARY_COLOR, TERTIARY_TEXT} from '../../../styles/colors';
 import {useSelector} from 'react-redux';
 import DatePicker from 'react-native-datepicker';
+import Moment from 'moment';
+import {endsWith} from 'lodash';
+
 function MedicalRecords({navigation}) {
   const [showAddRecord, setShowAddRecord] = useState(false);
   const {data} = useSelector((state) => state.AuthReducer);
   const [review, setReview] = useState(false);
+  const [startDate, setStartDate] = useState('');
+  const [EndDate, setEndDate] = useState('');
   const onPress = () => {
     setShowAddRecord(true);
   };
@@ -68,12 +73,6 @@ function MedicalRecords({navigation}) {
       <FancyHeaderLite
         headerText=""
         navigation={navigation}
-        // LeftComp={
-        //   <ProfilePic
-        //     sourceurl={require('../../../assets/jpg/person1.jpg')}
-        //     style={{Container: {height: 32, width: 32}}}
-        //   />
-        // }
         style={{Section: {overflow: 'hidden', height: '18%', marginBottom: 0}}}
       />
       <Container
@@ -231,12 +230,13 @@ function MedicalRecords({navigation}) {
                 style={[styles.Placeholder, {marginTop: 20}]}
               />
               <DatePicker
-                // date={inputFields.dob}
+                date={startDate}
                 mode="date"
                 placeholder="Select Start Date"
                 format="DD-MM-YYYY"
-                minDate="01-01-1950"
-                maxDate="01-01-2019"
+                // minDate="01-01-1950"
+                minDate={Moment(new Date(), 'DD-MM-YYYY')}
+                maxDate="01-01-2050"
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
                 allowFontScaling={true}
@@ -264,6 +264,7 @@ function MedicalRecords({navigation}) {
                 }}
                 onDateChange={(date) => {
                   console.log(date);
+                  setStartDate(date);
                   // setInputFields({...inputFields, dob: date});
                 }}
               />
@@ -273,12 +274,17 @@ function MedicalRecords({navigation}) {
                 style={[styles.Placeholder, {marginTop: 20}]}
               />
               <DatePicker
-                // date={inputFields.dob}
+                disabled={startDate == ''}
+                date={EndDate}
                 mode="date"
                 placeholder="Select End Date"
                 format="DD-MM-YYYY"
-                minDate="01-01-1950"
-                maxDate="01-01-2019"
+                minDate={
+                  startDate == ''
+                    ? '01-01-2000'
+                    : Moment(startDate, 'DD/MM/YYYY')
+                }
+                maxDate="31-12-2050"
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
                 allowFontScaling={true}
@@ -306,7 +312,7 @@ function MedicalRecords({navigation}) {
                 }}
                 onDateChange={(date) => {
                   console.log(date);
-                  // setInputFields({...inputFields, dob: date});
+                  setEndDate(date);
                 }}
               />
               <DmzText

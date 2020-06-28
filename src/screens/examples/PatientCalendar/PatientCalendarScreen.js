@@ -12,11 +12,9 @@ import {
   FlatList,
 } from 'react-native';
 import RadialGradient from 'react-native-radial-gradient';
-import CalendarPicker from 'react-native-calendar-picker';
 import {extendMoment} from 'moment-range';
 import Moment from 'moment';
 import dateArray from 'moment-array-dates';
-import {ButtonGroup} from 'react-native-elements';
 import Calendar from '../../../components/molecules/YearCalendar.js/Calendar';
 import AppoinmentSlider from '../../../components/molecules/YearCalendar.js/AppoinmentSlider';
 import TopNavBar from '../../../components/molecules/TopNavBar/TopNavBar';

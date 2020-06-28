@@ -32,6 +32,7 @@ import FancyHeaderLite from '../../../components/organisms/FancyHeaderLite/Fancy
 import Container from '../../../components/organisms/Container/Container';
 import DatePicker from 'react-native-datepicker';
 import {Picker} from '@react-native-community/picker';
+import Moment from 'moment';
 
 if (Platform.OS === 'android') {
   if (UIManager.setLayoutAnimationEnabledExperimental) {
@@ -241,7 +242,7 @@ const FamilyMember = ({navigation}) => {
                   placeholder="Date of Birth"
                   format="DD-MM-YYYY"
                   minDate="01-01-1900"
-                  maxDate="01-01-2019"
+                  maxDate={Moment(new Date(), 'DD-MM-YYYY')}
                   showIcon={false}
                   allowFontScaling={true}
                   customStyles={{
