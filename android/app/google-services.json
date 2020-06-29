@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "548402708395-celffgcear902pullvbh25pl3a30ct3k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.docmz_v2",
+            "certificate_hash": "7146ac6126653cb9bf50dba48be236a4dbc98c0a"
+          }
+        },
+        {
           "client_id": "548402708395-t0qn9hg90h8cfaadtg8epf7m0s0uunr4.apps.googleusercontent.com",
           "client_type": 3
         }

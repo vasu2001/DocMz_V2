@@ -41,6 +41,9 @@ import DmzHeaderAtom from '../../../components/atoms/DmzHeader/DmzHeaderAtom';
 import AnimInput from '../../../components/molecules/AnimInput/AnimInput';
 import DmzButton from '../../../components/atoms/DmzButton/DmzButton';
 import FancyHeaderLite from '../../../components/organisms/FancyHeaderLite/FancyHeaderLite';
+import DatePicker from 'react-native-datepicker';
+import Moment from 'moment';
+
 function Payments({navigation}) {
   const [myCardInput, setMyCardInput] = useState({
     number: '',
@@ -245,12 +248,15 @@ function Payments({navigation}) {
                       setMyCardInput({...myCardInput, number: txt})
                     }
                     withAnim={false}
+                    maxLength={16}
+                    keyboardType={'phone-pad'}
                     placeholder={'card number'}
                     style={{
                       Container: {
                         borderWidth: 1,
                         borderColor: '#ccc',
                         borderRadius: 10,
+                        paddingRight: 20,
                       },
                     }}
                   />
@@ -261,30 +267,46 @@ function Payments({navigation}) {
                     justifyContent: 'space-between',
                     marginBottom: 10,
                   }}>
-                  <View style={{width: '55%'}}>
+                  <View style={{width: '35%'}}>
                     <DmzText text="Expiry Date" type={3} semi_bold gap_small />
-                    <AnimInput
-                      inputHandler={(txt) =>
-                        setMyCardInput({...myCardInput, expDate: txt})
-                      }
-                      withAnim={false}
-                      keyboardType={'phone-pad'}
-                      placeholder={'Exp. Date (dd/mm/yyyy)'}
-                      style={{
-                        Container: {
-                          borderWidth: 1,
-                          borderColor: '#ccc',
-                          borderRadius: 10,
+                    <DatePicker
+                      date={myCardInput.expDate}
+                      mode="date"
+                      androidMode="spinner"
+                      placeholder="Expiry Date"
+                      format="MM-YY"
+                      minDate={Moment(new Date(), 'MM-YY')}
+                      maxDate={Moment(new Date(2050, 12), 'MM-YY')}
+                      showIcon={false}
+                      allowFontScaling={true}
+                      customStyles={{
+                        dateInput: {
+                          borderWidth: 0,
+                          fontSize: 15,
+                          height: 40,
                         },
+                      }}
+                      style={{
+                        borderWidth: 1,
+                        borderColor: '#ccc',
+                        width: '100%',
+                        alignItems: 'center',
+                        borderRadius: 10,
+                      }}
+                      onDateChange={(date) => {
+                        console.log(date);
+                        setMyCardInput({...myCardInput, expDate: date});
                       }}
                     />
                   </View>
-                  <View style={{width: '35%'}}>
+                  <View style={{width: '45%'}}>
                     <DmzText text="Secure Code" type={3} semi_bold gap_small />
                     <AnimInput
                       inputHandler={(txt) =>
                         setMyCardInput({...myCardInput, secCode: txt})
                       }
+                      textContentType="password"
+                      secureTextEntry={true}
                       withAnim={false}
                       keyboardType={'number-pad'}
                       placeholder={'Secure Code'}
@@ -317,6 +339,7 @@ function Payments({navigation}) {
                         borderWidth: 1,
                         borderColor: '#ccc',
                         borderRadius: 10,
+                        paddingRight: 20,
                       },
                     }}
                   />
