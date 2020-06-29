@@ -11,6 +11,7 @@ import TopNavBar from '../../../components/molecules/TopNavBar/TopNavBar';
 import CurrentDoctorContainer from '../../../components/molecules/AvailDoctorContainer/CurrentDoctorContainer';
 import {PRIMARY_COLOR, HEADER_TEXT} from '../../../styles/colors';
 import {useDispatch, useSelector} from 'react-redux';
+
 import {
   View,
   Animated,
@@ -21,6 +22,11 @@ import {
   Text,
   TouchableWithoutFeedback,
   FlatList,
+<<<<<<< HEAD
+  Dimensions,
+  BackHandler,
+=======
+>>>>>>> e4cc152f97dbc7279a2498561977470a1047f83c
 } from 'react-native';
 import {
   fetchDoctorLite,
@@ -36,7 +42,12 @@ import {
 import {GetPatientInfo} from '../../../redux/action/patientAccountAction';
 import _ from 'lodash';
 import LinearGradient from 'react-native-linear-gradient';
+<<<<<<< HEAD
+import {PRIMARY_COLOR, HEADER_TEXT} from '../../../styles/colors';
+import Toast from 'react-native-root-toast';
+=======
 import {TouchableOpacity} from 'react-native-gesture-handler';
+>>>>>>> e4cc152f97dbc7279a2498561977470a1047f83c
 
 export default function LandingPageScreen({navigation}) {
   const DocCards = ['Family Physicians', 'Pulmonologist', 'Family Physicians'];
@@ -61,6 +72,8 @@ export default function LandingPageScreen({navigation}) {
   );
   const {isLogedin, isDoctor, data} = useSelector((state) => state.AuthReducer);
   const [activeId, setActiveId] = useState('');
+  const [toastVisible, setToastVisible] = useState(false);
+  const [backCount, setBackCount] = useState(true);
   const [page, setPage] = useState(0);
   const [toggle, setToggle] = useState(0);
   const [disEnd, setDisEnd] = useState(0);
@@ -132,6 +145,87 @@ export default function LandingPageScreen({navigation}) {
     }
   };
 
+<<<<<<< HEAD
+  // useBackHandler(() => {
+  //   if (backCount) {
+  //     setToastVisible(true);
+  //     setBackCount(false);
+  //     setTimeout(() => {
+  //       setToastVisible(false);
+  //     }, 2000);
+  //     console.log('in');
+  //     return true;
+  //   }
+  //   console.log('out');
+  //   // BackHandler.exitApp();
+  //   return false;
+  // });
+  // BackHandler.addEventListener('hardwareBackPress', function () {
+  //   if (backCount) {
+  //     setToastVisible(true);
+  //     setBackCount(false);
+  //     setTimeout(() => {
+  //       setToastVisible(false);
+  //     }, 2000);
+  //     console.log('in');
+  //     return true;
+  //   }
+  //   console.log('out');
+  //   BackHandler.exitApp();
+  //   return true;
+  // });
+
+  const scrollAnimation = async (e) => {
+    var vel = e.nativeEvent.velocity.y;
+    if (vel < 0) {
+      console.log('in');
+      Animated.timing(headerPos, {
+        toValue: 350,
+        duration: 1000,
+        useNativeDriver: false,
+        // easing: Easing.linear,
+      }).start();
+    } else {
+      Animated.timing(headerPos, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: false,
+        easing: Easing.linear,
+      }).start();
+    }
+  };
+
+  const headerTop = headerPos.interpolate({
+    inputRange: [0, 100],
+    outputRange: [height * 0.4, height * 0.22],
+    extrapolate: 'clamp',
+    useNativeDriver: false,
+    easing: Easing.linear,
+  });
+  const headerView = headerPos.interpolate({
+    inputRange: [0, 350],
+    outputRange: [height * 0.25, 0],
+    extrapolate: 'clamp',
+    easing: Easing.linear,
+    useNativeDriver: false,
+  });
+  const headerViewStyle = headerPos.interpolate({
+    inputRange: [0, 50],
+    outputRange: [1, 0],
+    extrapolate: 'clamp',
+    easing: Easing.linear,
+    useNativeDriver: true,
+  });
+  const headerViewStyle2 = headerPos.interpolate({
+    inputRange: [0, 100],
+    outputRange: [0, 60],
+    extrapolate: 'clamp',
+    easing: Easing.linear,
+    useNativeDriver: true,
+  });
+
+=======
+>>>>>>> e4cc152f97dbc7279a2498561977470a1047f83c
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       <LinearGradient
@@ -160,7 +254,16 @@ export default function LandingPageScreen({navigation}) {
             flex: 1,
             height: '100%',
           }}>
+          <Toast
+            visible={toastVisible}
+            position={height * 0.9}
+            shadow={true}
+            animation={true}
+            hideOnPress={true}>
+            Press again to Exit
+          </Toast>
           <TopNavBar
+            hideLeftComp={true}
             onLeftButtonPress={() => {}}
             // onRightButtonPress={() => {}}
             navigation={navigation}
@@ -280,11 +383,19 @@ export default function LandingPageScreen({navigation}) {
                         {u.slice(0, 12).concat('...')}
                       </Text>
                     </BasicCard>
+<<<<<<< HEAD
+                  );
+                })}
+              </ScrollView>
+            </View>
+          </Animated.View>
+=======
                   </TouchableOpacity>
                 );
               })}
             </ScrollView>
           </View>
+>>>>>>> e4cc152f97dbc7279a2498561977470a1047f83c
           <Section
             style={{
               Container: {marginBottom: 40, marginTop: 8},

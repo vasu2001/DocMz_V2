@@ -18,6 +18,7 @@ function DmzSignupV2(props) {
   const nextpage = (page) => {
     pagerRef.current.setPage(page);
   };
+  const initialCredential = credential;
   const dispatch = useDispatch();
   const {isLoading, data} = useSelector((state) => state.AuthReducer);
   const [signupAs, setSignupAs] = useState('patient');
@@ -35,6 +36,8 @@ function DmzSignupV2(props) {
     basic: JSON.stringify({}),
     state: '',
   });
+  // const initialCredential = credential;
+
   const handleSubmit = () => {
     signupAs === 'doctor' ? _handleDoctorSignup() : _handlePatientSignup();
   };
@@ -59,7 +62,8 @@ function DmzSignupV2(props) {
     // props.navigation.goBack(null);
   };
   const errorCallback = (e) => {
-    Alert.alert('something went wrong');
+    Alert.alert(e);
+    // Alert.alert('something went wrong');
     // showTost('error occured: ' + e);
   };
   const showTost = (msg = 'nothing') => {
@@ -163,7 +167,30 @@ function DmzSignupV2(props) {
           isLoading={isLoading}
           signupAs={signupAs}
           navigation={props.navigation}
-          onPress={signupAs === 'doctor' ? () => nextpage(2) : handleSubmit}
+          onPress={() => {
+            const reg = new RegExp(
+              /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/,
+            );
+            const {email, password, firstName, lastName} = credential;
+            if (
+              email !== '' &&
+              password !== '' &&
+              reg.test(email) &&
+              password.length >= 4 &&
+              lastName != '' &&
+              firstName != ''
+            ) {
+              signupAs === 'doctor' ? nextpage(2) : handleSubmit;
+            } else {
+              lastName == '' && firstName == ''
+                ? Alert.alert('One or more fields empty')
+                : password.length < 4
+                ? Alert.alert('Password must be atleast 4 characters')
+                : reg.test(email)
+                ? Alert.alert('One or more fields empty')
+                : Alert.alert('Not a valid Email.');
+            }
+          }}
         />
       </View>
       <View key="2">
@@ -171,7 +198,23 @@ function DmzSignupV2(props) {
           credential={credential}
           setCredential={setCredential}
           onChoosePicture={onChoosePicture}
-          onPress={() => nextpage(3)}
+          onPress={() => {
+            const {registration_number, specialty} = credential;
+            if (
+              registration_number !== '' &&
+              specialty !== '' &&
+              registration_number.length >= 4 &&
+              registration_number.length <= 15
+            ) {
+              nextpage(3);
+            } else {
+              registration_number == '' && specialty == ''
+                ? Alert.alert('One or more fields empty')
+                : registration_number.length < 8
+                ? Alert.alert('Registration No. must be atleast 8 characters')
+                : null;
+            }
+          }}
         />
       </View>
       <View key="3">
@@ -179,7 +222,23 @@ function DmzSignupV2(props) {
           credential={credential}
           setCredential={setCredential}
           isLoading={isLoading}
-          onPress={handleSubmit}
+          onPress={() => {
+            const {phone, city, country} = credential;
+            if (
+              phone !== '' &&
+              city !== '' &&
+              country !== '' &&
+              phone.length == 10
+            ) {
+              handleSubmit();
+            } else {
+              country == '' && city == '' && phone == ''
+                ? Alert.alert('One or more fields empty')
+                : phone.length != 10
+                ? Alert.alert('Incorrect Phone No.')
+                : null;
+            }
+          }}
           onChoosePicture={onChoosePicture}
         />
       </View>

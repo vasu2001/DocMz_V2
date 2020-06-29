@@ -275,11 +275,14 @@ export const signupPatient = (data, successCallback, errorCallback) => {
             successCallback();
           });
 
-          console.log(result.data.status);
+          console.log('@@@@@@@@@@@@@@@@@', result.data);
+        } else {
+          dispatch(haveingError('Something Went Wrong'));
+          errorCallback('Something Went Wrong');
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.log('@@@@@@@@@@@@@@@@@', err);
         dispatch(haveingError(err.message));
         errorCallback(err.message);
       });

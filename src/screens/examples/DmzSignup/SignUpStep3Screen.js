@@ -114,9 +114,11 @@ export default function SignUpStep3Screen(props) {
         <TextInputIcon
           placeholder="Contact Number"
           inputHandler={handlePhone}
+          keyboardType="number-pad"
           placeholderTextColor="rgba(0, 0, 0, 0.15)"
           style={styles.inputStyle}
           textStyle={styles.textStyle}
+          maxLength={10}
         />
         <TextInputIcon
           placeholder="City of Residence"

@@ -9,6 +9,8 @@ import {
   Platform,
   UIManager,
   LayoutAnimation,
+  Alert,
+  BackHandler,
 } from 'react-native';
 import GradientTopNavBar from '../../../components/molecules/TopNavBar/GradientTopNavBar';
 import NotFound from '../../../components/organisms/NotFound/NotFound';
@@ -57,6 +59,10 @@ const FamilyMember = ({navigation}) => {
     !isPatientAccountReducerLoading && dispatch(GetFamilyMember(patient.meta));
   }, []);
 
+  BackHandler.addEventListener('hardwareBackPress', () => {
+    navigation.navigate('pageNavigation', {}, navigation.navigate('Home'));
+  });
+
   const onOpenPopup = () => {
     setState({...state, metaId: patient.meta});
     LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
@@ -70,7 +76,52 @@ const FamilyMember = ({navigation}) => {
 
   const onSubmit = () => {
     console.log(state);
-    dispatch(AddFamilyMember(state, () => onClosePopup()));
+    const reg = new RegExp(
+      // /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/,
+      /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/,
+    );
+    const reg2 = new RegExp(
+      /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/,
+    );
+    const {
+      firstName,
+      lastName,
+      email,
+      phone,
+      gender,
+      birthdate,
+      relationship,
+    } = state;
+    if (
+      firstName !== '' &&
+      lastName !== '' &&
+      email !== '' &&
+      phone !== '' &&
+      gender !== '' &&
+      birthdate !== '' &&
+      relationship !== '' &&
+      reg.test(birthdate) &&
+      reg2.test(email) &&
+      phone.length == 10
+    ) {
+      dispatch(AddFamilyMember(state, () => onClosePopup()));
+    } else {
+      firstName == '' &&
+      lastName == '' &&
+      email == '' &&
+      phone == '' &&
+      gender == '' &&
+      birthdate == '' &&
+      relationship == ''
+        ? Alert.alert('One or more fields empty')
+        : phone.length != 10
+        ? Alert.alert('Incorrect Phone No.')
+        : !reg.test(birthdate)
+        ? Alert.alert('Incorrect Date')
+        : !reg2.test(email)
+        ? Alert.alert('Invalid Email')
+        : null;
+    }
   };
 
   return (
@@ -160,6 +211,8 @@ const FamilyMember = ({navigation}) => {
                 <AnimInput
                   withAnim={false}
                   placeholder="phone"
+                  keyboardType={'number-pad'}
+                  maxLength={10}
                   style={{Container: Styles.AnimInputContainer}}
                   inputHandler={(txt) => setState({...state, phone: txt})}
                 />
@@ -175,7 +228,8 @@ const FamilyMember = ({navigation}) => {
               <View style={Styles.InputContainer}>
                 <AnimInput
                   withAnim={false}
-                  placeholder="Birth date"
+                  placeholder="Birth date (DD/MM/YYYY)"
+                  keyboardType={'phone-pad'}
                   style={{Container: Styles.AnimInputContainer}}
                   inputHandler={(txt) => setState({...state, birthdate: txt})}
                 />

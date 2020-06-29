@@ -36,10 +36,20 @@ export default function SignUpStep1Screen(props) {
   const handlePassword = (password) => {
     setCredential({...credential, password});
   };
+<<<<<<< HEAD
+  const [passVisible, setPass] = useState(false);
+  const viewPassword = () => {
+    setPass(!passVisible);
+  };
+  async function onGoogleButtonPress() {
+    // Get the users ID token
+    const {idToken} = await GoogleSignin.signIn();
+=======
 
   // async function onGoogleButtonPress() {
   //   // Get the users ID token
   //   const {idToken} = await GoogleSignin.signIn();
+>>>>>>> e4cc152f97dbc7279a2498561977470a1047f83c
 
   //   // Create a Google credential with the token
   //   const googleCredential = auth.GoogleAuthProvider.credential(idToken);
@@ -122,10 +132,7 @@ export default function SignUpStep1Screen(props) {
           inputHandler={handleFirstName}
           placeholderTextColor="rgba(0, 0, 0, 0.15)"
           style={styles.inputStyle}
-          textStyle={{
-            color: '#027E97',
-            fontSize: 14,
-          }}
+          textStyle={styles.textStyle}
         />
         <TextInputIcon
           placeholder="Last Name"
@@ -137,17 +144,27 @@ export default function SignUpStep1Screen(props) {
         <TextInputIcon
           placeholder="Email"
           inputHandler={handleEmail}
+          keyboardType={'email-address'}
           placeholderTextColor="rgba(0, 0, 0, 0.15)"
           style={styles.inputStyle}
           textStyle={styles.textStyle}
         />
         <TextInputIcon
-          secureTextEntry={true}
+          hasIcon={true}
+          iconName={passVisible ? 'eye' : 'eye-off'}
+          size={25}
+          iconPos="right"
+          secureTextEntry={!passVisible}
+          onPress={viewPassword}
           placeholder="Password"
           inputHandler={handlePassword}
           placeholderTextColor="rgba(0, 0, 0, 0.15)"
           style={styles.inputStyle}
-          textStyle={styles.textStyle}
+          iconStyle={{
+            alignSelf: 'center',
+            justifyContent: 'center',
+          }}
+          textStyle={[styles.textStyle, {width: '83%'}]}
         />
 
         <View
@@ -245,7 +262,6 @@ export default function SignUpStep1Screen(props) {
         />
         <DmzText
           style={{
-            // width: '100%',
             textAlign: 'center',
             color: 'rgba(0, 0, 0, 0.15)',
             fontSize: 14,
@@ -286,5 +302,6 @@ const styles = StyleSheet.create({
     color: HEADER_TEXT,
     fontSize: 14,
     marginTop: 20,
+    width: '100%',
   },
 });
