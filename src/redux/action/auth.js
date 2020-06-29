@@ -116,7 +116,7 @@ export const LoginPatient = (data, success, failed) => {
           dispatch(saveNewUser(_data, 'patient'));
           success({
             status: true,
-            message: 'patient add successfully.',
+            message: 'Patient Login Successful',
           });
         } else {
           failed({
@@ -252,6 +252,7 @@ export const signupDoctor = (data, successCallback, errorCallback) => {
 };
 
 export const signupPatient = (data, successCallback, errorCallback) => {
+  console.log('signingin');
   return (dispatch) => {
     const config = {
       'Content-Type': 'application/x-www-form-urlencoded',

@@ -11,11 +11,8 @@
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.11.0",
-<<<<<<< HEAD
     "@react-native-community/google-signin": "^4.0.3",
     "@react-native-community/hooks": "^2.6.0",
-=======
->>>>>>> e4cc152f97dbc7279a2498561977470a1047f83c
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/picker": "^1.6.1",
     "@react-native-community/viewpager": "^4.0.1",
@@ -37,6 +34,7 @@
     "react-native-chart-kit": "^5.6.0",
     "react-native-credit-card": "^0.1.9",
     "react-native-credit-card-input": "^0.4.1",
+    "react-native-datepicker": "^1.7.2",
     "react-native-draggable-calendar": "^1.0.2",
     "react-native-draggable-flatlist": "^2.3.3",
     "react-native-elements": "^2.0.2",
@@ -51,7 +49,6 @@
     "react-native-safe-area-context": "^3.0.3",
     "react-native-safe-area-view": "^1.1.1",
     "react-native-screens": "^2.8.0",
-    "react-native-sliding-up-down-panels": "^1.0.0",
     "react-native-sortable-list": "^0.0.24",
     "react-native-svg": "^12.1.0",
     "react-native-svg-charts": "^5.4.0",

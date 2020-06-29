@@ -42,9 +42,17 @@ import {TouchableOpacity, ScrollView} from 'react-native-gesture-handler';
 import FancyHeaderLite from '../../../components/organisms/FancyHeaderLite/FancyHeaderLite';
 import Container from '../../../components/organisms/Container/Container';
 import {PRIMARY_COLOR, TERTIARY_TEXT} from '../../../styles/colors';
+import {useSelector} from 'react-redux';
+import DatePicker from 'react-native-datepicker';
+import Moment from 'moment';
+import {endsWith} from 'lodash';
+
 function MedicalRecords({navigation}) {
   const [showAddRecord, setShowAddRecord] = useState(false);
+  const {data} = useSelector((state) => state.AuthReducer);
   const [review, setReview] = useState(false);
+  const [startDate, setStartDate] = useState('');
+  const [EndDate, setEndDate] = useState('');
   const onPress = () => {
     setShowAddRecord(true);
   };
@@ -65,13 +73,7 @@ function MedicalRecords({navigation}) {
       <FancyHeaderLite
         headerText=""
         navigation={navigation}
-        LeftComp={
-          <ProfilePic
-            sourceurl={require('../../../assets/jpg/person1.jpg')}
-            style={{Container: {height: 32, width: 32}}}
-          />
-        }
-        style={{Section: {overflow: 'hidden', height: '15%', marginBottom: 0}}}
+        style={{Section: {overflow: 'hidden', height: '18%', marginBottom: 0}}}
       />
       <Container
         style={{
@@ -82,7 +84,7 @@ function MedicalRecords({navigation}) {
           padding: 20,
         }}>
         <DmzText
-          text="Hello Ayush"
+          text={`Hello ${data.name}`}
           lite
           gap_medium
           style={{color: '#575757'}}
@@ -222,15 +224,96 @@ function MedicalRecords({navigation}) {
                 <VerticleText isActive text={{Top: 'Sa', Bottom: '12'}} />
                 <VerticleText isActive text={{Top: 'Su', Bottom: '13'}} />
               </View>
-              <AnimInput
-                placeholder="Start Date"
-                keyboardType={'phone-pad'}
-                style={{Container: {height: 60, marginTop: 20}}}
+              <DmzText
+                lite
+                text="Start Date"
+                style={[styles.Placeholder, {marginTop: 20}]}
               />
-              <AnimInput
-                keyboardType={'phone-pad'}
-                placeholder="End Date (optional)"
-                style={{Container: {height: 60, marginTop: 20}}}
+              <DatePicker
+                date={startDate}
+                mode="date"
+                placeholder="Select Start Date"
+                format="DD-MM-YYYY"
+                // minDate="01-01-1950"
+                minDate={Moment(new Date(), 'DD-MM-YYYY')}
+                maxDate="01-01-2050"
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                allowFontScaling={true}
+                showIcon={false}
+                customStyles={{
+                  dateInput: {
+                    borderWidth: 0,
+                    fontSize: 15,
+                    height: 40,
+                  },
+                  placeholderText: {
+                    color: '#77777795',
+                    width: '100%',
+                  },
+                  dateText: {
+                    color: '#000',
+                    width: '100%',
+                    marginLeft: 30,
+                  },
+                }}
+                style={{
+                  width: '100%',
+                  borderBottomWidth: 1,
+                  borderColor: '#555',
+                }}
+                onDateChange={(date) => {
+                  console.log(date);
+                  setStartDate(date);
+                  // setInputFields({...inputFields, dob: date});
+                }}
+              />
+              <DmzText
+                lite
+                text="End Date"
+                style={[styles.Placeholder, {marginTop: 20}]}
+              />
+              <DatePicker
+                disabled={startDate == ''}
+                date={EndDate}
+                mode="date"
+                placeholder="Select End Date"
+                format="DD-MM-YYYY"
+                minDate={
+                  startDate == ''
+                    ? '01-01-2000'
+                    : Moment(startDate, 'DD/MM/YYYY')
+                }
+                maxDate="31-12-2050"
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                allowFontScaling={true}
+                showIcon={false}
+                customStyles={{
+                  dateInput: {
+                    borderWidth: 0,
+                    fontSize: 15,
+                    height: 40,
+                  },
+                  placeholderText: {
+                    color: '#77777795',
+                    width: '100%',
+                  },
+                  dateText: {
+                    color: '#000',
+                    width: '100%',
+                    marginLeft: 30,
+                  },
+                }}
+                style={{
+                  width: '100%',
+                  borderBottomWidth: 1,
+                  borderColor: '#555',
+                }}
+                onDateChange={(date) => {
+                  console.log(date);
+                  setEndDate(date);
+                }}
               />
               <DmzText
                 lite
@@ -303,3 +386,19 @@ const Styles = StyleSheet.create({
   },
 });
 export default MedicalRecords;
+
+const styles = StyleSheet.create({
+  Container: {height: 60, marginTop: 20, left: 0},
+  Input: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: PRIMARY_COLOR,
+    left: 0,
+    marginTop: 15,
+    marginBottom: 0,
+  },
+  Placeholder: {
+    fontSize: 16,
+    color: TERTIARY_TEXT,
+  },
+});

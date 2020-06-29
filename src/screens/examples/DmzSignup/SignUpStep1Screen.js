@@ -18,9 +18,10 @@ import {
   HEADER_TEXT,
   PRIMARY_COLOR,
 } from '../../../styles/colors';
-// import {AccessToken, LoginManager} from 'react-native-fbsdk';
-// import {GoogleSignin, statusCodes} from '@react-native-community/google-signin';
-// import auth from '@react-native-firebase/auth';
+
+import {AccessToken, LoginManager, LoginButton} from 'react-native-fbsdk';
+import {GoogleSignin, statusCodes} from '@react-native-community/google-signin';
+import auth from '@react-native-firebase/auth';
 
 export default function SignUpStep1Screen(props) {
   const {credential, setCredential, isLoading} = props;
@@ -36,27 +37,21 @@ export default function SignUpStep1Screen(props) {
   const handlePassword = (password) => {
     setCredential({...credential, password});
   };
-<<<<<<< HEAD
+
   const [passVisible, setPass] = useState(false);
   const viewPassword = () => {
     setPass(!passVisible);
   };
+
   async function onGoogleButtonPress() {
     // Get the users ID token
     const {idToken} = await GoogleSignin.signIn();
-=======
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
-  // async function onGoogleButtonPress() {
-  //   // Get the users ID token
-  //   const {idToken} = await GoogleSignin.signIn();
->>>>>>> e4cc152f97dbc7279a2498561977470a1047f83c
-
-  //   // Create a Google credential with the token
-  //   const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-
-  //   // Sign-in the user with the credential
-  //   return auth().signInWithCredential(googleCredential);
-  // }
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(googleCredential);
+  }
 
   // useEffect(() => {
   //   GoogleSignin.configure({
@@ -166,7 +161,6 @@ export default function SignUpStep1Screen(props) {
           }}
           textStyle={[styles.textStyle, {width: '83%'}]}
         />
-
         <View
           style={{
             width: '50%',
@@ -188,6 +182,18 @@ export default function SignUpStep1Screen(props) {
                     );
                     AccessToken.getCurrentAccessToken().then((data) => {
                       console.log(data.accessToken.toString());
+                      fetch(
+                        'https://graph.facebook.com/v2.5/me?fields=email,name,friends&access_token=' +
+                          data.accessToken.toString(),
+                      )
+                        .then((response) => response.json())
+                        .then((json) => {
+                          // Some user object has been set up somewhere, build that user here
+                          console.log(json);
+                        })
+                        .catch(() => {
+                          alert('ERROR GETTING DATA FROM FACEBOOK');
+                        });
                     });
                   }
                 },

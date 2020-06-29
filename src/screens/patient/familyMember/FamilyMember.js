@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
 import {
   View,
@@ -29,6 +30,9 @@ import AnimInput from '../../../components/molecules/AnimInput/AnimInput';
 import DmzButton from '../../../components/atoms/DmzButton/DmzButton';
 import FancyHeaderLite from '../../../components/organisms/FancyHeaderLite/FancyHeaderLite';
 import Container from '../../../components/organisms/Container/Container';
+import DatePicker from 'react-native-datepicker';
+import {Picker} from '@react-native-community/picker';
+import Moment from 'moment';
 
 if (Platform.OS === 'android') {
   if (UIManager.setLayoutAnimationEnabledExperimental) {
@@ -210,7 +214,7 @@ const FamilyMember = ({navigation}) => {
               <View style={Styles.InputContainer}>
                 <AnimInput
                   withAnim={false}
-                  placeholder="phone"
+                  placeholder="Phone Number"
                   keyboardType={'number-pad'}
                   maxLength={10}
                   style={{Container: Styles.AnimInputContainer}}
@@ -218,20 +222,50 @@ const FamilyMember = ({navigation}) => {
                 />
               </View>
               <View style={Styles.InputContainer}>
-                <AnimInput
-                  withAnim={false}
-                  placeholder="Gender"
-                  style={{Container: Styles.AnimInputContainer}}
-                  inputHandler={(txt) => setState({...state, gender: txt})}
-                />
+                <Picker
+                  selectedValue={state.gender}
+                  onValueChange={(txt) => setState({...state, gender: txt})}>
+                  <Picker.Item
+                    color="#777"
+                    label="Select Gender"
+                    value={null}
+                  />
+                  <Picker.Item label="Male" value="Male" />
+                  <Picker.Item label="Female" value="Female" />
+                  <Picker.Item label="Transgender" value="Transgender" />
+                </Picker>
               </View>
               <View style={Styles.InputContainer}>
-                <AnimInput
-                  withAnim={false}
-                  placeholder="Birth date (DD/MM/YYYY)"
-                  keyboardType={'phone-pad'}
-                  style={{Container: Styles.AnimInputContainer}}
-                  inputHandler={(txt) => setState({...state, birthdate: txt})}
+                <DatePicker
+                  date={state.birthdate}
+                  mode="date"
+                  placeholder="Date of Birth"
+                  format="DD-MM-YYYY"
+                  minDate="01-01-1900"
+                  maxDate={Moment(new Date(), 'DD-MM-YYYY')}
+                  showIcon={false}
+                  allowFontScaling={true}
+                  customStyles={{
+                    dateInput: {
+                      borderWidth: 0,
+                      fontSize: 15,
+                      height: 40,
+                    },
+                    placeholderText: {
+                      color: '#77777795',
+                      width: '100%',
+                      marginLeft: 30,
+                    },
+                    dateText: {
+                      color: '#000',
+                      width: '100%',
+                      marginLeft: 30,
+                    },
+                  }}
+                  style={{
+                    width: '100%',
+                  }}
+                  onDateChange={(txt) => setState({...state, birthdate: txt})}
                 />
               </View>
               <View style={Styles.InputContainer}>
