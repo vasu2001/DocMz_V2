@@ -145,6 +145,7 @@ const DoctorNavigationContent = createBottomTabNavigator(
       // screen: FindADoctor,
       // screen: DmzSignupV2,
       // screen: DmzloginV2,
+      // screen: Collapsible,
       navigationOptions: {
         tabBarIcon: ({focused, tintColor}) => {
           return (

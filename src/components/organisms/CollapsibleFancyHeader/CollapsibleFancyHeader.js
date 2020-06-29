@@ -19,23 +19,16 @@ function CollapsibleFancyHeader({
   headerText,
   children,
   style,
-  translateHeader,
   HeaderMax,
   HeaderMin,
+  animatedHeight,
+  animatedTop,
   //   navigation,
 }) {
-  const HEADER_MAX = HeaderMax || 200;
-  const HEADER_MIN = HeaderMin || 50;
-  const headerScrollYOffset = HEADER_MAX - HEADER_MIN;
-  const dimen = useWindowDimensions();
   return (
     <Animated.View
       style={{
-        height: translateHeader.interpolate({
-          inputRange: [0, headerScrollYOffset],
-          outputRange: [HEADER_MAX, HEADER_MIN],
-          extrapolate: 'clamp',
-        }),
+        height: animatedHeight,
         overflow: 'hidden',
       }}>
       <LinearGradient
@@ -49,11 +42,7 @@ function CollapsibleFancyHeader({
           RightComp={RightComp}
           headerText={headerText || ''}
           style={{
-            marginTop: translateHeader.interpolate({
-              inputRange: [0, headerScrollYOffset],
-              outputRange: [30, 0],
-              extrapolate: 'clamp',
-            }),
+            marginTop: animatedTop,
           }}
           // onRightButtonPress={() => navigation.openDrawer()}
         />

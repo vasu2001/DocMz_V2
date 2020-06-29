@@ -2,47 +2,27 @@ import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 
-function RadioBtn({
-  size = 1,
-  active,
-  keyName,
-  value = 'null',
-  setKeyName = () => {},
-}) {
-  size = size > 3 ? 3 : size;
-  const Size = [10, 20, 30, 40];
-  const customContainer = [
-    Styles.Container,
-    {
-      height: size ? Size[size] : Size[0],
-      width: size ? Size[size] : Size[0],
-      borderRadius: size ? Size[size] : Size[0],
-    },
-  ];
-  const customCircle = [
-    Styles.circle,
-    {
-      height: size ? Math.floor(Size[size] / 2) : Math.floor(Size[0] / 2),
-      width: size ? Math.floor(Size[size] / 2) : Math.floor(Size[0] / 2),
-      borderRadius: size ? Math.floor(Size[size] / 2) : Math.floor(Size[0] / 2),
-    },
-  ];
-  const customText = [
-    Styles.Text,
-    {
-      fontSize: size ? Size[size] : Size[0],
-      lineHeight: size ? Size[size] : Size[0],
-    },
-  ];
+function RadioBtn({active, keyName, value = 'null', setKeyName = () => {}}) {
   const onPress = () => {
     setKeyName(keyName);
   };
+
+  const customTouchableStyle = [
+    Styles.Touchable,
+    {
+      backgroundColor: active ? '#9C77BC' : '#ffffff',
+    },
+  ];
+  const customTextStyle = [
+    Styles.Text,
+    {
+      color: active ? '#fff' : '#6859A1',
+      fontWeight: active ? 'bold' : 'normal',
+    },
+  ];
   return (
-    <TouchableWithoutFeedback onPress={onPress} style={Styles.Touchable}>
-      <View style={customContainer}>
-        {active && <View style={customCircle} />}
-      </View>
-      <Text style={customText}>{value}</Text>
+    <TouchableWithoutFeedback onPress={onPress} style={customTouchableStyle}>
+      <Text style={customTextStyle}>{value}</Text>
     </TouchableWithoutFeedback>
   );
 }
@@ -51,17 +31,15 @@ const Styles = StyleSheet.create({
   Touchable: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  Container: {
-    borderWidth: 2,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  circle: {
-    backgroundColor: 'black',
+    backgroundColor: '#FFFFFF',
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 50,
+    width: '100%',
+    marginTop: 20,
   },
   Text: {
-    marginLeft: 4,
+    fontWeight: 'bold',
   },
 });
 export default RadioBtn;
