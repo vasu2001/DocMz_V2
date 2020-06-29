@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {useState, useRef, useEffect} from 'react';
 import ToggleButton from '../../../components/molecules/ToggleButton/ToggleButton';
 import SearchBarSolid from '../../../components/molecules/SearchBarSolid/SearchBarSolid';

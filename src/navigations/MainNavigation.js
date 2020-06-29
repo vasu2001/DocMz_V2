@@ -40,13 +40,17 @@ import DoctorProfile from '../screens/examples/DoctorProfile/DoctorProfile';
 //     headerMode: 'none',
 //   },
 // );
-var isDoctorLogin = false;
-(function GetAuth() {
-  // const {isDoctor} = useSelector((state) => state.AuthReducer);
-  console.log('!!!!!!!!!!!!!!  ', isDoctorLogin);
-  // isDoctorLogin = isDoctor;
-  // return isDoctor;
-})();
+
+function GetAuth({navigation}) {
+  const {isDoctor} = useSelector((state) => state.AuthReducer);
+
+  if (isDoctor) {
+    navigation.replace('DoctorHomePage');
+  } else {
+    navigation.replace('PatientHomePage');
+  }
+  return null;
+}
 
 const docMainStream = createStackNavigator(
   {
@@ -82,9 +86,9 @@ const questionnaire = createStackNavigator(
 const MainNavigation = createStackNavigator(
   {
     authentication: AuthNavigation,
-    // pageNavigation: DoctorNavigation,
-    pageNavigation: isDoctorLogin ? DoctorNavigation : PatientNavigation,
-    // pageNavigation: GetAuth ? DoctorNavigation : PatientNavigation,
+    pageNavigation: GetAuth,
+    DoctorHomePage: DoctorNavigation,
+    PatientHomePage: PatientNavigation,
     docPatientStrem: docMainStream,
     question: questionnaire,
     selectFiles: SelectFiles,

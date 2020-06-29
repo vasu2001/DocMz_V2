@@ -25,33 +25,33 @@ function AvailDoctorContainerV2({
   //     : '',
   // );
 
-  useEffect(() => {
-    console.log(index);
-    Animated.timing(cardPos, {
-      toValue: 1,
-      duration: 800,
-      delay: index * 300,
-      useNativeDriver: true,
-    }).start();
+  // useEffect(() => {
+  //   console.log(index);
+  //   Animated.timing(cardPos, {
+  //     toValue: 1,
+  //     duration: 800,
+  //     delay: index * 300,
+  //     useNativeDriver: true,
+  //   }).start();
 
-    // console.log('2222222222222222222222222222222222222222222222222');
-    // console.log(schedule);
-    // console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
-  }, []);
+  //   // console.log('2222222222222222222222222222222222222222222222222');
+  //   // console.log(schedule);
+  //   // console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+  // }, []);
 
-  const width = Dimensions.get('screen').width;
-  const cardPos = useRef(new Animated.Value(0)).current;
-  const cardView = cardPos.interpolate({
-    inputRange: [0, 1],
-    outputRange: [-1 * width, 0],
-  });
+  // const width = Dimensions.get('screen').width;
+  // const cardPos = useRef(new Animated.Value(0)).current;
+  // const cardView = cardPos.interpolate({
+  //   inputRange: [0, 1],
+  //   outputRange: [-1 * width, 0],
+  // });
 
   let imageSource = require('../../../assets/jpg/person1.jpg');
   return (
     <TouchableWithoutFeedback
       style={[
         Styles.AvailableDoctorsCardContainer,
-        {transform: [{translateX: cardView}]},
+        // {transform: [{translateX: cardView}]},
       ]}
       onPress={() => {
         navigation.navigate('docPatientStrem', {data: data});
