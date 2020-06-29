@@ -10,6 +10,7 @@ import {
   StyleSheet,
   Button,
   Platform,
+  BackHandler,
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -36,9 +37,15 @@ function Profile({navigation}) {
     sex: data.sex ? data.sex : '',
     dob: data.dob ? data.dob : '',
     bloodGroup: data.bloodGroup ? data.bloodGroup : '',
-    height: data.height.val ? data.height.val : '',
-    weight: data.weight.val ? data.weight.val : '',
+    height: data.height.val != null ? data.height.val : '',
+    weight: data.weight.val != null ? data.weight.val : '',
   });
+
+  // BackHandler.addEventListener('hardwareBackPress', () => {
+  //   navigation.navigate('Home');
+  //   // BackHandler.removeEventListener('hardwareBackPress', () => {});
+  //   return true;
+  // });
 
   useEffect(() => {
     console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
@@ -208,19 +215,76 @@ function Profile({navigation}) {
               Placeholder: styles.Placeholder,
             }}
           />
-          <AnimInput
-            placeholder="Contact Number"
-            keyboardType="number-pad"
-            maxLength={10}
-            inputHandler={(txt) => setInputFields({...inputFields, phone: txt})}
-            value={inputFields.phone}
+          <View
             style={{
-              Container: styles.Container,
-              Input: styles.Input,
-              Placeholder: styles.Placeholder,
-            }}
-          />
-          <AnimInput
+              borderBottomWidth: 1,
+              borderBottomColor: '#ccc',
+            }}>
+            <DmzText
+              lite
+              text="Contact Number"
+              style={[styles.Placeholder, {marginTop: 20}]}
+            />
+            <TouchableOpacity
+              onPress={() => {
+                console.log('pressed');
+                navigation.navigate(
+                  'EditPhoneNumber',
+                  {phone: '1234567890'},
+                  // navigation.navigate('EditPhoneNumber'),
+                );
+              }}
+              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <Text style={[styles.Input, {marginBottom: 0, marginTop: 5}]}>
+                {inputFields.phone == ''
+                  ? 'Add Phone Number'
+                  : inputFields.phone}
+              </Text>
+              <Text style={styles.Input}>
+                {inputFields.phone == '' ? '' : 'Update'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              borderBottomWidth: 1,
+              borderBottomColor: '#ccc',
+              width: '100%',
+              alignItems: 'flex-start',
+            }}>
+            <DmzText
+              lite
+              text="Email Id"
+              style={[styles.Placeholder, {marginTop: 20}]}
+            />
+            <TouchableOpacity
+              onPress={() => {
+                console.log('pressed');
+                navigation.navigate(
+                  'EditEmailId',
+                  {
+                    email: inputFields.email == '' ? '' : inputFields.email,
+                  },
+                  // navigation.navigate('EditPhoneNumber'),
+                );
+              }}
+              style={{
+                flexDirection: 'row',
+                width: '80%',
+              }}>
+              <Text style={[styles.Input, {marginBottom: 0, marginTop: 5}]}>
+                {inputFields.email == '' ? 'Add Email Id' : inputFields.email}
+              </Text>
+              <Text
+                style={[
+                  styles.Input,
+                  {marginBottom: 0, marginTop: 5, color: 'crimson'},
+                ]}>
+                {inputFields.email == '' ? '' : 'Update'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+          {/* <AnimInput
             placeholder="Email Id"
             inputHandler={(txt) => setInputFields({...inputFields, email: txt})}
             value={inputFields.email}
@@ -229,7 +293,7 @@ function Profile({navigation}) {
               Input: styles.Input,
               Placeholder: styles.Placeholder,
             }}
-          />
+          /> */}
           <View
             style={{
               borderBottomWidth: 1,
@@ -240,16 +304,29 @@ function Profile({navigation}) {
               text="Gender"
               style={[styles.Placeholder, {marginTop: 20}]}
             />
-            <Picker
-              selectedValue={inputFields.sex}
-              onValueChange={(txt) =>
-                setInputFields({...inputFields, sex: txt})
-              }>
-              <Picker.Item label="Select Gender" value={null} />
-              <Picker.Item label="Male" value="Male" />
-              <Picker.Item label="Female" value="Female" />
-              <Picker.Item label="Transgender" value="Transgender" />
-            </Picker>
+            <DmzText
+              text={inputFields.sex == '' ? 'Select Gender' : inputFields.sex}
+              style={[
+                styles.Input,
+                {
+                  width: '90%',
+                  marginTop: 0,
+                  fontWeight: inputFields.sex == '' ? 'normal' : 'bold',
+                  fontSize: inputFields.sex == '' ? 16 : 18,
+                },
+              ]}>
+              <Picker
+                selectedValue={inputFields.sex}
+                style={{width: 50, height: 50, marginTop: -10}}
+                onValueChange={(txt) =>
+                  setInputFields({...inputFields, sex: txt})
+                }>
+                <Picker.Item label="Select Gender" value={''} color="#ccc" />
+                <Picker.Item label="Male" value="Male" />
+                <Picker.Item label="Female" value="Female" />
+                <Picker.Item label="Transgender" value="Transgender" />
+              </Picker>
+            </DmzText>
           </View>
           <View>
             <DmzText
@@ -258,9 +335,10 @@ function Profile({navigation}) {
               style={[styles.Placeholder, {marginTop: 20}]}
             />
             <DatePicker
-              // style={{width: 200}}
               date={inputFields.dob}
               mode="date"
+              androidMode="spinner"
+              showIcon={false}
               placeholder="Select date of birth"
               format="DD-MM-YYYY"
               minDate="01-01-1930"
@@ -269,17 +347,22 @@ function Profile({navigation}) {
               cancelBtnText="Cancel"
               allowFontScaling={true}
               customStyles={{
-                dateIcon: {
-                  position: 'absolute',
-                  left: 0,
-                  top: 4,
-                  marginLeft: 0,
-                },
+                dateTouchBody: {marginTop: -30},
                 dateInput: {
                   borderWidth: 0,
                   fontSize: 15,
                   height: 40,
                 },
+                dateText: [styles.Input, {width: '100%'}],
+                placeholderText: [
+                  styles.Input,
+                  {
+                    width: '100%',
+                    color: '#ccc',
+                    fontWeight: 'normal',
+                    marginTop: 0,
+                  },
+                ],
               }}
               style={{
                 borderBottomWidth: 1,
@@ -298,28 +381,47 @@ function Profile({navigation}) {
             style={{
               borderBottomWidth: 1,
               borderBottomColor: '#ccc',
+              height: 90,
             }}>
             <DmzText
               lite
               text="Blood Group"
               style={[styles.Placeholder, {marginTop: 20}]}
             />
-            <Picker
-              selectedValue={inputFields.bloodGroup}
-              mode={'dropdown'}
-              onValueChange={(txt) =>
-                setInputFields({...inputFields, bloodGroup: txt})
-              }>
-              <Picker.Item label="Select Blood Group" value={null} />
-              <Picker.Item label="A+" value="A+" />
-              <Picker.Item label="A-" value="A-" />
-              <Picker.Item label="B+" value="B+" />
-              <Picker.Item label="B-" value="B-" />
-              <Picker.Item label="O+" value="O+" />
-              <Picker.Item label="O-" value="O-" />
-              <Picker.Item label="AB+" value="AB+" />
-              <Picker.Item label="AB-" value="A-B" />
-            </Picker>
+            <DmzText
+              lite
+              text={
+                inputFields.bloodGroup == ''
+                  ? 'Select Blood Group'
+                  : inputFields.bloodGroup
+              }
+              style={[
+                styles.Input,
+                {
+                  width: '90%',
+                  marginTop: 0,
+                  fontWeight: inputFields.bloodGroup == '' ? 'normal' : 'bold',
+                  fontSize: inputFields.bloodGroup == '' ? 16 : 18,
+                },
+              ]}>
+              <Picker
+                selectedValue={inputFields.bloodGroup}
+                mode={'dialog'}
+                style={{width: 50, height: 50, marginTop: -10}}
+                onValueChange={(txt) =>
+                  setInputFields({...inputFields, bloodGroup: txt})
+                }>
+                <Picker.Item label="Select Blood Group" value={''} />
+                <Picker.Item label="A+" value="A+" />
+                <Picker.Item label="A-" value="A-" />
+                <Picker.Item label="B+" value="B+" />
+                <Picker.Item label="B-" value="B-" />
+                <Picker.Item label="O+" value="O+" />
+                <Picker.Item label="O-" value="O-" />
+                <Picker.Item label="AB+" value="AB+" />
+                <Picker.Item label="AB-" value="A-B" />
+              </Picker>
+            </DmzText>
           </View>
           <AnimInput
             placeholder="Height (in cm)"
@@ -383,11 +485,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: PRIMARY_COLOR,
     left: 0,
+    width: '100%',
     marginTop: 15,
-    marginBottom: 0,
+    marginBottom: -10,
+    marginLeft: 0,
   },
   Placeholder: {
     fontSize: 16,
-    color: TERTIARY_TEXT,
+    color: '#00000080',
   },
 });

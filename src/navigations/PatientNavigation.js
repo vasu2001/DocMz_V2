@@ -22,10 +22,15 @@ import ConfirmAppointment from '../components/molecules/ConfirmAppointment/Confi
 import BookingDetails from '../screens/patient/questionnaire/BookingDetails';
 import FamilyMember from '../screens/patient/familyMember/FamilyMember';
 import WaitingRoom from '../screens/patient/waitingRoom/WaitingRoom';
-import Profile from '../screens/examples/Profile/Profile';
+import ProfileScreen from '../screens/examples/Profile/Profile';
 import LandingPageScreen from '../screens/examples/LandingPage/LandingPageScreen';
 import Calendar from '../screens/examples/PatientCalendar/PatientCalendarScreen';
 import {createAppContainer} from 'react-navigation';
+import {createStackNavigator} from 'react-navigation-stack';
+import EditPhoneNumber from '../components/molecules/EditPhoneNumber/EditPhoneNumber';
+import PhoneNumberOtp from '../components/molecules/EditPhoneNumber/PhoneNumberOtp';
+import EditEmailId from '../components/molecules/EditEmailId/EditEmailId';
+import EmailIdOtp from '../components/molecules/EditEmailId/EmailIdOtp';
 // const PatientBottomNavigation = createSwitchNavigator(
 //   {
 //     patientHomeScreen: Home,
@@ -77,6 +82,16 @@ import {createAppContainer} from 'react-navigation';
 // })
 
 const screenWidth = Dimensions.get('screen').width;
+const ProfileStack = createStackNavigator(
+  {
+    ProfileScreen,
+    EditPhoneNumber,
+    PhoneNumberOtp,
+    EmailIdOtp,
+    EditEmailId,
+  },
+  {headerMode: 'none', initialRouteName: 'ProfileScreen'},
+);
 const PatientNavigation = createDrawerNavigator(
   {
     // Home,
@@ -100,9 +115,10 @@ const PatientNavigation = createDrawerNavigator(
     AppSettings,
     NotFound,
     FamilyMember,
-    Profile,
+    Profile: {screen: ProfileStack},
   },
   {
+    initialRouteName: 'Home',
     drawerPosition: 'right',
     headerMode: 'none',
     drawerType: 'none',
@@ -114,6 +130,7 @@ const PatientNavigation = createDrawerNavigator(
       activeTintColor: '#fff',
       activeBackgroundColor: '#6b52ae',
     },
+    backBehavior: 'initialRoute',
   },
 );
 
