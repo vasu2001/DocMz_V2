@@ -24,6 +24,9 @@ function TextInputIcon({
   size,
   inputHandler,
   secureTextEntry = false,
+  maxLength,
+  onPress,
+  children,
 }) {
   return (
     <View
@@ -33,6 +36,7 @@ function TextInputIcon({
       ]}>
       {hasIcon ? (
         <MaterialCommunityIcons
+          onPress={onPress}
           name={iconName}
           color={iconColor ? iconColor : '#000'}
           size={size}
@@ -52,7 +56,9 @@ function TextInputIcon({
         keyboardType={keyboardType}
         onChangeText={(text) => inputHandler(text)}
         style={[textStyle ? textStyle : null]}
+        maxLength={maxLength}
       />
+      {children}
     </View>
   );
 }

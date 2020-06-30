@@ -5,6 +5,9 @@ const initialState = {
   patientFavDoc: [],
   familyMember: [],
   profileInfo: [],
+  appointmentForSlotLoading: false,
+  appointmentForSlot: [],
+  appointmentForSlotError: '',
 };
 
 const PatientAccountReducer = (state = initialState, action) => {
@@ -56,6 +59,23 @@ const PatientAccountReducer = (state = initialState, action) => {
       return {
         ...state,
         isPatientAccountReducerLoading: false,
+      };
+    case 'START_APPOINTMENT_SLOT_LOADING':
+      return {
+        ...state,
+        appointmentForSlotLoading: true,
+      };
+    case 'APPOINTMENT_SLOT_LOADED':
+      return {
+        ...state,
+        appointmentForSlotLoading: false,
+        appointmentForSlot: action.payload,
+      };
+    case 'APPOINTMENT_SLOT_ERROR':
+      return {
+        ...state,
+        appointmentForSlotLoading: false,
+        appointmentForSlotError: action.payload,
       };
     default:
       return state;

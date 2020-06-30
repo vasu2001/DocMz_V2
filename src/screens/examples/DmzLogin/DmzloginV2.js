@@ -8,6 +8,7 @@ import {
   Alert,
   TouchableOpacity,
   ScrollView,
+  BackHandler,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Toast from 'react-native-root-toast';
@@ -26,7 +27,8 @@ import {
   TERTIARY_TEXT,
   PRIMARY_COLOR,
 } from '../../../styles/colors';
-
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import TopNavBar from '../../../components/molecules/TopNavBar/TopNavBar';
 export default function DmzLoginV2(props) {
   const [credential, setCredential] = useState({email: '', password: ''});
   const [loginAs, setLoginAs] = useState('patient');
@@ -46,16 +48,26 @@ export default function DmzLoginV2(props) {
     dispatch(LoginDoctor(credential, successCallback, errorCallback));
   };
 
+  BackHandler.addEventListener('hardwareBackPress', () => {
+    props.navigation.navigate('pageNavigation');
+  });
   const handleLogin = () => {
     const reg = new RegExp(
       /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/,
     );
     const {email, password} = credential;
-    if (email !== '' && password !== '' && reg.test(email)) {
+    if (
+      email !== '' &&
+      password !== '' &&
+      reg.test(email) &&
+      password.length >= 4
+    ) {
       loginAs === 'patient' && handlePatientLogin();
       loginAs === 'doctor' && handleDoctorLogin();
     } else {
-      reg.test(email)
+      password.length < 4
+        ? Alert.alert('Password must be atleast 4 characters')
+        : reg.test(email)
         ? Alert.alert('One or more fields empty')
         : Alert.alert('Not a valid Email.');
     }
@@ -71,6 +83,12 @@ export default function DmzLoginV2(props) {
     showTost(faildResponce.message, () => {});
     console.log(`PatientLoginAction(error):  ${faildResponce.message}`);
   };
+
+  const [passVisible, setPass] = useState(false);
+  const viewPassword = () => {
+    setPass(!passVisible);
+  };
+
   const showTost = (msg = '...', callback) => {
     Toast.show(msg, {
       duration: Toast.durations.SHORT,
@@ -111,6 +129,20 @@ export default function DmzLoginV2(props) {
         style={{flex: 1, opacity: 0.4}}
       /> */}
       <ScrollView style={styles.MainContainer}>
+        <TopNavBar
+          hideRightComp={true}
+          // onLeftButtonPress={() => {}}
+          onRightButtonPress={() => {
+            props.navigation.navigate('pageNavigation');
+          }}
+          navigation={props.navigation}
+          style={{
+            Container: {
+              height: '5%',
+              marginTop: 5,
+            },
+          }}
+        />
         <DmzText text="Welcome!" style={styles.HeaderText} />
         <DmzText style={styles.HeaderDesc} text="Choose Account Type" />
         <View
@@ -247,6 +279,7 @@ export default function DmzLoginV2(props) {
           style={styles.inputContainer}
           inputHandler={handleEmail}
           textContentType="emailAddress"
+          keyboardType={'email-address'}
           textStyle={{
             paddingLeft: 20,
             color: TERTIARY_TEXT,
@@ -271,7 +304,7 @@ export default function DmzLoginV2(props) {
             fontWeight: '700',
             flex: 1,
           }}
-          secureTextEntry={true}
+          secureTextEntry={!passVisible}
           hasIcon={true}
           inputHandler={handlePassword}
           iconName="lock"
@@ -279,8 +312,16 @@ export default function DmzLoginV2(props) {
           placeholder="Password"
           iconStyle={{alignSelf: 'center'}}
           iconColor={TERTIARY_TEXT}
-          size={30}
-        />
+          size={30}>
+          <Icon
+            onPress={viewPassword}
+            name={passVisible ? 'eye' : 'eye-off'}
+            style={{
+              alignSelf: 'center',
+            }}
+            size={25}
+          />
+        </TextInputIcon>
         <DmzButton
           onPress={handleLogin}
           style={{

@@ -7,10 +7,15 @@ export default function StepsTracker({
   completed,
   textStyle,
   completedColor,
+  style,
   incompletedColor,
 }) {
   return (
-    <View style={{width: '80%', alignSelf: 'center', marginTop: 30}}>
+    <View
+      style={[
+        {width: '80%', alignSelf: 'center', marginTop: 30},
+        style ? style : null,
+      ]}>
       <Text style={[textStyle ? textStyle : null]}>{text}</Text>
       <View style={{marginTop: 5, flexDirection: 'row'}}>
         <View

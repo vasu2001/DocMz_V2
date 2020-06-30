@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
 import {
   View,
@@ -9,6 +10,8 @@ import {
   Platform,
   UIManager,
   LayoutAnimation,
+  Alert,
+  BackHandler,
 } from 'react-native';
 import GradientTopNavBar from '../../../components/molecules/TopNavBar/GradientTopNavBar';
 import NotFound from '../../../components/organisms/NotFound/NotFound';
@@ -27,6 +30,9 @@ import AnimInput from '../../../components/molecules/AnimInput/AnimInput';
 import DmzButton from '../../../components/atoms/DmzButton/DmzButton';
 import FancyHeaderLite from '../../../components/organisms/FancyHeaderLite/FancyHeaderLite';
 import Container from '../../../components/organisms/Container/Container';
+import DatePicker from 'react-native-datepicker';
+import {Picker} from '@react-native-community/picker';
+import Moment from 'moment';
 
 if (Platform.OS === 'android') {
   if (UIManager.setLayoutAnimationEnabledExperimental) {
@@ -57,6 +63,10 @@ const FamilyMember = ({navigation}) => {
     !isPatientAccountReducerLoading && dispatch(GetFamilyMember(patient.meta));
   }, []);
 
+  BackHandler.addEventListener('hardwareBackPress', () => {
+    navigation.navigate('pageNavigation', {}, navigation.navigate('Home'));
+  });
+
   const onOpenPopup = () => {
     setState({...state, metaId: patient.meta});
     LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
@@ -70,7 +80,52 @@ const FamilyMember = ({navigation}) => {
 
   const onSubmit = () => {
     console.log(state);
-    dispatch(AddFamilyMember(state, () => onClosePopup()));
+    const reg = new RegExp(
+      // /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/,
+      /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/,
+    );
+    const reg2 = new RegExp(
+      /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/,
+    );
+    const {
+      firstName,
+      lastName,
+      email,
+      phone,
+      gender,
+      birthdate,
+      relationship,
+    } = state;
+    if (
+      firstName !== '' &&
+      lastName !== '' &&
+      email !== '' &&
+      phone !== '' &&
+      gender !== '' &&
+      birthdate !== '' &&
+      relationship !== '' &&
+      reg.test(birthdate) &&
+      reg2.test(email) &&
+      phone.length == 10
+    ) {
+      dispatch(AddFamilyMember(state, () => onClosePopup()));
+    } else {
+      firstName == '' &&
+      lastName == '' &&
+      email == '' &&
+      phone == '' &&
+      gender == '' &&
+      birthdate == '' &&
+      relationship == ''
+        ? Alert.alert('One or more fields empty')
+        : phone.length != 10
+        ? Alert.alert('Incorrect Phone No.')
+        : !reg.test(birthdate)
+        ? Alert.alert('Incorrect Date')
+        : !reg2.test(email)
+        ? Alert.alert('Invalid Email')
+        : null;
+    }
   };
 
   return (
@@ -159,25 +214,58 @@ const FamilyMember = ({navigation}) => {
               <View style={Styles.InputContainer}>
                 <AnimInput
                   withAnim={false}
-                  placeholder="phone"
+                  placeholder="Phone Number"
+                  keyboardType={'number-pad'}
+                  maxLength={10}
                   style={{Container: Styles.AnimInputContainer}}
                   inputHandler={(txt) => setState({...state, phone: txt})}
                 />
               </View>
               <View style={Styles.InputContainer}>
-                <AnimInput
-                  withAnim={false}
-                  placeholder="Gender"
-                  style={{Container: Styles.AnimInputContainer}}
-                  inputHandler={(txt) => setState({...state, gender: txt})}
-                />
+                <Picker
+                  selectedValue={state.gender}
+                  onValueChange={(txt) => setState({...state, gender: txt})}>
+                  <Picker.Item
+                    color="#777"
+                    label="Select Gender"
+                    value={null}
+                  />
+                  <Picker.Item label="Male" value="Male" />
+                  <Picker.Item label="Female" value="Female" />
+                  <Picker.Item label="Transgender" value="Transgender" />
+                </Picker>
               </View>
               <View style={Styles.InputContainer}>
-                <AnimInput
-                  withAnim={false}
-                  placeholder="Birth date"
-                  style={{Container: Styles.AnimInputContainer}}
-                  inputHandler={(txt) => setState({...state, birthdate: txt})}
+                <DatePicker
+                  date={state.birthdate}
+                  mode="date"
+                  placeholder="Date of Birth"
+                  format="DD-MM-YYYY"
+                  minDate="01-01-1900"
+                  maxDate={Moment(new Date(), 'DD-MM-YYYY')}
+                  showIcon={false}
+                  allowFontScaling={true}
+                  customStyles={{
+                    dateInput: {
+                      borderWidth: 0,
+                      fontSize: 15,
+                      height: 40,
+                    },
+                    placeholderText: {
+                      color: '#77777795',
+                      width: '100%',
+                      marginLeft: 30,
+                    },
+                    dateText: {
+                      color: '#000',
+                      width: '100%',
+                      marginLeft: 30,
+                    },
+                  }}
+                  style={{
+                    width: '100%',
+                  }}
+                  onDateChange={(txt) => setState({...state, birthdate: txt})}
                 />
               </View>
               <View style={Styles.InputContainer}>

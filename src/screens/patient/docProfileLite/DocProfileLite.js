@@ -1,5 +1,12 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {View, StyleSheet, Text, Animated, ScrollView} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  Animated,
+  ScrollView,
+  BackHandler,
+} from 'react-native';
 import FancyHeader from '../../../components/organisms/FancyHeader/FancyHeader';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -53,6 +60,14 @@ function DocProfileLite({navigation}) {
     }
   };
 
+  BackHandler.addEventListener('hardwareBackPress', () => {
+    alert('hello');
+    navigation.navigate(
+      'pageNavigation',
+      {},
+      navigation.navigate({routeName: 'Home'}),
+    );
+  });
   return (
     <View style={DoctorDetailsScreenStyles.Container}>
       {/* <CollapsibleFancyHeader
@@ -150,7 +165,7 @@ function DocProfileLite({navigation}) {
             navigation.navigate(
               'pageNavigation',
               {},
-              navigation.navigate({routeName: 'patientHomePage'}),
+              navigation.navigate({routeName: 'Home'}),
             )
           }
           // rightButtonClick={() =>

@@ -25,6 +25,8 @@ function AnimInput(props) {
     style,
     inputHandler = () => {},
     value,
+    maxLength,
+    secureTextEntry,
   } = props;
 
   useEffect(() => {
@@ -49,7 +51,7 @@ function AnimInput(props) {
       }).start();
     }
   };
-  const handleText = text => {
+  const handleText = (text) => {
     setInputText(text);
     inputHandler(text);
   };
@@ -95,10 +97,12 @@ function AnimInput(props) {
         placeholder={withAnim ? '' : placeholder}
         keyboardType={keyboardType}
         style={customInputStyle}
+        secureTextEntry={secureTextEntry}
         onFocus={onFocus}
         onBlur={onBlur}
         value={inputText}
         onChangeText={handleText}
+        maxLength={maxLength}
       />
     </View>
   );
@@ -118,7 +122,9 @@ const Styles = StyleSheet.create({
     left: 10,
   },
   Input: {
-    left: 10,
+    // left: 10,
+    paddingHorizontal: 20,
+    paddingLeft: 10,
     // marginTop: 5,
   },
 });

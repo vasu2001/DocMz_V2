@@ -11,7 +11,7 @@ import RadialGradient from 'react-native-radial-gradient';
 import StepsTracker from '../../../components/atoms/StepsTracker/StepsTracker';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useRef} from 'react';
-function QuestionnairePP() {
+function QuestionnairePP({navigation}) {
   const {
     gettingQuestionnaire,
     questions,
@@ -19,15 +19,13 @@ function QuestionnairePP() {
   } = useSelector((state) => state.questionnaireReducer);
 
   const {
-    data: {id},
-  } = useSelector((state) => state.AuthReducer);
-
+    data: {_id},
+  } = navigation.state.params;
   const dispatch = useDispatch();
   const [localQuestion, setLocalQuestion] = useState([]);
   const [questionCurrentId, setQuestionCurrentId] = useState('');
-
   useEffect(() => {
-    !gettingQuestionnaire && dispatch(GetQuestion(id));
+    !gettingQuestionnaire && dispatch(GetQuestion(_id));
     // !gettingQuestionnaire && setLocalQuestion(questions);
   }, []);
 

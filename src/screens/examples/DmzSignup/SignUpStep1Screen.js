@@ -18,9 +18,10 @@ import {
   HEADER_TEXT,
   PRIMARY_COLOR,
 } from '../../../styles/colors';
-// import {AccessToken, LoginManager} from 'react-native-fbsdk';
-// import {GoogleSignin, statusCodes} from '@react-native-community/google-signin';
-// import auth from '@react-native-firebase/auth';
+
+import {AccessToken, LoginManager, LoginButton} from 'react-native-fbsdk';
+import {GoogleSignin, statusCodes} from '@react-native-community/google-signin';
+import auth from '@react-native-firebase/auth';
 
 export default function SignUpStep1Screen(props) {
   const {credential, setCredential, isLoading} = props;
@@ -37,16 +38,20 @@ export default function SignUpStep1Screen(props) {
     setCredential({...credential, password});
   };
 
-  // async function onGoogleButtonPress() {
-  //   // Get the users ID token
-  //   const {idToken} = await GoogleSignin.signIn();
+  const [passVisible, setPass] = useState(false);
+  const viewPassword = () => {
+    setPass(!passVisible);
+  };
 
-  //   // Create a Google credential with the token
-  //   const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+  async function onGoogleButtonPress() {
+    // Get the users ID token
+    const {idToken} = await GoogleSignin.signIn();
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
-  //   // Sign-in the user with the credential
-  //   return auth().signInWithCredential(googleCredential);
-  // }
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(googleCredential);
+  }
 
   // useEffect(() => {
   //   GoogleSignin.configure({
@@ -122,10 +127,7 @@ export default function SignUpStep1Screen(props) {
           inputHandler={handleFirstName}
           placeholderTextColor="rgba(0, 0, 0, 0.15)"
           style={styles.inputStyle}
-          textStyle={{
-            color: '#027E97',
-            fontSize: 14,
-          }}
+          textStyle={styles.textStyle}
         />
         <TextInputIcon
           placeholder="Last Name"
@@ -137,19 +139,28 @@ export default function SignUpStep1Screen(props) {
         <TextInputIcon
           placeholder="Email"
           inputHandler={handleEmail}
+          keyboardType={'email-address'}
           placeholderTextColor="rgba(0, 0, 0, 0.15)"
           style={styles.inputStyle}
           textStyle={styles.textStyle}
         />
         <TextInputIcon
-          secureTextEntry={true}
+          hasIcon={true}
+          iconName={passVisible ? 'eye' : 'eye-off'}
+          size={25}
+          iconPos="right"
+          secureTextEntry={!passVisible}
+          onPress={viewPassword}
           placeholder="Password"
           inputHandler={handlePassword}
           placeholderTextColor="rgba(0, 0, 0, 0.15)"
           style={styles.inputStyle}
-          textStyle={styles.textStyle}
+          iconStyle={{
+            alignSelf: 'center',
+            justifyContent: 'center',
+          }}
+          textStyle={[styles.textStyle, {width: '83%'}]}
         />
-
         <View
           style={{
             width: '50%',
@@ -171,6 +182,18 @@ export default function SignUpStep1Screen(props) {
                     );
                     AccessToken.getCurrentAccessToken().then((data) => {
                       console.log(data.accessToken.toString());
+                      fetch(
+                        'https://graph.facebook.com/v2.5/me?fields=email,name,friends&access_token=' +
+                          data.accessToken.toString(),
+                      )
+                        .then((response) => response.json())
+                        .then((json) => {
+                          // Some user object has been set up somewhere, build that user here
+                          console.log(json);
+                        })
+                        .catch(() => {
+                          alert('ERROR GETTING DATA FROM FACEBOOK');
+                        });
                     });
                   }
                 },
@@ -245,7 +268,6 @@ export default function SignUpStep1Screen(props) {
         />
         <DmzText
           style={{
-            // width: '100%',
             textAlign: 'center',
             color: 'rgba(0, 0, 0, 0.15)',
             fontSize: 14,
@@ -286,5 +308,6 @@ const styles = StyleSheet.create({
     color: HEADER_TEXT,
     fontSize: 14,
     marginTop: 20,
+    width: '100%',
   },
 });

@@ -32,7 +32,6 @@ const Appointments = ({navigation}) => {
   useEffect(() => {
     !isPatientAccountReducerLoading && dispatch(GetPatientInfo(patient._id));
     console.log('###########################');
-    console.log(patient.favourites.length);
   }, []);
   const onPressRemove = (id) => {
     const data = {
@@ -65,6 +64,8 @@ const Appointments = ({navigation}) => {
           <ActivityIndicator
             style={{flex: 1, alignSelf: 'center', justifyContent: 'center'}}
           />
+        ) : patient.favourites == null ? (
+          <NotFound />
         ) : !patient.favourites.length ? (
           <NotFound />
         ) : (
