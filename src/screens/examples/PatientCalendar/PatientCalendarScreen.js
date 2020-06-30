@@ -85,7 +85,7 @@ export default function PatientCalendarScreen({navigation}) {
       await setEndDate(date);
       console.log('in2', type);
       if (date != null) {
-        console.log(selectedStartDate, date);
+        console.log(selectedStartDate, date, '66666666666');
         getDateView(selectedStartDate, date);
       }
       // getDateView(selectedStartDate, selectedEndDate);
