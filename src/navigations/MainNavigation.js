@@ -17,6 +17,7 @@ import {useSelector} from 'react-redux';
 import WaitingRoom from '../screens/patient/waitingRoom/WaitingRoom';
 import DoctorProfile from '../screens/examples/DoctorProfile/DoctorProfile';
 import QuestionnairePP from '../screens/patient/questionnaire/QuestionnairePP';
+import PatientCalendarScreen from '../screens/examples/PatientCalendar/PatientCalendarScreen';
 // check for login status
 // const {isDoctor, isLogedin} = useSelector(state => state.AuthReducer)
 
@@ -58,10 +59,10 @@ const docMainStream = createStackNavigator(
     AppointmentsStack: {
       screen: DoctorProfile,
     },
+    QuestionnairePP,
+    PatientCalendarScreen,
     ConfirmAppointment,
     AppointmentForm,
-    ConfirmAppointment,
-    QuestionnairePP,
     // Questionnaire,
   },
   {

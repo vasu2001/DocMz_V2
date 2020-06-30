@@ -149,7 +149,7 @@ export default function Calendar({onDateChange, getDateView}) {
           color: '#015A6B',
         }}
         selectedDayTextColor="#FFFFFF"
-        onDateChange={onDateChange2}
+        onDateChange={onDateChange}
         selectedRangeStartStyle={{
           backgroundColor: '#FF7A59',
           borderRadius: 11,

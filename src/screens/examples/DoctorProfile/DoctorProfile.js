@@ -56,7 +56,7 @@ function DoctorProfile(props) {
     } else {
       // navigation.navigate('ConfirmAppointment', {data: data});
       // if (data.toggle === 0) {
-      navigation.navigate('QuestionnairePP', {data: data});
+      navigation.navigate('PatientCalendarScreen', {data: data});
       // } else {
       //   alert('open schedule popup');
       // }
