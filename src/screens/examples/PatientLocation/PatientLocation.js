@@ -112,7 +112,7 @@ export default function PatientLocation(props) {
   Keyboard.addListener('keyboardDidShow', () => {
     Animated.timing(heightPanel, {
       toValue: 1,
-      duration: 90,
+      duration: 400,
       easing: Easing.linear,
       useNativeDriver: false,
     }).start();
@@ -120,7 +120,7 @@ export default function PatientLocation(props) {
   Keyboard.addListener('keyboardDidHide', () => {
     Animated.timing(heightPanel, {
       toValue: 0,
-      duration: 90,
+      duration: 400,
       easing: Easing.linear,
       useNativeDriver: false,
     }).start();
@@ -132,6 +132,7 @@ export default function PatientLocation(props) {
   return (
     <SlidingUpPanel
       ref={panelRef}
+      friction={0.5}
       containerStyle={styles.container}
       onBottomReached={props.closePanel}
       onDragEnd={(pos, gestureState) => {
@@ -148,12 +149,15 @@ export default function PatientLocation(props) {
       }}>
       {(dragHandler) => (
         <Animated.View
-          style={[styles.innerContainer, {height: '80%', marginTop: 'auto'}]}>
+          style={[
+            styles.innerContainer,
+            {height: heightPanelVal, marginTop: 'auto'},
+          ]}>
           <Animated.View
             ref={inputRef}
             key={1}
             {...dragHandler}
-            style={{width: '100%', backgroundColor: 'red'}}>
+            style={{width: '100%'}}>
             <View style={styles.topBtn} />
             <DmzText text={'Select your city'} style={{fontSize: 23}} />
           </Animated.View>

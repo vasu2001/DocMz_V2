@@ -59,9 +59,6 @@ export default function PhoneNumberOtp({navigation}) {
           }}>
           <FontAwesome size={30} color={PRIMARY_COLOR} name="angle-left" />
         </TouchableOpacity>
-        {/* <Text style={{fontSize: 21, marginLeft: 25, fontWeight: 'bold'}}>
-          {phone == '' ? 'Add Phone Number' : 'Update Phone Number'}
-        </Text> */}
       </View>
       <Text
         style={{

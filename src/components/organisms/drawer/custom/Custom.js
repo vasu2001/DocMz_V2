@@ -16,7 +16,7 @@ import {HEADER_TEXT, TERTIARY_TEXT} from '../../../../styles/colors';
 import StepsTracker from '../../../atoms/StepsTracker/StepsTracker';
 import SlidingUpPanel from 'rn-sliding-up-panel';
 import PatientLocation from '../../../../screens/examples/PatientLocation/PatientLocation';
-
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 const Navigation = [
   {
     active: true,
@@ -40,7 +40,7 @@ const Navigation = [
         active: true,
         name: 'Address',
         icon: 'credit-card',
-        navigateTo: 'Payments',
+        navigateTo: 'Address',
       },
       {
         active: true,
@@ -168,6 +168,17 @@ const Custom = ({
           height: '30%',
           justifyContent: 'center',
         }}>
+        <MaterialCommunityIcons
+          name="home"
+          size={30}
+          color="white"
+          style={{marginLeft: 20}}
+          onPress={() => {
+            console.log('pressed');
+            navigation.navigate('Home');
+            navigation.toggleDrawer();
+          }}
+        />
         <View style={styles.profile}>
           <TouchableOpacity
             onPress={onProfileClick}
@@ -232,17 +243,20 @@ const Custom = ({
       <View
         style={{
           flex: 1,
-          height: '60%',
+          // height: '70%',
           borderTopLeftRadius: 30,
           borderTopRightRadius: 30,
           overflow: 'hidden',
           width: '100%',
-          backgroundColor: 'rgba(233, 229, 255)',
+          backgroundColor: '#E9E5FF',
           paddingTop: 50,
         }}>
+        <View style={{height: 0}} />
         <ScrollView
-          style={{flex: 1, backgroundColor: 'transparent'}}
-          contentContainerStyle={{}}>
+          style={{
+            flex: 1,
+          }}
+        >
           <ExpandableOption
             key={'Location'}
             active={isLogedin}
@@ -319,7 +333,7 @@ const Custom = ({
       </View>
       {showLocation ? (
         <KeyboardAvoidingView
-          behavior='height'
+          behavior="height"
           style={{
             flex: 1,
             height: '100%',

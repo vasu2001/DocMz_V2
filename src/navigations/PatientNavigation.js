@@ -24,6 +24,8 @@ import FamilyMember from '../screens/patient/familyMember/FamilyMember';
 import WaitingRoom from '../screens/patient/waitingRoom/WaitingRoom';
 import ProfileScreen from '../screens/examples/Profile/Profile';
 import LandingPageScreen from '../screens/examples/LandingPage/LandingPageScreen';
+import PatientAdressList from '../screens/examples/PatientAddress/PatientAdressList';
+import AddAdressScreen from '../screens/examples/PatientAddress/AddAdressScreen';
 import Calendar from '../screens/examples/PatientCalendar/PatientCalendarScreen';
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
@@ -92,6 +94,13 @@ const ProfileStack = createStackNavigator(
   },
   {headerMode: 'none', initialRouteName: 'ProfileScreen'},
 );
+const AddressStack = createStackNavigator(
+  {
+    PatientAdressList,
+    AddAdressScreen,
+  },
+  {headerMode: 'none', initialRouteName: 'PatientAdressList'},
+);
 const PatientNavigation = createDrawerNavigator(
   {
     // Home,
@@ -116,6 +125,7 @@ const PatientNavigation = createDrawerNavigator(
     NotFound,
     FamilyMember,
     Profile: {screen: ProfileStack},
+    Address: {screen: AddressStack},
   },
   {
     initialRouteName: 'Home',

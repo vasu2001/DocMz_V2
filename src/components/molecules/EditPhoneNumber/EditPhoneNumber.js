@@ -36,7 +36,7 @@ export default function EditPhoneNumber({navigation}) {
             alignSelf: 'stretch',
           }}
           onPress={() => {
-            navigation.navigate('Profile');
+            navigation.navigate('ProfileScreen');
           }}>
           <FontAwesome size={30} color={PRIMARY_COLOR} name="angle-left" />
         </TouchableOpacity>
