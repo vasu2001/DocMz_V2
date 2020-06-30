@@ -80,8 +80,8 @@ const screenWidth = Dimensions.get('screen').width;
 const PatientNavigation = createDrawerNavigator(
   {
     // Home,
-    // Home: LandingPageScreen,
-    Home: Calendar,
+    Home: LandingPageScreen,
+    // Home: Calendar,
     AppointmentsStack: {
       screen: DocProfileLite,
       // screen: BookingDetails,
