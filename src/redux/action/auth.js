@@ -161,6 +161,8 @@ export const LoginDoctor = (data, success, failed) => {
     axios
       .post(`${Host}/doctors/authenticate`, data, config)
       .then((result) => {
+        console.log('222222222222222222222', result.data);
+
         if (result.data.status) {
           const data = result.data.user;
 

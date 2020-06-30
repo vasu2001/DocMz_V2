@@ -114,6 +114,7 @@ export default function PatientLocation(props) {
       toValue: 1,
       duration: 90,
       easing: Easing.linear,
+      useNativeDriver: false,
     }).start();
   });
   Keyboard.addListener('keyboardDidHide', () => {
@@ -121,6 +122,7 @@ export default function PatientLocation(props) {
       toValue: 0,
       duration: 90,
       easing: Easing.linear,
+      useNativeDriver: false,
     }).start();
   });
   const heightPanelVal = heightPanel.interpolate({
@@ -146,12 +148,12 @@ export default function PatientLocation(props) {
       }}>
       {(dragHandler) => (
         <Animated.View
-          style={[styles.innerContainer, {height: heightPanelVal}]}>
+          style={[styles.innerContainer, {height: '80%', marginTop: 'auto'}]}>
           <Animated.View
             ref={inputRef}
             key={1}
             {...dragHandler}
-            style={{width: '100%'}}>
+            style={{width: '100%', backgroundColor: 'red'}}>
             <View style={styles.topBtn} />
             <DmzText text={'Select your city'} style={{fontSize: 23}} />
           </Animated.View>
@@ -233,7 +235,6 @@ export default function PatientLocation(props) {
         </Animated.View>
       )}
     </SlidingUpPanel>
-    // </View>
   );
 }
 
@@ -242,6 +243,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     elevation: 5,
+    zIndex: 2,
   },
   innerContainer: {
     width: '100%',

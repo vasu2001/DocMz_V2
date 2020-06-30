@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Text, KeyboardAvoidingView} from 'react-native';
 import Avater from '../../../atoms/Avater/Avater';
 import DmzText from '../../../atoms/DmzText/DmzText';
 import Option from '../../../molecules/Option/Option';
@@ -317,13 +317,25 @@ const Custom = ({
           )}
         </ScrollView>
       </View>
-      {showLocation && (
-        <PatientLocation
-          onPress={setLoc}
-          location={location}
-          closePanel={closeLocPanel}
-        />
-      )}
+      {showLocation ? (
+        <KeyboardAvoidingView
+          behavior='height'
+          style={{
+            flex: 1,
+            height: '100%',
+            width: '100%',
+            position: 'absolute',
+            elevation: 3,
+            backgroundColor: '#00000050',
+            zIndex: 2,
+          }}>
+          <PatientLocation
+            onPress={setLoc}
+            location={location}
+            closePanel={closeLocPanel}
+          />
+        </KeyboardAvoidingView>
+      ) : null}
     </View>
   );
 };
@@ -361,7 +373,7 @@ const styles = StyleSheet.create({
     width: '80%',
     backgroundColor: '#fafafa',
     borderRadius: 10,
-    elevation: 4,
+    elevation: 2,
     paddingTop: 10,
     paddingBottom: 10,
     flexDirection: 'row',

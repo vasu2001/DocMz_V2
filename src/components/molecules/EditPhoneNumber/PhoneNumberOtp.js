@@ -207,16 +207,25 @@ export default function PhoneNumberOtp({navigation}) {
         }
         onPress={() => {
           alert('Phone Number Updated');
+          const popAction = StackActions.pop({
+            n: 3,
+          });
           //   navigation.goBack(
           //     'Profile',
           //     {},
           //     navigation.navigate('EditPhoneNumber    '),
           //   );
-          const popAction = StackActions.pop({
-            n: 3,
-          });
-
-          navigation.dispatch(popAction);
+          if (
+            input1 != '' &&
+            input2 != '' &&
+            input3 != '' &&
+            input4 != '' &&
+            input5 != '' &&
+            input6 != ''
+          ) {
+            navigation.dispatch(popAction);
+            alert('Phone Number Updated');
+          }
           //   navigation.popToTop();
           //   navigation.dispatch(StackActions.popToTop);
         }}
