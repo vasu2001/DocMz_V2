@@ -1,7 +1,5 @@
 import axios from 'axios';
 import {Host} from '../../utils/connection';
-import Moment from 'moment';
-import dateArray from 'moment-array-dates';
 
 const SAVE = 'SAVE_PATIENT_INFO';
 const ERRORS = 'HAVEING_ERROR_IN_PATIENT_ACCOUNT_REDUCER';
@@ -301,7 +299,7 @@ export const UploadProfilePic = (id, ImageData) => {
   };
 };
 
-export const GetAppointmentSlot = (dates, id, setRange) => {
+export const GetAppointmentSlot = (dates, id) => {
   return async (dispatch) => {
     dispatch(startAppointmentSlotLoading());
     const config = {
@@ -316,23 +314,12 @@ export const GetAppointmentSlot = (dates, id, setRange) => {
       .post(`${Host}/doctors/appointment/date`, data, config)
       .then((result) => {
         if (result.status) {
-          const modifiedFormatData = result.data.data.map((item) => {
-            const {_id, appointments} = item;
-            return {
-              date: _id,
-              appointments,
-            };
-          });
-
-          console.log(modifiedFormatData);
-          // const range = dateArray.range(
-          //   modifiedFormatData[0].date,
-          //   modifiedFormatData[modifiedFormatData.length - 1].date,
-          //   'dddd, Do',
-          //   true,
-          // );
-          // setRange(range);
-          dispatch(appointmentSlotLoaded(modifiedFormatData));
+          const response = result.data.data;
+          if (response.length) {
+            dispatch(appointmentSlotLoaded(response));
+          } else {
+            dispatch(appointmentSlotError(''));
+          }
         }
       })
       .catch((err) => {

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {View, ActivityIndicator, Text} from 'react-native';
 import FancyHeader from '../../../components/organisms/FancyHeader/FancyHeader';
 import Container from '../../../components/organisms/Container/Container';
@@ -17,8 +17,14 @@ import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import ExpandableList from '../../../components/molecules/ExpandableList/ExpandableList';
 import Overlay from '../../../components/atoms/Overlay/Overlay';
 import BasicCard from '../../../components/atoms/BasicCard/BasicCard';
-
+import ViewPager from '@react-native-community/viewpager';
+import Categories from './Categories';
+import AddCategory from './AddCategory';
 function AddQuestionnaire() {
+  const pagerRef = useRef();
+  const nextpage = (page) => {
+    pagerRef.current.setPage(page);
+  };
   const [options, setOptions] = useState([]);
   const [Question, setQuestion] = useState({
     title: '',
@@ -34,13 +40,13 @@ function AddQuestionnaire() {
   const [parentId, setParentId] = useState('');
   const [optionId, setOptionId] = useState('');
   const dispatch = useDispatch();
-  const {data} = useSelector(state => state.AuthReducer);
+  const {data} = useSelector((state) => state.AuthReducer);
   const {
     gettingQuestionnaire,
     questions,
     isLoading,
     questionDetails,
-  } = useSelector(state => state.questionnaireReducer);
+  } = useSelector((state) => state.questionnaireReducer);
   useEffect(() => {
     console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
     !gettingQuestionnaire && dispatch(GetQuestion(data.id));
@@ -60,21 +66,21 @@ function AddQuestionnaire() {
     };
     setOptions([...options, schema]);
   };
-  const removeOption = _id => {
+  const removeOption = (_id) => {
     let removed = [];
-    removed = options.filter(item => item._id !== _id);
+    removed = options.filter((item) => item._id !== _id);
     setOptions(removed);
   };
-  const handleTitleInput = text => {
+  const handleTitleInput = (text) => {
     setQuestion({...Question, title: text});
   };
-  const handleSpecialityInput = text => {
+  const handleSpecialityInput = (text) => {
     setQuestion({...Question, specialty: text});
   };
-  const handleCategoryInput = text => {
+  const handleCategoryInput = (text) => {
     setQuestion({...Question, category: text});
   };
-  const onClickQuestion = question => {
+  const onClickQuestion = (question) => {
     const {option} = question;
     setQuestion(question);
     console.log('#########################################');
@@ -82,7 +88,7 @@ function AddQuestionnaire() {
     setOptions(option);
   };
   const onSubmit = () => {
-    let optionTemp = options.map(item => {
+    let optionTemp = options.map((item) => {
       return {
         optionType: item.optionType,
         text: item.text,
@@ -97,7 +103,7 @@ function AddQuestionnaire() {
     dispatch(GetQuestion(data.id));
   };
   const onUpdateQuestion = () => {
-    let optionTemp = options.map(item => {
+    let optionTemp = options.map((item) => {
       return {
         optionType: item.optionType,
         text: item.text,
@@ -143,7 +149,7 @@ function AddQuestionnaire() {
     });
     setOptions([]);
   };
-  const onPressLinkedOption = optionId => {
+  const onPressLinkedOption = (optionId) => {
     setParentId(Question._id);
     setOptionId(optionId);
   };
@@ -155,122 +161,111 @@ function AddQuestionnaire() {
   };
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
-      <FancyHeader
-        hideLeftComp
-        hideRightComp
-        headerText="Questionnaire"
-        style={{
-          Container: {
-            height: '25%',
-            overflow: 'hidden',
-          },
-        }}
-      />
-      <Container
-        style={{
-          height: '75%',
-          transform: [
-            {
-              translateY: -30,
-            },
-          ],
-          // paddingVertical: 20,
-          // paddingHorizontal: 25,
-        }}>
-        <ScrollView
-          contentContainerStyle={{paddingVertical: 40}}
-          style={{marginTop: 10, paddingHorizontal: 25}}>
-          <View>
-            {gettingQuestionnaire ? (
-              <ActivityIndicator />
-            ) : questions.length ? (
-              questions.map(item => {
-                const linked = item.option.reduce((acc, curr) => {
-                  acc.push(...curr.linkedQuestion);
-                  return acc;
-                }, []);
-                return (
-                  <ExpandableList
-                    key={item._id}
-                    name={item.title.slice(0, 20).concat('...')}
-                    nestedList={linked}
-                    onPressList={() => {
-                      onClickQuestion(item);
-                    }}
-                    onClickQuestion={onClickQuestion}
-                    option={item.option}
-                  />
-                );
-              })
-            ) : (
-              <Text>empty questions</Text>
-            )}
-          </View>
-          <AddQuestionTemplate
-            Question={Question}
-            handles={{
-              handleTitleInput,
-              handleCategoryInput,
-              handleSpecialityInput,
-              onPressReset,
-            }}
-            optionProp={{options, setOptions, removeOption, addOption}}
-            onSubmit={onSubmit}
-          />
-          <View
-            style={{
-              flexDirection: 'row',
-              width: '100%',
-              alignItems: 'center',
-              justifyContent: 'space-around',
-            }}>
-            <DmzButton
-              text="Update"
-              onPress={onUpdateQuestion}
-              style={{
-                Container: {
-                  marginTop: 10,
-                  borderRadius: 20,
-                  backgroundColor: 'rgba(20,50,80,1)',
-                  alignSelf: 'center',
-                },
-                Text: {
-                  color: '#fff',
-                },
-              }}
-            />
-            <DmzButton
-              text="Delete"
-              onPress={onDeleteQuestion}
-              style={{
-                Container: {
-                  marginTop: 10,
-                  borderRadius: 20,
-                  backgroundColor: 'rgba(230,50,80,1)',
-                  alignSelf: 'center',
-                },
-                Text: {
-                  color: '#fff',
-                },
-              }}
-            />
-          </View>
-          {Question.option.length !== 0 && (
-            <AddLinkedOption
-              options={Question.option}
-              onPressLinkedOption={onPressLinkedOption}
-              openLinkedPopup={openLinkedPopup}
-            />
+      <ViewPager
+        ref={pagerRef}
+        style={{flex: 1}}
+        initialPage={1}
+        scrollEnabled={false}>
+        <View key="0">
+          <Categories />
+        </View>
+        <View key="1">
+          <AddCategory />
+        </View>
+      </ViewPager>
+      {/* <ScrollView
+        contentContainerStyle={{paddingVertical: 40}}
+        style={{marginTop: 10, paddingHorizontal: 25}}>
+        <View>
+          {gettingQuestionnaire ? (
+            <ActivityIndicator />
+          ) : questions.length ? (
+            questions.map((item) => {
+              const linked = item.option.reduce((acc, curr) => {
+                acc.push(...curr.linkedQuestion);
+                return acc;
+              }, []);
+              return (
+                <ExpandableList
+                  key={item._id}
+                  name={item.title.slice(0, 20).concat('...')}
+                  nestedList={linked}
+                  onPressList={() => {
+                    onClickQuestion(item);
+                  }}
+                  onClickQuestion={onClickQuestion}
+                  option={item.option}
+                />
+              );
+            })
+          ) : (
+            <Text>empty questions</Text>
           )}
-        </ScrollView>
-      </Container>
+        </View>
+        <AddQuestionTemplate
+          Question={Question}
+          handles={{
+            handleTitleInput,
+            handleCategoryInput,
+            handleSpecialityInput,
+            onPressReset,
+          }}
+          optionProp={{options, setOptions, removeOption, addOption}}
+          onSubmit={onSubmit}
+        />
+        <View
+          style={{
+            flexDirection: 'row',
+            width: '100%',
+            alignItems: 'center',
+            justifyContent: 'space-around',
+          }}>
+          <DmzButton
+            text="Update"
+            onPress={onUpdateQuestion}
+            style={{
+              Container: {
+                marginTop: 10,
+                borderRadius: 20,
+                backgroundColor: 'rgba(20,50,80,1)',
+                alignSelf: 'center',
+              },
+              Text: {
+                color: '#fff',
+              },
+            }}
+          />
+          <DmzButton
+            text="Delete"
+            onPress={onDeleteQuestion}
+            style={{
+              Container: {
+                marginTop: 10,
+                borderRadius: 20,
+                backgroundColor: 'rgba(230,50,80,1)',
+                alignSelf: 'center',
+              },
+              Text: {
+                color: '#fff',
+              },
+            }}
+          />
+        </View>
+        {Question.option.length !== 0 && (
+          <AddLinkedOption
+            options={Question.option}
+            onPressLinkedOption={onPressLinkedOption}
+            openLinkedPopup={openLinkedPopup}
+          />
+        )}
+      </ScrollView>
       {showAddLinkedPopup && (
         <LinkedController
           parentId={parentId}
           optionId={optionId}
           closeLinkedPopup={closeLinkedPopup}
         />
-      )}
+      )} */}
     </View>
   );
 }
@@ -320,7 +315,7 @@ const AddQuestionTemplate = ({
         />
       </View>
 
-      {options.map(item => (
+      {options.map((item) => (
         <Option
           key={item._id}
           item={item}
@@ -378,8 +373,8 @@ const AddQuestionTemplate = ({
 };
 
 const Option = ({item, onPressRemove, options, setOptions}) => {
-  const handleInput = text => {
-    let optionTemp = options.filter(i => i._id !== item._id);
+  const handleInput = (text) => {
+    let optionTemp = options.filter((i) => i._id !== item._id);
     optionTemp = [
       ...optionTemp,
       {
@@ -394,8 +389,8 @@ const Option = ({item, onPressRemove, options, setOptions}) => {
   const onPressRemoveButton = () => {
     onPressRemove(item._id);
   };
-  const setInputTypeGlobal = value => {
-    let optionTemp = options.filter(i => i._id !== item._id);
+  const setInputTypeGlobal = (value) => {
+    let optionTemp = options.filter((i) => i._id !== item._id);
     optionTemp = [
       ...optionTemp,
       {
@@ -469,7 +464,7 @@ const LinkedController = ({parentId, optionId, closeLinkedPopup}) => {
     parent: '',
     optionId: '',
   });
-  const {data} = useSelector(state => state.AuthReducer);
+  const {data} = useSelector((state) => state.AuthReducer);
   const addOption = () => {
     const schema = {
       _id: new Date().getTime().toString(),
@@ -480,18 +475,18 @@ const LinkedController = ({parentId, optionId, closeLinkedPopup}) => {
     setOptions([...options, schema]);
   };
   const dispatch = useDispatch();
-  const removeOption = _id => {
+  const removeOption = (_id) => {
     let removed = [];
-    removed = options.filter(item => item._id !== _id);
+    removed = options.filter((item) => item._id !== _id);
     setOptions(removed);
   };
-  const handleTitleInput = text => {
+  const handleTitleInput = (text) => {
     setQuestion({...Question, title: text});
   };
-  const handleSpecialityInput = text => {
+  const handleSpecialityInput = (text) => {
     setQuestion({...Question, specialty: text});
   };
-  const handleCategoryInput = text => {
+  const handleCategoryInput = (text) => {
     setQuestion({...Question, category: text});
   };
   const onPressReset = () => {
@@ -508,7 +503,7 @@ const LinkedController = ({parentId, optionId, closeLinkedPopup}) => {
     setOptions([]);
   };
   const onSubmit = () => {
-    let optionTemp = options.map(item => {
+    let optionTemp = options.map((item) => {
       return {
         optionType: item.optionType,
         text: item.text,
@@ -569,7 +564,7 @@ const AddLinkedOption = ({
 }) => {
   const [selectedOption, setSelectedOption] = useState(options[0] || '');
   const onPressLinkedOptionLocal = (itemValue, itemIndex) => {
-    const option = options.find(item => item.text === itemValue);
+    const option = options.find((item) => item.text === itemValue);
     console.log(option);
     onPressLinkedOption(option._id);
     setSelectedOption(itemValue);
@@ -593,7 +588,7 @@ const AddLinkedOption = ({
         selectedValue={selectedOption}
         onValueChange={onPressLinkedOptionLocal}>
         {options.length !== 0 &&
-          options.map(item => {
+          options.map((item) => {
             return (
               <Picker.Item key={item._id} label={item.text} value={item.text} />
             );
