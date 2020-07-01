@@ -435,8 +435,7 @@ export default function LandingPageScreen({navigation}) {
           <Section
             style={{
               Container: {
-                // marginBottom: 40,
-                flex: 1,
+                marginBottom: 40,
                 marginTop: -20,
               },
               Text: {color: PRIMARY_COLOR, fontWeight: '300'},
@@ -479,14 +478,14 @@ export default function LandingPageScreen({navigation}) {
               />
             ) : !toggle ? (
               <AnimatedFlatList
-                // initialNumToRender={5}
+                initialNumToRender={5}
                 onMomentumScrollBegin={() => setTrigger(false)}
                 onEndReached={({distanceFromEnd}) => {
                   console.log('end reached');
-                  if (!trigger) {
-                    fetch();
-                    setTrigger(true);
-                  }
+                  // if (!trigger) {
+                  // fetch();
+                  //   setTrigger(true);
+                  // }
                 }}
                 // onScroll={onScroll}
                 keyExtractor={(item) => item._id}
@@ -509,6 +508,7 @@ export default function LandingPageScreen({navigation}) {
                       marginTop: 30,
                       justifyContent: 'center',
                       alignItems: 'center',
+                      backgroundColor: 'pink',
                     }}>
                     <Text>Empty</Text>
                   </View>
@@ -517,26 +517,20 @@ export default function LandingPageScreen({navigation}) {
                 ListFooterComponent={moreDoctorLoading && <ActivityIndicator />}
                 // extraData={doctors}
                 data={doctors}
-                renderItem={({item, index}) => {
-                  console.log(
-                    item.basic.name.slice(0, 15).concat('...'),
-                    item._id,
-                  );
-                  return (
-                    <AvailDoctorContainerV2
-                      toggle={toggle}
-                      data={item}
-                      navigation={navigation}
-                      onPress={() => onPress(item._id)}
-                      id={item._id}
-                      index={index}
-                      name={item.basic.name.slice(0, 15).concat('...')}
-                      // schedule={item.output.filter(
-                      //   o => o.bookedFor.slice(0, 10) === '2020-05-07',
-                      // )}
-                    />
-                  );
-                }}
+                renderItem={({item, index}) => (
+                  <AvailDoctorContainerV2
+                    toggle={toggle}
+                    data={item}
+                    navigation={navigation}
+                    onPress={() => onPress(item._id)}
+                    id={item._id}
+                    index={index}
+                    name={item.basic.name.slice(0, 15).concat('...')}
+                    // schedule={item.output.filter(
+                    //   o => o.bookedFor.slice(0, 10) === '2020-05-07',
+                    // )}
+                  />
+                )}
               />
             ) : (
               <AnimatedFlatList
