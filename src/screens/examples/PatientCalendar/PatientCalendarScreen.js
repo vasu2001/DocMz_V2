@@ -32,13 +32,13 @@ export default function PatientCalendarScreen({navigation}) {
   const {appointmentForSlotLoading, appointmentForSlot} = useSelector(
     (state) => state.PatientAccountReducer,
   );
-  // selectedIndex: 0,
+  // selectedIndex: 0
   // pos: false,
   // months: [],
   const {_id} = navigation.state.params.data;
-  const [range, setRange] = useState([]);
-  const time = ['09:00', '10:00', '11:00', '12:00', '01:00', '02:000'];
-  // daysLable: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+  // const [range, setRange] = useState([]);
+  // const time = ['09:00', '10:00', '11:00', '12:00', '01:00', '02:000'];
+  // // daysLable: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
   // value: 0,
   // timeValue: '09:00',
 
@@ -67,12 +67,9 @@ export default function PatientCalendarScreen({navigation}) {
     if (startDate != '' && endDate != '') {
       const start = Moment(startDate).format('YYYY-MM-DD');
       const end = Moment(endDate).format('YYYY-MM-DD');
-      // const rangedate = dateArray.range(start, end, 'dddd, Do', true);
-      // setRange(rangedate);
-      console.log(start);
-      console.log(end);
+
       !appointmentForSlotLoading &&
-        dispatch(GetAppointmentSlot([[start, end]], _id, setRange));
+        dispatch(GetAppointmentSlot([[start, end]], _id));
     }
   };
 
@@ -166,7 +163,7 @@ export default function PatientCalendarScreen({navigation}) {
           </View>
         </View>
       </RadialGradient>
-      <AppoinmentSlider range={range} time={time} />
+      <AppoinmentSlider navigation={navigation} slots={appointmentForSlot} />
     </View>
   );
 }

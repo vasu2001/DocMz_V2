@@ -51,7 +51,7 @@ const ConfirmAppointment = ({navigation}) => {
     contact: '',
   });
 
-  const initialChoosenState = _state => {
+  const initialChoosenState = (_state) => {
     setState(_state);
   };
 
@@ -61,7 +61,7 @@ const ConfirmAppointment = ({navigation}) => {
     navigation.navigate('Questionnaire');
   };
 
-  const onPress = id => {
+  const onPress = (id) => {
     // setActiveId(id);
     // __id = id
     Animated.sequence([
@@ -99,7 +99,7 @@ const ConfirmAppointment = ({navigation}) => {
                 BorderBottomWidth: 1,
                 borderColor: '#F2EBEB',
               }}>
-              {Data.map(item => (
+              {Data.map((item) => (
                 <ProfileColText
                   ProfileName={item.name}
                   ProfileEmail={item.contact}
@@ -126,7 +126,7 @@ const ConfirmAppointment = ({navigation}) => {
         </View>
         <Text style={ConfirmAppointmentStyles.InputLabel}>Patient Name</Text>
         <TextInputCustom
-          inputHandler={txt => setState({...state, name: txt})}
+          inputHandler={(txt) => setState({...state, name: txt})}
           value={state.name}
           placeholder="Name"
           textContentType="name"
@@ -135,14 +135,14 @@ const ConfirmAppointment = ({navigation}) => {
           Reason for visit
         </Text>
         <TextInputCustom
-          inputHandler={txt => setState({...state, reasonForVisit: txt})}
+          inputHandler={(txt) => setState({...state, reasonForVisit: txt})}
           value={state.reasonForVisit}
           placeholder="Reason"
           textContentType="name"
         />
         <Text style={ConfirmAppointmentStyles.InputLabel}>Contact Number</Text>
         <TextInputCustom
-          inputHandler={txt => setState({...state, contact: txt})}
+          inputHandler={(txt) => setState({...state, contact: txt})}
           value={state.contact}
           placeholder="Contact"
           textContentType="telephoneNumber"
