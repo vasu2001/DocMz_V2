@@ -282,7 +282,7 @@ function MedicalRecords({navigation}) {
                 minDate={
                   startDate == ''
                     ? '01-01-2000'
-                    : Moment(startDate, 'DD/MM/YYYY')
+                    : Moment(startDate, 'DD-MM-YYYY')
                 }
                 maxDate="31-12-2050"
                 confirmBtnText="Confirm"

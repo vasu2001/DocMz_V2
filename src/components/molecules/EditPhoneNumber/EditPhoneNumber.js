@@ -66,6 +66,8 @@ export default function EditPhoneNumber({navigation}) {
             marginLeft: 20,
             letterSpacing: 1,
           }}
+          keyboardType={'number-pad'}
+          maxLength={10}
         />
       </View>
       <DmzButton

@@ -34,6 +34,7 @@ const DmzText = (props) => {
     children,
     style,
     viewStyle,
+    numberOfLines,
   } = props;
 
   const customStyles = [
@@ -56,7 +57,9 @@ const DmzText = (props) => {
 
   return (
     <View style={[{flexDirection: 'row'}, viewStyle ? viewStyle : null]}>
-      <Text style={customStyles}>{text}</Text>
+      <Text style={customStyles} numberOfLines={numberOfLines}>
+        {text}
+      </Text>
       {children}
     </View>
   );

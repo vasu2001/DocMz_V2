@@ -57,14 +57,14 @@ export const resetUserAccountReducer = () => {
 
 export const GetPatientInfo = (id) => {
   return (dispatch) => {
-    console.log('authAction > GetPatientInfor');
+    console.log('authAction > GetPatientInfor', id);
     dispatch(startLoading());
 
     axios
       .get(`${Host}/patient/getinfo/${id}`)
       .then((result) => {
         if (result.status) {
-          // console.log(result.data.data);
+          console.log('user data !!', result.data.data);
           dispatch(saveUserAccount(result.data.data));
         }
       })
@@ -115,7 +115,34 @@ export const AddFevDoc = (docId, patientId) => {
         }
       })
       .catch((err) => {
-        dispatch(haveingError(err));
+        dispatch(havingError(err));
+      });
+  };
+};
+
+export const UpdateProfile = (profileData, patientId) => {
+  return async (dispatch) => {
+    const config = {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    };
+
+    const _data = {
+      id: patientId,
+      ...profileData,
+    };
+    console.log('$$$$$$$$$', profileData, patientId, _data);
+
+    await axios
+      .post(`${Host}/patient/update`, _data, config)
+      .then((result) => {
+        if (result.status) {
+          alert('Successfully Updated Profile.');
+          GetPatientInfo(patientId);
+        }
+      })
+      .catch((err) => {
+        dispatch(havingError(err));
       });
   };
 };
@@ -241,7 +268,7 @@ export const RemoveFamilyMember = (docId, patientId) => {
         }
       })
       .catch((err) => {
-        dispatch(haveingError(err));
+        dispatch(havingError(err));
       });
   };
 };

@@ -26,6 +26,8 @@ import ProfileScreen from '../screens/examples/Profile/Profile';
 import LandingPageScreen from '../screens/examples/LandingPage/LandingPageScreen';
 import PatientAdressList from '../screens/examples/PatientAddress/PatientAdressList';
 import AddAdressScreen from '../screens/examples/PatientAddress/AddAdressScreen';
+import PatientSubscription from '../screens/examples/PatientSubscription/PatientSubscription';
+import RedeemVoucher from '../screens/examples/RedeemVoucher/RedeemVoucher';
 import Calendar from '../screens/examples/PatientCalendar/PatientCalendarScreen';
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
@@ -124,6 +126,8 @@ const PatientNavigation = createDrawerNavigator(
     AppSettings,
     NotFound,
     FamilyMember,
+    PatientSubscription,
+    RedeemVoucher,
     Profile: {screen: ProfileStack},
     Address: {screen: AddressStack},
   },

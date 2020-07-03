@@ -7,8 +7,12 @@ import DmzText from '../../atoms/DmzText/DmzText';
 import DmzButton from '../../atoms/DmzButton/DmzButton';
 import {PRIMARY_COLOR} from '../../../styles/colors';
 import {StackActions} from 'react-navigation';
-
+import {useDispatch, useSelector} from 'react-redux';
+import {UpdateProfile} from '../../../redux/action/patientAccountAction';
 export default function PhoneNumberOtp({navigation}) {
+  const dispatch = useDispatch();
+  const {data} = useSelector((state) => state.AuthReducer);
+
   const [phone, setPhone] = useState(navigation.getParam('phone', ''));
   console.log(navigation.getParam('phone'));
   BackHandler.addEventListener('hardwareBackPress', () => {
@@ -202,8 +206,7 @@ export default function PhoneNumberOtp({navigation}) {
             ? true
             : false
         }
-        onPress={() => {
-          alert('Phone Number Updated');
+        onPress={async () => {
           const popAction = StackActions.pop({
             n: 3,
           });
@@ -220,7 +223,9 @@ export default function PhoneNumberOtp({navigation}) {
             input5 != '' &&
             input6 != ''
           ) {
+            await dispatch(UpdateProfile({phone: phone}, data.id));
             navigation.dispatch(popAction);
+
             alert('Phone Number Updated');
           }
           //   navigation.popToTop();

@@ -8,6 +8,7 @@ import {
   Platform,
   UIManager,
   LayoutAnimation,
+  Switch,
 } from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icons from 'react-native-vector-icons/MaterialIcons';
@@ -18,7 +19,12 @@ import {
   SMALL_ICON_SIZE,
   MEDIUM_ICON_SIZE,
 } from '../../../styles/size';
-import {MAIN_ICON, SECONDARY_ICON, PRIMARY_COLOR} from '../../../styles/colors';
+import {
+  MAIN_ICON,
+  SECONDARY_ICON,
+  PRIMARY_COLOR,
+  HEADER_TEXT,
+} from '../../../styles/colors';
 import {
   TouchableOpacity,
   TouchableNativeFeedback,
@@ -45,6 +51,14 @@ const ExpandableOption = (props) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setShowContent(!showContent);
   };
+
+  const [calenderEnabled, setCalendarEnabled] = useState(false);
+  const calendarSwitch = () =>
+    setCalendarEnabled((previousState) => !previousState);
+
+  const [callEnabled, setCallEnabled] = useState(false);
+  const callSwitch = () => setCallEnabled((previousState) => !previousState);
+
   const {
     icon = 'book',
     name = 'no option',
@@ -88,7 +102,7 @@ const ExpandableOption = (props) => {
         {type1 ? (
           <MaterialIcon
             name={icon}
-            size={MEDIUM_ICON_SIZE}
+            size={BIG_ICON_SIZE}
             style={styles.icon}
             color={showContent && isNested ? '#007E96' : PRIMARY_COLOR}
           />
@@ -101,29 +115,61 @@ const ExpandableOption = (props) => {
           />
         )}
       </TouchableOpacity>
-      {showContent && (
-        <View style={styles.nestedContainer}>
-          {nestedRoutes &&
-            nestedRoutes.map((row, index) => {
-              return (
-                <TouchableOpacity
-                  key={`${row.navigateTo}${index}`}
-                  onPress={
-                    row.name == 'Logout'
-                      ? () => {
-                          logOut();
-                          setShowContent(false);
-                        }
-                      : () => navigation.navigate(row.navigateTo)
-                  }
-                  style={styles.nestedOption}>
-                  <Text style={{color: PRIMARY_COLOR}}>{row.name}</Text>
-                  <MaterialIcon name="chevron-right" size={22} />
-                </TouchableOpacity>
-              );
-            })}
-        </View>
-      )}
+      {showContent ? (
+        name == 'Reminders' ? (
+          <View style={styles.nestedContainer}>
+            {nestedRoutes &&
+              nestedRoutes.map((row, index) => {
+                const isEnabled =
+                  row.name == 'Call Reminders' ? callEnabled : calenderEnabled;
+                const toggleSwitch =
+                  row.name == 'Call Reminders'
+                    ? setCallEnabled
+                    : setCalendarEnabled;
+                return (
+                  <View
+                    key={`${row.navigateTo}${index}`}
+                    style={styles.nestedOption}>
+                    <Text style={{color: PRIMARY_COLOR, fontSize: 16}}>
+                      {row.name}
+                    </Text>
+                    <Switch
+                      trackColor={{false: '#767577', true: HEADER_TEXT}}
+                      thumbColor={isEnabled ? PRIMARY_COLOR : '#f4f3f4'}
+                      ios_backgroundColor="#3e3e3e"
+                      onValueChange={toggleSwitch}
+                      value={isEnabled}
+                    />
+                  </View>
+                );
+              })}
+          </View>
+        ) : (
+          <View style={styles.nestedContainer}>
+            {nestedRoutes &&
+              nestedRoutes.map((row, index) => {
+                return (
+                  <TouchableOpacity
+                    key={`${row.navigateTo}${index}`}
+                    onPress={
+                      row.name == 'Logout'
+                        ? () => {
+                            logOut();
+                            setShowContent(false);
+                          }
+                        : () => navigation.navigate(row.navigateTo)
+                    }
+                    style={styles.nestedOption}>
+                    <Text style={{color: PRIMARY_COLOR, fontSize: 16}}>
+                      {row.name}
+                    </Text>
+                    <MaterialIcon name="chevron-right" size={22} />
+                  </TouchableOpacity>
+                );
+              })}
+          </View>
+        )
+      ) : null}
     </View>
   );
 };

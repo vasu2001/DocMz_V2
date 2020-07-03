@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.11.0",
+    "@react-native-community/geolocation": "^2.0.2",
     "@react-native-community/google-signin": "^4.0.3",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/picker": "^1.6.1",
@@ -39,8 +40,10 @@
     "react-native-elements": "^2.0.2",
     "react-native-fbsdk": "^2.0.0",
     "react-native-gesture-handler": "^1.6.1",
+    "react-native-google-places-autocomplete": "^1.7.2",
     "react-native-image-picker": "^2.3.1",
     "react-native-linear-gradient": "^2.5.6",
+    "react-native-maps": "0.27.1",
     "react-native-optimized-flatlist": "^1.0.4",
     "react-native-radial-gradient": "^1.0.7",
     "react-native-reanimated": "^1.9.0",

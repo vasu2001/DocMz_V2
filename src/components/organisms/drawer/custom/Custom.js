@@ -17,6 +17,7 @@ import StepsTracker from '../../../atoms/StepsTracker/StepsTracker';
 import SlidingUpPanel from 'rn-sliding-up-panel';
 import PatientLocation from '../../../../screens/examples/PatientLocation/PatientLocation';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import TopNavBar from '../../../molecules/TopNavBar/TopNavBar';
 const Navigation = [
   {
     active: true,
@@ -61,17 +62,32 @@ const Navigation = [
     icon: 'headset',
     navigateTo: 'Help',
   },
-  {
-    active: true,
-    name: 'Subscription',
-    icon: 'google-circles',
-    navigateTo: 'Orders',
-  },
+  // {
+  //   active: true,
+  //   name: 'Subscription',
+  //   icon: 'google-circles',
+  //   navigateTo: 'PatientSubscription',
+  // },
   {
     active: true,
     name: 'Reminders',
     icon: 'bell-outline',
-    navigateTo: 'Orders',
+    type1: true,
+    isNested: true,
+    nestedRoutes: [
+      {
+        active: true,
+        name: 'Calendar Notification',
+        icon: 'account-circle',
+        navigateTo: 'Profile',
+      },
+      {
+        active: true,
+        name: 'Call Reminders',
+        icon: 'credit-card',
+        navigateTo: 'Payments',
+      },
+    ],
   },
   {
     active: true,
@@ -83,7 +99,7 @@ const Navigation = [
     active: true,
     name: 'Redeem Voucher',
     icon: 'wallet-giftcard',
-    navigateTo: 'Orders',
+    navigateTo: 'RedeemVoucher',
   },
   {
     active: true,
@@ -165,10 +181,19 @@ const Custom = ({
     <View style={styles.container}>
       <View
         style={{
-          height: '30%',
-          justifyContent: 'center',
+          height: '33%',
         }}>
-        <MaterialCommunityIcons
+        <TopNavBar
+          onLeftButtonPress={() => {
+            console.log('pressed');
+            navigation.navigate('Home');
+            navigation.toggleDrawer();
+          }}
+          onRightButtonPress={() => {
+            navigation.closeDrawer();
+          }}
+        />
+        {/* <MaterialCommunityIcons
           name="home"
           size={30}
           color="white"
@@ -178,7 +203,7 @@ const Custom = ({
             navigation.navigate('Home');
             navigation.toggleDrawer();
           }}
-        />
+        /> */}
         <View style={styles.profile}>
           <TouchableOpacity
             onPress={onProfileClick}
@@ -255,8 +280,7 @@ const Custom = ({
         <ScrollView
           style={{
             flex: 1,
-          }}
-        >
+          }}>
           <ExpandableOption
             key={'Location'}
             active={isLogedin}

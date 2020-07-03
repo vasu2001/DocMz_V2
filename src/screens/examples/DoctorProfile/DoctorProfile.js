@@ -94,6 +94,7 @@ function DoctorProfile(props) {
       />
       <TopNavBar
         style={{Container: {marginTop: 5}}}
+        hideRightComp
         onLeftButtonPress={() => {
           navigation.navigate(
             'pageNavigation',
@@ -101,7 +102,7 @@ function DoctorProfile(props) {
             navigation.navigate({routeName: 'Home'}),
           );
         }}
-        onRightButtonPress={() => {}}
+        // onRightButtonPress={() => {}}
       />
       <Animated.View
         style={{flex: 1, opacity: opacity, transform: [{scale: opacity}]}}>

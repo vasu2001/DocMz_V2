@@ -9,6 +9,7 @@ function DmzButton({
   onPress,
   disabled,
   style,
+  numberOfLines,
   isLoading = false,
 }) {
   return (
@@ -21,6 +22,7 @@ function DmzButton({
         <ActivityIndicator color="#fff" />
       ) : (
         <Text
+          numberOfLines={numberOfLines}
           style={[
             Styles.Text,
             {color: theme === 'dark' ? '#fff' : '#000'},

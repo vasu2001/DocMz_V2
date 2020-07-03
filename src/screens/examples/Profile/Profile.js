@@ -17,12 +17,16 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AnimInput from '../../../components/molecules/AnimInput/AnimInput';
 import {ScrollView} from 'react-native-gesture-handler';
 import {useDispatch, useSelector} from 'react-redux';
-import {UploadProfilePic} from '../../../redux/action/patientAccountAction';
-import {TERTIARY_TEXT, PRIMARY_COLOR} from '../../../styles/colors';
+import {
+  UploadProfilePic,
+  UpdateProfile,
+} from '../../../redux/action/patientAccountAction';
+import {PRIMARY_COLOR, HEADER_TEXT} from '../../../styles/colors';
 import {Picker} from '@react-native-community/picker';
 import DmzText from '../../../components/atoms/DmzText/DmzText';
 import DatePicker from 'react-native-datepicker';
 import Moment from 'moment';
+import TopNavBar from '../../../components/molecules/TopNavBar/TopNavBar';
 
 function Profile({navigation}) {
   const dispatch = useDispatch();
@@ -31,27 +35,35 @@ function Profile({navigation}) {
   const dimen = useWindowDimensions();
   const screenWidth = dimen.width;
   const [inputFields, setInputFields] = useState({
-    name: data.name ? data.name : '',
-    phone: data.phone ? data.phone : '',
-    email: data.email ? data.email : '',
-    sex: data.sex ? data.sex : '',
-    dob: data.dob ? data.dob : '',
-    bloodGroup: data.bloodGroup ? data.bloodGroup : '',
-    height: data.height.val != null ? data.height.val : '',
-    weight: data.weight.val != null ? data.weight.val : '',
+    firstName: patient.firstName ? patient.firstName : '',
+    lastName: patient.lastName ? patient.lastName : '',
+    phone: patient.phone ? patient.phone : '',
+    email: patient.email ? patient.email : '',
+    sex: patient.sex ? patient.sex : '',
+    dob: patient.dob ? patient.dob : '',
+    bloodGroup: patient.bloodGroup ? patient.bloodGroup : '',
+    height: patient.height.value != undefined ? patient.height.value : '',
+    weight: patient.weight.value == undefined ? '' : patient.weight.value,
+    // weight: data.weight.val != null ? data.weight.val : '',
   });
+
+  const initialData = inputFields;
 
   // BackHandler.addEventListener('hardwareBackPress', () => {
   //   navigation.navigate('Home');
   //   // BackHandler.removeEventListener('hardwareBackPress', () => {});
   //   return true;
   // });
-
+  console.log('@@@@@@@', inputFields.phone);
   useEffect(() => {
     console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
     // const {name, phone, email, sex, dob, bloodGroup, height, weight} = patient;
     console.log(patient);
-    console.log('###########', data);
+    console.log('###########', patient);
+    // console.log(typeof patient.height.value);
+    patient.height.value == undefined
+      ? console.log('undefined')
+      : console.log('defined');
     // console.log(patient.name);
     // console.log(patient.phone);
     // console.log(patient.email);
@@ -134,31 +146,37 @@ function Profile({navigation}) {
       }
     });
   };
+
+  const saveProfile = async () => {
+    const response = {
+      ...inputFields,
+      height: {
+        value: inputFields.height,
+        date: Date(),
+      },
+      weight: {
+        value: inputFields.weight,
+        date: Date(),
+      },
+    };
+    console.log(response);
+    await dispatch(UpdateProfile(response, data.id));
+  };
   return (
-    <View style={{flex: 1, backgroundColor: '#fff'}}>
+    <View style={{flex: 1, backgroundColor: HEADER_TEXT}}>
       <ScrollView style={{marginBottom: 70, flex: 1}}>
-        <View
+        <TopNavBar
+          navigation={navigation}
+          headerText="Profile"
           style={{
-            flex: 1,
-            flexDirection: 'row',
-            alignItems: 'center',
-            paddingTop: 5,
-            paddingBottom: 5,
-          }}>
-          <TouchableOpacity
-            style={{
-              width: '10%',
-              alignItems: 'center',
-              justifyContent: 'center',
-              alignSelf: 'stretch',
-            }}
-            onPress={() => {
-              navigation.navigate('Home');
-            }}>
-            <FontAwesome size={30} color={'#ff1f75'} name="angle-left" />
-          </TouchableOpacity>
-          <Text style={{fontSize: 18, marginLeft: 15}}>Profile</Text>
-        </View>
+            Header: {
+              color: '#fff',
+              fontSize: 23,
+              alignSelf: 'center',
+              width: '50%',
+            },
+          }}
+        />
         <View
           style={{
             flex: 4,
@@ -200,21 +218,38 @@ function Profile({navigation}) {
         <View
           style={{
             flex: 10,
-            paddingLeft: 25,
-            paddingRight: 25,
-            paddingTop: 8,
-            paddingBottom: 8,
+            paddingHorizontal: 25,
+            paddingVertical: 10,
+            backgroundColor: '#fff',
+            borderTopLeftRadius: 30,
+            borderTopRightRadius: 30,
           }}>
-          <AnimInput
-            placeholder="Name"
-            inputHandler={(txt) => setInputFields({...inputFields, name: txt})}
-            value={inputFields.name}
-            style={{
-              Container: styles.Container,
-              Input: styles.Input,
-              Placeholder: styles.Placeholder,
-            }}
-          />
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <AnimInput
+              placeholder="First Name"
+              inputHandler={(txt) =>
+                setInputFields({...inputFields, firstName: txt})
+              }
+              value={inputFields.firstName}
+              style={{
+                Container: [styles.Container, {width: '40%'}],
+                Input: styles.Input,
+                Placeholder: styles.Placeholder,
+              }}
+            />
+            <AnimInput
+              placeholder="Last Name"
+              inputHandler={(txt) =>
+                setInputFields({...inputFields, lastName: txt})
+              }
+              value={inputFields.lastName}
+              style={{
+                Container: [styles.Container, {width: '40%'}],
+                Input: styles.Input,
+                Placeholder: styles.Placeholder,
+              }}
+            />
+          </View>
           <View
             style={{
               borderBottomWidth: 1,
@@ -230,17 +265,34 @@ function Profile({navigation}) {
                 console.log('pressed');
                 navigation.navigate(
                   'EditPhoneNumber',
-                  {phone: '1234567890'},
+                  {phone: inputFields.phone},
                   // navigation.navigate('EditPhoneNumber'),
                 );
               }}
-              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <Text style={[styles.Input, {marginBottom: 0, marginTop: 5}]}>
+              style={{
+                flexDirection: 'row',
+                width: '100%',
+                justifyContent: 'space-between',
+              }}>
+              <Text
+                style={[
+                  styles.Input,
+                  {marginBottom: 0, marginTop: 5, width: 'auto'},
+                ]}>
                 {inputFields.phone == ''
                   ? 'Add Phone Number'
                   : inputFields.phone}
               </Text>
-              <Text style={styles.Input}>
+              <Text
+                style={[
+                  styles.Input,
+                  {
+                    marginBottom: 0,
+                    marginTop: 5,
+                    color: 'crimson',
+                    width: 'auto',
+                  },
+                ]}>
                 {inputFields.phone == '' ? '' : 'Update'}
               </Text>
             </TouchableOpacity>
@@ -270,30 +322,30 @@ function Profile({navigation}) {
               }}
               style={{
                 flexDirection: 'row',
-                width: '80%',
+                width: '100%',
+                justifyContent: 'space-between',
               }}>
-              <Text style={[styles.Input, {marginBottom: 0, marginTop: 5}]}>
+              <Text
+                style={[
+                  styles.Input,
+                  {marginBottom: 0, marginTop: 5, width: 'auto'},
+                ]}>
                 {inputFields.email == '' ? 'Add Email Id' : inputFields.email}
               </Text>
               <Text
                 style={[
                   styles.Input,
-                  {marginBottom: 0, marginTop: 5, color: 'crimson'},
+                  {
+                    marginBottom: 0,
+                    marginTop: 5,
+                    color: 'crimson',
+                    width: 'auto',
+                  },
                 ]}>
                 {inputFields.email == '' ? '' : 'Update'}
               </Text>
             </TouchableOpacity>
           </View>
-          {/* <AnimInput
-            placeholder="Email Id"
-            inputHandler={(txt) => setInputFields({...inputFields, email: txt})}
-            value={inputFields.email}
-            style={{
-              Container: styles.Container,
-              Input: styles.Input,
-              Placeholder: styles.Placeholder,
-            }}
-          /> */}
           <View
             style={{
               borderBottomWidth: 1,
@@ -352,6 +404,7 @@ function Profile({navigation}) {
                   borderWidth: 0,
                   fontSize: 15,
                   height: 40,
+                  marginBottom: 10,
                 },
                 dateText: [styles.Input, {width: '100%'}],
                 placeholderText: [
@@ -454,11 +507,13 @@ function Profile({navigation}) {
       <View
         style={{
           position: 'absolute',
-          paddingBottom: 10,
+          paddingVertical: 10,
           bottom: 0,
           width: '100%',
+          backgroundColor: '#FFF',
         }}>
         <TouchableOpacity
+          onPress={saveProfile}
           style={{
             width: screenWidth * 0.6,
             height: 52,
