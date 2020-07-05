@@ -10,18 +10,23 @@ import {
   StyleSheet,
   Button,
   Platform,
+  BackHandler,
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AnimInput from '../../../components/molecules/AnimInput/AnimInput';
 import {ScrollView} from 'react-native-gesture-handler';
 import {useDispatch, useSelector} from 'react-redux';
-import {UploadProfilePic} from '../../../redux/action/patientAccountAction';
-import {TERTIARY_TEXT, PRIMARY_COLOR} from '../../../styles/colors';
+import {
+  UploadProfilePic,
+  UpdateProfile,
+} from '../../../redux/action/patientAccountAction';
+import {PRIMARY_COLOR, HEADER_TEXT} from '../../../styles/colors';
 import {Picker} from '@react-native-community/picker';
 import DmzText from '../../../components/atoms/DmzText/DmzText';
 import DatePicker from 'react-native-datepicker';
 import Moment from 'moment';
+import TopNavBar from '../../../components/molecules/TopNavBar/TopNavBar';
 
 function Profile({navigation}) {
   const dispatch = useDispatch();
@@ -30,21 +35,35 @@ function Profile({navigation}) {
   const dimen = useWindowDimensions();
   const screenWidth = dimen.width;
   const [inputFields, setInputFields] = useState({
-    name: data.name ? data.name : '',
-    phone: data.phone ? data.phone : '',
-    email: data.email ? data.email : '',
-    sex: data.sex ? data.sex : '',
-    dob: data.dob ? data.dob : '',
-    bloodGroup: data.bloodGroup ? data.bloodGroup : '',
-    height: data.height.val ? data.height.val : '',
-    weight: data.weight.val ? data.weight.val : '',
+    firstName: patient.firstName ? patient.firstName : '',
+    lastName: patient.lastName ? patient.lastName : '',
+    phone: patient.phone ? patient.phone : '',
+    email: patient.email ? patient.email : '',
+    sex: patient.sex ? patient.sex : '',
+    dob: patient.dob ? patient.dob : '',
+    bloodGroup: patient.bloodGroup ? patient.bloodGroup : '',
+    height: patient.height.value != undefined ? patient.height.value : '',
+    weight: patient.weight.value == undefined ? '' : patient.weight.value,
+    // weight: data.weight.val != null ? data.weight.val : '',
   });
 
+  const initialData = inputFields;
+
+  // BackHandler.addEventListener('hardwareBackPress', () => {
+  //   navigation.navigate('Home');
+  //   // BackHandler.removeEventListener('hardwareBackPress', () => {});
+  //   return true;
+  // });
+  console.log('@@@@@@@', inputFields.phone);
   useEffect(() => {
     console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
     // const {name, phone, email, sex, dob, bloodGroup, height, weight} = patient;
     console.log(patient);
-    console.log('###########', data);
+    console.log('###########', patient);
+    // console.log(typeof patient.height.value);
+    patient.height.value == undefined
+      ? console.log('undefined')
+      : console.log('defined');
     // console.log(patient.name);
     // console.log(patient.phone);
     // console.log(patient.email);
@@ -127,31 +146,37 @@ function Profile({navigation}) {
       }
     });
   };
+
+  const saveProfile = async () => {
+    const response = {
+      ...inputFields,
+      height: {
+        value: inputFields.height,
+        date: Date(),
+      },
+      weight: {
+        value: inputFields.weight,
+        date: Date(),
+      },
+    };
+    console.log(response);
+    await dispatch(UpdateProfile(response, data.id));
+  };
   return (
-    <View style={{flex: 1, backgroundColor: '#fff'}}>
+    <View style={{flex: 1, backgroundColor: HEADER_TEXT}}>
       <ScrollView style={{marginBottom: 70, flex: 1}}>
-        <View
+        <TopNavBar
+          navigation={navigation}
+          headerText="Profile"
           style={{
-            flex: 1,
-            flexDirection: 'row',
-            alignItems: 'center',
-            paddingTop: 5,
-            paddingBottom: 5,
-          }}>
-          <TouchableOpacity
-            style={{
-              width: '10%',
-              alignItems: 'center',
-              justifyContent: 'center',
-              alignSelf: 'stretch',
-            }}
-            onPress={() => {
-              navigation.navigate('Home');
-            }}>
-            <FontAwesome size={30} color={'#ff1f75'} name="angle-left" />
-          </TouchableOpacity>
-          <Text style={{fontSize: 18, marginLeft: 15}}>Profile</Text>
-        </View>
+            Header: {
+              color: '#fff',
+              fontSize: 23,
+              alignSelf: 'center',
+              width: '50%',
+            },
+          }}
+        />
         <View
           style={{
             flex: 4,
@@ -193,43 +218,134 @@ function Profile({navigation}) {
         <View
           style={{
             flex: 10,
-            paddingLeft: 25,
-            paddingRight: 25,
-            paddingTop: 8,
-            paddingBottom: 8,
+            paddingHorizontal: 25,
+            paddingVertical: 10,
+            backgroundColor: '#fff',
+            borderTopLeftRadius: 30,
+            borderTopRightRadius: 30,
           }}>
-          <AnimInput
-            placeholder="Name"
-            inputHandler={(txt) => setInputFields({...inputFields, name: txt})}
-            value={inputFields.name}
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <AnimInput
+              placeholder="First Name"
+              inputHandler={(txt) =>
+                setInputFields({...inputFields, firstName: txt})
+              }
+              value={inputFields.firstName}
+              style={{
+                Container: [styles.Container, {width: '40%'}],
+                Input: styles.Input,
+                Placeholder: styles.Placeholder,
+              }}
+            />
+            <AnimInput
+              placeholder="Last Name"
+              inputHandler={(txt) =>
+                setInputFields({...inputFields, lastName: txt})
+              }
+              value={inputFields.lastName}
+              style={{
+                Container: [styles.Container, {width: '40%'}],
+                Input: styles.Input,
+                Placeholder: styles.Placeholder,
+              }}
+            />
+          </View>
+          <View
             style={{
-              Container: styles.Container,
-              Input: styles.Input,
-              Placeholder: styles.Placeholder,
-            }}
-          />
-          <AnimInput
-            placeholder="Contact Number"
-            keyboardType="number-pad"
-            maxLength={10}
-            inputHandler={(txt) => setInputFields({...inputFields, phone: txt})}
-            value={inputFields.phone}
+              borderBottomWidth: 1,
+              borderBottomColor: '#ccc',
+            }}>
+            <DmzText
+              lite
+              text="Contact Number"
+              style={[styles.Placeholder, {marginTop: 20}]}
+            />
+            <TouchableOpacity
+              onPress={() => {
+                console.log('pressed');
+                navigation.navigate(
+                  'EditPhoneNumber',
+                  {phone: inputFields.phone},
+                  // navigation.navigate('EditPhoneNumber'),
+                );
+              }}
+              style={{
+                flexDirection: 'row',
+                width: '100%',
+                justifyContent: 'space-between',
+              }}>
+              <Text
+                style={[
+                  styles.Input,
+                  {marginBottom: 0, marginTop: 5, width: 'auto'},
+                ]}>
+                {inputFields.phone == ''
+                  ? 'Add Phone Number'
+                  : inputFields.phone}
+              </Text>
+              <Text
+                style={[
+                  styles.Input,
+                  {
+                    marginBottom: 0,
+                    marginTop: 5,
+                    color: 'crimson',
+                    width: 'auto',
+                  },
+                ]}>
+                {inputFields.phone == '' ? '' : 'Update'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View
             style={{
-              Container: styles.Container,
-              Input: styles.Input,
-              Placeholder: styles.Placeholder,
-            }}
-          />
-          <AnimInput
-            placeholder="Email Id"
-            inputHandler={(txt) => setInputFields({...inputFields, email: txt})}
-            value={inputFields.email}
-            style={{
-              Container: styles.Container,
-              Input: styles.Input,
-              Placeholder: styles.Placeholder,
-            }}
-          />
+              borderBottomWidth: 1,
+              borderBottomColor: '#ccc',
+              width: '100%',
+              alignItems: 'flex-start',
+            }}>
+            <DmzText
+              lite
+              text="Email Id"
+              style={[styles.Placeholder, {marginTop: 20}]}
+            />
+            <TouchableOpacity
+              onPress={() => {
+                console.log('pressed');
+                navigation.navigate(
+                  'EditEmailId',
+                  {
+                    email: inputFields.email == '' ? '' : inputFields.email,
+                  },
+                  // navigation.navigate('EditPhoneNumber'),
+                );
+              }}
+              style={{
+                flexDirection: 'row',
+                width: '100%',
+                justifyContent: 'space-between',
+              }}>
+              <Text
+                style={[
+                  styles.Input,
+                  {marginBottom: 0, marginTop: 5, width: 'auto'},
+                ]}>
+                {inputFields.email == '' ? 'Add Email Id' : inputFields.email}
+              </Text>
+              <Text
+                style={[
+                  styles.Input,
+                  {
+                    marginBottom: 0,
+                    marginTop: 5,
+                    color: 'crimson',
+                    width: 'auto',
+                  },
+                ]}>
+                {inputFields.email == '' ? '' : 'Update'}
+              </Text>
+            </TouchableOpacity>
+          </View>
           <View
             style={{
               borderBottomWidth: 1,
@@ -240,16 +356,29 @@ function Profile({navigation}) {
               text="Gender"
               style={[styles.Placeholder, {marginTop: 20}]}
             />
-            <Picker
-              selectedValue={inputFields.sex}
-              onValueChange={(txt) =>
-                setInputFields({...inputFields, sex: txt})
-              }>
-              <Picker.Item label="Select Gender" value={null} />
-              <Picker.Item label="Male" value="Male" />
-              <Picker.Item label="Female" value="Female" />
-              <Picker.Item label="Transgender" value="Transgender" />
-            </Picker>
+            <DmzText
+              text={inputFields.sex == '' ? 'Select Gender' : inputFields.sex}
+              style={[
+                styles.Input,
+                {
+                  width: '90%',
+                  marginTop: 0,
+                  fontWeight: inputFields.sex == '' ? 'normal' : 'bold',
+                  fontSize: inputFields.sex == '' ? 16 : 18,
+                },
+              ]}>
+              <Picker
+                selectedValue={inputFields.sex}
+                style={{width: 50, height: 50, marginTop: -10}}
+                onValueChange={(txt) =>
+                  setInputFields({...inputFields, sex: txt})
+                }>
+                <Picker.Item label="Select Gender" value={''} color="#ccc" />
+                <Picker.Item label="Male" value="Male" />
+                <Picker.Item label="Female" value="Female" />
+                <Picker.Item label="Transgender" value="Transgender" />
+              </Picker>
+            </DmzText>
           </View>
           <View>
             <DmzText
@@ -258,9 +387,10 @@ function Profile({navigation}) {
               style={[styles.Placeholder, {marginTop: 20}]}
             />
             <DatePicker
-              // style={{width: 200}}
               date={inputFields.dob}
               mode="date"
+              androidMode="spinner"
+              showIcon={false}
               placeholder="Select date of birth"
               format="DD-MM-YYYY"
               minDate="01-01-1930"
@@ -269,17 +399,23 @@ function Profile({navigation}) {
               cancelBtnText="Cancel"
               allowFontScaling={true}
               customStyles={{
-                dateIcon: {
-                  position: 'absolute',
-                  left: 0,
-                  top: 4,
-                  marginLeft: 0,
-                },
+                dateTouchBody: {marginTop: -30},
                 dateInput: {
                   borderWidth: 0,
                   fontSize: 15,
                   height: 40,
+                  marginBottom: 10,
                 },
+                dateText: [styles.Input, {width: '100%'}],
+                placeholderText: [
+                  styles.Input,
+                  {
+                    width: '100%',
+                    color: '#ccc',
+                    fontWeight: 'normal',
+                    marginTop: 0,
+                  },
+                ],
               }}
               style={{
                 borderBottomWidth: 1,
@@ -298,28 +434,47 @@ function Profile({navigation}) {
             style={{
               borderBottomWidth: 1,
               borderBottomColor: '#ccc',
+              height: 90,
             }}>
             <DmzText
               lite
               text="Blood Group"
               style={[styles.Placeholder, {marginTop: 20}]}
             />
-            <Picker
-              selectedValue={inputFields.bloodGroup}
-              mode={'dropdown'}
-              onValueChange={(txt) =>
-                setInputFields({...inputFields, bloodGroup: txt})
-              }>
-              <Picker.Item label="Select Blood Group" value={null} />
-              <Picker.Item label="A+" value="A+" />
-              <Picker.Item label="A-" value="A-" />
-              <Picker.Item label="B+" value="B+" />
-              <Picker.Item label="B-" value="B-" />
-              <Picker.Item label="O+" value="O+" />
-              <Picker.Item label="O-" value="O-" />
-              <Picker.Item label="AB+" value="AB+" />
-              <Picker.Item label="AB-" value="A-B" />
-            </Picker>
+            <DmzText
+              lite
+              text={
+                inputFields.bloodGroup == ''
+                  ? 'Select Blood Group'
+                  : inputFields.bloodGroup
+              }
+              style={[
+                styles.Input,
+                {
+                  width: '90%',
+                  marginTop: 0,
+                  fontWeight: inputFields.bloodGroup == '' ? 'normal' : 'bold',
+                  fontSize: inputFields.bloodGroup == '' ? 16 : 18,
+                },
+              ]}>
+              <Picker
+                selectedValue={inputFields.bloodGroup}
+                mode={'dialog'}
+                style={{width: 50, height: 50, marginTop: -10}}
+                onValueChange={(txt) =>
+                  setInputFields({...inputFields, bloodGroup: txt})
+                }>
+                <Picker.Item label="Select Blood Group" value={''} />
+                <Picker.Item label="A+" value="A+" />
+                <Picker.Item label="A-" value="A-" />
+                <Picker.Item label="B+" value="B+" />
+                <Picker.Item label="B-" value="B-" />
+                <Picker.Item label="O+" value="O+" />
+                <Picker.Item label="O-" value="O-" />
+                <Picker.Item label="AB+" value="AB+" />
+                <Picker.Item label="AB-" value="A-B" />
+              </Picker>
+            </DmzText>
           </View>
           <AnimInput
             placeholder="Height (in cm)"
@@ -352,11 +507,13 @@ function Profile({navigation}) {
       <View
         style={{
           position: 'absolute',
-          paddingBottom: 10,
+          paddingVertical: 10,
           bottom: 0,
           width: '100%',
+          backgroundColor: '#FFF',
         }}>
         <TouchableOpacity
+          onPress={saveProfile}
           style={{
             width: screenWidth * 0.6,
             height: 52,
@@ -383,11 +540,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: PRIMARY_COLOR,
     left: 0,
+    width: '100%',
     marginTop: 15,
-    marginBottom: 0,
+    marginBottom: -10,
+    marginLeft: 0,
   },
   Placeholder: {
     fontSize: 16,
-    color: TERTIARY_TEXT,
+    color: '#00000080',
   },
 });

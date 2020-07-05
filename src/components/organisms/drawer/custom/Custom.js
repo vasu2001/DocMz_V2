@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Text, KeyboardAvoidingView} from 'react-native';
 import Avater from '../../../atoms/Avater/Avater';
 import DmzText from '../../../atoms/DmzText/DmzText';
 import Option from '../../../molecules/Option/Option';
@@ -16,7 +16,8 @@ import {HEADER_TEXT, TERTIARY_TEXT} from '../../../../styles/colors';
 import StepsTracker from '../../../atoms/StepsTracker/StepsTracker';
 import SlidingUpPanel from 'rn-sliding-up-panel';
 import PatientLocation from '../../../../screens/examples/PatientLocation/PatientLocation';
-
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import TopNavBar from '../../../molecules/TopNavBar/TopNavBar';
 const Navigation = [
   {
     active: true,
@@ -40,7 +41,7 @@ const Navigation = [
         active: true,
         name: 'Address',
         icon: 'credit-card',
-        navigateTo: 'Payments',
+        navigateTo: 'Address',
       },
       {
         active: true,
@@ -61,17 +62,32 @@ const Navigation = [
     icon: 'headset',
     navigateTo: 'Help',
   },
-  {
-    active: true,
-    name: 'Subscription',
-    icon: 'google-circles',
-    navigateTo: 'Orders',
-  },
+  // {
+  //   active: true,
+  //   name: 'Subscription',
+  //   icon: 'google-circles',
+  //   navigateTo: 'PatientSubscription',
+  // },
   {
     active: true,
     name: 'Reminders',
     icon: 'bell-outline',
-    navigateTo: 'Orders',
+    type1: true,
+    isNested: true,
+    nestedRoutes: [
+      {
+        active: true,
+        name: 'Calendar Notification',
+        icon: 'account-circle',
+        navigateTo: 'Profile',
+      },
+      {
+        active: true,
+        name: 'Call Reminders',
+        icon: 'credit-card',
+        navigateTo: 'Payments',
+      },
+    ],
   },
   {
     active: true,
@@ -83,7 +99,7 @@ const Navigation = [
     active: true,
     name: 'Redeem Voucher',
     icon: 'wallet-giftcard',
-    navigateTo: 'Orders',
+    navigateTo: 'RedeemVoucher',
   },
   {
     active: true,
@@ -136,10 +152,12 @@ const Custom = ({
   activeItemKey,
 }) => {
   const {isLogedin, isDoctor, data} = useSelector((state) => state.AuthReducer);
+  const {patient} = useSelector((state) => state.PatientAccountReducer);
+
   const dispatch = useDispatch();
   console.log(navigation);
   console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&');
-  console.log(data);
+  // console.log(patient.weight);
   const _logout = () => {
     dispatch(resetStore());
     navigation.navigate('Home');
@@ -165,9 +183,29 @@ const Custom = ({
     <View style={styles.container}>
       <View
         style={{
-          height: '30%',
-          justifyContent: 'center',
+          height: '33%',
         }}>
+        <TopNavBar
+          onLeftButtonPress={() => {
+            console.log('pressed');
+            navigation.navigate('Home');
+            navigation.toggleDrawer();
+          }}
+          onRightButtonPress={() => {
+            navigation.closeDrawer();
+          }}
+        />
+        {/* <MaterialCommunityIcons
+          name="home"
+          size={30}
+          color="white"
+          style={{marginLeft: 20}}
+          onPress={() => {
+            console.log('pressed');
+            navigation.navigate('Home');
+            navigation.toggleDrawer();
+          }}
+        /> */}
         <View style={styles.profile}>
           <TouchableOpacity
             onPress={onProfileClick}
@@ -209,7 +247,14 @@ const Custom = ({
               style={styles.floatingCardSectionHeading}
             />
             <DmzText
-              text="61.00"
+              text={
+                patient != null
+                  ? patient.weight.value != undefined
+                    ? patient.weight.value
+                    : '--'
+                  : '--'
+                // "75"
+              }
               type={4}
               style={styles.floatingCardSectionHeading2}
             />
@@ -232,17 +277,19 @@ const Custom = ({
       <View
         style={{
           flex: 1,
-          height: '60%',
+          // height: '70%',
           borderTopLeftRadius: 30,
           borderTopRightRadius: 30,
           overflow: 'hidden',
           width: '100%',
-          backgroundColor: 'rgba(233, 229, 255)',
+          backgroundColor: '#E9E5FF',
           paddingTop: 50,
         }}>
+        <View style={{height: 0}} />
         <ScrollView
-          style={{flex: 1, backgroundColor: 'transparent'}}
-          contentContainerStyle={{}}>
+          style={{
+            flex: 1,
+          }}>
           <ExpandableOption
             key={'Location'}
             active={isLogedin}
@@ -317,13 +364,25 @@ const Custom = ({
           )}
         </ScrollView>
       </View>
-      {showLocation && (
-        <PatientLocation
-          onPress={setLoc}
-          location={location}
-          closePanel={closeLocPanel}
-        />
-      )}
+      {showLocation ? (
+        <KeyboardAvoidingView
+          behavior="height"
+          style={{
+            flex: 1,
+            height: '100%',
+            width: '100%',
+            position: 'absolute',
+            elevation: 3,
+            backgroundColor: '#00000050',
+            zIndex: 2,
+          }}>
+          <PatientLocation
+            onPress={setLoc}
+            location={location}
+            closePanel={closeLocPanel}
+          />
+        </KeyboardAvoidingView>
+      ) : null}
     </View>
   );
 };
@@ -361,7 +420,7 @@ const styles = StyleSheet.create({
     width: '80%',
     backgroundColor: '#fafafa',
     borderRadius: 10,
-    elevation: 4,
+    elevation: 2,
     paddingTop: 10,
     paddingBottom: 10,
     flexDirection: 'row',

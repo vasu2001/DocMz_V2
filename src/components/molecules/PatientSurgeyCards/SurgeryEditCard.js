@@ -75,7 +75,7 @@ export default function SurgeryEditCard({style, data, onPress}) {
           style={{alignSelf: 'center', height: 50, justifyContent: 'center'}}
           onPress={onPress}>
           <Text
-            style={{color: PRIMARY_COLOR, fontWeight: 'bold', fontSize: 16}}>
+            style={{color: HEADER_TEXT, fontWeight: 'bold', fontSize: 16}}>
             Cancel
           </Text>
         </TouchableOpacity>
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     height: 'auto',
     width: '80%',
     padding: 15,
-    backgroundColor: '#EEEBFF',
+    backgroundColor: '#E9E5FF',
     alignSelf: 'center',
     paddingHorizontal: 30,
     // marginBottom: 100,

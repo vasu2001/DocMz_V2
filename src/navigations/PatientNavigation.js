@@ -22,10 +22,24 @@ import ConfirmAppointment from '../components/molecules/ConfirmAppointment/Confi
 import BookingDetails from '../screens/patient/questionnaire/BookingDetails';
 import FamilyMember from '../screens/patient/familyMember/FamilyMember';
 import WaitingRoom from '../screens/patient/waitingRoom/WaitingRoom';
-import Profile from '../screens/examples/Profile/Profile';
+import ProfileScreen from '../screens/examples/Profile/Profile';
 import LandingPageScreen from '../screens/examples/LandingPage/LandingPageScreen';
+import PatientAdressList from '../screens/examples/PatientAddress/PatientAdressList';
+import PatienDashboard from '../screens/examples/PatientDashboard/PatienDashboard';
+import AddAdressScreen from '../screens/examples/PatientAddress/AddAdressScreen';
+import PatientSubscription from '../screens/examples/PatientSubscription/PatientSubscription';
+import RedeemVoucher from '../screens/examples/RedeemVoucher/RedeemVoucher';
 import Calendar from '../screens/examples/PatientCalendar/PatientCalendarScreen';
 import {createAppContainer} from 'react-navigation';
+import {createStackNavigator} from 'react-navigation-stack';
+import EditPhoneNumber from '../components/molecules/EditPhoneNumber/EditPhoneNumber';
+import PhoneNumberOtp from '../components/molecules/EditPhoneNumber/PhoneNumberOtp';
+import EditEmailId from '../components/molecules/EditEmailId/EditEmailId';
+import EmailIdOtp from '../components/molecules/EditEmailId/EmailIdOtp';
+import {createBottomTabNavigator} from 'react-navigation-tabs';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {PRIMARY_COLOR} from '../styles/colors';
+
 // const PatientBottomNavigation = createSwitchNavigator(
 //   {
 //     patientHomeScreen: Home,
@@ -77,10 +91,70 @@ import {createAppContainer} from 'react-navigation';
 // })
 
 const screenWidth = Dimensions.get('screen').width;
+const ProfileStack = createStackNavigator(
+  {
+    ProfileScreen,
+    EditPhoneNumber,
+    PhoneNumberOtp,
+    EmailIdOtp,
+    EditEmailId,
+  },
+  {headerMode: 'none', initialRouteName: 'ProfileScreen'},
+);
+const AddressStack = createStackNavigator(
+  {
+    PatientAdressList,
+    AddAdressScreen,
+  },
+  {headerMode: 'none', initialRouteName: 'PatientAdressList'},
+);
+
+const PatientNavigationHome = createBottomTabNavigator(
+  // const PatientNavigation = createBottomTabNavigator(
+  {
+    patientHomeScreen: {
+      // screen: PatientNavigationHome,
+      screen: LandingPageScreen,
+      navigationOptions: {
+        tabBarIcon: ({focused, horizontal, tintColor}) => {
+          return (
+            <Icon
+              name="home"
+              size={25}
+              color={focused ? PRIMARY_COLOR : '#E9E5FF'}
+            />
+          );
+        },
+      },
+    },
+    patientDashboardNav: {
+      screen: PatienDashboard,
+      navigationOptions: {
+        tabBarIcon: ({focused, horizontal, tintColor}) => {
+          return (
+            <Icon
+              name="account"
+              size={25}
+              color={focused ? PRIMARY_COLOR : '#E9E5FF'}
+            />
+          );
+        },
+      },
+    },
+  },
+  {
+    tabBarOptions: {
+      showLabel: false,
+    },
+    initialRouteName: 'patientHomeScreen',
+  },
+);
+
 const PatientNavigation = createDrawerNavigator(
   {
     // Home,
-    Home: LandingPageScreen,
+    Home: PatientNavigationHome,
+    // Home: Calendar,
     AppointmentsStack: {
       screen: DocProfileLite,
     },
@@ -98,9 +172,13 @@ const PatientNavigation = createDrawerNavigator(
     AppSettings,
     NotFound,
     FamilyMember,
-    Profile,
+    PatientSubscription,
+    RedeemVoucher,
+    Profile: {screen: ProfileStack},
+    Address: {screen: AddressStack},
   },
   {
+    initialRouteName: 'Home',
     drawerPosition: 'right',
     headerMode: 'none',
     drawerType: 'none',
@@ -112,6 +190,7 @@ const PatientNavigation = createDrawerNavigator(
       activeTintColor: '#fff',
       activeBackgroundColor: '#6b52ae',
     },
+    backBehavior: 'initialRoute',
   },
 );
 

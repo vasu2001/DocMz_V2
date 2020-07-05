@@ -48,11 +48,14 @@ function TopNavBar({
       )}
       <DmzText
         text={headerText}
-        style={{
-          fontSize: 20,
-          color: '#fff',
-          alignSelf: 'center',
-        }}
+        style={[
+          {
+            fontSize: 20,
+            color: '#fff',
+            alignSelf: 'center',
+          },
+          style ? style.Header : null,
+        ]}
       />
       {!hideRightComp && (
         <TouchableOpacity

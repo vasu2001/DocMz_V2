@@ -112,15 +112,17 @@ export default function PatientLocation(props) {
   Keyboard.addListener('keyboardDidShow', () => {
     Animated.timing(heightPanel, {
       toValue: 1,
-      duration: 90,
+      duration: 400,
       easing: Easing.linear,
+      useNativeDriver: false,
     }).start();
   });
   Keyboard.addListener('keyboardDidHide', () => {
     Animated.timing(heightPanel, {
       toValue: 0,
-      duration: 90,
+      duration: 400,
       easing: Easing.linear,
+      useNativeDriver: false,
     }).start();
   });
   const heightPanelVal = heightPanel.interpolate({
@@ -130,6 +132,7 @@ export default function PatientLocation(props) {
   return (
     <SlidingUpPanel
       ref={panelRef}
+      friction={0.5}
       containerStyle={styles.container}
       onBottomReached={props.closePanel}
       onDragEnd={(pos, gestureState) => {
@@ -146,7 +149,10 @@ export default function PatientLocation(props) {
       }}>
       {(dragHandler) => (
         <Animated.View
-          style={[styles.innerContainer, {height: heightPanelVal}]}>
+          style={[
+            styles.innerContainer,
+            {height: heightPanelVal, marginTop: 'auto'},
+          ]}>
           <Animated.View
             ref={inputRef}
             key={1}
@@ -233,7 +239,6 @@ export default function PatientLocation(props) {
         </Animated.View>
       )}
     </SlidingUpPanel>
-    // </View>
   );
 }
 
@@ -242,6 +247,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     elevation: 5,
+    zIndex: 2,
   },
   innerContainer: {
     width: '100%',

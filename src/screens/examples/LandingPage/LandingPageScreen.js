@@ -495,7 +495,7 @@ export default function LandingPageScreen({navigation}) {
                     {
                       nativeEvent: {
                         contentOffset: {y: headerPos},
-                      },
+                        },
                     },
                   ],
                   {useNativeDriver: false},

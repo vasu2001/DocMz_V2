@@ -1,12 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
-import {View, Modal} from 'react-native';
+import {View, Modal, TouchableOpacity} from 'react-native';
 import PatientHistoryCardSmall from '../../../components/molecules/PatientVitalCards/PatientHistoryCardSmall';
 import PatientHistoryCardLarge from '../../../components/molecules/PatientVitalCards/PatientHistoryCardLarge';
 import {PRIMARY_COLOR} from '../../../styles/colors';
 import PatientEditScreen from './PatientEditScreen';
 
-export default function PatienVitalScreen(props) {
+export default function PatienVitalScreen({vitals}) {
   const [editCard, setEditCard] = useState();
   const [modalVisible, setModal] = useState(false);
 
@@ -15,11 +15,14 @@ export default function PatienVitalScreen(props) {
     setEditCard(item);
   };
 
+  const weight = vitals.weight;
+  const height = vitals.height;
+
   const data1 = [
     {
       headerOne: 'Weight',
       headerTwo: '22 May 2020',
-      infoOne: '63.25',
+      infoOne: Vi,
       infoTwo: 'KGs',
       infoThree: 'BMI 26.0',
     },
@@ -217,7 +220,27 @@ export default function PatienVitalScreen(props) {
         onRequestClose={() => {
           setModal(!modalVisible);
         }}>
-        <PatientEditScreen data={editCard} />
+        <View>
+          <View
+            style={{
+              height: '100%',
+              width: '100%',
+              backgroundColor: '#ffffff99',
+            }}>
+            <TouchableOpacity
+              style={{
+                height: '100%',
+                width: '100%',
+              }}
+              activeOpacity={1}
+              onPress={() => {
+                console.log('pressed');
+                setModal(!modalVisible);
+              }}
+            />
+            <PatientEditScreen data={editCard} />
+          </View>
+        </View>
       </Modal>
     </View>
   );

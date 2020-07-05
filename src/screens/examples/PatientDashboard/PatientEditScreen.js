@@ -33,10 +33,13 @@ export default function PatientEditScreen({data, onPress}) {
   return (
     <View
       style={{
+        //  : 1,
+        position: 'absolute',
+        alignSelf: 'center',
         justifyContent: 'center',
         alignItems: 'center',
-        flex: 1,
-        backgroundColor: '#ffffff99',
+        marginTop: 150,
+        width: '100%',
       }}>
       {getEditScreen()}
     </View>

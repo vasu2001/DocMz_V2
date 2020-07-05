@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
-import {View, Modal} from 'react-native';
+import {View, Modal, TouchableOpacity} from 'react-native';
 import PatientEditScreen from './PatientEditScreen';
 import DmzButton from '../../../components/atoms/DmzButton/DmzButton';
 import PatientMedsDetails from '../../../components/molecules/PatientMedsCards/PatientMedsDetails';
@@ -91,12 +91,30 @@ export default function PatienMedsScreen(props) {
         onRequestClose={() => {
           setModal(!modalVisible);
         }}>
-        <PatientEditScreen
-          onPress={() => {
-            closeModal();
-          }}
-          data={editCard}
-        />
+        <View
+          style={{
+            height: '100%',
+            width: '100%',
+            backgroundColor: '#ffffff99',
+          }}>
+          <TouchableOpacity
+            style={{
+              height: '100%',
+              width: '100%',
+            }}
+            activeOpacity={1}
+            onPress={() => {
+              console.log('pressed');
+              setModal(!modalVisible);
+            }}
+          />
+          <PatientEditScreen
+            onPress={() => {
+              closeModal();
+            }}
+            data={editCard}
+          />
+        </View>
       </Modal>
     </View>
   );
