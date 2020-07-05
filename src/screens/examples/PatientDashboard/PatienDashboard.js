@@ -16,8 +16,9 @@ import {
 import PatienVitalScreen from './PatienVitalScreen';
 import PatienSurgeryScreen from './PatienSurgeryScreen';
 import PatienMedsScreen from './PatienMedsScreen';
+import {useSelector} from 'react-redux';
 
-export default function PatienDashboard(props) {
+export default function PatienDashboard({navigation}) {
   const patientCategories = [
     'Vitals',
     'Surgeries',
@@ -25,6 +26,8 @@ export default function PatienDashboard(props) {
     'Lifestyle',
     'Family History',
   ];
+  const {patient} = useSelector((state) => state.PatientAccountReducer);
+
   const [selectedHeader, setHeader] = useState('Vitals');
   const [editCard, setEditCard] = useState();
   const [modalVisible, setModal] = useState(false);
@@ -40,7 +43,7 @@ export default function PatienDashboard(props) {
 
   const getDetails = () => {
     if (selectedHeader === 'Vitals') {
-      return <PatienVitalScreen />;
+      return <PatienVitalScreen vitals={patient} />;
     } else if (selectedHeader === 'Surgeries') {
       return <PatienSurgeryScreen />;
     } else if (selectedHeader === 'Meds') {
@@ -58,6 +61,7 @@ export default function PatienDashboard(props) {
         style={{flex: 1, opacity: 1}}>
         <ScrollView style={{flex: 1}} contentContainerStyle={{}}>
           <TopNavBar
+            navigation={navigation}
             style={{
               Container: {
                 height: 50,

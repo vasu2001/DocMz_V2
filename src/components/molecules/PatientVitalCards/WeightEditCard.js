@@ -14,7 +14,11 @@ import AnimInput from '../AnimInput/AnimInput';
 
 export default function WeightEditCard({style, onPress}) {
   return (
-    <View style={{flex: 1, width: '100%', justifyContent: 'center'}}>
+    <View
+      style={{
+        width: '100%',
+        justifyContent: 'center',
+      }}>
       <View style={[styles.Card, style ? style.Card : null]}>
         <DmzText
           text="Add your Weight"
@@ -74,7 +78,7 @@ const styles = StyleSheet.create({
     height: 'auto',
     width: '80%',
     padding: 15,
-    backgroundColor: '#fff',
+    backgroundColor: '#E9E5FF',
     alignSelf: 'center',
     paddingHorizontal: 30,
     paddingBottom: 70,

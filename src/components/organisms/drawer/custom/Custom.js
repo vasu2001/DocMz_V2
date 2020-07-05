@@ -152,10 +152,12 @@ const Custom = ({
   activeItemKey,
 }) => {
   const {isLogedin, isDoctor, data} = useSelector((state) => state.AuthReducer);
+  const {patient} = useSelector((state) => state.PatientAccountReducer);
+
   const dispatch = useDispatch();
   console.log(navigation);
   console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&');
-  console.log(data);
+  // console.log(patient.weight);
   const _logout = () => {
     dispatch(resetStore());
     navigation.navigate('Home');
@@ -245,7 +247,14 @@ const Custom = ({
               style={styles.floatingCardSectionHeading}
             />
             <DmzText
-              text="61.00"
+              text={
+                patient != null
+                  ? patient.weight.value != undefined
+                    ? patient.weight.value
+                    : '--'
+                  : '--'
+                // "75"
+              }
               type={4}
               style={styles.floatingCardSectionHeading2}
             />

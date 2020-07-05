@@ -25,6 +25,7 @@ import WaitingRoom from '../screens/patient/waitingRoom/WaitingRoom';
 import ProfileScreen from '../screens/examples/Profile/Profile';
 import LandingPageScreen from '../screens/examples/LandingPage/LandingPageScreen';
 import PatientAdressList from '../screens/examples/PatientAddress/PatientAdressList';
+import PatienDashboard from '../screens/examples/PatientDashboard/PatienDashboard';
 import AddAdressScreen from '../screens/examples/PatientAddress/AddAdressScreen';
 import PatientSubscription from '../screens/examples/PatientSubscription/PatientSubscription';
 import RedeemVoucher from '../screens/examples/RedeemVoucher/RedeemVoucher';
@@ -35,6 +36,10 @@ import EditPhoneNumber from '../components/molecules/EditPhoneNumber/EditPhoneNu
 import PhoneNumberOtp from '../components/molecules/EditPhoneNumber/PhoneNumberOtp';
 import EditEmailId from '../components/molecules/EditEmailId/EditEmailId';
 import EmailIdOtp from '../components/molecules/EditEmailId/EmailIdOtp';
+import {createBottomTabNavigator} from 'react-navigation-tabs';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {PRIMARY_COLOR} from '../styles/colors';
+
 // const PatientBottomNavigation = createSwitchNavigator(
 //   {
 //     patientHomeScreen: Home,
@@ -103,10 +108,52 @@ const AddressStack = createStackNavigator(
   },
   {headerMode: 'none', initialRouteName: 'PatientAdressList'},
 );
+
+const PatientNavigationHome = createBottomTabNavigator(
+  // const PatientNavigation = createBottomTabNavigator(
+  {
+    patientHomeScreen: {
+      // screen: PatientNavigationHome,
+      screen: LandingPageScreen,
+      navigationOptions: {
+        tabBarIcon: ({focused, horizontal, tintColor}) => {
+          return (
+            <Icon
+              name="home"
+              size={25}
+              color={focused ? PRIMARY_COLOR : '#E9E5FF'}
+            />
+          );
+        },
+      },
+    },
+    patientDashboardNav: {
+      screen: PatienDashboard,
+      navigationOptions: {
+        tabBarIcon: ({focused, horizontal, tintColor}) => {
+          return (
+            <Icon
+              name="account"
+              size={25}
+              color={focused ? PRIMARY_COLOR : '#E9E5FF'}
+            />
+          );
+        },
+      },
+    },
+  },
+  {
+    tabBarOptions: {
+      showLabel: false,
+    },
+    initialRouteName: 'patientHomeScreen',
+  },
+);
+
 const PatientNavigation = createDrawerNavigator(
   {
     // Home,
-    Home: LandingPageScreen,
+    Home: PatientNavigationHome,
     // Home: Calendar,
     AppointmentsStack: {
       screen: DocProfileLite,

@@ -16,6 +16,7 @@ import DmzButton from '../../../components/atoms/DmzButton/DmzButton';
 import {TextInput} from 'react-native-gesture-handler';
 import Axios from 'axios';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
+import TopNavBar from '../../../components/molecules/TopNavBar/TopNavBar';
 
 export default function AddAdressScreen({navigation}) {
   const [coordinate, setCoordinate] = useState({
@@ -103,16 +104,22 @@ export default function AddAdressScreen({navigation}) {
 
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
+      <TopNavBar
+        navigation={navigation}
+        hideRightComp
+        style={{Container: {marginTop: 10}}}
+      />
       <MapView
         style={{
-          height: '60%',
-          width: '100%',
+          height: '50%',
+          width: '95%',
+          alignSelf: 'center',
         }}
         onRegionChangeComplete={getAddress}
         region={coordinate}
         showsMyLocationButton={true}
         initialRegion={coordinate}>
-         {/* <Marker key={0} coordinate={coordinate} pinColor={PRIMARY_COLOR}>
+        {/* <Marker key={0} coordinate={coordinate} pinColor={PRIMARY_COLOR}>
           <MaterialIcons color={PRIMARY_COLOR} size={40} name="location-on" />
         </Marker>  */}
       </MapView>
@@ -120,7 +127,7 @@ export default function AddAdressScreen({navigation}) {
         style={{
           flex: 1,
           position: 'absolute',
-          height: '55%',
+          height: '58%',
           alignItems: 'center',
           justifyContent: 'center',
           width: '100%',

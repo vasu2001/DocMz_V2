@@ -6,12 +6,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Tablet from '../../../assets/svg/tablet.svg';
-import Pill from '../../../assets/svg/pill.svg';
-import {
-  PRIMARY_TEXT,
-  TERTIARY_TEXT,
-  PRIMARY_COLOR,
-} from '../../../styles/colors';
+import {TERTIARY_TEXT, PRIMARY_COLOR} from '../../../styles/colors';
 
 export default function PatientMedsDetails({
   style,

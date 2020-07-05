@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
-import {View, Modal} from 'react-native';
+import {View, Modal, TouchableOpacity} from 'react-native';
 import PatientSurgeryDetails from '../../../components/molecules/PatientSurgeyCards/PatientSurgeryDetails';
 import {PRIMARY_COLOR} from '../../../styles/colors';
 import PatientEditScreen from './PatientEditScreen';
@@ -89,12 +89,30 @@ export default function PatienSurgeryScreen(props) {
         onRequestClose={() => {
           setModal(!modalVisible);
         }}>
-        <PatientEditScreen
-          onPress={() => {
-            closeModal();
-          }}
-          data={editCard}
-        />
+        <View
+          style={{
+            height: '100%',
+            width: '100%',
+            backgroundColor: '#ffffff99',
+          }}>
+          <TouchableOpacity
+            style={{
+              height: '100%',
+              width: '100%',
+            }}
+            activeOpacity={1}
+            onPress={() => {
+              console.log('pressed');
+              setModal(!modalVisible);
+            }}
+          />
+          <PatientEditScreen
+            onPress={() => {
+              closeModal();
+            }}
+            data={editCard}
+          />
+        </View>
       </Modal>
     </View>
   );
