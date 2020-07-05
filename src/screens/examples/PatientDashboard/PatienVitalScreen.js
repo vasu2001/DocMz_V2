@@ -1,10 +1,11 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Modal, TouchableOpacity} from 'react-native';
 import PatientHistoryCardSmall from '../../../components/molecules/PatientVitalCards/PatientHistoryCardSmall';
 import PatientHistoryCardLarge from '../../../components/molecules/PatientVitalCards/PatientHistoryCardLarge';
 import {PRIMARY_COLOR} from '../../../styles/colors';
 import PatientEditScreen from './PatientEditScreen';
+import Moment from 'moment';
 
 export default function PatienVitalScreen({vitals}) {
   const [editCard, setEditCard] = useState();
@@ -15,21 +16,41 @@ export default function PatienVitalScreen({vitals}) {
     setEditCard(item);
   };
 
+  useEffect(() => {
+    console.log(vitals, 'qwerty');
+  }, []);
+
+  const cmToFeet = (val) => {
+    var realFeet = (parseInt(val.value, 10) * 0.3937) / 12;
+    var feet = Math.floor(realFeet);
+    var inches = Math.round((realFeet - feet) * 12);
+    console.log(val, 'qwerty4');
+    const res = {
+      feet: feet,
+      inches: inches,
+      date: val.date,
+    };
+    return res;
+  };
+
   const weight = vitals.weight;
-  const height = vitals.height;
+  const temperature = vitals.temperature;
+  const bloodPressure = vitals.bloodPressure;
+  const heartRate = vitals.heartRate;
+  const height = cmToFeet(vitals.height);
 
   const data1 = [
     {
       headerOne: 'Weight',
-      headerTwo: '22 May 2020',
-      infoOne: Vi,
+      headerTwo: Moment(weight.date).format('DD MMM YYYY'),
+      infoOne: weight.value != undefined ? weight.value : '--',
       infoTwo: 'KGs',
       infoThree: 'BMI 26.0',
     },
     {
       headerOne: 'Height',
-      headerTwo: '22 May 2020',
-      infoOne: '5ft,4in',
+      headerTwo: Moment(height.date).format('DD MMM YYYY'),
+      infoOne: `${height.feet}ft,${height.inches}in`,
       infoTwo: '',
       infoThree: '',
     },
@@ -37,8 +58,8 @@ export default function PatienVitalScreen({vitals}) {
   const data2 = [
     {
       headerOne: 'Blood Pressure',
-      headerTwo: '22 May 2020',
-      infoOne: '80/50',
+      headerTwo: Moment(bloodPressure.date).format('DD MMM YYYY'),
+      infoOne: bloodPressure.value != undefined ? bloodPressure.value : '--',
       infoTwo: 'Optimal',
       infoThree: '',
       data: [
@@ -64,9 +85,14 @@ export default function PatienVitalScreen({vitals}) {
     },
     {
       headerOne: 'Heart Rate',
-      headerTwo: '22 May 2020',
-      infoOne: '65 ',
-      infoTwo: 'Normal',
+      headerTwo: Moment(heartRate.date).format('DD MMM YYYY'),
+      infoOne: heartRate.value != undefined ? heartRate.value : '--',
+      infoTwo:
+        heartRate.value != undefined
+          ? parseInt(heartRate.value, 10) > 98.6
+            ? 'Abnormal'
+            : 'Normal'
+          : '',
       infoThree: 'bpm',
       data: [
         {
@@ -115,14 +141,19 @@ export default function PatienVitalScreen({vitals}) {
   const data3 = [
     {
       headerOne: 'Temprature',
-      headerTwo: '22 May 2020',
-      infoOne: '101.5',
+      headerTwo: Moment(temperature.date).format('DD MMM YYYY'),
+      infoOne: temperature.value != undefined ? temperature.value : '--',
       infoTwo: 'C',
-      infoThree: 'Fever',
+      infoThree:
+        temperature.value != undefined
+          ? parseInt(temperature.value, 10) > 98.6
+            ? 'Fever'
+            : 'Normal'
+          : '',
     },
     {
       headerOne: 'Glucose',
-      headerTwo: '22 May 2020',
+      headerTwo: Moment(heartRate.date).format('DD MMM YYYY'),
       infoOne: '65',
       infoTwo: 'BPM',
       infoThree: 'High',
@@ -144,7 +175,7 @@ export default function PatienVitalScreen({vitals}) {
               onPress={() => {
                 modalVisibility(u);
               }}
-              data={data1}
+              // data={u}
               style={{
                 Card: {
                   marginLeft: 20,
@@ -171,7 +202,13 @@ export default function PatienVitalScreen({vitals}) {
           return (
             <PatientHistoryCardLarge
               onPress={() => {
-                modalVisibility(u);
+                const val = {
+                  bloodPressure: bloodPressure.value,
+                  heartRate: heartRate.value,
+                  date: Moment(bloodPressure.date).format('DD MMM YYYY'),
+                  headerOne: 'Blood Pressure',
+                };
+                modalVisibility(val);
               }}
               headerOne={u.headerOne}
               headerTwo={u.headerTwo}
@@ -194,6 +231,7 @@ export default function PatienVitalScreen({vitals}) {
           console.log(u);
           return (
             <PatientHistoryCardSmall
+              // data={u}
               onPress={() => {
                 modalVisibility(u);
               }}

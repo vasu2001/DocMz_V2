@@ -154,6 +154,10 @@ const Custom = ({
   const {isLogedin, isDoctor, data} = useSelector((state) => state.AuthReducer);
   const {patient} = useSelector((state) => state.PatientAccountReducer);
 
+  useEffect(() => {
+    console.log(patient, 'qwerty2');
+  }, []);
+
   const dispatch = useDispatch();
   console.log(navigation);
   console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&');

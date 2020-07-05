@@ -8,26 +8,26 @@ import GlucoseEditCard from '../../../components/molecules/PatientVitalCards/Glu
 import SurgeryEditCard from '../../../components/molecules/PatientSurgeyCards/SurgeryEditCard';
 import MedsEditCard from '../../../components/molecules/PatientMedsCards/MedsEditCard';
 
-export default function PatientEditScreen({data, onPress}) {
+export default function PatientEditScreen({data}) {
   const getEditScreen = () => {
     console.log(data);
     if (data.headerOne == 'Weight') {
-      return <WeightEditCard />;
+      return <WeightEditCard details={data} />;
     } else if (data.headerOne == 'Height') {
-      return <HeightEditCard />;
+      return <HeightEditCard details={data} />;
     } else if (data.headerOne == 'Temprature') {
-      return <TempEditCard />;
+      return <TempEditCard details={data} />;
     } else if (
       data.headerOne == 'Blood Pressure' ||
       data.headerOne == 'Heart Rate'
     ) {
-      return <BPEditCard />;
+      return <BPEditCard details={data} />;
     } else if (data.headerOne == 'Glucose') {
-      return <GlucoseEditCard onPress={onPress} />;
+      return <GlucoseEditCard />;
     } else if (data.type == 'Surgery') {
-      return <SurgeryEditCard onPress={onPress} data={data} />;
+      return <SurgeryEditCard data={data} />;
     } else if (data.type == 'Meds') {
-      return <MedsEditCard onPress={onPress} data={data} />;
+      return <MedsEditCard data={data} />;
     }
   };
   return (

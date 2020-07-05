@@ -16,10 +16,28 @@ import {
   TERTIARY_TEXT,
   PRIMARY_COLOR,
 } from '../../../styles/colors';
+import DatePicker from 'react-native-datepicker';
+import Moment from 'moment';
 import AnimInput from '../AnimInput/AnimInput';
+import {useDispatch, useSelector} from 'react-redux';
+import {UpdateProfile} from '../../../redux/action/patientAccountAction';
 
-export default function WeightEditCard({style, onPress}) {
-  const [height, setHeight] = useState('ft');
+export default function WeightEditCard({style, details}) {
+  const [heightType, setHeightType] = useState('cm');
+  const [height, setHeight] = useState(details.infoOne);
+  const [date, setDate] = useState(details.headerTwo);
+  const dispatch = useDispatch();
+  const {data} = useSelector((state) => state.AuthReducer);
+
+  const saveHeight = async () => {
+    const response = {
+      height: {
+        value: height,
+        date: date,
+      },
+    };
+    await dispatch(UpdateProfile(response, data.id));
+  };
   return (
     <View style={{flex: 1, width: '100%', justifyContent: 'center'}}>
       <View style={[styles.Card, style ? style.Card : null]}>
@@ -33,7 +51,32 @@ export default function WeightEditCard({style, onPress}) {
             marginTop: 20,
             alignItems: 'baseline',
           }}>
+          {/* {heightType == 'cm' ? (
+            <AnimInput
+              inputHandler={(txt) => setHeight(txt)}
+              value={height}
+              placeholder="Height"
+              style={{
+                Container: {...styles.Container, width: '60%'},
+                Input: styles.Input,
+                Placeholder: styles.Placeholder,
+              }}
+            />
+          ) : (
+            <AnimInput
+              inputHandler={(txt) => setHeight(txt)}
+              value={height}
+              placeholder="Height"
+              style={{
+                Container: {...styles.Container, width: '60%'},
+                Input: styles.Input,
+                Placeholder: styles.Placeholder,
+              }}
+            />
+          )} */}
           <AnimInput
+            inputHandler={(txt) => setHeight(txt)}
+            value={height}
             placeholder="Height"
             style={{
               Container: {...styles.Container, width: '60%'},
@@ -42,44 +85,84 @@ export default function WeightEditCard({style, onPress}) {
             }}
           />
           <DmzText
-            text={height}
+            text={heightType}
             style={{
               ...styles.Input,
               width: 'auto',
               lineHeight: 20,
               textTransform: 'none',
-              paddingBottom: 20,
+              paddingBottom: 12,
+              textAlign: 'center',
+              alignSelf: 'center',
             }}
           />
           <Picker
-            style={{width: '30%'}}
-            selectedValue={height}
+            style={{width: 20, marginLeft: 20}}
+            selectedValue={heightType}
             onValueChange={(val) => {
-              setHeight(val);
+              setHeightType(val);
             }}>
-            <Picker.Item value="ft" label="ft" />
             <Picker.Item value="cm" label="cm" />
+            <Picker.Item value="ft" label="ft" />
           </Picker>
         </View>
-        <View style={{flexDirection: 'row', alignItems: 'baseline'}}>
-          <AnimInput
-            placeholder="Date"
-            style={{
-              Container: styles.Container,
-              Input: styles.Input,
-              Placeholder: styles.Placeholder,
-            }}
-          />
-          <MaterialCommunityIcons
-            name="calendar"
-            size={23}
-            color="#A7A7A7"
-            style={{marginLeft: -20, paddingBottom: 15}}
-          />
-        </View>
+        <DmzText
+          lite
+          text="Date"
+          style={[styles.Placeholder, {marginTop: 20, marginBottom: -20}]}
+        />
+        <DatePicker
+          date={date}
+          mode="date"
+          placeholder="Select date"
+          format="DD MMM YYYY"
+          minDate="06 Jan 1950"
+          maxDate={Moment(new Date(), 'DD MMM YYYY')}
+          confirmBtnText="Confirm"
+          cancelBtnText="Cancel"
+          allowFontScaling={true}
+          customStyles={{
+            dateInput: {
+              borderWidth: 0,
+              fontSize: 15,
+              height: 40,
+              marginBottom: 10,
+            },
+            dateText: {
+              width: '100%',
+              fontSize: 18,
+              fontWeight: 'bold',
+              color: PRIMARY_COLOR,
+              left: 0,
+              marginTop: 15,
+              marginBottom: -10,
+              marginLeft: 0,
+            },
+            placeholderText: {
+              width: '100%',
+              color: '#ccc',
+              fontWeight: 'normal',
+              marginTop: 0,
+              fontSize: 18,
+              left: 0,
+              marginBottom: -10,
+              marginLeft: 0,
+            },
+          }}
+          style={{
+            borderBottomWidth: 1,
+            borderBottomColor: '#ccc',
+            width: '100%',
+            marginTop: 20,
+            alignItems: 'center',
+          }}
+          onDateChange={(date) => {
+            setDate(date);
+          }}
+        />
       </View>
       <View style={{alignSelf: 'center', marginTop: -35, elevation: 5}}>
-        <CircularButton />
+        <CircularButton onPress={saveHeight} />
       </View>
     </View>
   );
