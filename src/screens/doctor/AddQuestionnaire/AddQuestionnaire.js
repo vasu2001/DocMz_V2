@@ -20,6 +20,7 @@ import BasicCard from '../../../components/atoms/BasicCard/BasicCard';
 import ViewPager from '@react-native-community/viewpager';
 import Categories from './Categories';
 import AddCategory from './AddCategory';
+
 function AddQuestionnaire() {
   const pagerRef = useRef();
   const nextpage = (page) => {
@@ -32,13 +33,11 @@ function AddQuestionnaire() {
     option: [],
     specialty: '',
     category: '',
-    optionText: '',
     root: 'true',
     id: '',
   });
   const [showAddLinkedPopup, setShowAddLinkedPopup] = useState(false);
   const [parentId, setParentId] = useState('');
-  const [optionId, setOptionId] = useState('');
   const dispatch = useDispatch();
   const {data} = useSelector((state) => state.AuthReducer);
   const {
@@ -47,10 +46,11 @@ function AddQuestionnaire() {
     isLoading,
     questionDetails,
   } = useSelector((state) => state.questionnaireReducer);
-  useEffect(() => {
-    console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-    !gettingQuestionnaire && dispatch(GetQuestion(data.id));
-  }, []);
+
+  // useEffect(() => {
+  //   console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+  //   !gettingQuestionnaire && dispatch(GetQuestion(data.id));
+  // }, []);
 
   //could be used when API return data of added question till then dispatch an action when submit
   // useEffect(() => {
@@ -100,7 +100,8 @@ function AddQuestionnaire() {
       id: data.id,
     };
     dispatch(AddQuestion(Fques));
-    dispatch(GetQuestion(data.id));
+    // dispatch(GetQuestion(data.id));
+    // console.log(Fques);
   };
   const onUpdateQuestion = () => {
     let optionTemp = options.map((item) => {
@@ -143,7 +144,6 @@ function AddQuestionnaire() {
       option: [],
       specialty: '',
       category: '',
-      optionText: '',
       root: 'false',
       id: '',
     });
@@ -170,7 +170,17 @@ function AddQuestionnaire() {
           <Categories />
         </View>
         <View key="1">
-          <AddCategory />
+          <AddCategory
+            nextpage={nextpage}
+            handles={{
+              handleTitleInput,
+              handleCategoryInput,
+              handleSpecialityInput,
+              onPressReset,
+            }}
+            optionProp={{options, setOptions, removeOption, addOption}}
+            onSubmit={onSubmit}
+          />
         </View>
       </ViewPager>
       {/* <ScrollView

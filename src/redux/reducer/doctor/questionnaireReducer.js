@@ -1,6 +1,7 @@
 const initialState = {
   isLoading: false,
   questionDetails: [],
+  questionnaireAdded: false,
   error: '',
   gettingQuestionnaire: false,
   questions: [],
@@ -13,12 +14,14 @@ const QuestionnaireReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: true,
+        questionnaireAdded: false,
       };
     case 'QUESTIONNAIRE_ADDED':
       return {
         ...state,
         isLoading: false,
         questionDetails: action.payload,
+        questionnaireAdded: true,
       };
     case 'ERROR_ADDING_QUESTIONNAIRE':
       return {
