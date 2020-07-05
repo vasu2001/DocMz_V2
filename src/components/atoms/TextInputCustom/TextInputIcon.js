@@ -32,7 +32,11 @@ function TextInputIcon({
     <View
       style={[
         style ? style : TextInputCustomStyles.Container,
-        {flexDirection: iconPos == 'right' ? 'row-reverse' : 'row'},
+        {
+          flexDirection: iconPos == 'right' ? 'row-reverse' : 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        },
       ]}>
       {hasIcon ? (
         <MaterialCommunityIcons

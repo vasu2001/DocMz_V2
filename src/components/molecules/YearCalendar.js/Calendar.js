@@ -1,15 +1,10 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {Component, useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  Dimensions,
-  TouchableHighlight,
-  FlatList,
-} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, Text, Dimensions, FlatList} from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
 import {extendMoment} from 'moment-range';
 import Moment from 'moment';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 const moment = extendMoment(Moment);
 
 export default function Calendar({onDateChange, getDateView}) {
@@ -24,9 +19,9 @@ export default function Calendar({onDateChange, getDateView}) {
   const getMonths = () => {
     const monthList = moment.months();
     const coming12Months = monthList
-      .concat(months.slice(0, moment().month()))
+      .concat(monthList.slice(0, moment().month()))
       .slice(-12);
-    console.log(moment().month());
+    console.log(coming12Months);
     setMonths(coming12Months);
   };
   const minDate = new Date(1950, 1, 1);
@@ -54,33 +49,35 @@ export default function Calendar({onDateChange, getDateView}) {
     console.log(index2, ' --- ', index);
   };
 
-  const onDateChange2 = async (date, type) => {
-    if (type == 'START_DATE') {
-      await setStartDate(date);
-      console.log('in1', date);
-      // setEndDate(null);
-    } else if (type === 'END_DATE') {
-      await setEndDate(date);
-      console.log('in2', date);
-      if (date != null) {
-        console.log(selectedStartDate, date);
-        getDateView(selectedStartDate, date);
-      }
-    }
-    // console.log(selectedStartDate, EndDate);
-  };
+  // const onDateChange2 = async (date, type) => {
+  //   if (type == 'START_DATE') {
+  //     await setStartDate(date);
+  //     console.log('in1', date);
+  //     // setEndDate(null);
+  //   } else if (type === 'END_DATE') {
+  //     await setEndDate(date);
+  //     console.log('in2', date);
+  //     if (date != null) {
+  //       console.log(selectedStartDate, date);
+  //       getDateView(selectedStartDate, date);
+  //     }
+  //   }
+  //   // console.log(selectedStartDate, EndDate);
+  // };
 
   useEffect(() => {
     getMonths();
   }, []);
+
   return (
     <View>
       <FlatList
         data={months}
         horizontal
-        renderItem={({item}) => {
+        renderItem={({item, index}) => {
+          console.log(item, index);
           return (
-            <TouchableHighlight
+            <TouchableOpacity
               style={{paddingHorizontal: 20}}
               onPress={() => {
                 setMonth(item);
@@ -88,12 +85,12 @@ export default function Calendar({onDateChange, getDateView}) {
               <Text
                 style={{
                   fontSize: 30,
-                  color: '#027E97',
+                  color: selectedIndex == index ? '#027E97' : '#027E9750',
                   fontWeight: 'bold',
                 }}>
                 {item}
               </Text>
-            </TouchableHighlight>
+            </TouchableOpacity>
           );
         }}
       />
@@ -104,7 +101,7 @@ export default function Calendar({onDateChange, getDateView}) {
         style={{marginHorizontal: 10, marginTop: 20}}
         renderItem={({item}) => {
           return (
-            <TouchableHighlight
+            <View
               style={{
                 width: width / 7 - 20 / 7,
               }}>
@@ -118,7 +115,7 @@ export default function Calendar({onDateChange, getDateView}) {
                 }}>
                 {item}
               </Text>
-            </TouchableHighlight>
+            </View>
           );
         }}
       />
@@ -149,7 +146,7 @@ export default function Calendar({onDateChange, getDateView}) {
           color: '#015A6B',
         }}
         selectedDayTextColor="#FFFFFF"
-        onDateChange={onDateChange2}
+        onDateChange={onDateChange}
         selectedRangeStartStyle={{
           backgroundColor: '#FF7A59',
           borderRadius: 11,

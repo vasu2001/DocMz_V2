@@ -37,7 +37,7 @@ import _ from 'lodash';
 import LinearGradient from 'react-native-linear-gradient';
 import {PRIMARY_COLOR, HEADER_TEXT} from '../../../styles/colors';
 import Toast from 'react-native-root-toast';
-
+import {getSpecialty} from '../../../redux/action/doctor/myDoctorAction';
 export default function LandingPageScreen({navigation}) {
   const height = Dimensions.get('window').height;
   const DocCards = ['Family Physicians', 'Pulmonologist', 'Family Physicians'];
@@ -68,6 +68,9 @@ export default function LandingPageScreen({navigation}) {
     superDocs,
   } = useSelector((state) => state.DoctorReducer);
   const {isLogedin, isDoctor, data} = useSelector((state) => state.AuthReducer);
+  const {specialtyLoading, specialty} = useSelector(
+    (state) => state.MyDoctorReducer,
+  );
   const [activeId, setActiveId] = useState('');
   const [toastVisible, setToastVisible] = useState(false);
   const [backCount, setBackCount] = useState(true);
@@ -82,7 +85,7 @@ export default function LandingPageScreen({navigation}) {
   useEffect(() => {
     dispatch(fetchDoctorLite('', 0, false));
     isLogedin && dispatch(GetPatientInfo(data.id));
-    console.log('123456789');
+    !specialtyLoading && dispatch(getSpecialty());
   }, []);
 
   const headerPos = useRef(new Animated.Value(0)).current;
@@ -129,20 +132,20 @@ export default function LandingPageScreen({navigation}) {
     }
   };
 
-  // BackHandler.addEventListener('hardwareBackPress', function () {
-  //   if (backCount) {
-  //     setToastVisible(true);
-  //     setBackCount(false);
-  //     setTimeout(() => {
-  //       setToastVisible(false);
-  //     }, 2000);
-  //     console.log('in');
-  //     return true;
-  //   }
-  //   console.log('out');
-  //   BackHandler.exitApp();
-  //   return true;
-  // });
+  BackHandler.addEventListener('hardwareBackPress', function () {
+    if (backCount) {
+      setToastVisible(true);
+      setBackCount(false);
+      setTimeout(() => {
+        setToastVisible(false);
+      }, 2000);
+      console.log('in');
+      return true;
+    }
+    console.log('out');
+    BackHandler.exitApp();
+    return true;
+  });
 
   const scrollAnimation = async (e) => {
     var vel = e.nativeEvent.velocity.y;
@@ -396,37 +399,44 @@ export default function LandingPageScreen({navigation}) {
                   paddingBottom: 12,
                   paddingHorizontal: 25,
                 }}>
-                {DocCards.map((u, i) => {
-                  return (
-                    <BasicCard
-                      style={{
-                        CardContainer: {
-                          elevation: 6,
-                          justifyContent: 'space-around',
-                          paddingHorizontal: 25,
-                          height: 120,
-                          borderRadius: 30,
-                        },
-                      }}>
-                      <Fontisto name="doctor" size={30} color={PRIMARY_COLOR} />
-                      <Text
+                {specialty &&
+                  specialty.map((u, i) => {
+                    return (
+                      <BasicCard
+                        key={i}
                         style={{
-                          fontSize: 18,
-                          color: PRIMARY_COLOR,
-                          fontWeight: 'bold',
+                          CardContainer: {
+                            elevation: 6,
+                            justifyContent: 'space-around',
+                            paddingHorizontal: 25,
+                            height: 120,
+                            borderRadius: 30,
+                          },
                         }}>
-                        {u}
-                      </Text>
-                    </BasicCard>
-                  );
-                })}
+                        <Fontisto
+                          name="doctor"
+                          size={30}
+                          color={PRIMARY_COLOR}
+                        />
+                        <Text
+                          style={{
+                            fontSize: 18,
+                            color: PRIMARY_COLOR,
+                            fontWeight: 'bold',
+                          }}>
+                          {u.length > 15 ? u.slice(0, 15).concat('...') : u}
+                        </Text>
+                      </BasicCard>
+                    );
+                  })}
               </ScrollView>
             </View>
           </Animated.View>
           <Section
             style={{
               Container: {
-                marginBottom: 40,
+                // marginBottom: 40,
+                flex: 1,
                 marginTop: -20,
               },
               Text: {color: PRIMARY_COLOR, fontWeight: '300'},
@@ -438,9 +448,7 @@ export default function LandingPageScreen({navigation}) {
             ) : searchedDoctors.length && searchKey !== '' ? (
               <AnimatedFlatList
                 // extraData={doctors}
-                keyExtractor={({item, key}) => {
-                  return key;
-                }}
+                keyExtractor={(item) => item._id}
                 data={searchedDoctors}
                 onScroll={Animated.event(
                   [
@@ -450,7 +458,7 @@ export default function LandingPageScreen({navigation}) {
                       },
                     },
                   ],
-                  {useNativeDriver: true},
+                  {useNativeDriver: false},
                 )}
                 onMomentumScrollBegin={scrollAnimation}
                 scrollEventThrottle={16}
@@ -471,19 +479,17 @@ export default function LandingPageScreen({navigation}) {
               />
             ) : !toggle ? (
               <AnimatedFlatList
-                initialNumToRender={5}
+                // initialNumToRender={5}
                 onMomentumScrollBegin={() => setTrigger(false)}
                 onEndReached={({distanceFromEnd}) => {
                   console.log('end reached');
-                  // if (!trigger) {
-                  fetch();
-                  //   setTrigger(true);
-                  // }
+                  if (!trigger) {
+                    fetch();
+                    setTrigger(true);
+                  }
                 }}
                 // onScroll={onScroll}
-                keyExtractor={({item, key}) => {
-                  return key;
-                }}
+                keyExtractor={(item) => item._id}
                 onScroll={Animated.event(
                   [
                     {
@@ -503,7 +509,6 @@ export default function LandingPageScreen({navigation}) {
                       marginTop: 30,
                       justifyContent: 'center',
                       alignItems: 'center',
-                      backgroundColor: 'pink',
                     }}>
                     <Text>Empty</Text>
                   </View>
@@ -512,20 +517,26 @@ export default function LandingPageScreen({navigation}) {
                 ListFooterComponent={moreDoctorLoading && <ActivityIndicator />}
                 // extraData={doctors}
                 data={doctors}
-                renderItem={({item, index}) => (
-                  <AvailDoctorContainerV2
-                    toggle={toggle}
-                    data={item}
-                    navigation={navigation}
-                    onPress={() => onPress(item._id)}
-                    id={item._id}
-                    index={index}
-                    name={item.basic.name.slice(0, 15).concat('...')}
-                    // schedule={item.output.filter(
-                    //   o => o.bookedFor.slice(0, 10) === '2020-05-07',
-                    // )}
-                  />
-                )}
+                renderItem={({item, index}) => {
+                  console.log(
+                    item.basic.name.slice(0, 15).concat('...'),
+                    item._id,
+                  );
+                  return (
+                    <AvailDoctorContainerV2
+                      toggle={toggle}
+                      data={item}
+                      navigation={navigation}
+                      onPress={() => onPress(item._id)}
+                      id={item._id}
+                      index={index}
+                      name={item.basic.name.slice(0, 15).concat('...')}
+                      // schedule={item.output.filter(
+                      //   o => o.bookedFor.slice(0, 10) === '2020-05-07',
+                      // )}
+                    />
+                  );
+                }}
               />
             ) : (
               <AnimatedFlatList
@@ -542,9 +553,7 @@ export default function LandingPageScreen({navigation}) {
                 }
                 // ListFooterComponent={moreDoctorLoading && <ActivityIndicator />}
                 // extraData={doctors}
-                keyExtractor={({item, key}) => {
-                  return key;
-                }}
+                keyExtractor={(item) => item._id}
                 onScroll={Animated.event(
                   [
                     {

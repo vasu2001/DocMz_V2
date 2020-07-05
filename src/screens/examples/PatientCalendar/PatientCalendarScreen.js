@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {setState, useState} from 'react';
+import React, {setState, useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -18,21 +18,27 @@ import dateArray from 'moment-array-dates';
 import Calendar from '../../../components/molecules/YearCalendar.js/Calendar';
 import AppoinmentSlider from '../../../components/molecules/YearCalendar.js/AppoinmentSlider';
 import TopNavBar from '../../../components/molecules/TopNavBar/TopNavBar';
+import {GetAppointmentSlot} from '../../../redux/action/patientAccountAction';
+import {useDispatch, useSelector} from 'react-redux';
 const moment = extendMoment(Moment);
 
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
-export default function PatientCalendarScreen() {
+export default function PatientCalendarScreen({navigation}) {
   const [selectedStartDate, setStartDate] = useState('');
   const [selectedEndDate, setEndDate] = useState('');
-
-  // selectedIndex: 0,
+  const dispatch = useDispatch();
+  const {appointmentForSlotLoading, appointmentForSlot} = useSelector(
+    (state) => state.PatientAccountReducer,
+  );
+  // selectedIndex: 0
   // pos: false,
   // months: [],
-  const [range, setRange] = useState([]);
-  const time = ['09:00', '10:00', '11:00', '12:00', '01:00', '02:000'];
-  // daysLable: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+  const {_id} = navigation.state.params.data;
+  // const [range, setRange] = useState([]);
+  // const time = ['09:00', '10:00', '11:00', '12:00', '01:00', '02:000'];
+  // // daysLable: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
   // value: 0,
   // timeValue: '09:00',
 
@@ -59,10 +65,11 @@ export default function PatientCalendarScreen() {
 
   const getDateView = (startDate, endDate) => {
     if (startDate != '' && endDate != '') {
-      const start = Moment(startDate).format('MM/DD/YYYY');
-      const end = Moment(endDate).format('MM/DD/YYYY');
-      const rangedate = dateArray.range(start, end, 'dddd, Do', true);
-      setRange(rangedate);
+      const start = Moment(startDate).format('YYYY-MM-DD');
+      const end = Moment(endDate).format('YYYY-MM-DD');
+
+      !appointmentForSlotLoading &&
+        dispatch(GetAppointmentSlot([[start, end]], _id));
     }
   };
 
@@ -74,9 +81,12 @@ export default function PatientCalendarScreen() {
     } else if (type == 'END_DATE') {
       await setEndDate(date);
       console.log('in2', type);
+      if (date != null) {
+        console.log(selectedStartDate, date, '66666666666');
+        getDateView(selectedStartDate, date);
+      }
       // getDateView(selectedStartDate, selectedEndDate);
     }
-    console.log(selectedStartDate, selectedEndDate);
   }
 
   // const onDateChange = (date, type) => {
@@ -96,7 +106,7 @@ export default function PatientCalendarScreen() {
         center={[100, 100]}
         radius={120}>
         <TopNavBar />
-        <Calendar onDateChange={onDateChange} getDateView={getDateView} />
+        <Calendar onDateChange={onDateChange} />
         <View
           style={{
             justifyContent: 'space-around',
@@ -153,8 +163,7 @@ export default function PatientCalendarScreen() {
           </View>
         </View>
       </RadialGradient>
-      <AppoinmentSlider range={range} time={time} />
-      <Text>fghjk</Text>
+      <AppoinmentSlider navigation={navigation} slots={appointmentForSlot} />
     </View>
   );
 }

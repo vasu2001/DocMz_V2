@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, Animated} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
-function DmzButton({text, icon = false, theme, onPress, style}) {
+function DmzButton({text, icon = false, iconPosition, theme, onPress, style}) {
   return (
     <Animated.View style={[Styles.Container, style ? style.Container : null]}>
       <TouchableOpacity
@@ -14,7 +14,7 @@ function DmzButton({text, icon = false, theme, onPress, style}) {
           width: '100%',
         }}
         onPress={onPress}>
-        {icon ? icon : null}
+        {icon && iconPosition === 'left' ? icon : null}
         <Text
           style={[
             Styles.Text,
@@ -23,6 +23,7 @@ function DmzButton({text, icon = false, theme, onPress, style}) {
           ]}>
           {text}
         </Text>
+        {icon && iconPosition === 'right' ? icon : null}
       </TouchableOpacity>
     </Animated.View>
   );
