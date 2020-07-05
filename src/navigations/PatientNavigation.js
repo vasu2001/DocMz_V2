@@ -157,7 +157,6 @@ const PatientNavigation = createDrawerNavigator(
     // Home: Calendar,
     AppointmentsStack: {
       screen: DocProfileLite,
-      // screen: BookingDetails,
     },
     ConfirmAppointment,
     AppointmentForm,

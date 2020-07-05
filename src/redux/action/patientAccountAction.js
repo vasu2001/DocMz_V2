@@ -8,6 +8,9 @@ const RESET = 'RESET_PATIENT_ACCOUNT_REDUCER';
 const SAVE_FEV_DOC = 'SAVE_PATIENT_FEV_DOC';
 const SAVE_FAMILY_MEMBER = 'SAVE_PATIENT_FAMILY_MEMBER';
 const PROFILE_PIC_UPLOADED = 'PROFILE_PIC_UPLOADED';
+const START_APPOINTMENT_SLOT_LOADING = 'START_APPOINTMENT_SLOT_LOADING';
+const APPOINTMENT_SLOT_LOADED = 'APPOINTMENT_SLOT_LOADED';
+const APPOINTMENT_SLOT_ERROR = 'APPOINTMENT_SLOT_ERROR';
 
 const saveUserAccount = (data) => {
   return {
@@ -47,6 +50,24 @@ const profilePicUploaded = (data) => {
   return {
     type: PROFILE_PIC_UPLOADED,
     payload: data,
+  };
+};
+
+const startAppointmentSlotLoading = () => {
+  return {
+    type: START_APPOINTMENT_SLOT_LOADING,
+  };
+};
+const appointmentSlotLoaded = (appointmentSlot) => {
+  return {
+    type: APPOINTMENT_SLOT_LOADED,
+    payload: appointmentSlot,
+  };
+};
+const appointmentSlotError = (error) => {
+  return {
+    type: APPOINTMENT_SLOT_ERROR,
+    payload: error,
   };
 };
 export const resetUserAccountReducer = () => {
@@ -301,6 +322,35 @@ export const UploadProfilePic = (id, ImageData) => {
       .catch((err) => {
         console.log(err);
         dispatch(havingError(err));
+      });
+  };
+};
+
+export const GetAppointmentSlot = (dates, id) => {
+  return async (dispatch) => {
+    dispatch(startAppointmentSlotLoading());
+    const config = {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    };
+    const data = {
+      dates,
+      id,
+    };
+    await axios
+      .post(`${Host}/doctors/appointment/date`, data, config)
+      .then((result) => {
+        if (result.status) {
+          const response = result.data.data;
+          if (response.length) {
+            dispatch(appointmentSlotLoaded(response));
+          } else {
+            dispatch(appointmentSlotError(''));
+          }
+        }
+      })
+      .catch((err) => {
+        dispatch(appointmentSlotError(err));
       });
   };
 };

@@ -138,26 +138,6 @@ const DoctorNavigationContent = createBottomTabNavigator(
         },
       },
     },
-    test: {
-      screen: QuestionnairePP,
-      // screen: LandingPageScreen,
-      // screen: DoctorProfile,
-      // screen: FindADoctor,
-      // screen: DmzSignupV2,
-      // screen: DmzloginV2,
-      // screen: Collapsible,
-      navigationOptions: {
-        tabBarIcon: ({focused, tintColor}) => {
-          return (
-            <MaterialCommunityIcons
-              name="face-profile"
-              color={focused ? tintColor : '#555'}
-              size={24}
-            />
-          );
-        },
-      },
-    },
     settings: {
       screen: Settings,
       navigationOptions: {
@@ -176,7 +156,7 @@ const DoctorNavigationContent = createBottomTabNavigator(
   {
     // tabBarComponent: props => <BottomTabs {...props} />,
     // initialRouteName: 'test',
-    order: ['homeScreen', 'chats', 'doctorProfile', 'test', 'settings'],
+    order: ['homeScreen', 'chats', 'doctorProfile', 'settings'],
     tabBarOptions: {
       showLabel: false,
     },

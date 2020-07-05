@@ -17,13 +17,13 @@ const startLoading = () => {
     type: ADDING_QUESTIONNAIRE,
   };
 };
-const questionnaireAdded = data => {
+const questionnaireAdded = (data) => {
   return {
     type: QUESTIONNAIRE_ADDED,
     payload: data,
   };
 };
-const errorAddingQuestionnaire = err => {
+const errorAddingQuestionnaire = (err) => {
   return {
     type: ERROR_ADDING_QUESTIONNAIRE,
     payload: err,
@@ -36,14 +36,14 @@ const starGettingQuestionnaire = () => {
   };
 };
 
-const gotQuestionnaire = questions => {
+const gotQuestionnaire = (questions) => {
   return {
     type: GOT_QUESTIONNAIRE,
     payload: questions,
   };
 };
 
-const errorGettingQuestionnaire = err => {
+const errorGettingQuestionnaire = (err) => {
   return {
     type: ERROR_GETTING_QUESTIONNAIRE,
     payload: err,
@@ -61,14 +61,14 @@ const questionDeleted = () => {
     type: QUESTION_DELETED,
   };
 };
-const errorDeletingQuestion = err => {
+const errorDeletingQuestion = (err) => {
   return {
     type: ERROR_DELETING_QUESTION,
     payload: err,
   };
 };
-export const AddQuestion = question => {
-  return dispatch => {
+export const AddQuestion = (question) => {
+  return (dispatch) => {
     const config = {
       Accept: '*/*',
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -77,12 +77,12 @@ export const AddQuestion = question => {
     const _data = question;
     axios
       .post(`${Host}/questionnaire/add`, _data, config)
-      .then(res => {
+      .then((res) => {
         console.log('#######mmmmmmmmmmmmmm###########mmmmmmmmm#######');
         console.log(res.data);
         dispatch(questionnaireAdded(res.data));
       })
-      .catch(e => {
+      .catch((e) => {
         console.log('!!!!!!!!!@@@@@@@@@@########$$$$$$$$$$');
         dispatch(errorAddingQuestionnaire(e));
         console.log(e);
@@ -90,8 +90,8 @@ export const AddQuestion = question => {
   };
 };
 
-export const GetQuestion = id => {
-  return dispatch => {
+export const GetQuestion = (id) => {
+  return (dispatch) => {
     const config = {
       Accept: '*/*',
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -100,24 +100,24 @@ export const GetQuestion = id => {
     const _data = {id};
     axios
       .post(`${Host}/questionnaire/get`, _data, config)
-      .then(res => {
+      .then((res) => {
         if (res.status) {
-          const questions = res.data.question.filter(item => item);
+          const questions = res.data.question.filter((item) => item);
           dispatch(gotQuestionnaire(questions));
         } else {
           console.log(res);
           dispatch(errorGettingQuestionnaire(res.data));
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
         dispatch(errorGettingQuestionnaire(err));
       });
   };
 };
 
-export const UpdateQuestion = question => {
-  return dispatch => {
+export const UpdateQuestion = (question) => {
+  return (dispatch) => {
     const config = {
       Accept: '*/*',
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -126,12 +126,12 @@ export const UpdateQuestion = question => {
     const _data = question;
     axios
       .post(`${Host}/questionnaire/update`, _data, config)
-      .then(res => {
+      .then((res) => {
         console.log('#######mmmmmmmmmmmmmm###########mmmmmmmmm#######');
         console.log(res.data);
         dispatch(questionnaireAdded(res.data));
       })
-      .catch(e => {
+      .catch((e) => {
         console.log('!!!!!!!!!@@@@@@@@@@########$$$$$$$$$$');
         dispatch(errorAddingQuestionnaire(e));
         console.log(e);
@@ -139,8 +139,8 @@ export const UpdateQuestion = question => {
   };
 };
 
-export const DeleteRootQuestion = question => {
-  return dispatch => {
+export const DeleteRootQuestion = (question) => {
+  return (dispatch) => {
     const config = {
       Accept: '*/*',
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -149,10 +149,10 @@ export const DeleteRootQuestion = question => {
     const _data = question;
     axios
       .post(`${Host}/questionnaire/delete/root`, _data, config)
-      .then(res => {
+      .then((res) => {
         dispatch(questionDeleted());
       })
-      .catch(e => {
+      .catch((e) => {
         console.log('!!!!!!!!!@@@@@@@@@@########$$$$$$$$$$');
         dispatch(errorDeletingQuestion(e));
         console.log(e);

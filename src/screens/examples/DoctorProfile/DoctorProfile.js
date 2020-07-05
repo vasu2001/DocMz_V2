@@ -48,7 +48,6 @@ function DoctorProfile(props) {
   });
   const {data} = props.navigation.state.params;
   const authData = useSelector((state) => state.AuthReducer);
-
   const _checkLogedinAndDoTheStuff = () => {
     console.log('bug bug ', authData.isLogedin);
     if (!authData.isLogedin) {
@@ -56,11 +55,11 @@ function DoctorProfile(props) {
       navigation.navigate('authentication');
     } else {
       // navigation.navigate('ConfirmAppointment', {data: data});
-      if (data.toggle === 0) {
-        navigation.navigate('question', {data: data});
-      } else {
-        alert('open schedule popup');
-      }
+      // if (data.toggle === 0) {
+      navigation.navigate('PatientCalendarScreen', {data: data});
+      // } else {
+      //   alert('open schedule popup');
+      // }
     }
   };
 
