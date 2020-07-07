@@ -1,15 +1,8 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {Component, useState} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
+import React, {Component, useState, useEffect} from 'react';
+import {View, Text, StyleSheet, TextInput} from 'react-native';
 import {Picker} from '@react-native-community/picker';
 import DmzText from '../../atoms/DmzText/DmzText';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CircularButton from '../../atoms/CircularButton/CircularButton';
 import {
   PRIMARY_TEXT,
@@ -24,20 +17,46 @@ import {UpdateProfile} from '../../../redux/action/patientAccountAction';
 
 export default function WeightEditCard({style, details}) {
   const [heightType, setHeightType] = useState('cm');
-  const [height, setHeight] = useState(details.infoOne);
-  const [date, setDate] = useState(details.headerTwo);
+  const [heightCm, setHeightCm] = useState(details.height);
+  const [heightFeet, setHeightFeet] = useState('');
+  const [heightInches, setHeightInches] = useState('');
+  const [date, setDate] = useState(details.date);
   const dispatch = useDispatch();
   const {data} = useSelector((state) => state.AuthReducer);
 
   const saveHeight = async () => {
+    var val = heightCm;
+    if (heightType == 'ft') {
+      val =
+        parseInt(heightFeet, 10) * 30.48 + parseInt(heightInches, 10) * 2.54;
+      console.log(val);
+      setHeightCm(val);
+    } else {
+      cmToFeet(val);
+    }
     const response = {
       height: {
-        value: height,
+        value: val,
         date: date,
       },
     };
     await dispatch(UpdateProfile(response, data.id));
   };
+
+  useEffect(() => {
+    cmToFeet(heightCm);
+  }, []);
+
+  const cmToFeet = (val) => {
+    var realFeet = (parseInt(val, 10) * 0.3937) / 12;
+    var feet = Math.floor(realFeet);
+    var inches = ((realFeet - feet) * 12).toPrecision(3);
+    console.log(val, 'qwerty4');
+    setHeightInches(inches.toString());
+    setHeightFeet(feet.toString());
+    console.log(inches, feet, 'done');
+  };
+
   return (
     <View style={{flex: 1, width: '100%', justifyContent: 'center'}}>
       <View style={[styles.Card, style ? style.Card : null]}>
@@ -48,13 +67,14 @@ export default function WeightEditCard({style, details}) {
         <View
           style={{
             flexDirection: 'row',
-            marginTop: 20,
-            alignItems: 'baseline',
+            marginTop: 0,
+            alignItems: 'flex-end',
+            alignContent: 'flex-end',
           }}>
-          {/* {heightType == 'cm' ? (
+          {heightType == 'cm' ? (
             <AnimInput
-              inputHandler={(txt) => setHeight(txt)}
-              value={height}
+              inputHandler={(txt) => setHeightCm(txt)}
+              value={heightCm}
               placeholder="Height"
               style={{
                 Container: {...styles.Container, width: '60%'},
@@ -63,27 +83,41 @@ export default function WeightEditCard({style, details}) {
               }}
             />
           ) : (
-            <AnimInput
-              inputHandler={(txt) => setHeight(txt)}
-              value={height}
-              placeholder="Height"
+            <View
               style={{
-                Container: {...styles.Container, width: '60%'},
-                Input: styles.Input,
-                Placeholder: styles.Placeholder,
-              }}
-            />
-          )} */}
-          <AnimInput
-            inputHandler={(txt) => setHeight(txt)}
-            value={height}
-            placeholder="Height"
-            style={{
-              Container: {...styles.Container, width: '60%'},
-              Input: styles.Input,
-              Placeholder: styles.Placeholder,
-            }}
-          />
+                width: '60%',
+                justifyContent: 'flex-end',
+              }}>
+              <Text style={styles.Input}>Height</Text>
+              <View
+                style={{
+                  width: '100%',
+                  flexDirection: 'row',
+                  alignContent: 'flex-end',
+                }}>
+                <TextInput
+                  value={heightFeet}
+                  onChangeText={(txt) => {
+                    setHeightFeet(txt);
+                  }}
+                  style={[styles.Input, {marginTop: 0}]}
+                />
+                <Text
+                  style={{
+                    textAlignVertical: 'center',
+                  }}>
+                  :
+                </Text>
+                <TextInput
+                  value={heightInches}
+                  onChangeText={(txt) => {
+                    setHeightInches(txt);
+                  }}
+                  style={[styles.Input, {marginTop: 0}]}
+                />
+              </View>
+            </View>
+          )}
           <DmzText
             text={heightType}
             style={{
@@ -92,12 +126,11 @@ export default function WeightEditCard({style, details}) {
               lineHeight: 20,
               textTransform: 'none',
               paddingBottom: 12,
-              textAlign: 'center',
-              alignSelf: 'center',
+              alignSelf: 'flex-end',
             }}
           />
           <Picker
-            style={{width: 20, marginLeft: 20}}
+            style={{width: 50, marginLeft: 20}}
             selectedValue={heightType}
             onValueChange={(val) => {
               setHeightType(val);

@@ -23,7 +23,7 @@ export default function PatienVitalScreen({vitals}) {
   const cmToFeet = (val) => {
     var realFeet = (parseInt(val.value, 10) * 0.3937) / 12;
     var feet = Math.floor(realFeet);
-    var inches = Math.round((realFeet - feet) * 12);
+    var inches = ((realFeet - feet) * 12).toPrecision(3);
     console.log(val, 'qwerty4');
     const res = {
       feet: feet,
@@ -173,7 +173,17 @@ export default function PatienVitalScreen({vitals}) {
           return (
             <PatientHistoryCardSmall
               onPress={() => {
-                modalVisibility(u);
+                if (u.headerOne == 'Height') {
+                  const val = {
+                    height: vitals.height.value,
+                    heartRate: heartRate.value,
+                    date: Moment(vitals.height.date).format('DD MMM YYYY'),
+                    headerOne: 'Height',
+                  };
+                  modalVisibility(val);
+                } else {
+                  modalVisibility(u);
+                }
               }}
               // data={u}
               style={{
