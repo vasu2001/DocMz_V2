@@ -4,22 +4,32 @@ import {View, Text, StyleSheet} from 'react-native';
 function VerticalText({text, isActive = false}) {
   return (
     <View style={[Styles.Day, isActive && Styles.DayActive]}>
-      <Text style={[Styles.DayText, Styles.Up]}>{text.Top}</Text>
-      <Text style={[Styles.DayText, Styles.Down]}>{text.Bottom}</Text>
+      <Text
+        style={[Styles.DayText, Styles.Up, isActive && Styles.DayTextActive]}>
+        {text.Top}
+      </Text>
+      <Text
+        style={[Styles.DayText, Styles.Down, isActive && Styles.DayTextActive]}>
+        {text.Bottom}
+      </Text>
     </View>
   );
 }
 const Styles = StyleSheet.create({
   Day: {
-    padding: 6,
-    paddingTop: 10,
-    paddingBottom: 10,
+    height: 70,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
     borderRadius: 20,
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
   DayText: {
     fontSize: 16,
-    color: '#575757',
+    color: '#9C77BC',
+  },
+  DayTextActive: {
+    color: '#fff',
   },
   Up: {
     fontWeight: 'bold',
@@ -28,8 +38,7 @@ const Styles = StyleSheet.create({
     fontWeight: '500',
   },
   DayActive: {
-    backgroundColor: '#F4C130',
-    borderRadius: 20,
+    backgroundColor: '#9C77BC',
   },
 });
 
