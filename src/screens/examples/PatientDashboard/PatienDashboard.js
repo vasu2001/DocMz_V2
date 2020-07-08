@@ -27,9 +27,12 @@ export default function PatienDashboard({navigation}) {
     'Family History',
   ];
   const {patient} = useSelector((state) => state.PatientAccountReducer);
+  const {patientVitals} = useSelector((state) => state.PatientAccountReducer);
 
   useEffect(() => {
     console.log(patient, 'qwerty1');
+    // alert('opened');
+    console.log(patientVitals.bloodPressure, 'qwerty1.1');
   }, []);
 
   const [selectedHeader, setHeader] = useState('Vitals');
@@ -47,7 +50,7 @@ export default function PatienDashboard({navigation}) {
 
   const getDetails = () => {
     if (selectedHeader === 'Vitals') {
-      return <PatienVitalScreen vitals={patient} />;
+      return <PatienVitalScreen />;
     } else if (selectedHeader === 'Surgeries') {
       return <PatienSurgeryScreen />;
     } else if (selectedHeader === 'Meds') {

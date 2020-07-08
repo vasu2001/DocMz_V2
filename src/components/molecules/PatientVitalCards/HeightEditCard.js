@@ -13,7 +13,7 @@ import DatePicker from 'react-native-datepicker';
 import Moment from 'moment';
 import AnimInput from '../AnimInput/AnimInput';
 import {useDispatch, useSelector} from 'react-redux';
-import {UpdateProfile} from '../../../redux/action/patientAccountAction';
+import {UpdateVitals} from '../../../redux/action/patientAccountAction';
 
 export default function WeightEditCard({style, details}) {
   const [heightType, setHeightType] = useState('cm');
@@ -23,6 +23,7 @@ export default function WeightEditCard({style, details}) {
   const [date, setDate] = useState(details.date);
   const dispatch = useDispatch();
   const {data} = useSelector((state) => state.AuthReducer);
+  const {patientVitals} = useSelector((state) => state.PatientAccountReducer);
 
   const saveHeight = async () => {
     var val = heightCm;
@@ -35,12 +36,15 @@ export default function WeightEditCard({style, details}) {
       cmToFeet(val);
     }
     const response = {
-      height: {
+      field: 'height',
+      data: {
         value: val,
         date: date,
       },
     };
-    await dispatch(UpdateProfile(response, data.id));
+    await dispatch(
+      UpdateVitals(response, patientVitals.userId, patientVitals._id),
+    );
   };
 
   useEffect(() => {

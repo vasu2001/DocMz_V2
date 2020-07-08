@@ -12,10 +12,12 @@ const START_APPOINTMENT_SLOT_LOADING = 'START_APPOINTMENT_SLOT_LOADING';
 const APPOINTMENT_SLOT_LOADED = 'APPOINTMENT_SLOT_LOADED';
 const APPOINTMENT_SLOT_ERROR = 'APPOINTMENT_SLOT_ERROR';
 
-const saveUserAccount = (data) => {
+const saveUserAccount = (data, dataVitals) => {
+  console.log(dataVitals, '123456789');
   return {
     type: SAVE,
     payload: data,
+    medInfo: dataVitals,
   };
 };
 
@@ -85,8 +87,79 @@ export const GetPatientInfo = (id) => {
       .get(`${Host}/patient/getinfo/${id}`)
       .then((result) => {
         if (result.status) {
-          console.log('user data !!', result.data.data);
-          dispatch(saveUserAccount(result.data.data));
+          console.log('user data !! 1', result.data.data.meta);
+          const data = result.data.data;
+          // GetPatientVitalInfo(result.data.data);
+          // dispatch(saveUserAccount(result.data.data));
+          axios
+            .post(`${Host}/patient/meta/get`, {
+              id: data.meta,
+            })
+            .then((res) => {
+              if (res.status) {
+                console.log('user data !! 2', res);
+                dispatch(saveUserAccount(data, res.data.data));
+              }
+            })
+            .catch((err) => {
+              console.log('user data !! 2 error');
+
+              dispatch(havingError(err));
+            });
+        }
+      })
+      .catch((err) => {
+        console.log('user data !! 1 error');
+        dispatch(havingError(err));
+      });
+  };
+};
+
+export const UpdateVitals = (response, userID, metaId) => {
+  console.log('ininin');
+  return (dispatch) => {
+    // console.log('authAction > GetPatientInfor', data);
+    dispatch(startLoading());
+    const _data = {
+      id: userID,
+      meta: metaId,
+      ...response,
+    };
+    axios
+      .post(`${Host}/patient/medicalInfo/add`, _data)
+      .then((result) => {
+        if (result.status) {
+          console.log('user data !! 3', result);
+          axios
+            .get(`${Host}/patient/getinfo/${userID}`)
+            .then((result2) => {
+              if (result2.status) {
+                console.log('user data !! 1', result2.data.data.meta);
+                const data = result2.data.data;
+                // GetPatientVitalInfo(result.data.data);
+                // dispatch(saveUserAccount(result.data.data));
+                axios
+                  .post(`${Host}/patient/meta/get`, {
+                    id: data.meta,
+                  })
+                  .then((res) => {
+                    if (res.status) {
+                      console.log('user data !! 2', res);
+                      dispatch(saveUserAccount(data, res.data.data));
+                    }
+                  })
+                  .catch((err) => {
+                    console.log('user data !! 2 error');
+
+                    dispatch(havingError(err));
+                  });
+              }
+            })
+            .catch((err) => {
+              console.log('user data !! 1 error');
+              dispatch(havingError(err));
+            });
+          alert('Successfully Updated Profile.');
         }
       })
       .catch((err) => {

@@ -476,7 +476,7 @@ function Profile({navigation}) {
               </Picker>
             </DmzText>
           </View>
-          <AnimInput
+          {/* <AnimInput
             placeholder="Height (in cm)"
             keyboardType="number-pad"
             inputHandler={(txt) =>
@@ -501,7 +501,7 @@ function Profile({navigation}) {
               Input: styles.Input,
               Placeholder: styles.Placeholder,
             }}
-          />
+          /> */}
         </View>
       </ScrollView>
       <View

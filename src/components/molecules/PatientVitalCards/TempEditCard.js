@@ -15,7 +15,7 @@ import AnimInput from '../AnimInput/AnimInput';
 import DatePicker from 'react-native-datepicker';
 import Moment from 'moment';
 import {useDispatch, useSelector} from 'react-redux';
-import {UpdateProfile} from '../../../redux/action/patientAccountAction';
+import {UpdateVitals} from '../../../redux/action/patientAccountAction';
 
 export default function TempEditCard({style, details}) {
   const [celcius, setCelcius] = useState(
@@ -25,15 +25,19 @@ export default function TempEditCard({style, details}) {
   const [date, setDate] = useState(details.headerTwo);
   const dispatch = useDispatch();
   const {data} = useSelector((state) => state.AuthReducer);
+  const {patientVitals} = useSelector((state) => state.PatientAccountReducer);
 
   const saveTemp = async () => {
     const response = {
-      temperature: {
+      field: 'temperature',
+      data: {
         value: fahrenheit,
         date: date,
       },
     };
-    await dispatch(UpdateProfile(response, data.id));
+    await dispatch(
+      UpdateVitals(response, patientVitals.userId, patientVitals._id),
+    );
   };
   return (
     <View style={{flex: 1, width: '100%', justifyContent: 'center'}}>

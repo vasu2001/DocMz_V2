@@ -40,7 +40,7 @@ export default function PatientHistoryCardLarge({
         </View>
       </View>
       <Graph
-        data={data}
+        data={data ? data : [0, 0, 0]}
         hasAxis={headerOne.toUpperCase() == 'BLOOD PRESSURE'}
         style={{alignSelf: 'center'}}
       />

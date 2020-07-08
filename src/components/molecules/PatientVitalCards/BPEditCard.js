@@ -13,7 +13,7 @@ import AnimInput from '../AnimInput/AnimInput';
 import DatePicker from 'react-native-datepicker';
 import Moment from 'moment';
 import {useDispatch, useSelector} from 'react-redux';
-import {UpdateProfile} from '../../../redux/action/patientAccountAction';
+import {UpdateVitals} from '../../../redux/action/patientAccountAction';
 
 export default function WeightEditCard({style, details}) {
   const [diastolic, setDiastolic] = useState(
@@ -24,20 +24,29 @@ export default function WeightEditCard({style, details}) {
   const [heartRate, setHeartRate] = useState(details.heartRate);
   const [date, setDate] = useState(details.date);
   const dispatch = useDispatch();
-  const {data} = useSelector((state) => state.AuthReducer);
+  const {patientVitals} = useSelector((state) => state.PatientAccountReducer);
 
   const saveBp = async () => {
-    const response = {
-      bloodPressure: {
+    const response1 = {
+      field: 'bloodPressure',
+      data: {
         value: `${diastolic}/${systolic}`,
         date: date,
       },
-      heartRate: {
+    };
+    const response2 = {
+      field: 'heartRate',
+      data: {
         value: heartRate,
         date: date,
       },
     };
-    await dispatch(UpdateProfile(response, data.id));
+    await dispatch(
+      UpdateVitals(response1, patientVitals.userId, patientVitals._id),
+    );
+    await dispatch(
+      UpdateVitals(response2, patientVitals.userId, patientVitals._id),
+    );
   };
   return (
     <View style={{flex: 1, width: '100%', justifyContent: 'center'}}>

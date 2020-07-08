@@ -6,10 +6,17 @@ import PatientHistoryCardLarge from '../../../components/molecules/PatientVitalC
 import {PRIMARY_COLOR} from '../../../styles/colors';
 import PatientEditScreen from './PatientEditScreen';
 import Moment from 'moment';
+import {useSelector} from 'react-redux';
 
-export default function PatienVitalScreen({vitals}) {
+export default function PatienVitalScreen() {
   const [editCard, setEditCard] = useState();
+
   const [modalVisible, setModal] = useState(false);
+  const {patientVitals, patient} = useSelector(
+    (state) => state.PatientAccountReducer,
+  );
+  const [data, setData] = useState(patient);
+  const [vitals, setVitals] = useState(patientVitals);
 
   const modalVisibility = (item) => {
     setModal(!modalVisible);
@@ -17,8 +24,10 @@ export default function PatienVitalScreen({vitals}) {
   };
 
   useEffect(() => {
-    console.log(vitals, 'qwerty');
-  }, []);
+    setData(patient);
+    setVitals(patientVitals);
+    console.log('updating');
+  }, [patient, patientVitals]);
 
   const cmToFeet = (val) => {
     var realFeet = (parseInt(val.value, 10) * 0.3937) / 12;
@@ -33,11 +42,11 @@ export default function PatienVitalScreen({vitals}) {
     return res;
   };
 
-  const weight = vitals.weight;
-  const temperature = vitals.temperature;
-  const bloodPressure = vitals.bloodPressure;
-  const heartRate = vitals.heartRate;
-  const height = cmToFeet(vitals.height);
+  const weight = data.weight;
+  const temperature = data.temperature;
+  const bloodPressure = data.bloodPressure;
+  const heartRate = data.heartRate;
+  const height = cmToFeet(data.height);
 
   const data1 = [
     {
@@ -63,24 +72,18 @@ export default function PatienVitalScreen({vitals}) {
       infoTwo: 'Optimal',
       infoThree: '',
       data: [
-        50,
-        10,
-        40,
-        95,
-        -4,
-        -24,
-        35,
-        53,
-        -53,
-        24,
-        50,
-        -20,
-        -80,
-        44,
-        65,
-        35,
-        14,
-        23,
+        {
+          data: vitals.bloodPressure.map((item) => {
+            return parseInt(item.value.split('/')[0], 10);
+          }),
+          svg: {stroke: PRIMARY_COLOR},
+        },
+        {
+          data: vitals.bloodPressure.map((item) => {
+            return parseInt(item.value.split('/')[1], 10);
+          }),
+          svg: {stroke: '#E7E3FE'},
+        },
       ],
     },
     {
@@ -94,48 +97,9 @@ export default function PatienVitalScreen({vitals}) {
             : 'Normal'
           : '',
       infoThree: 'bpm',
-      data: [
-        {
-          data: [
-            50,
-            10,
-            40,
-            95,
-            -4,
-            -24,
-            85,
-            91,
-            35,
-            53,
-            -53,
-            24,
-            50,
-            -20,
-            -80,
-          ],
-          svg: {stroke: PRIMARY_COLOR},
-        },
-        {
-          data: [
-            -87,
-            66,
-            -69,
-            92,
-            -40,
-            -61,
-            16,
-            62,
-            20,
-            -93,
-            -54,
-            47,
-            -89,
-            -44,
-            18,
-          ],
-          svg: {stroke: '#E7E3FE'},
-        },
-      ],
+      data: vitals.heartRate.map((item) => {
+        return parseInt(item.value, 10);
+      }),
     },
   ];
   const data3 = [
@@ -175,9 +139,9 @@ export default function PatienVitalScreen({vitals}) {
               onPress={() => {
                 if (u.headerOne == 'Height') {
                   const val = {
-                    height: vitals.height.value,
+                    height: data.height.value,
                     heartRate: heartRate.value,
-                    date: Moment(vitals.height.date).format('DD MMM YYYY'),
+                    date: Moment(data.height.date).format('DD MMM YYYY'),
                     headerOne: 'Height',
                   };
                   modalVisibility(val);
