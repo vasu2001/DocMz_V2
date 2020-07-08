@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Modal, Text} from 'react-native';
 import LinearGradientBackground from '../../../components/molecules/GradientBackground/LinearGradientBackground';
 import TopNavBar from '../../../components/molecules/TopNavBar/TopNavBar';
@@ -27,6 +27,10 @@ export default function PatienDashboard({navigation}) {
     'Family History',
   ];
   const {patient} = useSelector((state) => state.PatientAccountReducer);
+
+  useEffect(() => {
+    console.log(patient, 'qwerty1');
+  }, []);
 
   const [selectedHeader, setHeader] = useState('Vitals');
   const [editCard, setEditCard] = useState();
@@ -114,6 +118,10 @@ export default function PatienDashboard({navigation}) {
                           selectedHeader == u ? PRIMARY_COLOR : TERTIARY_TEXT,
                         fontSize: 18,
                         fontWeight: selectedHeader == u ? 'bold' : '300',
+                        borderBottomWidth: selectedHeader == u ? 2 : 0,
+                        borderBottomColor:
+                          selectedHeader == u ? PRIMARY_COLOR : TERTIARY_TEXT,
+                        paddingBottom: 4,
                       },
                       Container: {
                         marginHorizontal: 10,
