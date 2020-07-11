@@ -27,12 +27,11 @@ export default function PatienDashboard({navigation}) {
     'Family History',
   ];
   const {patient} = useSelector((state) => state.PatientAccountReducer);
-  const {patientVitals} = useSelector((state) => state.PatientAccountReducer);
 
   useEffect(() => {
     console.log(patient, 'qwerty1');
     // alert('opened');
-    console.log(patientVitals.bloodPressure, 'qwerty1.1');
+    // patientVitals ! console.log(patientVitals.bloodPressure, 'qwerty1.1');
   }, []);
 
   const [selectedHeader, setHeader] = useState('Vitals');
@@ -85,7 +84,11 @@ export default function PatienDashboard({navigation}) {
             }}>
             <View style={{width: '60%', marginRight: 10}}>
               <DmzText
-                text={"Allen Paul's"}
+                text={
+                  patient == null
+                    ? ''
+                    : `${patient.firstName} ${patient.firstName}'s`
+                }
                 style={{color: PRIMARY_TEXT, fontSize: 18}}
               />
               <DmzText

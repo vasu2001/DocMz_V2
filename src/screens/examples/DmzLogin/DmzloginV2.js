@@ -20,6 +20,7 @@ import LoginAsDoctor from '../../../assets/svg/LoginAsDoctor.svg';
 import Check from '../../../assets/svg/check.svg';
 import {useDispatch} from 'react-redux/lib/hooks/useDispatch';
 import {LoginDoctor, LoginPatient} from '../../../redux/action/auth';
+import {GetPatientInfo} from '../../../redux/action/patientAccountAction';
 import {call} from 'react-native-reanimated';
 import {useSelector} from 'react-redux/lib/hooks/useSelector';
 import {
@@ -32,7 +33,7 @@ import TopNavBar from '../../../components/molecules/TopNavBar/TopNavBar';
 export default function DmzLoginV2(props) {
   const [credential, setCredential] = useState({email: '', password: ''});
   const [loginAs, setLoginAs] = useState('patient');
-  const {isLoading} = useSelector((state) => state.AuthReducer);
+  const {isLoading, data} = useSelector((state) => state.AuthReducer);
   const dispatch = useDispatch();
   const handleEmail = (email) => {
     setCredential({...credential, email});
@@ -43,6 +44,7 @@ export default function DmzLoginV2(props) {
 
   const handlePatientLogin = () => {
     dispatch(LoginPatient(credential, successCallback, errorCallback));
+    console.log('++++++++++++++', data);
   };
   const handleDoctorLogin = () => {
     dispatch(LoginDoctor(credential, successCallback, errorCallback));
@@ -75,6 +77,11 @@ export default function DmzLoginV2(props) {
   const successCallback = (successResponce) => {
     showTost(successResponce.message.toString(), () => {
       console.log('444444444444444444444', loginAs);
+      console.log('++++++++++++++', successResponce.id);
+
+      loginAs === 'patient'
+        ? dispatch(GetPatientInfo(successResponce.id))
+        : null;
       loginAs === 'patient'
         ? props.navigation.navigate('PatientHomePage')
         : props.navigation.navigate('DoctorHomePage');
@@ -141,7 +148,7 @@ export default function DmzLoginV2(props) {
           navigation={props.navigation}
           style={{
             Container: {
-              height: '5%',
+              height: 'auto',
               marginTop: 5,
             },
           }}
@@ -247,20 +254,26 @@ export default function DmzLoginV2(props) {
           </TouchableOpacity>
         </View>
         <DmzText
+          numberOfLines={3}
+          adjustsFontSizeToFit={true}
+          lite
           style={{
-            fontWeight: 'normal',
             fontSize: 16,
             lineHeight: 19,
             textAlign: 'center',
             color: 'rgba(0, 0, 0, 0.15)',
-            marginTop: 40,
+            marginTop: 15,
+            textTransform: 'none',
             marginLeft: 'auto',
             marginRight: 'auto',
-            alignSelf: 'center',
           }}
-          text={loginAs === 'patient' ? 'Hello patient' : 'Hello doctor'}
+          text={
+            loginAs === 'patient'
+              ? 'Hello patient! \n Please fill out the form below to get started'
+              : 'Hello doctor! \n Please fill out the form below to get started'
+          }
         />
-        <View
+        {/* <View
           style={{
             width: '80%',
             marginLeft: 'auto',
@@ -277,7 +290,7 @@ export default function DmzLoginV2(props) {
             }}
             text="Please fill out the form below to get started"
           />
-        </View>
+        </View> */}
         <TextInputIcon
           style={styles.inputContainer}
           inputHandler={handleEmail}
@@ -348,13 +361,45 @@ export default function DmzLoginV2(props) {
           isLoading={isLoading}
           disabled={isLoading}
         />
-        <DmzText
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            width: 'auto',
+          }}>
+          <Text
+            style={{
+              textAlign: 'center',
+              color: '#AAA4C5',
+              fontSize: 14,
+              marginTop: 10,
+            }}>
+            No account ?
+          </Text>
+          <TouchableOpacity
+            onPress={() => {
+              props.navigation.navigate('signupScreen');
+            }}>
+            <Text
+              style={{
+                color: '#EA508F',
+                textAlign: 'center',
+                fontSize: 14,
+                marginTop: 10,
+                paddingLeft: 10,
+              }}>
+              Sign Up
+            </Text>
+          </TouchableOpacity>
+        </View>
+        {/*  <DmzText
           style={{
             textAlign: 'center',
             color: 'rgba(0, 0, 0, 0.15)',
             fontSize: 14,
             marginTop: 10,
             marginLeft: '30%',
+            backgroundColor: 'red',
           }}
           text="No account ?"
           children={
@@ -374,7 +419,7 @@ export default function DmzLoginV2(props) {
               />
             </TouchableOpacity>
           }
-        />
+        /> */}
       </ScrollView>
     </View>
   );
@@ -401,7 +446,7 @@ const styles = StyleSheet.create({
     fontSize: 45,
     fontWeight: 'bold',
     color: HEADER_TEXT,
-    marginTop: 40,
+    marginTop: 5,
     width: '100%',
     textAlign: 'center',
     lineHeight: 50,

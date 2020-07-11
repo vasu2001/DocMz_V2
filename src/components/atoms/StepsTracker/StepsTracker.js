@@ -16,7 +16,12 @@ export default function StepsTracker({
         {width: '80%', alignSelf: 'center', marginTop: 30},
         style ? style : null,
       ]}>
-      <Text style={[textStyle ? textStyle : null]}>{text}</Text>
+      <Text
+        numberOfLines={1}
+        adjustsFontSizeToFit
+        style={[textStyle ? textStyle : null]}>
+        {text}
+      </Text>
       <View style={{marginTop: 5, flexDirection: 'row'}}>
         <View
           style={{

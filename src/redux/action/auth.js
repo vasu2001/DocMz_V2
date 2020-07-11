@@ -116,6 +116,7 @@ export const LoginPatient = (data, success, failed) => {
           dispatch(saveNewUser(_data, 'patient'));
           success({
             status: true,
+            id: data._id,
             message: 'Patient Login Successful',
           });
         } else {

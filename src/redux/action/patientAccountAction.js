@@ -13,7 +13,7 @@ const APPOINTMENT_SLOT_LOADED = 'APPOINTMENT_SLOT_LOADED';
 const APPOINTMENT_SLOT_ERROR = 'APPOINTMENT_SLOT_ERROR';
 
 const saveUserAccount = (data, dataVitals) => {
-  console.log(dataVitals, '123456789');
+  console.log(data, '----------------', dataVitals);
   return {
     type: SAVE,
     payload: data,

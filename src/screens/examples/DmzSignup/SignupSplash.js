@@ -114,19 +114,19 @@ function SignupSplash({onPress, signupAs, setSignupAs}) {
         onPress={onPress}
         style={{
           Text: {
-            width: '100%',
             textAlign: 'center',
             color: '#fff',
             fontSize: 16,
           },
           Container: {
-            width: 131,
-            height: 46,
-            borderRadius: 17,
+            width: 'auto',
+            height: 'auto',
+            borderRadius: 30,
             backgroundColor: PRIMARY_COLOR,
             alignSelf: 'center',
             marginTop: 40,
             elevation: 0,
+            padding: 15,
           },
         }}
         text="Go to Signup"

@@ -1,4 +1,3 @@
-//#EB4B2B
 import React, {useState, useEffect, useRef} from 'react';
 import {View, TouchableOpacity, ScrollView, Animated} from 'react-native';
 import Toast from 'react-native-root-toast';
@@ -35,6 +34,7 @@ function DmzLogin(props) {
     console.log(`PatientLoginAction(success):  ${successResponce.message}`);
     // console.log(authData);
     // dispatch(GetPatientInfo())
+    console.log('++++++++++++++++', authData);
     isDoctor
       ? props.navigation.navigate('pageNavigation')
       : props.navigation.goBack(null);

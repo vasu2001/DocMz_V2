@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState, useRef, useEffect} from 'react';
 import ToggleButton from '../../../components/molecules/ToggleButton/ToggleButton';
 import SearchBarSolid from '../../../components/molecules/SearchBarSolid/SearchBarSolid';
@@ -237,8 +238,9 @@ export default function LandingPageScreen({navigation}) {
             Find a
           </Text>
           <Text
+            numberOfLines={1}
+            adjustsFontSizeToFit
             style={{
-              // color: '#5c6bc0',
               color: HEADER_TEXT,
               fontSize: 42,
               lineHeight: 48,
@@ -324,7 +326,7 @@ export default function LandingPageScreen({navigation}) {
                 width: '100%',
                 marginVertical: 20,
               }}>
-              <View>
+              <View style={{width: '50%'}}>
                 <Text
                   style={{
                     color: PRIMARY_COLOR,
@@ -335,18 +337,19 @@ export default function LandingPageScreen({navigation}) {
                   Find a
                 </Text>
                 <Text
+                  numberOfLines={1}
+                  adjustsFontSizeToFit
                   style={{
-                    // color: '#5c6bc0',
                     color: HEADER_TEXT,
                     fontSize: 42,
+                    width: '90%',
                     lineHeight: 48,
                     fontWeight: 'bold',
-                    letterSpacing: 1,
                   }}>
                   Doctor
                 </Text>
               </View>
-              <View style={{marginLeft: 'auto'}}>
+              <View style={{}}>
                 <ToggleButton
                   toggle={toggle}
                   onToggle={onToggle}
@@ -409,8 +412,10 @@ export default function LandingPageScreen({navigation}) {
                             elevation: 6,
                             justifyContent: 'space-around',
                             paddingHorizontal: 25,
-                            height: 120,
+                            height: 'auto',
                             borderRadius: 30,
+                            paddingBottom: 30,
+                            paddingTop: 15,
                           },
                         }}>
                         <Fontisto
@@ -419,10 +424,13 @@ export default function LandingPageScreen({navigation}) {
                           color={PRIMARY_COLOR}
                         />
                         <Text
+                          adjustsFontSizeToFit
+                          numberOfLines={1}
                           style={{
                             fontSize: 18,
                             color: PRIMARY_COLOR,
                             fontWeight: 'bold',
+                            marginTop: 10,
                           }}>
                           {u.length > 15 ? u.slice(0, 15).concat('...') : u}
                         </Text>
@@ -495,7 +503,7 @@ export default function LandingPageScreen({navigation}) {
                     {
                       nativeEvent: {
                         contentOffset: {y: headerPos},
-                        },
+                      },
                     },
                   ],
                   {useNativeDriver: false},

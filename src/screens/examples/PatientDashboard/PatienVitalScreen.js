@@ -42,11 +42,12 @@ export default function PatienVitalScreen() {
     return res;
   };
 
-  const weight = data.weight;
-  const temperature = data.temperature;
-  const bloodPressure = data.bloodPressure;
-  const heartRate = data.heartRate;
-  const height = cmToFeet(data.height);
+  const weight = data == null ? '' : data.weight;
+  const temperature = data == null || data == undefined ? '' : data.temperature;
+  const bloodPressure =
+    data == null || data == undefined ? '' : data.bloodPressure;
+  const heartRate = data == null || data == undefined ? '' : data.heartRate;
+  const height = data == null || data == undefined ? '' : cmToFeet(data.height);
 
   const data1 = [
     {
@@ -59,7 +60,7 @@ export default function PatienVitalScreen() {
     {
       headerOne: 'Height',
       headerTwo: Moment(height.date).format('DD MMM YYYY'),
-      infoOne: `${height.feet}ft,${height.inches}in`,
+      infoOne: height == '' ? '--' : `${height.feet}ft,${height.inches}in`,
       infoTwo: '',
       infoThree: '',
     },
@@ -73,15 +74,21 @@ export default function PatienVitalScreen() {
       infoThree: '',
       data: [
         {
-          data: vitals.bloodPressure.map((item) => {
-            return parseInt(item.value.split('/')[0], 10);
-          }),
+          data:
+            vitals == null
+              ? []
+              : vitals.bloodPressure.map((item) => {
+                  return parseInt(item.value.split('/')[0], 10);
+                }),
           svg: {stroke: PRIMARY_COLOR},
         },
         {
-          data: vitals.bloodPressure.map((item) => {
-            return parseInt(item.value.split('/')[1], 10);
-          }),
+          data:
+            vitals == null
+              ? []
+              : vitals.bloodPressure.map((item) => {
+                  return parseInt(item.value.split('/')[1], 10);
+                }),
           svg: {stroke: '#E7E3FE'},
         },
       ],
@@ -97,9 +104,12 @@ export default function PatienVitalScreen() {
             : 'Normal'
           : '',
       infoThree: 'bpm',
-      data: vitals.heartRate.map((item) => {
-        return parseInt(item.value, 10);
-      }),
+      data:
+        vitals == null
+          ? []
+          : vitals.heartRate.map((item) => {
+              return parseInt(item.value, 10);
+            }),
     },
   ];
   const data3 = [

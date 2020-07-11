@@ -100,6 +100,8 @@ export default function SignUpStep1Screen(props) {
           incompletedColor={'#F8F7FF'}
         />
         <DmzText
+          numberOfLines={1}
+          adjustsFontSizeToFit
           style={{
             fontSize: 45,
             fontWeight: 'bold',
@@ -107,7 +109,8 @@ export default function SignUpStep1Screen(props) {
             marginTop: 20,
             width: '100%',
             textAlign: 'center',
-            lineHeight: 50,
+            lineHeight: 46,
+            paddingHorizontal: 20,
           }}
           text={
             props.signupAs === 'patient' ? 'Hello Patient' : 'Hello Doctor!'
@@ -266,31 +269,28 @@ export default function SignUpStep1Screen(props) {
           isLoading={isLoading}
           disabled={isLoading}
         />
-        <DmzText
-          style={{
-            textAlign: 'center',
-            color: 'rgba(0, 0, 0, 0.15)',
-            fontSize: 14,
-            marginTop: 10,
-            marginLeft: '20%',
-          }}
-          text=" Already have an account?">
-          <TouchableOpacity
-            onPress={() => {
-              props.navigation.navigate('loginScreen');
+        <TouchableOpacity
+          style={{alignSelf: 'center', marginBottom: 20}}
+          onPress={() => {
+            props.navigation.navigate('loginScreen');
+          }}>
+          <Text
+            style={{
+              textAlign: 'center',
+              color: 'rgba(0, 0, 0, 0.15)',
+              fontSize: 14,
+              marginTop: 15,
             }}>
-            <DmzText
+            Already have an account?
+            <Text
               style={{
                 color: HEADER_TEXT,
-                textAlign: 'center',
-                fontSize: 14,
-                marginTop: 10,
-                paddingLeft: 10,
-              }}
-              text="Sign In"
-            />
-          </TouchableOpacity>
-        </DmzText>
+              }}>
+              {'   '}
+              Sign In
+            </Text>
+          </Text>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );
@@ -307,7 +307,7 @@ const styles = StyleSheet.create({
   textStyle: {
     color: HEADER_TEXT,
     fontSize: 14,
-    marginTop: 20,
+    marginTop: 15,
     width: '100%',
   },
 });
