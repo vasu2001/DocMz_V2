@@ -10,6 +10,7 @@ function DmzButton({
   disabled,
   style,
   numberOfLines,
+  adjustsFontSizeToFit = false,
   isLoading = false,
 }) {
   return (
@@ -22,6 +23,7 @@ function DmzButton({
         <ActivityIndicator color="#fff" />
       ) : (
         <Text
+          adjustsFontSizeToFit={adjustsFontSizeToFit}
           numberOfLines={numberOfLines}
           style={[
             Styles.Text,

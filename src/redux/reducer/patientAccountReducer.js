@@ -1,6 +1,7 @@
 const initialState = {
   isPatientAccountReducerLoading: true,
   patient: null,
+  patientVitals: null,
   errorInPatientAccountReducer: [],
   patientFavDoc: [],
   familyMember: [],
@@ -16,6 +17,7 @@ const PatientAccountReducer = (state = initialState, action) => {
       return {
         ...state,
         patient: action.payload,
+        patientVitals: action.medInfo,
         isPatientAccountReducerLoading: false,
         errorInPatientAccountReducer: [],
       };

@@ -48,6 +48,8 @@ function TopNavBar({
       )}
       <DmzText
         text={headerText}
+        numberOfLines={1}
+        adjustsFontSizeToFit
         style={[
           {
             fontSize: 20,

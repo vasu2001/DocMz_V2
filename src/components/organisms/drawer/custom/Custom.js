@@ -190,6 +190,7 @@ const Custom = ({
           height: '33%',
         }}>
         <TopNavBar
+          style={{Container: {marginTop: 10}}}
           onLeftButtonPress={() => {
             console.log('pressed');
             navigation.navigate('Home');
@@ -230,11 +231,12 @@ const Custom = ({
               fontSize: 16,
               color: TERTIARY_TEXT,
               lineHeight: 21,
+              marginTop: 5,
             }}
             style={{
               width: '60%',
               flexDirection: 'column-reverse',
-              marginTop: 5,
+              marginTop: 10,
             }}
             completed={33}
             completedColor={'#EA508F'}
@@ -257,7 +259,6 @@ const Custom = ({
                     ? patient.weight.value
                     : '--'
                   : '--'
-                // "75"
               }
               type={4}
               style={styles.floatingCardSectionHeading2}
@@ -420,7 +421,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   floatingCard: {
-    height: 70,
+    height: 'auto',
     width: '80%',
     backgroundColor: '#fafafa',
     borderRadius: 10,
@@ -447,13 +448,13 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     color: HEADER_TEXT,
     fontSize: 13,
-    lineHeight: 20,
+    lineHeight: 15,
   },
   floatingCardSectionHeading2: {
     textTransform: 'uppercase',
     color: HEADER_TEXT,
-    fontSize: 24,
-    marginTop: 5,
+    fontSize: 20,
+    marginTop: 2,
   },
 
   option: {},

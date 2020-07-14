@@ -13,22 +13,26 @@ import {
 import AnimInput from '../AnimInput/AnimInput';
 import DatePicker from 'react-native-datepicker';
 import Moment from 'moment';
-import {UpdateProfile} from '../../../redux/action/patientAccountAction';
+import {UpdateVitals} from '../../../redux/action/patientAccountAction';
 import {useDispatch, useSelector} from 'react-redux';
 export default function WeightEditCard({style, details}) {
   const [weight, setWeight] = useState(details.infoOne);
   const [date, setDate] = useState(details.headerTwo);
   const dispatch = useDispatch();
   const {data} = useSelector((state) => state.AuthReducer);
+  const {patientVitals} = useSelector((state) => state.PatientAccountReducer);
 
   const saveWeight = async () => {
     const response = {
-      weight: {
+      field: 'weight',
+      data: {
         value: weight,
         date: date,
       },
     };
-    await dispatch(UpdateProfile(response, data.id));
+    await dispatch(
+      UpdateVitals(response, patientVitals.userId, patientVitals._id),
+    );
   };
   return (
     <View

@@ -40,7 +40,10 @@ function AvailDoctorContentV2({
         onPress={() => {}}>
         {Profile}
         <View style={CardContentStyles.AvailableDoctorsDetails}>
-          <Text style={CardContentStyles.AvailableDoctorsName}>
+          <Text
+            numberOfLines={1}
+            adjustsFontSizeToFit
+            style={CardContentStyles.AvailableDoctorsName}>
             {DoctorName}
           </Text>
           <Text style={CardContentStyles.AvailableDoctorsSpecialization}>
