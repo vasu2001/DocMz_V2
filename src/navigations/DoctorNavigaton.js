@@ -108,7 +108,7 @@ const DoctorDrawer = createDrawerNavigator(
     // AddQuestionnaire: AddQuestionnaire,
   },
   {
-    initialRouteName: 'Home',
+    initialRouteName: 'Languages',
     drawerPosition: 'right',
     headerMode: 'none',
     drawerType: 'none',
