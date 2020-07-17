@@ -22,6 +22,11 @@ import {
   HEADER_TEXT,
   PRIMARY_COLOR,
   TERTIARY_TEXT,
+  SECONDARY_COLOR,
+  NEW_HEADER_TEXT,
+  NEW_PRIMARY_COLOR,
+  PRIMARY_BACKGROUND,
+  SECONDARY_BACKGROUND,
 } from '../../../styles/colors';
 function DoctorProfile(props) {
   const {navigation} = props;
@@ -74,7 +79,7 @@ function DoctorProfile(props) {
 
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
-      <SolidHeader
+      {/* <SolidHeader
         style={{
           Container: {
             // height: '40%',
@@ -90,7 +95,7 @@ function DoctorProfile(props) {
             }),
           },
         }}
-      />
+      /> */}
       <TopNavBar
         style={{Container: {marginTop: 5}}}
         hideRightComp
@@ -101,46 +106,84 @@ function DoctorProfile(props) {
             navigation.navigate({routeName: 'Home'}),
           );
         }}
+        headerText="Doctor's Profile"
         // onRightButtonPress={() => {}}
       />
       <Animated.View
-        style={{flex: 1, opacity: opacity, transform: [{scale: opacity}]}}>
-        <Text
+        style={{
+          flex: 1,
+          opacity: opacity,
+          transform: [{scale: opacity}],
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginTop: 30,
+          marginHorizontal: 20,
+        }}>
+        <View
           style={{
-            fontSize: 36,
-            fontWeight: '700',
-            alignSelf: 'center',
-            lineHeight: 36,
-            color: HEADER_TEXT,
-            textTransform: 'capitalize',
+            height: 140,
+            width: 140,
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 70,
+            backgroundColor: SECONDARY_BACKGROUND,
           }}>
-          Dr. {data.basic.name}
-        </Text>
-        <Text
-          style={{
-            fontSize: 20,
-            fontWeight: '500',
-            alignSelf: 'center',
-            lineHeight: 22,
-            color: PRIMARY_COLOR,
-            textTransform: 'capitalize',
-          }}>
-          {data.specialty}
-        </Text>
-        <View style={{alignSelf: 'center', marginTop: 2}}>
-          <RatingStarts
-            rating={4}
-            size={14}
-            filled
-            activeColor={PRIMARY_COLOR}
-            passiveColor={'#EBFAFF'}
+          <Image
+            style={{
+              borderRadius: 60,
+              height: 120,
+              width: 120,
+            }}
+            source={require('../../../assets/jpg/person1.jpg')}
           />
+        </View>
+
+        <View
+          style={{
+            justifyContent: 'space-evenly',
+            flex: 1,
+            marginLeft: 15,
+            alignSelf: 'stretch',
+          }}>
+          <Text
+            style={{
+              fontSize: 27,
+              fontWeight: '700',
+              lineHeight: 27,
+              color: NEW_HEADER_TEXT,
+              textTransform: 'capitalize',
+            }}>
+            Dr. {data.basic.name}
+          </Text>
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: '500',
+              lineHeight: 18,
+              color: NEW_HEADER_TEXT,
+              textTransform: 'capitalize',
+            }}>
+            {data.specialty}
+          </Text>
+          <View
+            style={{flexDirection: 'row', marginTop: 7, alignItems: 'center'}}>
+            <Image
+              source={require('../../../assets/icons/star.png')}
+              style={{height: 15, width: 15}}
+            />
+            <Text style={{fontWeight: 'bold'}}>{4.2} </Text>
+            <Text>(9 Reviews)</Text>
+
+            <MaterialCommunityIcons name="heart" size={18} color="#EF786E" />
+          </View>
         </View>
       </Animated.View>
       <Animated.View
         style={{
-          flex: 1.5,
           flexDirection: 'row',
+          alignSelf: 'center',
+          marginTop: 60,
+
           opacity: opacity.interpolate({
             inputRange: [0, 0.99, 1],
             outputRange: [0, 0.2, 1],
@@ -154,126 +197,56 @@ function DoctorProfile(props) {
             },
           ],
         }}>
-        <View style={{flex: 3, alignItems: 'center'}}>
-          <View
+        <View style={Styles.DoctorProfilePatientDetails}>
+          <Text
             style={{
-              borderWidth: 10,
-              borderColor: '#fff',
-              borderRadius: 20,
-              height: 180,
-              width: 180,
-              bottom: -15,
-              position: 'relative',
+              color: NEW_HEADER_TEXT,
+              fontSize: 24,
+              fontWeight: 'bold',
             }}>
-            <Image
-              style={{
-                borderRadius: 15,
-                height: '100%',
-                width: '100%',
-              }}
-              source={require('../../../assets/jpg/person1.jpg')}
-            />
-            <View
-              style={{
-                height: 40,
-                width: 40,
-                borderRadius: 40,
-                borderWidth: 2,
-                borderColor: '#FD906A',
-                alignItems: 'center',
-                justifyContent: 'center',
-                elevation: 1,
-                backgroundColor: '#fff',
-                position: 'absolute',
-                bottom: 0,
-                right: -8,
-                bottom: -8,
-                zIndex: 9999,
-              }}>
-              <MaterialCommunityIcons name="heart" size={24} color="#FD906A" />
-            </View>
-          </View>
+            1.5K
+          </Text>
+          <Text style={{color: NEW_HEADER_TEXT, fontSize: 12}}>Patients</Text>
         </View>
-        <View
-          style={{
-            flex: 2,
-            borderBottomRightRadius: 70,
-            justifyContent: 'center',
-          }}>
-          <View style={Styles.DoctorProfilePatientDetails}>
-            <Fontisto name="doctor" size={32} color={PRIMARY_COLOR} />
-            <View style={{marginLeft: 15}}>
-              <Text
-                style={{
-                  color: PRIMARY_COLOR,
-                  fontSize: 24,
-                  fontWeight: 'bold',
-                }}>
-                1.5K
-              </Text>
-              <Text style={{color: PRIMARY_COLOR, fontSize: 12}}>Patients</Text>
-            </View>
-          </View>
-          <View style={Styles.DoctorProfileExperienceDetails}>
-            <MaterialCommunityIcons
-              name="timer-sand"
-              size={30}
-              color={PRIMARY_COLOR}
-            />
-            <View style={{marginLeft: 15}}>
-              <Text
-                style={{
-                  color: PRIMARY_COLOR,
-                  fontSize: 24,
-                  fontWeight: 'bold',
-                }}>
-                5 Years
-              </Text>
-              <Text style={{color: PRIMARY_COLOR, fontSize: 12}}>
-                Experience
-              </Text>
-            </View>
-          </View>
+        <View style={Styles.DoctorProfileExperienceDetails}>
+          <Text
+            style={{
+              color: NEW_HEADER_TEXT,
+              fontSize: 24,
+              fontWeight: 'bold',
+            }}>
+            5 yrs
+          </Text>
+          <Text style={{color: NEW_HEADER_TEXT, fontSize: 12}}>Experience</Text>
         </View>
       </Animated.View>
       <View style={Styles.ContentContainer}>
         <View style={Styles.ContentContainerTabs}>
-          <View style={{alignItems: 'center', justifyContent: 'flex-end'}}>
+          <View
+            style={{
+              backgroundColor: NEW_PRIMARY_COLOR,
+              padding: 10,
+              paddingHorizontal: 20,
+              borderRadius: 10,
+              flex: 1,
+              alignItems: 'center',
+              marginHorizontal: 5,
+            }}>
             <Text
               style={{
-                color: PRIMARY_COLOR,
+                color: 'white',
                 fontSize: 16,
                 lineHeight: 16,
                 fontWeight: '700',
               }}>
               About
             </Text>
-            <View
-              style={{
-                height: 6,
-                width: 6,
-                borderRadius: 6,
-                backgroundColor: PRIMARY_COLOR,
-                marginBottom: -8,
-                marginTop: 2,
-              }}
-            />
           </View>
-          <View>
+
+          <View style={{flex: 1, alignItems: 'center', marginHorizontal: 5}}>
             <Text
               style={{
-                color: TERTIARY_TEXT,
-                fontSize: 16,
-                lineHeight: 16,
-                fontWeight: '500',
-              }}>
-              Calendar
-            </Text>
-          </View>
-          <View>
-            <Text
-              style={{
-                color: TERTIARY_TEXT,
+                color: NEW_PRIMARY_COLOR,
                 fontSize: 16,
                 lineHeight: 16,
                 fontWeight: '500',
@@ -281,10 +254,10 @@ function DoctorProfile(props) {
               Feedback
             </Text>
           </View>
-          <View>
+          <View style={{flex: 1, alignItems: 'center', marginHorizontal: 5}}>
             <Text
               style={{
-                color: TERTIARY_TEXT,
+                color: NEW_PRIMARY_COLOR,
                 fontSize: 16,
                 lineHeight: 16,
                 fontWeight: '500',
@@ -296,7 +269,12 @@ function DoctorProfile(props) {
         <ScrollView style={Styles.DoctorInfoScroll}>
           <View style={{flex: 1, paddingHorizontal: 20}}>
             <Text
-              style={{letterSpacing: 0.3, lineHeight: 20, color: HEADER_TEXT}}>
+              style={{
+                letterSpacing: 0.3,
+                lineHeight: 20,
+                color: NEW_HEADER_TEXT,
+                textAlign: 'center',
+              }}>
               Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sedLorem
               ipsum dolor sit amet, consetetur sadipscing elitr, sed Lorem ipsum
               dolor sit amet, consetetur sadipscing elitr, sed Lorem ipsum dolor
@@ -317,14 +295,13 @@ function DoctorProfile(props) {
             height: 40,
             width: 180,
             borderRadius: 40,
-            backgroundColor: PRIMARY_COLOR,
+            backgroundColor: SECONDARY_COLOR,
             alignItems: 'center',
             justifyContent: 'center',
-            elevation: 5,
             marginLeft: 8,
           }}>
           <Text style={{color: '#fff', fontWeight: '700', letterSpacing: 0.8}}>
-            Book appointment
+            BOOK APPOINTMENT
           </Text>
         </TouchableOpacity>
       </View>
@@ -334,28 +311,30 @@ function DoctorProfile(props) {
 
 const Styles = StyleSheet.create({
   DoctorProfilePatientDetails: {
-    flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 5,
+    flex: 1,
+    borderRightWidth: 2,
+    borderColor: NEW_PRIMARY_COLOR,
   },
   DoctorProfileExperienceDetails: {
-    flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 5,
+    flex: 1,
+    borderLeftWidth: 2,
+    borderColor: NEW_PRIMARY_COLOR,
   },
   ContentContainer: {
     flex: 4,
     zIndex: 10,
   },
   ContentContainerTabs: {
-    height: 40,
-    width: '100%',
-    backgroundColor: '#fff',
-    marginTop: 70,
+    backgroundColor: PRIMARY_BACKGROUND,
+    marginTop: 40,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-around',
-    paddingHorizontal: 25,
+    padding: 5,
+    borderRadius: 10,
+    alignSelf: 'center',
+    marginHorizontal: 30,
   },
   DoctorInfoScroll: {
     padding: 15,

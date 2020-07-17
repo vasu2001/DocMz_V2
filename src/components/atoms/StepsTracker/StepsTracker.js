@@ -1,6 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {Text, View} from 'react-native';
+import {Text, View, StyleSheet} from 'react-native';
+import {floor} from 'lodash';
 
 export default function StepsTracker({
   text,
@@ -23,21 +24,27 @@ export default function StepsTracker({
         {text}
       </Text>
       <View style={{marginTop: 5, flexDirection: 'row'}}>
-        <View
-          style={{
-            height: 5,
-            width: `${completed}%`,
-            backgroundColor: completedColor ? completedColor : 'black',
-          }}
-        />
-        <View
-          style={{
-            height: 5,
-            width: `${100 - completed}%`,
-            backgroundColor: incompletedColor ? incompletedColor : 'grey',
-          }}
-        />
+        {[33, 67, 100].map((no) => (
+          <View
+            style={[
+              styles.indicator,
+              {
+                backgroundColor:
+                  no <= completed ? completedColor : incompletedColor,
+                marginRight: no == 100 ? 0 : 20,
+              },
+            ]}
+          />
+        ))}
       </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  indicator: {
+    flex: 1,
+    height: 5,
+    borderRadius: 5,
+  },
+});

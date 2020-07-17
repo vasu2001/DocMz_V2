@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import RatingStars from '../../atoms/ratingStars/RatingStarts';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import {
@@ -8,6 +8,7 @@ import {
   TERTIARY_TEXT_TWO,
   TERTIARY_TEXT,
   PRIMARY_COLOR,
+  SECONDARY_BACKGROUND,
 } from '../../../styles/colors';
 function AvailDoctorContentV2({
   Profile,
@@ -27,13 +28,29 @@ function AvailDoctorContentV2({
           alignItems: 'flex-end',
           alignSelf: 'stretch',
         }}>
-        <RatingStars
+        {/* <RatingStars
           size={14}
           filled
           activeColor={'#AAA4C5'}
           passiveColor={'rgba(0, 0, 0, 0.15)'}
           rating={rating}
-        />
+        /> */}
+        <View
+          style={{
+            borderRadius: 5,
+            padding: 3,
+            backgroundColor: SECONDARY_BACKGROUND,
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          <Image
+            source={require('../../../assets/icons/star.png')}
+            style={{height: 15, width: 15}}
+          />
+          <Text style={{marginHorizontal: 5}}>
+            {parseFloat(rating).toFixed(1)}
+          </Text>
+        </View>
       </View>
       <TouchableOpacity
         style={CardContentStyles.AvailableDoctorsCardContent}
@@ -80,7 +97,7 @@ function AvailDoctorContentV2({
       </TouchableOpacity>
       <View style={CardContentStyles.AvailableDoctorsContinueButton}>
         <TouchableOpacity onPress={onPress} style={{zIndex: 2000}}>
-          <FontAwesomeIcon name="angle-right" size={22} color="#ffffff" />
+          <FontAwesomeIcon name="angle-right" size={35} color={PRIMARY_COLOR} />
         </TouchableOpacity>
       </View>
     </>
@@ -127,7 +144,6 @@ const CardContentStyles = StyleSheet.create({
     paddingHorizontal: 8,
   },
   AvailableDoctorsContinueButton: {
-    backgroundColor: '#E7E3FE',
     position: 'absolute',
     bottom: 0,
     right: 0,

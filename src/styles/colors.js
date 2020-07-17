@@ -35,3 +35,10 @@ export const SECONDARY_TEXT = '#E7E3FE';
 export const TERTIARY_TEXT = '#AAA4C5';
 export const TERTIARY_TEXT_TWO = '#9D9D9D';
 export const PRIMARY_COLOR = '#9C77BC';
+
+export const NEW_HEADER_TEXT = '#000000';
+export const NEW_PRIMARY_COLOR = '#047B7B';
+export const SEARCH_PLACEHOLDER_COLOR = '#707070';
+export const PRIMARY_BACKGROUND = '#E6F7F5';
+export const SECONDARY_COLOR = '#EFA860';
+export const SECONDARY_BACKGROUND = '#FCF0E4';
