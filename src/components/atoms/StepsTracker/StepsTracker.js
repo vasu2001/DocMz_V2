@@ -24,7 +24,7 @@ export default function StepsTracker({
         {text}
       </Text>
       <View style={{marginTop: 5, flexDirection: 'row'}}>
-        {[33, 67, 100].map((no) => (
+        {[25, 50, 75, 100].map((no) => (
           <View
             style={[
               styles.indicator,

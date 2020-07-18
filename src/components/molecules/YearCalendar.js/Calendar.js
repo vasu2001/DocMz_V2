@@ -5,6 +5,14 @@ import CalendarPicker from 'react-native-calendar-picker';
 import {extendMoment} from 'moment-range';
 import Moment from 'moment';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {
+  NEW_HEADER_TEXT,
+  SEARCH_PLACEHOLDER_COLOR,
+  NEW_UNSELECTED_TEXT,
+  NEW_PRIMARY_COLOR,
+  SECONDARY_COLOR,
+  SECONDARY_BACKGROUND,
+} from '../../../styles/colors';
 const moment = extendMoment(Moment);
 
 export default function Calendar({onDateChange, getDateView}) {
@@ -74,18 +82,27 @@ export default function Calendar({onDateChange, getDateView}) {
       <FlatList
         data={months}
         horizontal
+        showsHorizontalScrollIndicator={false}
         renderItem={({item, index}) => {
           console.log(item, index);
           return (
             <TouchableOpacity
-              style={{paddingHorizontal: 20}}
+              style={{
+                width: 150,
+                alignItems: 'center',
+                borderRightWidth: 3,
+                borderColor: NEW_PRIMARY_COLOR,
+              }}
               onPress={() => {
                 setMonth(item);
               }}>
               <Text
                 style={{
-                  fontSize: 30,
-                  color: selectedIndex == index ? '#027E97' : '#027E9750',
+                  fontSize: 25,
+                  color:
+                    selectedIndex == index
+                      ? NEW_HEADER_TEXT
+                      : NEW_UNSELECTED_TEXT,
                   fontWeight: 'bold',
                 }}>
                 {item}
@@ -108,8 +125,8 @@ export default function Calendar({onDateChange, getDateView}) {
               <Text
                 style={{
                   fontSize: 22,
-                  color: '#027E97',
-                  fontWeight: '300',
+                  color: NEW_HEADER_TEXT,
+                  fontWeight: 'bold',
                   width: '100%',
                   textAlign: 'center',
                 }}>
@@ -126,9 +143,9 @@ export default function Calendar({onDateChange, getDateView}) {
         minDate={minDate}
         maxDate={maxDate}
         todayBackgroundColor="transparent"
-        selectedDayColor="rgba(2, 126, 151, 0.24)"
+        // selectedDayColor={'white'}
         selectedDayStyle={{
-          backgroundColor: '#FF7A59',
+          backgroundColor: SECONDARY_COLOR,
           borderRadius: 11,
         }}
         nextTitleStyle={{height: 0}}
@@ -140,24 +157,26 @@ export default function Calendar({onDateChange, getDateView}) {
           height: 30,
           textAlignVertical: 'center',
           textAlign: 'center',
-          borderColor: '#FF7A59',
+          borderColor: NEW_PRIMARY_COLOR,
         }}
         textStyle={{
-          color: '#015A6B',
+          color: NEW_HEADER_TEXT,
         }}
-        selectedDayTextColor="#FFFFFF"
+        selectedDayTextColor="#000000"
         onDateChange={onDateChange}
         selectedRangeStartStyle={{
-          backgroundColor: '#FF7A59',
-          borderRadius: 11,
+          backgroundColor: SECONDARY_COLOR,
+          // borderRadius: 11,
         }}
         selectedRangeEndStyle={{
-          backgroundColor: '#FF7A59',
-          borderRadius: 11,
+          backgroundColor: SECONDARY_COLOR,
+
+          // borderRadius: 11,
         }}
         selectedRangeStyle={{
-          backgroundColor: 'rgba(2, 126, 151, 0.24)',
+          backgroundColor: SECONDARY_BACKGROUND,
           paddingVertical: -20,
+          // color: NEW_HEADER_TEXT,
         }}
         weekdays={['S', 'M', 'T', 'W', 'T', 'F', 'S']}
         dayLabelsWrapper={{

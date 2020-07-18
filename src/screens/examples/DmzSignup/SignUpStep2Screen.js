@@ -8,127 +8,88 @@ import TextInputIcon from '../../../components/atoms/TextInputCustom/TextInputIc
 import DmzButton from '../../../components/atoms/DmzButton/DmzButton';
 import DmzText from '../../../components/atoms/DmzText/DmzText';
 import ImagePlaceholder from '../../../assets/svg/imagePlaceholder.svg';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {TouchableOpacity, TextInput} from 'react-native-gesture-handler';
 import {
   TERTIARY_TEXT,
   HEADER_TEXT,
   PRIMARY_COLOR,
+  NEW_PRIMARY_COLOR,
+  NEW_HEADER_TEXT,
+  SECONDARY_COLOR,
+  NEW_PRIMARY_BACKGROUND,
 } from '../../../styles/colors';
 
 const height = Dimensions.get('screen').height;
 
 export default function SignUpStep2Screen(props) {
-  const {credential, setCredential, onChoosePicture} = props;
-  const handleRegistrationNumber = (registration_number) => {
-    setCredential({...credential, registration_number});
-  };
-  const handleSpecialty = (specialty) => {
-    setCredential({...credential, specialty});
-  };
+  const [otp, setOtp] = useState(['', '', '', '']);
+  const inputRefs = [null, null, null, null];
+
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
-      {/* <LinearGradient
-        start={{x: 0, y: 0}}
-        end={{x: 1, y: 0}}
-        useAngle
-        angle={120}
-        colors={[
-          'rgba(2, 126, 151, 0)',
-          'rgba(2, 126, 151, 0)',
-          'rgba(2, 126, 151, 0.31)',
-        ]}
-        style={{flex: 1, opacity: 0.4}}
-      /> */}
       <ScrollView
         style={{
           flex: 1,
           width: '100%',
           height: '100%',
           backgroundColor: 'transparent',
-        }}>
-        <View
-          style={{
-            position: 'absolute',
-            width: '100%',
-            height: height * 0.45,
-            borderBottomRightRadius: 60,
-            overflow: 'hidden',
-          }}>
-          <RadialGradient
-            style={{
-              width: '100%',
-              height: '100%',
-              borderBottomRightRadius: 50,
-            }}
-            colors={['#F8F7FF', '#E9E5FF']}
-            stops={[0.0, 1]}
-            center={[150, 100]}
-            radius={200}
-          />
-        </View>
+        }}
+        contentContainerStyle={{alignItems: 'center'}}>
         <StepsTracker
           text="Step 2"
           textStyle={{
             fontSize: 16,
-            color: TERTIARY_TEXT,
+            color: NEW_HEADER_TEXT,
           }}
-          completed={67}
-          completedColor={TERTIARY_TEXT}
+          completed={50}
+          completedColor={NEW_PRIMARY_COLOR}
           incompletedColor={'#F8F7FF'}
         />
-        <DmzText
-          style={{
-            fontSize: 38,
-            fontWeight: 'bold',
-            color: HEADER_TEXT,
-            marginTop: 40,
-            width: '100%',
-            textAlign: 'center',
-            lineHeight: 50,
-          }}
-          text="Build your profile"
-        />
-        <TouchableOpacity
-          onPress={onChoosePicture}
-          style={{
-            width: 180,
-            height: 180,
-            borderRadius: 14,
-            backgroundColor: '#fff',
-            alignSelf: 'center',
-            marginTop: 50,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <ImagePlaceholder />
+
+        <View style={{margin: 40, alignItems: 'center'}}>
+          <Text
+            style={{color: NEW_HEADER_TEXT, fontSize: 32, fontWeight: 'bold'}}>
+            Verify your email
+          </Text>
           <Text
             style={{
-              position: 'absolute',
+              color: NEW_HEADER_TEXT,
+              fontSize: 20,
               textAlign: 'center',
-              fontSize: 18,
-              color: TERTIARY_TEXT,
-              fontWeight: 'bold',
+              marginHorizontal: 20,
+              letterSpacing: 0.3,
             }}>
-            Upload {'\n'}Picture/Video
+            Please enter the 4 digit OTP sent to you
           </Text>
-        </TouchableOpacity>
-        <TextInputIcon
-          placeholder="Registration Number"
-          keyboardType="numbers-and-punctuation"
-          inputHandler={handleRegistrationNumber}
-          placeholderTextColor="rgba(0, 0, 0, 0.15)"
-          style={styles.inputStyle}
-          textStyle={styles.textStyle}
-          maxLength={15}
-        />
+        </View>
 
-        <TextInputIcon
-          placeholder="Mention area of Expertise"
-          inputHandler={handleSpecialty}
-          placeholderTextColor="rgba(0, 0, 0, 0.15)"
-          style={styles.inputStyle}
-          textStyle={styles.textStyle}
-        />
+        <View style={{flexDirection: 'row'}}>
+          {[0, 1, 2, 3].map((i) => (
+            <TextInput
+              //   maxLength={1}
+              style={styles.inputStyle}
+              keyboardType="number-pad"
+              value={otp[i]}
+              onChangeText={(text) => {
+                inputRefs[i + 1]?.focus();
+                const newOtp = [...otp];
+                newOtp[i] = text[0];
+                setOtp(newOtp);
+              }}
+              onKeyPress={({nativeEvent}) => {
+                if (nativeEvent.key === 'Backspace' && i > 0) {
+                  inputRefs[i - 1].focus();
+                  const newOtp = [...otp];
+                  newOtp[i - 1] = '';
+                  setOtp(newOtp);
+                }
+              }}
+              ref={(ref) => (inputRefs[i] = ref)}
+              textStyle={styles.textStyle}
+            />
+          ))}
+        </View>
+
         <DmzButton
           onPress={props.onPress}
           style={{
@@ -139,27 +100,29 @@ export default function SignUpStep2Screen(props) {
               fontSize: 16,
             },
             Container: {
-              width: 131,
+              width: 200,
               height: 46,
-              borderRadius: 17,
-              backgroundColor: PRIMARY_COLOR,
+              borderRadius: 23,
+              backgroundColor: SECONDARY_COLOR,
               alignSelf: 'center',
               marginTop: 40,
               elevation: 10,
+              marginBottom: 15,
             },
           }}
-          text="Submit"
+          text="CONFIRM"
         />
-        <Text
-          style={{
-            width: '100%',
-            textAlign: 'center',
-            color: 'rgba(0, 0, 0, 0.15)',
-            fontSize: 14,
-            marginTop: 10,
-          }}>
-          Just one more step to complete{'\n'}your registration process!
-        </Text>
+        <View style={{flexDirection: 'row', margin: 15}}>
+          <Text>Didn't recieve OTP? </Text>
+          <TouchableOpacity>
+            <Text style={{color: NEW_PRIMARY_BACKGROUND}}>Resend</Text>
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity>
+          <Text style={{color: NEW_PRIMARY_BACKGROUND, fontSize: 12}}>
+            Change email address
+          </Text>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );
@@ -167,15 +130,16 @@ export default function SignUpStep2Screen(props) {
 
 const styles = StyleSheet.create({
   inputStyle: {
-    width: '70%',
-    borderBottomColor: 'rgba(0, 0, 0, 0.15)',
+    width: 30,
+    borderBottomColor: NEW_PRIMARY_COLOR,
     borderBottomWidth: 2,
     height: 'auto',
     alignSelf: 'center',
+    marginHorizontal: 5,
   },
   textStyle: {
-    color: HEADER_TEXT,
-    fontSize: 14,
+    color: NEW_HEADER_TEXT,
+    fontSize: 20,
     marginTop: 20,
   },
 });

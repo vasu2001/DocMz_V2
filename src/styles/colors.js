@@ -42,3 +42,6 @@ export const SEARCH_PLACEHOLDER_COLOR = '#707070';
 export const PRIMARY_BACKGROUND = '#E6F7F5';
 export const SECONDARY_COLOR = '#EFA860';
 export const SECONDARY_BACKGROUND = '#FCF0E4';
+export const NEW_PRIMARY_BACKGROUND = '#37ACAC';
+export const NEW_UNSELECTED_TEXT = '#A09E9E';
+export const GREY_CARD = '#F4F4F4';

@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useState, createRef} from 'react';
 import {
   View,
   Text,
@@ -26,15 +26,21 @@ import {useSelector} from 'react-redux/lib/hooks/useSelector';
 import {
   HEADER_TEXT,
   TERTIARY_TEXT,
-  PRIMARY_COLOR,
+  NEW_HEADER_TEXT,
+  SEARCH_PLACEHOLDER_COLOR,
+  SECONDARY_COLOR,
+  NEW_PRIMARY_BACKGROUND,
 } from '../../../styles/colors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import TopNavBar from '../../../components/molecules/TopNavBar/TopNavBar';
+import ViewPager from '@react-native-community/viewpager';
+import SignupSplash from '../DmzSignup/SignupSplash';
 export default function DmzLoginV2(props) {
   const [credential, setCredential] = useState({email: '', password: ''});
   const [loginAs, setLoginAs] = useState('patient');
   const {isLoading, data} = useSelector((state) => state.AuthReducer);
   const dispatch = useDispatch();
+  let pagerRef = createRef();
   const handleEmail = (email) => {
     setCredential({...credential, email});
   };
@@ -122,158 +128,167 @@ export default function DmzLoginV2(props) {
     });
     callback && callback();
   };
+
+  const nextpage = (page) => {
+    pagerRef.current.setPage(page);
+  };
+
   return (
-    <View style={{flex: 1, backgroundColor: '#fff'}}>
-      {/* <LinearGradient
-        start={{x: 0, y: 0}}
-        end={{x: 80, y: 0}}
-        useAngle
-        angle={100}
-        colors={[
-          'rgba(255, 255, 255, 1)',
-          'rgba(255, 255, 255, 1)',
-          'rgba(255, 255, 255, 1)',
-          'rgba(2, 126, 151, 0)',
-          'rgba(2, 126, 151, 0.3)',
-        ]}
-        style={{flex: 1, opacity: 0.4}}
-      /> */}
-      <ScrollView style={styles.MainContainer}>
-        <TopNavBar
-          hideRightComp={true}
-          // onLeftButtonPress={() => {}}
-          onRightButtonPress={() => {
-            props.navigation.navigate('pageNavigation');
-          }}
-          navigation={props.navigation}
-          style={{
-            Container: {
-              height: 'auto',
-              marginTop: 5,
-            },
-          }}
+    <ViewPager
+      ref={pagerRef}
+      style={styles.viewPager}
+      initialPage={0}
+      scrollEnabled={false}>
+      <View key="0">
+        <SignupSplash
+          signupAs={loginAs}
+          setSignupAs={setLoginAs}
+          onPress={() => nextpage(1)}
         />
-        <DmzText text="Welcome!" style={styles.HeaderText} />
-        <DmzText style={styles.HeaderDesc} text="Choose Account Type" />
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-            marginTop: 25,
-          }}>
-          <TouchableOpacity
-            onPress={() => {
-              setLoginAs('patient');
+      </View>
+      <View style={{flex: 1, backgroundColor: '#fff'}} key="1">
+        <ScrollView style={styles.MainContainer}>
+          <TopNavBar
+            hideRightComp={true}
+            // onLeftButtonPress={() => {}}
+            onRightButtonPress={() => {
+              props.navigation.navigate('pageNavigation');
+            }}
+            navigation={props.navigation}
+            style={{
+              Container: {
+                height: 'auto',
+                marginTop: 5,
+              },
+            }}
+          />
+          <DmzText text="Welcome back!" style={styles.HeaderText} />
+          {/* <DmzText style={styles.HeaderDesc} text="Choose Account Type" />
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+              marginTop: 25,
             }}>
-            <View
-              style={{
-                width: 120,
-                height: 120,
-                borderRadius: 12,
-                position: 'relative',
+            <TouchableOpacity
+              onPress={() => {
+                setLoginAs('patient');
               }}>
-              <LoginAsPatient height={120} width={120} />
-              {loginAs === 'patient' && (
-                <View
-                  style={{
-                    position: 'absolute',
-                    bottom: -15,
-                    left: '50%',
-                    transform: [
-                      {
-                        translateX: -15,
-                      },
-                    ],
-                    height: 30,
-                    width: 30,
-                    borderRadius: 20,
-                    backgroundColor: '#fff',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                  <Check height={16} width={16} />
-                </View>
-              )}
-            </View>
-            <Text
-              style={{
-                color: loginAs == 'patient' ? PRIMARY_COLOR : TERTIARY_TEXT,
-                fontSize: 18,
-                fontWeight: 'bold',
-                marginTop: 10,
-                width: '100%',
-                textAlign: 'center',
+              <View
+                style={{
+                  width: 120,
+                  height: 120,
+                  borderRadius: 12,
+                  position: 'relative',
+                }}>
+                <LoginAsPatient height={120} width={120} />
+                {loginAs === 'patient' && (
+                  <View
+                    style={{
+                      position: 'absolute',
+                      bottom: -15,
+                      left: '50%',
+                      transform: [
+                        {
+                          translateX: -15,
+                        },
+                      ],
+                      height: 30,
+                      width: 30,
+                      borderRadius: 20,
+                      backgroundColor: '#fff',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}>
+                    <Check height={16} width={16} />
+                  </View>
+                )}
+              </View>
+              <Text
+                style={{
+                  color:
+                    loginAs == 'patient'
+                      ? NEW_PRIMARY_BACKGROUND
+                      : SEARCH_PLACEHOLDER_COLOR,
+                  fontSize: 18,
+                  fontWeight: 'bold',
+                  marginTop: 10,
+                  width: '100%',
+                  textAlign: 'center',
+                }}>
+                PATIENT
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setLoginAs('doctor');
               }}>
-              PATIENT
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              setLoginAs('doctor');
-            }}>
-            <View
-              style={{
-                width: 120,
-                height: 120,
-                borderRadius: 11,
-              }}>
-              <LoginAsDoctor height={120} width={120} />
-              {loginAs === 'doctor' && (
-                <View
-                  style={{
-                    position: 'absolute',
-                    bottom: -15,
-                    left: '50%',
-                    transform: [
-                      {
-                        translateX: -15,
-                      },
-                    ],
-                    height: 30,
-                    width: 30,
-                    borderRadius: 20,
-                    backgroundColor: '#fff',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                  <Check height={16} width={16} />
-                </View>
-              )}
-            </View>
-            <Text
-              style={{
-                color: loginAs == 'doctor' ? PRIMARY_COLOR : TERTIARY_TEXT,
-                fontSize: 18,
-                fontWeight: 'bold',
-                marginTop: 10,
-                width: '100%',
-                textAlign: 'center',
-              }}>
-              DOCTOR
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <DmzText
-          numberOfLines={3}
-          adjustsFontSizeToFit={true}
-          lite
-          style={{
-            fontSize: 16,
-            lineHeight: 19,
-            textAlign: 'center',
-            color: 'rgba(0, 0, 0, 0.15)',
-            marginTop: 15,
-            textTransform: 'none',
-            marginLeft: 'auto',
-            marginRight: 'auto',
-          }}
-          text={
-            loginAs === 'patient'
-              ? 'Hello patient! \n Please fill out the form below to get started'
-              : 'Hello doctor! \n Please fill out the form below to get started'
-          }
-        />
-        {/* <View
+              <View
+                style={{
+                  width: 120,
+                  height: 120,
+                  borderRadius: 11,
+                }}>
+                <LoginAsDoctor height={120} width={120} />
+                {loginAs === 'doctor' && (
+                  <View
+                    style={{
+                      position: 'absolute',
+                      bottom: -15,
+                      left: '50%',
+                      transform: [
+                        {
+                          translateX: -15,
+                        },
+                      ],
+                      height: 30,
+                      width: 30,
+                      borderRadius: 20,
+                      backgroundColor: '#fff',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}>
+                    <Check height={16} width={16} />
+                  </View>
+                )}
+              </View>
+              <Text
+                style={{
+                  color:
+                    loginAs == 'doctor'
+                      ? NEW_PRIMARY_BACKGROUND
+                      : SEARCH_PLACEHOLDER_COLOR,
+                  fontSize: 18,
+                  fontWeight: 'bold',
+                  marginTop: 10,
+                  width: '100%',
+                  textAlign: 'center',
+                }}>
+                DOCTOR
+              </Text>
+            </TouchableOpacity>
+          </View> */}
+          <DmzText
+            numberOfLines={3}
+            adjustsFontSizeToFit={true}
+            lite
+            style={{
+              fontSize: 16,
+              lineHeight: 19,
+              textAlign: 'center',
+              color: 'rgba(0, 0, 0, 0.15)',
+              marginTop: 15,
+              textTransform: 'none',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+            }}
+            text={
+              loginAs === 'patient'
+                ? 'Hello patient! \n Please fill out the form below to get started'
+                : 'Hello doctor! \n Please fill out the form below to get started'
+            }
+          />
+          {/* <View
           style={{
             width: '80%',
             marginLeft: 'auto',
@@ -291,108 +306,108 @@ export default function DmzLoginV2(props) {
             text="Please fill out the form below to get started"
           />
         </View> */}
-        <TextInputIcon
-          style={styles.inputContainer}
-          inputHandler={handleEmail}
-          textContentType="emailAddress"
-          keyboardType={'email-address'}
-          textStyle={{
-            paddingLeft: 20,
-            color: TERTIARY_TEXT,
-            fontSize: 14,
-            fontWeight: '700',
-            flex: 1,
-          }}
-          placeholderTextColor="rgba(0, 0, 0, 0.15)"
-          hasIcon={true}
-          iconName="email"
-          placeholder="Email Id"
-          iconStyle={{alignSelf: 'center'}}
-          iconColor={TERTIARY_TEXT}
-          size={30}
-        />
-        <TextInputIcon
-          style={styles.inputContainer}
-          textStyle={{
-            paddingLeft: 20,
-            color: TERTIARY_TEXT,
-            fontSize: 14,
-            fontWeight: '700',
-            flex: 1,
-          }}
-          secureTextEntry={!passVisible}
-          hasIcon={true}
-          inputHandler={handlePassword}
-          iconName="lock"
-          placeholderTextColor="rgba(0, 0, 0, 0.15)"
-          placeholder="Password"
-          iconStyle={{alignSelf: 'center'}}
-          iconColor={TERTIARY_TEXT}
-          size={30}>
-          <Icon
-            onPress={viewPassword}
-            name={passVisible ? 'eye' : 'eye-off'}
-            style={{
-              alignSelf: 'center',
-            }}
-            size={25}
-          />
-        </TextInputIcon>
-        <DmzButton
-          onPress={handleLogin}
-          style={{
-            Text: {
-              width: '100%',
-              textAlign: 'center',
-              color: '#fff',
-              fontSize: 16,
-            },
-            Container: {
-              width: 131,
-              height: 46,
-              borderRadius: 25,
-              backgroundColor: PRIMARY_COLOR,
-              alignSelf: 'center',
-              marginTop: 40,
-              elevation: 10,
-            },
-          }}
-          text="SIGN IN"
-          isLoading={isLoading}
-          disabled={isLoading}
-        />
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            width: 'auto',
-          }}>
-          <Text
-            style={{
-              textAlign: 'center',
-              color: '#AAA4C5',
+          <TextInputIcon
+            style={styles.inputContainer}
+            inputHandler={handleEmail}
+            textContentType="emailAddress"
+            keyboardType={'email-address'}
+            textStyle={{
+              paddingLeft: 20,
+              color: NEW_HEADER_TEXT,
               fontSize: 14,
-              marginTop: 10,
-            }}>
-            No account ?
-          </Text>
-          <TouchableOpacity
-            onPress={() => {
-              props.navigation.navigate('signupScreen');
+              fontWeight: '700',
+              flex: 1,
+            }}
+            placeholderTextColor="rgba(0, 0, 0, 0.15)"
+            hasIcon={true}
+            iconName="email"
+            placeholder="Email Id"
+            iconStyle={{alignSelf: 'center'}}
+            iconColor={NEW_PRIMARY_BACKGROUND}
+            size={30}
+          />
+          <TextInputIcon
+            style={styles.inputContainer}
+            textStyle={{
+              paddingLeft: 20,
+              color: NEW_HEADER_TEXT,
+              fontSize: 14,
+              fontWeight: '700',
+              flex: 1,
+            }}
+            secureTextEntry={!passVisible}
+            hasIcon={true}
+            inputHandler={handlePassword}
+            iconName="lock"
+            placeholderTextColor="rgba(0, 0, 0, 0.15)"
+            placeholder="Password"
+            iconStyle={{alignSelf: 'center'}}
+            iconColor={NEW_PRIMARY_BACKGROUND}
+            size={30}>
+            <Icon
+              onPress={viewPassword}
+              name={passVisible ? 'eye' : 'eye-off'}
+              style={{
+                alignSelf: 'center',
+              }}
+              size={25}
+            />
+          </TextInputIcon>
+          <DmzButton
+            onPress={handleLogin}
+            style={{
+              Text: {
+                width: '100%',
+                textAlign: 'center',
+                color: '#fff',
+                fontSize: 16,
+              },
+              Container: {
+                width: 250,
+                height: 46,
+                borderRadius: 25,
+                backgroundColor: SECONDARY_COLOR,
+                alignSelf: 'center',
+                marginTop: 40,
+                elevation: 3,
+              },
+            }}
+            text="SIGN IN"
+            isLoading={isLoading}
+            disabled={isLoading}
+          />
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              width: 'auto',
             }}>
             <Text
               style={{
-                color: '#EA508F',
                 textAlign: 'center',
+                color: '#AAA4C5',
                 fontSize: 14,
                 marginTop: 10,
-                paddingLeft: 10,
               }}>
-              Sign Up
+              No account ?
             </Text>
-          </TouchableOpacity>
-        </View>
-        {/*  <DmzText
+            <TouchableOpacity
+              onPress={() => {
+                props.navigation.navigate('signupScreen', {loginAs});
+              }}>
+              <Text
+                style={{
+                  color: NEW_PRIMARY_BACKGROUND,
+                  textAlign: 'center',
+                  fontSize: 14,
+                  marginTop: 10,
+                  paddingLeft: 10,
+                }}>
+                Sign Up
+              </Text>
+            </TouchableOpacity>
+          </View>
+          {/*  <DmzText
           style={{
             textAlign: 'center',
             color: 'rgba(0, 0, 0, 0.15)',
@@ -420,12 +435,16 @@ export default function DmzLoginV2(props) {
             </TouchableOpacity>
           }
         /> */}
-      </ScrollView>
-    </View>
+        </ScrollView>
+      </View>
+    </ViewPager>
   );
 }
 
 const styles = StyleSheet.create({
+  viewPager: {
+    flex: 1,
+  },
   inputContainer: {
     flexDirection: 'row',
     width: '85%',
@@ -443,9 +462,9 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   HeaderText: {
-    fontSize: 45,
+    fontSize: 40,
     fontWeight: 'bold',
-    color: HEADER_TEXT,
+    color: NEW_HEADER_TEXT,
     marginTop: 5,
     width: '100%',
     textAlign: 'center',

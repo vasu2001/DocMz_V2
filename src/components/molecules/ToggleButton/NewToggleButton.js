@@ -18,7 +18,7 @@ if (Platform.OS === 'android') {
     UIManager.setLayoutAnimationEnabledExperimental(true);
   }
 }
-function ToggleButton({
+function NewToggleButton({
   text0,
   text1,
   style,
@@ -93,7 +93,6 @@ const ToggleButtonStyles = StyleSheet.create({
     padding: 3,
   },
   Text: {
-    color: '#6231CB',
     fontSize: 10,
     fontWeight: 'bold',
     margin: 5,
@@ -101,4 +100,4 @@ const ToggleButtonStyles = StyleSheet.create({
     borderRadius: 7,
   },
 });
-export default ToggleButton;
+export default NewToggleButton;

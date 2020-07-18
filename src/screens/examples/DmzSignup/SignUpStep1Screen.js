@@ -17,6 +17,10 @@ import {
   TERTIARY_TEXT,
   HEADER_TEXT,
   PRIMARY_COLOR,
+  NEW_PRIMARY_BACKGROUND,
+  NEW_PRIMARY_COLOR,
+  NEW_HEADER_TEXT,
+  SECONDARY_COLOR,
 } from '../../../styles/colors';
 
 import {AccessToken, LoginManager, LoginButton} from 'react-native-fbsdk';
@@ -93,10 +97,10 @@ export default function SignUpStep1Screen(props) {
           text="Step 1"
           textStyle={{
             fontSize: 16,
-            color: TERTIARY_TEXT,
+            color: NEW_HEADER_TEXT,
           }}
           completed={33}
-          completedColor={TERTIARY_TEXT}
+          completedColor={NEW_PRIMARY_COLOR}
           incompletedColor={'#F8F7FF'}
         />
         <DmzText
@@ -105,7 +109,7 @@ export default function SignUpStep1Screen(props) {
           style={{
             fontSize: 45,
             fontWeight: 'bold',
-            color: HEADER_TEXT,
+            color: NEW_HEADER_TEXT,
             marginTop: 20,
             width: '100%',
             textAlign: 'center',
@@ -256,10 +260,10 @@ export default function SignUpStep1Screen(props) {
               fontSize: 16,
             },
             Container: {
-              width: 131,
+              width: 200,
               height: 46,
-              borderRadius: 17,
-              backgroundColor: PRIMARY_COLOR,
+              borderRadius: 23,
+              backgroundColor: SECONDARY_COLOR,
               alignSelf: 'center',
               marginTop: 10,
               elevation: 10,
@@ -277,14 +281,14 @@ export default function SignUpStep1Screen(props) {
           <Text
             style={{
               textAlign: 'center',
-              color: 'rgba(0, 0, 0, 0.15)',
+              color: NEW_HEADER_TEXT,
               fontSize: 14,
               marginTop: 15,
             }}>
             Already have an account?
             <Text
               style={{
-                color: HEADER_TEXT,
+                color: NEW_PRIMARY_BACKGROUND,
               }}>
               {'   '}
               Sign In
@@ -299,13 +303,13 @@ export default function SignUpStep1Screen(props) {
 const styles = StyleSheet.create({
   inputStyle: {
     width: '70%',
-    borderBottomColor: 'rgba(0, 0, 0, 0.15)',
+    borderBottomColor: NEW_PRIMARY_BACKGROUND,
     borderBottomWidth: 2,
     height: 'auto',
     alignSelf: 'center',
   },
   textStyle: {
-    color: HEADER_TEXT,
+    color: NEW_HEADER_TEXT,
     fontSize: 14,
     marginTop: 15,
     width: '100%',

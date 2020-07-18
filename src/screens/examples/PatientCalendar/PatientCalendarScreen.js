@@ -20,6 +20,11 @@ import AppoinmentSlider from '../../../components/molecules/YearCalendar.js/Appo
 import TopNavBar from '../../../components/molecules/TopNavBar/TopNavBar';
 import {GetAppointmentSlot} from '../../../redux/action/patientAccountAction';
 import {useDispatch, useSelector} from 'react-redux';
+import {
+  NEW_HEADER_TEXT,
+  NEW_PRIMARY_COLOR,
+  SECONDARY_COLOR,
+} from '../../../styles/colors';
 const moment = extendMoment(Moment);
 
 const height = Dimensions.get('screen').height;
@@ -98,13 +103,8 @@ export default function PatientCalendarScreen({navigation}) {
   // };
   return (
     <View
-      style={{flex: 1, flexDirection: 'column', backgroundColor: '#95CCE0'}}>
-      <RadialGradient
-        style={{width: '100%', height: '100%', zIndex: 0, flex: 1}}
-        colors={['#DEF1F9', '#C0E0EC', '#95CCE0']}
-        stops={[0.0, 0.2, 0.75]}
-        center={[100, 100]}
-        radius={120}>
+      style={{flex: 1, flexDirection: 'column', backgroundColor: '#ffffff'}}>
+      <View>
         <TopNavBar />
         <Calendar onDateChange={onDateChange} />
         <View
@@ -122,7 +122,7 @@ export default function PatientCalendarScreen({navigation}) {
                 width: 20,
                 height: 20,
                 textAlign: 'center',
-                borderColor: '#FF7A59',
+                borderColor: NEW_PRIMARY_COLOR,
                 fontSize: 18,
               }}>
               {' '}
@@ -133,7 +133,7 @@ export default function PatientCalendarScreen({navigation}) {
                 paddingLeft: 10,
                 height: 20,
                 textAlignVertical: 'center',
-                color: 'white',
+                color: NEW_HEADER_TEXT,
                 fontFamily: 'Acumin-RPro',
               }}>
               Today
@@ -143,7 +143,7 @@ export default function PatientCalendarScreen({navigation}) {
             <Text
               style={{
                 borderRadius: 5,
-                backgroundColor: '#FF7A59',
+                backgroundColor: SECONDARY_COLOR,
                 width: 20,
                 height: 20,
                 textAlign: 'center',
@@ -155,14 +155,14 @@ export default function PatientCalendarScreen({navigation}) {
               style={{
                 fontSize: 16,
                 paddingLeft: 10,
-                color: 'white',
+                color: NEW_HEADER_TEXT,
                 fontFamily: 'Acumin-RPro',
               }}>
               Chosen
             </Text>
           </View>
         </View>
-      </RadialGradient>
+      </View>
       <AppoinmentSlider navigation={navigation} slots={appointmentForSlot} />
     </View>
   );

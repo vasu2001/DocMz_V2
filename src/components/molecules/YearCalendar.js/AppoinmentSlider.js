@@ -12,6 +12,14 @@ import {
 } from 'react-native';
 import {ButtonGroup} from 'react-native-elements';
 import Moment from 'moment';
+import {
+  PRIMARY_BACKGROUND,
+  NEW_HEADER_TEXT,
+  SECONDARY_COLOR,
+  NEW_PRIMARY_COLOR,
+  NEW_UNSELECTED_TEXT,
+} from '../../../styles/colors';
+import NewToggleButton from '../ToggleButton/NewToggleButton';
 
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
@@ -20,6 +28,7 @@ export default function AppoinmentSlider({slots, navigation}) {
   const [pos, setPos] = useState(false);
   const [selectedIndex, setselectedIndex] = useState(0);
   const [timeValue, setTimeValue] = useState('');
+  const [isAM, setAM] = useState(true);
   const val = useRef(new Animated.Value(height * 0.6)).current;
 
   const updateIndex = (i) => {
@@ -66,7 +75,7 @@ export default function AppoinmentSlider({slots, navigation}) {
     <Animated.View
       style={{
         ...StyleSheet.absoluteFill,
-        backgroundColor: '#EBFAFF',
+        backgroundColor: PRIMARY_BACKGROUND,
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
         paddingHorizontal: 10,
@@ -80,7 +89,7 @@ export default function AppoinmentSlider({slots, navigation}) {
       <Animated.View style={{height: 50}} {...panResponder.panHandlers}>
         <View
           style={{
-            backgroundColor: '#027E97',
+            backgroundColor: NEW_PRIMARY_COLOR,
             height: 5,
             width: 30,
             borderRadius: 5,
@@ -97,23 +106,40 @@ export default function AppoinmentSlider({slots, navigation}) {
             const date = Moment(u._id).format('dddd , Do');
             const {appointments} = u;
             return (
-              <View style={{marginVertical: 5}} key={u._id}>
+              <View
+                style={{
+                  marginVertical: 5,
+                  borderBottomWidth: 1,
+                  borderColor: NEW_UNSELECTED_TEXT,
+                }}
+                key={u._id}>
                 <View
                   style={{
                     flexDirection: 'row',
                     alignItems: 'center',
                     marginLeft: 10,
+                    justifyContent: 'space-between',
                   }}>
                   <Text
                     style={{
                       fontSize: 20,
-                      color: '#027E97',
-                      fontWeight: 'bold',
+                      color: NEW_HEADER_TEXT,
+                      // fontWeight: 'bold',
                       fontFamily: 'Acumin-RPro',
                     }}>
                     {date}
                   </Text>
-                  <ButtonGroup
+                  <NewToggleButton
+                    text0="AM"
+                    text1="PM"
+                    toggle={isAM}
+                    onToggle={() => {
+                      setAM(!isAM);
+                    }}
+                    style={{width: 100, marginRight: 20}}
+                    textStyle={{fontSize: 18}}
+                  />
+                  {/* <ButtonGroup
                     onPress={updateIndex}
                     selectedIndex={selectedIndex}
                     buttons={['AM', 'PM']}
@@ -127,9 +153,8 @@ export default function AppoinmentSlider({slots, navigation}) {
                     buttonStyle={{
                       width: 50,
                       height: 50,
-                      backgroundColor: 'white',
-                      borderRadius: 9,
                       borderWidth: 0,
+                      backgroundColor: 'transparent',
                     }}
                     selectedButtonStyle={{
                       width: 50,
@@ -142,7 +167,7 @@ export default function AppoinmentSlider({slots, navigation}) {
                       fontSize: 18,
                       fontWeight: 'normal',
                     }}
-                  />
+                  /> */}
                 </View>
                 <View
                   style={{
@@ -161,16 +186,18 @@ export default function AppoinmentSlider({slots, navigation}) {
                             width: width * 0.3,
                             height: 38,
                             marginBottom: 10,
+                            alignItems: 'center',
                           }}>
                           <TouchableHighlight
                             style={{
                               width: 85,
                               height: 38,
                               backgroundColor:
-                                timeValue === time ? '#FF7A59' : 'white',
+                                timeValue === time
+                                  ? SECONDARY_COLOR
+                                  : 'transparent',
                               borderWidth: 0,
                               borderRadius: 11,
-                              elevation: 5,
                             }}
                             onPress={() => {
                               setTimeValue(time);
@@ -185,6 +212,8 @@ export default function AppoinmentSlider({slots, navigation}) {
                                 textAlign: 'center',
                                 textAlignVertical: 'center',
                                 fontFamily: 'Acumin-RPro',
+                                color:
+                                  timeValue === time ? '#ffffff' : '#000000',
                               }}>
                               {time}
                             </Text>
@@ -197,7 +226,7 @@ export default function AppoinmentSlider({slots, navigation}) {
                   style={{
                     marginLeft: 'auto',
                     marginRight: 20,
-                    color: '#9D9D9D',
+                    color: NEW_PRIMARY_COLOR,
                     textDecorationLine: 'underline',
                     fontSize: 18,
                     lineHeight: 20,

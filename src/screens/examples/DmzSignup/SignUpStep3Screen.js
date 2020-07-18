@@ -1,19 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  Image,
-  Dimensions,
-  StyleSheet,
-  ScrollView,
-} from 'react-native';
+import {View, Text, Dimensions, StyleSheet, ScrollView} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import RadialGradient from 'react-native-radial-gradient';
-import DmzButton from '../../../components/atoms/DmzButton/DmzButton';
 import StepsTracker from '../../../components/atoms/StepsTracker/StepsTracker';
 import TextInputIcon from '../../../components/atoms/TextInputCustom/TextInputIcon';
+import DmzButton from '../../../components/atoms/DmzButton/DmzButton';
+import DmzText from '../../../components/atoms/DmzText/DmzText';
+import ImagePlaceholder from '../../../assets/svg/imagePlaceholder.svg';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import {
   TERTIARY_TEXT,
   HEADER_TEXT,
@@ -23,15 +18,12 @@ import {
 const height = Dimensions.get('screen').height;
 
 export default function SignUpStep3Screen(props) {
-  const {credential, setCredential, isLoading} = props;
-  const handlePhone = (phone) => {
-    setCredential({...credential, phone});
+  const {credential, setCredential, onChoosePicture} = props;
+  const handleRegistrationNumber = (registration_number) => {
+    setCredential({...credential, registration_number});
   };
-  const handleCity = (city) => {
-    setCredential({...credential, city});
-  };
-  const handleCountry = (country) => {
-    setCredential({...credential, country});
+  const handleSpecialty = (specialty) => {
+    setCredential({...credential, specialty});
   };
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
@@ -47,18 +39,18 @@ export default function SignUpStep3Screen(props) {
         ]}
         style={{flex: 1, opacity: 0.4}}
       /> */}
-
       <ScrollView
         style={{
           flex: 1,
           width: '100%',
           height: '100%',
+          backgroundColor: 'transparent',
         }}>
         <View
           style={{
             position: 'absolute',
             width: '100%',
-            height: height * 0.4,
+            height: height * 0.45,
             borderBottomRightRadius: 60,
             overflow: 'hidden',
           }}>
@@ -80,56 +72,59 @@ export default function SignUpStep3Screen(props) {
             fontSize: 16,
             color: TERTIARY_TEXT,
           }}
-          completed={100}
+          completed={75}
           completedColor={TERTIARY_TEXT}
           incompletedColor={'#F8F7FF'}
         />
-        <Text
+        <DmzText
           style={{
             fontSize: 38,
-            color: HEADER_TEXT,
-            marginTop: 49,
-            alignSelf: 'center',
             fontWeight: 'bold',
-          }}>
-          Contact Details
-        </Text>
-        <View
+            color: HEADER_TEXT,
+            marginTop: 40,
+            width: '100%',
+            textAlign: 'center',
+            lineHeight: 50,
+          }}
+          text="Build your profile"
+        />
+        <TouchableOpacity
+          onPress={onChoosePicture}
           style={{
             width: 180,
             height: 180,
             borderRadius: 14,
             backgroundColor: '#fff',
             alignSelf: 'center',
-            marginTop: 30,
+            marginTop: 50,
             alignItems: 'center',
             justifyContent: 'center',
           }}>
-          <Image
-            source={require('../../../assets/images/doc_3.jpg')}
-            resizeMode="contain"
-            style={{width: '80%', height: '80%', borderRadius: 14}}
-          />
-        </View>
+          <ImagePlaceholder />
+          <Text
+            style={{
+              position: 'absolute',
+              textAlign: 'center',
+              fontSize: 18,
+              color: TERTIARY_TEXT,
+              fontWeight: 'bold',
+            }}>
+            Upload {'\n'}Picture/Video
+          </Text>
+        </TouchableOpacity>
         <TextInputIcon
-          placeholder="Contact Number"
-          inputHandler={handlePhone}
-          keyboardType="number-pad"
+          placeholder="Registration Number"
+          keyboardType="numbers-and-punctuation"
+          inputHandler={handleRegistrationNumber}
           placeholderTextColor="rgba(0, 0, 0, 0.15)"
           style={styles.inputStyle}
           textStyle={styles.textStyle}
-          maxLength={10}
+          maxLength={15}
         />
+
         <TextInputIcon
-          placeholder="City of Residence"
-          inputHandler={handleCity}
-          placeholderTextColor="rgba(0, 0, 0, 0.15)"
-          style={styles.inputStyle}
-          textStyle={styles.textStyle}
-        />
-        <TextInputIcon
-          placeholder="Country"
-          inputHandler={handleCountry}
+          placeholder="Mention area of Expertise"
+          inputHandler={handleSpecialty}
           placeholderTextColor="rgba(0, 0, 0, 0.15)"
           style={styles.inputStyle}
           textStyle={styles.textStyle}
@@ -153,10 +148,18 @@ export default function SignUpStep3Screen(props) {
               elevation: 10,
             },
           }}
-          text="Complete"
-          isLoading={isLoading}
-          disabled={isLoading}
+          text="Submit"
         />
+        <Text
+          style={{
+            width: '100%',
+            textAlign: 'center',
+            color: 'rgba(0, 0, 0, 0.15)',
+            fontSize: 14,
+            marginTop: 10,
+          }}>
+          Just one more step to complete{'\n'}your registration process!
+        </Text>
       </ScrollView>
     </View>
   );

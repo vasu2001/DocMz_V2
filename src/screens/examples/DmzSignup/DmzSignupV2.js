@@ -3,14 +3,15 @@ import {View, StyleSheet, PermissionsAndroid, Alert} from 'react-native';
 import ViewPager from '@react-native-community/viewpager';
 import SignupSplash from './SignupSplash';
 import SignUpStep1Screen from './SignUpStep1Screen';
-import SignUpStep2Screen from './SignUpStep2Screen';
 import SignUpStep3Screen from './SignUpStep3Screen';
+import SignUpStep4Screen from './SignUpStep4Screen';
 import ImagePicker from 'react-native-image-picker';
 import {signupDoctor, signupPatient} from '../../../redux/action/auth';
 import Toast from 'react-native-root-toast';
 import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 import {UploadProfilePic} from '../../../redux/action/doctoreAction';
+import SignUpStep2Screen from './SignUpStep2Screen';
 // import Svg from 'react-native-svg';
 
 function DmzSignupV2(props) {
@@ -21,7 +22,7 @@ function DmzSignupV2(props) {
   const initialCredential = credential;
   const dispatch = useDispatch();
   const {isLoading, data} = useSelector((state) => state.AuthReducer);
-  const [signupAs, setSignupAs] = useState('patient');
+  // const [signupAs, setSignupAs] = useState('patient');
   const [imageData, setImageData] = useState('');
   const [credential, setCredential] = useState({
     firstName: '',
@@ -147,20 +148,23 @@ function DmzSignupV2(props) {
     });
   };
 
+  const signupAs = props.navigation.state.params.loginAs;
+  // console.log('params: ' + JSON.stringify(props.navigation));
+
   return (
     <ViewPager
       ref={pagerRef}
       style={styles.viewPager}
-      initialPage={0}
+      initialPage={1}
       scrollEnabled={false}>
       <View key="0">
-        <SignupSplash
+        {/* <SignupSplash
           credential={credential}
           setCredential={setCredential}
           signupAs={signupAs}
           setSignupAs={setSignupAs}
           onPress={() => nextpage(1)}
-        />
+        /> */}
       </View>
       <View key="1">
         <SignUpStep1Screen
@@ -197,6 +201,13 @@ function DmzSignupV2(props) {
       </View>
       <View key="2">
         <SignUpStep2Screen
+          onPress={() => {
+            nextpage(3);
+          }}
+        />
+      </View>
+      <View key="3">
+        <SignUpStep3Screen
           credential={credential}
           setCredential={setCredential}
           onChoosePicture={onChoosePicture}
@@ -208,7 +219,7 @@ function DmzSignupV2(props) {
               registration_number.length >= 4 &&
               registration_number.length <= 15
             ) {
-              nextpage(3);
+              nextpage(4);
             } else {
               registration_number == '' && specialty == ''
                 ? Alert.alert('One or more fields empty')
@@ -219,8 +230,8 @@ function DmzSignupV2(props) {
           }}
         />
       </View>
-      <View key="3">
-        <SignUpStep3Screen
+      <View key="4">
+        <SignUpStep4Screen
           credential={credential}
           setCredential={setCredential}
           isLoading={isLoading}

@@ -6,7 +6,14 @@ import LoginAsDoctor from '../../../assets/svg/LoginAsDoctor.svg';
 import Check from '../../../assets/svg/check.svg';
 import DmzText from '../../../components/atoms/DmzText/DmzText';
 import DmzButton from '../../../components/atoms/DmzButton/DmzButton';
-import {PRIMARY_COLOR, TERTIARY_TEXT} from '../../../styles/colors';
+import {
+  PRIMARY_COLOR,
+  TERTIARY_TEXT,
+  NEW_PRIMARY_BACKGROUND,
+  SEARCH_PLACEHOLDER_COLOR,
+  NEW_HEADER_TEXT,
+  SECONDARY_COLOR,
+} from '../../../styles/colors';
 function SignupSplash({onPress, signupAs, setSignupAs}) {
   return (
     <>
@@ -16,7 +23,7 @@ function SignupSplash({onPress, signupAs, setSignupAs}) {
         style={{
           flexDirection: 'row',
           justifyContent: 'space-around',
-          marginTop: 25,
+          marginVertical: 50,
         }}>
         <TouchableOpacity
           onPress={() => {
@@ -54,7 +61,10 @@ function SignupSplash({onPress, signupAs, setSignupAs}) {
           </View>
           <Text
             style={{
-              color: signupAs == 'patient' ? PRIMARY_COLOR : TERTIARY_TEXT,
+              color:
+                signupAs == 'patient'
+                  ? NEW_PRIMARY_BACKGROUND
+                  : SEARCH_PLACEHOLDER_COLOR,
               fontSize: 18,
               fontWeight: 'bold',
               marginTop: 10,
@@ -99,7 +109,10 @@ function SignupSplash({onPress, signupAs, setSignupAs}) {
           </View>
           <Text
             style={{
-              color: signupAs == 'doctor' ? PRIMARY_COLOR : TERTIARY_TEXT,
+              color:
+                signupAs == 'doctor'
+                  ? NEW_PRIMARY_BACKGROUND
+                  : SEARCH_PLACEHOLDER_COLOR,
               fontSize: 18,
               fontWeight: 'bold',
               marginTop: 10,
@@ -119,17 +132,17 @@ function SignupSplash({onPress, signupAs, setSignupAs}) {
             fontSize: 16,
           },
           Container: {
-            width: 'auto',
+            width: 200,
             height: 'auto',
             borderRadius: 30,
-            backgroundColor: PRIMARY_COLOR,
+            backgroundColor: SECONDARY_COLOR,
             alignSelf: 'center',
-            marginTop: 40,
+            marginVertical: 50,
             elevation: 0,
             padding: 15,
           },
         }}
-        text="Go to Signup"
+        text="NEXT"
         // isLoading={isLoading}
         // disabled={isLoading}
       />
@@ -141,7 +154,7 @@ const styles = StyleSheet.create({
   HeaderText: {
     fontSize: 45,
     fontWeight: 'bold',
-    color: PRIMARY_COLOR,
+    color: NEW_HEADER_TEXT,
     marginTop: 40,
     width: '100%',
     textAlign: 'center',
