@@ -90,14 +90,17 @@ const ToggleButtonStyles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: SECONDARY_BACKGROUND,
     elevation: 2,
-    padding: 3,
+    paddingHorizontal: 5,
+    paddingVertical: 1,
   },
   Text: {
     fontSize: 10,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     margin: 5,
     padding: 5,
     borderRadius: 7,
+    textAlign: 'center',
+    marginHorizontal: 2,
   },
 });
 export default NewToggleButton;

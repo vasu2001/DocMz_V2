@@ -33,7 +33,13 @@ function SearchBarSolid({
           style,
         ]}>
         <TextInput
-          style={{height: 40, lineHeight: 14, fontSize: 14, flex: 1}}
+          style={{
+            height: 40,
+            lineHeight: 14,
+            fontSize: 13,
+            flex: 1,
+            fontFamily: 'Montserrat-Regular',
+          }}
           placeholderTextColor={
             placeholderTextColor ? placeholderTextColor : 'black'
           }

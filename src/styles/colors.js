@@ -45,3 +45,6 @@ export const SECONDARY_BACKGROUND = '#FCF0E4';
 export const NEW_PRIMARY_BACKGROUND = '#37ACAC';
 export const NEW_UNSELECTED_TEXT = '#A09E9E';
 export const GREY_CARD = '#F4F4F4';
+export const INACTIVE_STEP = '#E4FCF9';
+export const INPUT_PLACEHOLDER = '#8E9393';
+export const SOME_COLOR = '#3EAEAE';

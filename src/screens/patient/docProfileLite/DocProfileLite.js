@@ -60,14 +60,14 @@ function DocProfileLite({navigation}) {
     }
   };
 
-  BackHandler.addEventListener('hardwareBackPress', () => {
-    alert('hello');
-    navigation.navigate(
-      'pageNavigation',
-      {},
-      navigation.navigate({routeName: 'Home'}),
-    );
-  });
+  // BackHandler.addEventListener('hardwareBackPress', () => {
+  //   alert('hello');
+  //   navigation.navigate(
+  //     'pageNavigation',
+  //     {},
+  //     navigation.navigate({routeName: 'Home'}),
+  //   );
+  // });
   return (
     <View style={DoctorDetailsScreenStyles.Container}>
       {/* <CollapsibleFancyHeader

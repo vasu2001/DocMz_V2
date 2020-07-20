@@ -21,6 +21,7 @@ import {
   NEW_PRIMARY_COLOR,
   NEW_HEADER_TEXT,
   SECONDARY_COLOR,
+  INPUT_PLACEHOLDER,
 } from '../../../styles/colors';
 
 import {AccessToken, LoginManager, LoginButton} from 'react-native-fbsdk';
@@ -46,6 +47,11 @@ export default function SignUpStep1Screen(props) {
   const viewPassword = () => {
     setPass(!passVisible);
   };
+  const reg = new RegExp(
+    /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/,
+  );
+
+  const {signupAs} = props;
 
   async function onGoogleButtonPress() {
     // Get the users ID token
@@ -72,19 +78,6 @@ export default function SignUpStep1Screen(props) {
   console.log(props.signupAs);
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
-      {/* <LinearGradient
-        start={{x: 0, y: 0}}
-        end={{x: 1, y: 0}}
-        useAngle
-        angle={100}
-        colors={[
-          'rgba(2, 126, 151, 0)',
-          'rgba(2, 126, 151, 0)',
-          'rgba(2, 126, 151, 0)',
-          'rgba(2, 126, 151, 0.31)',
-        ]}
-        style={{flex: 1, opacity: 0.4}}
-      /> */}
       <ScrollView
         style={{
           // position: 'absolute',
@@ -99,7 +92,8 @@ export default function SignUpStep1Screen(props) {
             fontSize: 16,
             color: NEW_HEADER_TEXT,
           }}
-          completed={33}
+          completed={signupAs === 'doctor' ? 33 : 50}
+          mode={signupAs === 'doctor' ? [25, 50, 75, 100] : [50, 100]}
           completedColor={NEW_PRIMARY_COLOR}
           incompletedColor={'#F8F7FF'}
         />
@@ -107,18 +101,16 @@ export default function SignUpStep1Screen(props) {
           numberOfLines={1}
           adjustsFontSizeToFit
           style={{
-            fontSize: 45,
-            fontWeight: 'bold',
+            fontSize: 35,
             color: NEW_HEADER_TEXT,
             marginTop: 20,
             width: '100%',
             textAlign: 'center',
             lineHeight: 46,
             paddingHorizontal: 20,
+            fontFamily: 'Montserrat-Bold',
           }}
-          text={
-            props.signupAs === 'patient' ? 'Hello Patient' : 'Hello Doctor!'
-          }
+          text="Hey there!"
         />
         <Image
           source={require('../../../assets/images/doc_2.png')}
@@ -132,35 +124,39 @@ export default function SignUpStep1Screen(props) {
         <TextInputIcon
           placeholder="First Name"
           inputHandler={handleFirstName}
-          placeholderTextColor="rgba(0, 0, 0, 0.15)"
+          placeholderTextColor={INPUT_PLACEHOLDER}
           style={styles.inputStyle}
           textStyle={styles.textStyle}
+          validated={credential.firstName != ''}
         />
         <TextInputIcon
           placeholder="Last Name"
           inputHandler={handleLastName}
-          placeholderTextColor="rgba(0, 0, 0, 0.15)"
+          placeholderTextColor={INPUT_PLACEHOLDER}
           style={styles.inputStyle}
           textStyle={styles.textStyle}
+          validated={credential.lastName != ''}
         />
         <TextInputIcon
           placeholder="Email"
           inputHandler={handleEmail}
           keyboardType={'email-address'}
-          placeholderTextColor="rgba(0, 0, 0, 0.15)"
+          placeholderTextColor={INPUT_PLACEHOLDER}
           style={styles.inputStyle}
           textStyle={styles.textStyle}
+          validated={reg.test(credential.email)}
         />
         <TextInputIcon
           hasIcon={true}
           iconName={passVisible ? 'eye' : 'eye-off'}
+          validated={credential.password.length >= 4}
           size={25}
           iconPos="right"
           secureTextEntry={!passVisible}
           onPress={viewPassword}
           placeholder="Password"
           inputHandler={handlePassword}
-          placeholderTextColor="rgba(0, 0, 0, 0.15)"
+          placeholderTextColor={INPUT_PLACEHOLDER}
           style={styles.inputStyle}
           iconStyle={{
             alignSelf: 'center',
@@ -257,16 +253,17 @@ export default function SignUpStep1Screen(props) {
               width: '100%',
               textAlign: 'center',
               color: 'white',
-              fontSize: 16,
+              fontSize: 18,
+              fontFamily: 'Montserrat-SemiBold',
             },
             Container: {
-              width: 200,
+              width: 250,
               height: 46,
               borderRadius: 23,
               backgroundColor: SECONDARY_COLOR,
               alignSelf: 'center',
-              marginTop: 10,
-              elevation: 10,
+              marginTop: 2,
+              elevation: 3,
             },
           }}
           text="SIGN UP"
@@ -284,11 +281,13 @@ export default function SignUpStep1Screen(props) {
               color: NEW_HEADER_TEXT,
               fontSize: 14,
               marginTop: 15,
+              fontFamily: 'Montserrat-Regular',
             }}>
             Already have an account?
             <Text
               style={{
                 color: NEW_PRIMARY_BACKGROUND,
+                fontFamily: 'Montserrat-Bold',
               }}>
               {'   '}
               Sign In
@@ -303,8 +302,8 @@ export default function SignUpStep1Screen(props) {
 const styles = StyleSheet.create({
   inputStyle: {
     width: '70%',
-    borderBottomColor: NEW_PRIMARY_BACKGROUND,
-    borderBottomWidth: 2,
+    borderBottomColor: NEW_PRIMARY_COLOR,
+    borderBottomWidth: 1.5,
     height: 'auto',
     alignSelf: 'center',
   },
@@ -313,5 +312,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginTop: 15,
     width: '100%',
+    fontFamily: 'Montserrat-Medium',
   },
 });

@@ -2,36 +2,35 @@
 import React from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import {floor} from 'lodash';
+import {NEW_PRIMARY_COLOR, INACTIVE_STEP} from '../../../styles/colors';
 
 export default function StepsTracker({
   text,
   completed,
-  textStyle,
-  completedColor,
+  mode = [25, 50, 75, 100],
   style,
-  incompletedColor,
 }) {
   return (
     <View
       style={[
-        {width: '80%', alignSelf: 'center', marginTop: 30},
+        {width: '80%', alignSelf: 'center', marginTop: 5},
         style ? style : null,
       ]}>
       <Text
         numberOfLines={1}
         adjustsFontSizeToFit
-        style={[textStyle ? textStyle : null]}>
+        style={{fontSize: 24, fontFamily: 'Montserrat-Regular'}}>
         {text}
       </Text>
-      <View style={{marginTop: 5, flexDirection: 'row'}}>
-        {[25, 50, 75, 100].map((no) => (
+      <View style={{marginTop: 15, flexDirection: 'row'}}>
+        {mode.map((no) => (
           <View
             style={[
               styles.indicator,
               {
                 backgroundColor:
-                  no <= completed ? completedColor : incompletedColor,
-                marginRight: no == 100 ? 0 : 20,
+                  no <= completed ? NEW_PRIMARY_COLOR : INACTIVE_STEP,
+                marginRight: no == 100 ? 0 : 10,
               },
             ]}
           />

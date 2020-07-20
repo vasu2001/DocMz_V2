@@ -90,7 +90,7 @@ export default function Calendar({onDateChange, getDateView}) {
               style={{
                 width: 150,
                 alignItems: 'center',
-                borderRightWidth: 3,
+                borderRightWidth: 2,
                 borderColor: NEW_PRIMARY_COLOR,
               }}
               onPress={() => {
@@ -98,12 +98,16 @@ export default function Calendar({onDateChange, getDateView}) {
               }}>
               <Text
                 style={{
-                  fontSize: 25,
+                  fontSize: 20,
                   color:
                     selectedIndex == index
                       ? NEW_HEADER_TEXT
                       : NEW_UNSELECTED_TEXT,
-                  fontWeight: 'bold',
+                  // fontWeight: 'bold',
+                  fontFamily:
+                    selectedIndex == index
+                      ? 'Montserrat-Bold'
+                      : 'Montserrat-Regular',
                 }}>
                 {item}
               </Text>
@@ -115,7 +119,7 @@ export default function Calendar({onDateChange, getDateView}) {
         data={daysLable}
         scrollEnabled={false}
         horizontal
-        style={{marginHorizontal: 10, marginTop: 20}}
+        style={{marginHorizontal: 10, marginTop: 40}}
         renderItem={({item}) => {
           return (
             <View
@@ -124,9 +128,9 @@ export default function Calendar({onDateChange, getDateView}) {
               }}>
               <Text
                 style={{
-                  fontSize: 22,
+                  fontSize: 18,
                   color: NEW_HEADER_TEXT,
-                  fontWeight: 'bold',
+                  fontFamily: 'Montserrat-SemiBold',
                   width: '100%',
                   textAlign: 'center',
                 }}>
@@ -143,16 +147,15 @@ export default function Calendar({onDateChange, getDateView}) {
         minDate={minDate}
         maxDate={maxDate}
         todayBackgroundColor="transparent"
-        // selectedDayColor={'white'}
         selectedDayStyle={{
           backgroundColor: SECONDARY_COLOR,
-          borderRadius: 11,
+          borderRadius: 6,
         }}
         nextTitleStyle={{height: 0}}
         previousTitleStyle={{height: 0}}
         todayTextStyle={{
-          borderRadius: 11,
-          borderWidth: 1.5,
+          borderRadius: 6,
+          borderWidth: 1,
           width: 30,
           height: 30,
           textAlignVertical: 'center',
@@ -161,22 +164,19 @@ export default function Calendar({onDateChange, getDateView}) {
         }}
         textStyle={{
           color: NEW_HEADER_TEXT,
+          fontFamily: 'Montserrat-Regular',
         }}
         selectedDayTextColor="#000000"
         onDateChange={onDateChange}
         selectedRangeStartStyle={{
           backgroundColor: SECONDARY_COLOR,
-          // borderRadius: 11,
         }}
         selectedRangeEndStyle={{
           backgroundColor: SECONDARY_COLOR,
-
-          // borderRadius: 11,
         }}
         selectedRangeStyle={{
           backgroundColor: SECONDARY_BACKGROUND,
           paddingVertical: -20,
-          // color: NEW_HEADER_TEXT,
         }}
         weekdays={['S', 'M', 'T', 'W', 'T', 'F', 'S']}
         dayLabelsWrapper={{
@@ -186,7 +186,7 @@ export default function Calendar({onDateChange, getDateView}) {
           backgroundColor: 'transaprent',
           maxHeight: 0,
           width: 2,
-          marginBottom: -25,
+          marginBottom: -30,
         }}
         showDayStragglers
         monthYearHeaderWrapperStyle={{

@@ -1,5 +1,5 @@
 import React, {createRef, useState} from 'react';
-import {View, StyleSheet, PermissionsAndroid, Alert} from 'react-native';
+import {View, StyleSheet, PermissionsAndroid} from 'react-native';
 import ViewPager from '@react-native-community/viewpager';
 import SignupSplash from './SignupSplash';
 import SignUpStep1Screen from './SignUpStep1Screen';
@@ -12,6 +12,9 @@ import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 import {UploadProfilePic} from '../../../redux/action/doctoreAction';
 import SignUpStep2Screen from './SignUpStep2Screen';
+import TopNavBar from '../../../components/molecules/TopNavBar/TopNavBar';
+import AlertModal from '../../../components/molecules/Modal/AlertModal';
+
 // import Svg from 'react-native-svg';
 
 function DmzSignupV2(props) {
@@ -23,7 +26,9 @@ function DmzSignupV2(props) {
   const dispatch = useDispatch();
   const {isLoading, data} = useSelector((state) => state.AuthReducer);
   // const [signupAs, setSignupAs] = useState('patient');
+  const signupAs = props.navigation.state.params.loginAs;
   const [imageData, setImageData] = useState('');
+  const [modal, setModal] = useState({visible: false, text: ''});
   const [credential, setCredential] = useState({
     firstName: '',
     lastName: '',
@@ -65,7 +70,7 @@ function DmzSignupV2(props) {
     // props.navigation.goBack(null);
   };
   const errorCallback = (e) => {
-    Alert.alert(e);
+    showModal(e);
     // Alert.alert('something went wrong');
     // showTost('error occured: ' + e);
   };
@@ -91,6 +96,9 @@ function DmzSignupV2(props) {
       },
     });
   };
+
+  const showModal = (text) => setModal({text, visible: true});
+
   const onChoosePicture = async () => {
     const granted = await PermissionsAndroid.check(
       PermissionsAndroid.PERMISSIONS.CAMERA,
@@ -148,114 +156,140 @@ function DmzSignupV2(props) {
     });
   };
 
-  const signupAs = props.navigation.state.params.loginAs;
   // console.log('params: ' + JSON.stringify(props.navigation));
 
   return (
-    <ViewPager
-      ref={pagerRef}
-      style={styles.viewPager}
-      initialPage={1}
-      scrollEnabled={false}>
-      <View key="0">
-        {/* <SignupSplash
+    <>
+      <AlertModal
+        {...modal}
+        onCancel={() => {
+          setModal({text: '', visible: false});
+        }}
+      />
+      <View style={{backgroundColor: 'white', position: 'relative'}}>
+        <TopNavBar
+          hideRightComp={true}
+          navigation={props.navigation}
+          style={{
+            Container: {
+              height: 'auto',
+              marginTop: 5,
+            },
+          }}
+        />
+      </View>
+      <ViewPager
+        ref={pagerRef}
+        style={styles.viewPager}
+        initialPage={1}
+        scrollEnabled={false}>
+        <View key="0">
+          {/* <SignupSplash
           credential={credential}
           setCredential={setCredential}
           signupAs={signupAs}
           setSignupAs={setSignupAs}
           onPress={() => nextpage(1)}
         /> */}
-      </View>
-      <View key="1">
-        <SignUpStep1Screen
-          credential={credential}
-          setCredential={setCredential}
-          isLoading={isLoading}
-          signupAs={signupAs}
-          navigation={props.navigation}
-          onPress={() => {
-            const reg = new RegExp(
-              /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/,
-            );
-            const {email, password, firstName, lastName} = credential;
-            if (
-              email !== '' &&
-              password !== '' &&
-              reg.test(email) &&
-              password.length >= 4 &&
-              lastName != '' &&
-              firstName != ''
-            ) {
-              signupAs === 'doctor' ? nextpage(2) : handleSubmit();
-            } else {
-              lastName == '' && firstName == ''
-                ? Alert.alert('One or more fields empty')
-                : password.length < 4
-                ? Alert.alert('Password must be atleast 4 characters')
-                : reg.test(email)
-                ? Alert.alert('One or more fields empty')
-                : Alert.alert('Not a valid Email.');
-            }
-          }}
-        />
-      </View>
-      <View key="2">
-        <SignUpStep2Screen
-          onPress={() => {
-            nextpage(3);
-          }}
-        />
-      </View>
-      <View key="3">
-        <SignUpStep3Screen
-          credential={credential}
-          setCredential={setCredential}
-          onChoosePicture={onChoosePicture}
-          onPress={() => {
-            const {registration_number, specialty} = credential;
-            if (
-              registration_number !== '' &&
-              specialty !== '' &&
-              registration_number.length >= 4 &&
-              registration_number.length <= 15
-            ) {
-              nextpage(4);
-            } else {
-              registration_number == '' && specialty == ''
-                ? Alert.alert('One or more fields empty')
-                : registration_number.length < 8
-                ? Alert.alert('Registration No. must be atleast 8 characters')
-                : null;
-            }
-          }}
-        />
-      </View>
-      <View key="4">
-        <SignUpStep4Screen
-          credential={credential}
-          setCredential={setCredential}
-          isLoading={isLoading}
-          onPress={() => {
-            const {phone, city, country} = credential;
-            if (
-              phone !== '' &&
-              city !== '' &&
-              country !== '' &&
-              phone.length == 10
-            ) {
-              handleSubmit();
-            } else {
-              country == '' && city == '' && phone == ''
-                ? Alert.alert('One or more fields empty')
-                : phone.length != 10
-                ? Alert.alert('Incorrect Phone No.')
-                : null;
-            }
-          }}
-          onChoosePicture={onChoosePicture}
-        />
-      </View>
-    </ViewPager>
+        </View>
+        <View key="1">
+          <SignUpStep1Screen
+            credential={credential}
+            setCredential={setCredential}
+            isLoading={isLoading}
+            signupAs={signupAs}
+            navigation={props.navigation}
+            onPress={() => {
+              const reg = new RegExp(
+                /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/,
+              );
+              const {email, password, firstName, lastName} = credential;
+              if (
+                email !== '' &&
+                password !== '' &&
+                reg.test(email) &&
+                password.length >= 4 &&
+                lastName != '' &&
+                firstName != ''
+              ) {
+                nextpage(2);
+              } else {
+                showModal(
+                  lastName == '' && firstName == ''
+                    ? 'One or more fields empty'
+                    : password.length < 4
+                    ? 'Password must be atleast 4 characters'
+                    : reg.test(email)
+                    ? 'One or more fields empty'
+                    : 'Not a valid Email.',
+                );
+              }
+            }}
+          />
+        </View>
+        <View key="2">
+          <SignUpStep2Screen
+            signupAs={signupAs}
+            onPress={() => {
+              signupAs === 'doctor' ? nextpage(3) : handleSubmit();
+            }}
+          />
+        </View>
+        <View key="3">
+          <SignUpStep3Screen
+            credential={credential}
+            setCredential={setCredential}
+            onChoosePicture={onChoosePicture}
+            onPress={() => {
+              const {registration_number, specialty} = credential;
+              if (
+                registration_number !== '' &&
+                specialty !== '' &&
+                registration_number.length >= 4 &&
+                registration_number.length <= 15
+              ) {
+                nextpage(4);
+              } else {
+                showModal(
+                  registration_number == '' && specialty == ''
+                    ? 'One or more fields empty'
+                    : registration_number.length < 8
+                    ? 'Registration No. must be atleast 8 characters'
+                    : null,
+                );
+              }
+            }}
+          />
+        </View>
+        <View key="4">
+          <SignUpStep4Screen
+            credential={credential}
+            setCredential={setCredential}
+            isLoading={isLoading}
+            onPress={() => {
+              const {phone, city, country} = credential;
+              if (
+                phone !== '' &&
+                city !== '' &&
+                country !== '' &&
+                phone.length == 10
+              ) {
+                handleSubmit();
+              } else {
+                showModal(
+                  country == '' && city == '' && phone == ''
+                    ? 'One or more fields empty'
+                    : phone.length != 10
+                    ? 'Incorrect Phone No.'
+                    : null,
+                );
+              }
+            }}
+            onChoosePicture={onChoosePicture}
+          />
+        </View>
+      </ViewPager>
+    </>
   );
 }
 

@@ -13,6 +13,10 @@ import {
   TERTIARY_TEXT,
   HEADER_TEXT,
   PRIMARY_COLOR,
+  NEW_HEADER_TEXT,
+  SECONDARY_COLOR,
+  NEW_PRIMARY_COLOR,
+  INPUT_PLACEHOLDER,
 } from '../../../styles/colors';
 
 const height = Dimensions.get('screen').height;
@@ -27,18 +31,6 @@ export default function SignUpStep3Screen(props) {
   };
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
-      {/* <LinearGradient
-        start={{x: 0, y: 0}}
-        end={{x: 1, y: 0}}
-        useAngle
-        angle={120}
-        colors={[
-          'rgba(2, 126, 151, 0)',
-          'rgba(2, 126, 151, 0)',
-          'rgba(2, 126, 151, 0.31)',
-        ]}
-        style={{flex: 1, opacity: 0.4}}
-      /> */}
       <ScrollView
         style={{
           flex: 1,
@@ -53,19 +45,7 @@ export default function SignUpStep3Screen(props) {
             height: height * 0.45,
             borderBottomRightRadius: 60,
             overflow: 'hidden',
-          }}>
-          <RadialGradient
-            style={{
-              width: '100%',
-              height: '100%',
-              borderBottomRightRadius: 50,
-            }}
-            colors={['#F8F7FF', '#E9E5FF']}
-            stops={[0.0, 1]}
-            center={[150, 100]}
-            radius={200}
-          />
-        </View>
+          }}></View>
         <StepsTracker
           text="Step 3"
           textStyle={{
@@ -78,9 +58,9 @@ export default function SignUpStep3Screen(props) {
         />
         <DmzText
           style={{
-            fontSize: 38,
-            fontWeight: 'bold',
-            color: HEADER_TEXT,
+            fontSize: 35,
+            fontFamily: 'Montserrat-SemiBold',
+            color: NEW_HEADER_TEXT,
             marginTop: 40,
             width: '100%',
             textAlign: 'center',
@@ -116,18 +96,20 @@ export default function SignUpStep3Screen(props) {
           placeholder="Registration Number"
           keyboardType="numbers-and-punctuation"
           inputHandler={handleRegistrationNumber}
-          placeholderTextColor="rgba(0, 0, 0, 0.15)"
+          placeholderTextColor={INPUT_PLACEHOLDER}
           style={styles.inputStyle}
           textStyle={styles.textStyle}
           maxLength={15}
+          validated={credential.registration_number.length >= 8}
         />
 
         <TextInputIcon
           placeholder="Mention area of Expertise"
           inputHandler={handleSpecialty}
-          placeholderTextColor="rgba(0, 0, 0, 0.15)"
+          placeholderTextColor={INPUT_PLACEHOLDER}
           style={styles.inputStyle}
           textStyle={styles.textStyle}
+          validated={credential.specialty.length > 0}
         />
         <DmzButton
           onPress={props.onPress}
@@ -136,25 +118,26 @@ export default function SignUpStep3Screen(props) {
               width: '100%',
               textAlign: 'center',
               color: 'white',
-              fontSize: 16,
+              fontSize: 18,
+              fontFamily: 'Montserrat-SemiBold',
             },
             Container: {
-              width: 131,
+              width: 250,
               height: 46,
-              borderRadius: 17,
-              backgroundColor: PRIMARY_COLOR,
+              borderRadius: 23,
+              backgroundColor: SECONDARY_COLOR,
               alignSelf: 'center',
               marginTop: 40,
-              elevation: 10,
+              elevation: 2,
             },
           }}
-          text="Submit"
+          text="SUBMIT"
         />
         <Text
           style={{
             width: '100%',
             textAlign: 'center',
-            color: 'rgba(0, 0, 0, 0.15)',
+            color: INPUT_PLACEHOLDER,
             fontSize: 14,
             marginTop: 10,
           }}>
@@ -168,14 +151,15 @@ export default function SignUpStep3Screen(props) {
 const styles = StyleSheet.create({
   inputStyle: {
     width: '70%',
-    borderBottomColor: 'rgba(0, 0, 0, 0.15)',
-    borderBottomWidth: 2,
+    borderBottomColor: NEW_PRIMARY_COLOR,
+    borderBottomWidth: 1,
     height: 'auto',
     alignSelf: 'center',
   },
   textStyle: {
-    color: HEADER_TEXT,
-    fontSize: 14,
+    color: NEW_HEADER_TEXT,
+    fontSize: 13,
     marginTop: 20,
+    fontFamily: 'Montserrat-Medium',
   },
 });

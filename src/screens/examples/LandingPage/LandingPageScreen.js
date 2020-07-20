@@ -16,15 +16,16 @@ import Icon from 'react-native-vector-icons/EvilIcons';
 
 import {
   View,
-  Animated,
-  Easing,
+  // Easing,
   ScrollView,
   ActivityIndicator,
   Text,
   FlatList,
   Dimensions,
   BackHandler,
+  Animated,
 } from 'react-native';
+// import Animated from 'react-native-reanimated';
 import {
   fetchDoctorLite,
   fetchMoreDoctorLite,
@@ -36,8 +37,6 @@ import {
   ListingWithThumbnailLoader,
 } from '../../../components/atoms/Loader/Loader';
 import {GetPatientInfo} from '../../../redux/action/patientAccountAction';
-import _ from 'lodash';
-import LinearGradient from 'react-native-linear-gradient';
 import {
   NEW_PRIMARY_COLOR,
   NEW_HEADER_TEXT,
@@ -47,6 +46,7 @@ import {
 } from '../../../styles/colors';
 import Toast from 'react-native-root-toast';
 import {getSpecialty} from '../../../redux/action/doctor/myDoctorAction';
+import {multiply} from 'react-native-reanimated';
 export default function LandingPageScreen({navigation}) {
   const height = Dimensions.get('window').height;
   const DocCards = ['Family Physicians', 'Pulmonologist', 'Family Physicians'];
@@ -62,9 +62,8 @@ export default function LandingPageScreen({navigation}) {
   //   'Martin Chein',
   // ];
 
-  const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
+  const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 
-  const [searchKey, setSearchKey] = useState('');
   const PopupTranslateY = useRef(new Animated.Value(0)).current;
   const dispatch = useDispatch();
   const {
@@ -80,6 +79,8 @@ export default function LandingPageScreen({navigation}) {
   const {specialtyLoading, specialty} = useSelector(
     (state) => state.MyDoctorReducer,
   );
+
+  const [searchKey, setSearchKey] = useState('');
   const [activeId, setActiveId] = useState('');
   const [toastVisible, setToastVisible] = useState(false);
   const [backCount, setBackCount] = useState(true);
@@ -106,7 +107,7 @@ export default function LandingPageScreen({navigation}) {
     Animated.sequence([
       Animated.timing(PopupTranslateY, {
         toValue: showPopup ? 0 : 1,
-        easing: Easing.bezier(0.52, 0.5, 0.08, 0.78),
+        // easing: Easing.bezier(0.52, 0.5, 0.08, 0.78),
         duration: 800,
         useNativeDriver: true,
       }),
@@ -143,122 +144,126 @@ export default function LandingPageScreen({navigation}) {
     }
   };
 
-  BackHandler.addEventListener('hardwareBackPress', function () {
-    if (backCount) {
-      setToastVisible(true);
-      setBackCount(false);
-      setTimeout(() => {
-        setToastVisible(false);
-      }, 2000);
-      console.log('in');
-      return true;
-    }
-    console.log('out');
-    BackHandler.exitApp();
-    return true;
+  let yOffset = 0;
+  headerPos.addListener((value) => {
+    yOffset = value;
   });
+
+  // BackHandler.addEventListener('hardwareBackPress', function () {
+  //   if (backCount) {
+  //     setToastVisible(true);
+  //     setBackCount(false);
+  //     setTimeout(() => {
+  //       setToastVisible(false);
+  //     }, 2000);
+  //     console.log('in');
+  //     return true;
+  //   }
+  //   console.log('out');
+  //   BackHandler.exitApp();
+  //   return true;
+  // });
 
   const scrollAnimation = async (e) => {
     var vel = e.nativeEvent.velocity.y;
+    console.log(e);
     if (vel < 0) {
       console.log('in');
       Animated.timing(headerPos, {
-        toValue: 350,
-        duration: 1000,
-        useNativeDriver: false,
+        toValue: 300,
+        duration: 100,
+        useNativeDriver: true,
         // easing: Easing.linear,
       }).start();
     } else {
       Animated.timing(headerPos, {
         toValue: 0,
-        duration: 500,
-        useNativeDriver: false,
-        easing: Easing.linear,
+        duration: 100,
+        useNativeDriver: true,
+        // easing: Easing.linear,
       }).start();
     }
   };
 
-  const headerTop = headerPos.interpolate({
-    inputRange: [0, 500],
-    outputRange: [height * 0.4, height * 0.22],
-    extrapolate: 'clamp',
-    useNativeDriver: false,
-    easing: Easing.linear,
-  });
-  const headerView = headerPos.interpolate({
-    inputRange: [1, 50],
-    outputRange: [0, 1],
-    extrapolate: 'clamp',
-    easing: Easing.linear,
-    useNativeDriver: false,
-  });
-  const headerView2 = headerPos.interpolate({
-    inputRange: [0, 550],
-    outputRange: [0, height * -0.3],
-    extrapolate: 'clamp',
-    easing: Easing.ease,
-    useNativeDriver: false,
-  });
+  // const headerView = headerPos.interpolate({
+  //   inputRange: [1, 50],
+  //   outputRange: [0, 1],
+  //   extrapolate: 'clamp',
+  //   easing: Easing.linear,
+  //   useNativeDriver: false,
+  // });
+
   const headerViewStyle = headerPos.interpolate({
-    inputRange: [0, 1],
+    inputRange: [0, 250],
     outputRange: [1, 0],
     extrapolate: 'clamp',
-    easing: Easing.linear,
-    useNativeDriver: true,
   });
 
-  const getScrollHeader = () => {
-    return (
-      <Animated.View
-        style={{
-          position: 'absolute',
-          width: '90%',
-          marginTop: 25,
-          alignSelf: 'center',
-          opacity: headerView,
-        }}>
-        <TopNavBar
-          hideLeftComp={true}
-          onLeftButtonPress={() => {}}
-          // onRightButtonPress={() => {}}
-          navigation={navigation}
-          style={{
-            Container: {
-              height: '5%',
-              marginTop: 5,
-            },
-          }}
-        />
+  // const getScrollHeader = () => {
+  //   return (
+  //     <Animated.View
+  //       style={{
+  //         position: 'absolute',
+  //         width: '90%',
+  //         marginTop: 25,
+  //         alignSelf: 'center',
+  //         opacity: headerView,
+  //       }}>
+  //       <TopNavBar
+  //         hideLeftComp={true}
+  //         onLeftButtonPress={() => {}}
+  //         // onRightButtonPress={() => {}}
+  //         navigation={navigation}
+  //         style={{
+  //           Container: {
+  //             height: '5%',
+  //             marginTop: 5,
+  //           },
+  //         }}
+  //       />
 
-        <View>
-          <Text
-            style={{
-              color: NEW_HEADER_TEXT,
-              fontSize: 20,
-              lineHeight: 32,
-              letterSpacing: 0.8,
-            }}>
-            Search
-          </Text>
-          <Text
-            numberOfLines={1}
-            adjustsFontSizeToFit
-            style={{
-              color: NEW_HEADER_TEXT,
-              fontSize: 42,
-              lineHeight: 48,
-              fontWeight: 'bold',
-              letterSpacing: 1,
-            }}>
-            Doctors
-          </Text>
-        </View>
-      </Animated.View>
-    );
-  };
+  //       <View>
+  //         <Text
+  //           style={{
+  //             color: NEW_HEADER_TEXT,
+  //             fontSize: 20,
+  //             lineHeight: 32,
+  //             letterSpacing: 0.8,
+  //           }}>
+  //           Search
+  //         </Text>
+
+  //           <Text
+  //             numberOfLines={1}
+  //             adjustsFontSizeToFit
+  //             style={{
+  //               color: NEW_HEADER_TEXT,
+  //               fontSize: 42,
+  //               lineHeight: 48,
+  //               fontWeight: 'bold',
+  //               letterSpacing: 1,
+  //             }}>
+  //             Doctors
+  //           </Text>
+  //       </View>
+  //     </Animated.View>
+  //   );
+  // };
+
+  const headerInterpolated = headerPos.interpolate({
+    inputRange: [0, 350],
+    outputRange: [1, 0],
+    extrapolate: 'clamp',
+  });
+
+  const transaleInterpolate = headerPos.interpolate({
+    inputRange: [0, 350],
+    outputRange: [0, 350],
+    extrapolate: 'clamp',
+  });
 
   return (
-    <View style={{flex: 1, backgroundColor: '#ffffff'}}>
+    <View style={{height: height - 45, backgroundColor: '#ffffff'}}>
       <Toast
         visible={toastVisible}
         position={height * 0.9}
@@ -267,64 +272,115 @@ export default function LandingPageScreen({navigation}) {
         hideOnPress={true}>
         Press again to Exit
       </Toast>
-      {getScrollHeader()}
-      <Animated.View
+      {/* {getScrollHeader()} */}
+      <TopNavBar
+        // hideLeftComp={true}
+        onLeftButtonPress={() => {}}
+        // onRightButtonPress={() => {}}
+        navigation={navigation}
         style={{
-          position: 'absolute',
-          flex: 1,
-          height: '100%',
-          transform: [{translateY: headerView2}],
+          Container: {
+            height: '5%',
+            marginTop: 15,
+          },
+        }}
+      />
+      <View
+        style={{
+          flexDirection: 'row',
+          paddingHorizontal: 25,
+          height: '20%',
+          alignItems: 'center',
+          width: '100%',
+          marginTop: 10,
         }}>
+        <View style={{width: '50%'}}>
+          <Text
+            style={{
+              color: NEW_HEADER_TEXT,
+              fontSize: 25,
+              lineHeight: 30,
+              fontFamily: 'Montserrat-Regular',
+              marginBottom: -10,
+            }}>
+            Search
+          </Text>
+          <Animated.View
+            style={{
+              transform: [
+                {
+                  translateY: headerPos.interpolate({
+                    inputRange: [0, 350],
+                    outputRange: [0, -35],
+                    extrapolate: 'clamp',
+                  }),
+                },
+                {
+                  translateX: headerPos.interpolate({
+                    inputRange: [0, 350],
+                    outputRange: [0, 90],
+                    extrapolate: 'clamp',
+                  }),
+                },
+              ],
+            }}>
+            <Text
+              numberOfLines={1}
+              adjustsFontSizeToFit
+              style={{
+                color: NEW_HEADER_TEXT,
+                fontSize: 55,
+                lineHeight: 55,
+                fontFamily: 'Montserrat-Bold',
+              }}>
+              Doctors
+            </Text>
+          </Animated.View>
+        </View>
+      </View>
+      <AnimatedScrollView
+        nestedScrollEnabled
+        // contentContainerStyle={{flex: 1}}
+        style={{
+          // height: height,
+          // borderWidth: 1,
+          marginTop: -20,
+          transform: [
+            {
+              translateY: headerPos.interpolate({
+                inputRange: [0, 350],
+                outputRange: [0, -30],
+                extrapolate: 'clamp',
+              }),
+            },
+          ],
+        }}
+        scrollEnabled={true}
+        scrollEventThrottle={16}
+        onScroll={Animated.event(
+          [
+            {
+              nativeEvent: {
+                contentOffset: {y: headerPos},
+              },
+            },
+          ],
+          {useNativeDriver: false},
+        )}>
         <Animated.View
           style={{
-            opacity: headerViewStyle,
-          }}>
-          <TopNavBar
-            hideLeftComp={true}
-            onLeftButtonPress={() => {}}
-            // onRightButtonPress={() => {}}
-            navigation={navigation}
-            style={{
-              Container: {
-                height: '5%',
-                marginTop: 15,
+            // borderWidth: 1,
+            paddingTop: 40,
+            opacity: headerInterpolated,
+            transform: [
+              {
+                scale: headerInterpolated,
               },
-            }}
-          />
-          <View
-            style={{
-              flexDirection: 'row',
-              paddingHorizontal: 25,
-              height: '20%',
-              alignItems: 'center',
-              width: '100%',
-              marginVertical: 20,
-            }}>
-            <View style={{width: '50%'}}>
-              <Text
-                style={{
-                  color: NEW_HEADER_TEXT,
-                  fontSize: 20,
-                  lineHeight: 32,
-                  letterSpacing: 0.8,
-                }}>
-                Seach
-              </Text>
-              <Text
-                numberOfLines={1}
-                adjustsFontSizeToFit
-                style={{
-                  color: NEW_HEADER_TEXT,
-                  fontSize: 42,
-                  width: '90%',
-                  lineHeight: 48,
-                  fontWeight: 'bold',
-                }}>
-                Doctors
-              </Text>
-            </View>
-          </View>
-
+              {
+                translateY: transaleInterpolate,
+              },
+            ],
+          }}>
           <View
             style={{
               height: '8%',
@@ -344,7 +400,11 @@ export default function LandingPageScreen({navigation}) {
               }
               onEndEditing={onEndEditing}
               onChangeText={onChangeText}
-              style={{backgroundColor: SECONDARY_BACKGROUND, borderRadius: 10}}
+              style={{
+                backgroundColor: SECONDARY_BACKGROUND,
+                borderRadius: 10,
+                elevation: 2,
+              }}
             />
           </View>
           <View
@@ -367,25 +427,28 @@ export default function LandingPageScreen({navigation}) {
                     style={{
                       CardContainer: {
                         elevation: 6,
-                        justifyContent: 'space-around',
+                        justifyContent: 'center',
                         padding: 5,
                         height: 120,
                         width: 120,
-                        borderRadius: 20,
+                        borderRadius: 13,
                         backgroundColor: PRIMARY_BACKGROUND,
                       },
                     }}>
                     <Fontisto
                       name="doctor"
-                      size={30}
+                      size={40}
+                      style={{margin: 5}}
                       color={NEW_PRIMARY_COLOR}
                     />
                     <Text
                       adjustsFontSizeToFit
                       numberOfLines={1}
                       style={{
-                        fontSize: 15,
+                        fontSize: 13,
                         color: NEW_HEADER_TEXT,
+                        fontFamily: 'Montserrat-Medium',
+                        marginTop: 5,
                         // fontWeight: 'bold',
                       }}>
                       {u.length > 15 ? u.slice(0, 15).concat('...') : u}
@@ -394,7 +457,8 @@ export default function LandingPageScreen({navigation}) {
                 );
               })}
             </ScrollView>
-            <View style={{marginHorizontal: 30, marginTop: 15}}>
+            <View
+              style={{marginHorizontal: 30, marginTop: 15, marginBottom: -10}}>
               <NewToggleButton
                 toggle={toggle}
                 onToggle={onToggle}
@@ -406,6 +470,7 @@ export default function LandingPageScreen({navigation}) {
                   color: NEW_PRIMARY_COLOR,
                   // fontWeight: 'bold',
                   textAlign: 'center',
+                  fontFamily: 'Montserrat-SemiBold',
                 }}
               />
             </View>
@@ -414,33 +479,37 @@ export default function LandingPageScreen({navigation}) {
         <Section
           style={{
             Container: {
-              // marginBottom: 40,
+              marginBottom: 40,
               flex: 1,
-              marginTop: -20,
             },
-            Text: {color: NEW_HEADER_TEXT, fontWeight: '300'},
+            Text: {
+              color: NEW_HEADER_TEXT,
+              fontFamily: 'Montserrat-Medium',
+              fontSize: 20,
+            },
           }}
-          HeaderText={toggle ? 'Available Doctors' : 'Our Doctors'}>
+          HeaderText={'Available Doctors'}>
           {loading || searchDoctorsLoading || superDocsLoading ? (
             // {/* {false ? ( }
             <ListingWithThumbnailLoader style={{marginTop: 20}} />
           ) : searchedDoctors.length && searchKey !== '' ? (
-            <AnimatedFlatList
+            <FlatList
               // extraData={doctors}
               keyExtractor={(item) => item._id}
               data={searchedDoctors}
-              onScroll={Animated.event(
-                [
-                  {
-                    nativeEvent: {
-                      contentOffset: {y: headerPos},
-                    },
-                  },
-                ],
-                {useNativeDriver: false},
-              )}
-              onMomentumScrollBegin={scrollAnimation}
-              scrollEventThrottle={16}
+              nestedScrollEnabled
+              // onScroll={Animated.event(
+              //   [
+              //     {
+              //       nativeEvent: {
+              //         contentOffset: {y: headerPos},
+              //       },
+              //     },
+              //   ],
+              //   {useNativeDriver: false},
+              // )}
+              // onScrollEndDrag={scrollAnimation}
+              // scrollEventThrottle={16}
               renderItem={({item, index}) => (
                 <AvailDoctorContainerV2
                   toggle={toggle}
@@ -458,9 +527,10 @@ export default function LandingPageScreen({navigation}) {
               )}
             />
           ) : !toggle ? (
-            <AnimatedFlatList
+            <FlatList
+              nestedScrollEnabled
               // initialNumToRender={5}
-              onMomentumScrollBegin={() => setTrigger(false)}
+              // onMomentumScrollBegin={() => setTrigger(false)}
               onEndReached={({distanceFromEnd}) => {
                 console.log('end reached');
                 if (!trigger) {
@@ -470,18 +540,18 @@ export default function LandingPageScreen({navigation}) {
               }}
               // onScroll={onScroll}
               keyExtractor={(item) => item._id}
-              onScroll={Animated.event(
-                [
-                  {
-                    nativeEvent: {
-                      contentOffset: {y: headerPos},
-                    },
-                  },
-                ],
-                {useNativeDriver: false},
-              )}
-              onScrollEndDrag={scrollAnimation}
-              scrollEventThrottle={16}
+              // onScroll={Animated.event(
+              //   [
+              //     {
+              //       nativeEvent: {
+              //         contentOffset: {y: headerPos},
+              //       },
+              //     },
+              //   ],
+              //   {useNativeDriver: false},
+              // )}
+              // onScrollEndDrag={scrollAnimation}
+              // scrollEventThrottle={16}
               ListEmptyComponent={
                 <View
                   style={{
@@ -519,7 +589,8 @@ export default function LandingPageScreen({navigation}) {
               }}
             />
           ) : (
-            <AnimatedFlatList
+            <FlatList
+              nestedScrollEnabled
               initialNumToRender={5}
               ListEmptyComponent={
                 <View
@@ -534,18 +605,18 @@ export default function LandingPageScreen({navigation}) {
               // ListFooterComponent={moreDoctorLoading && <ActivityIndicator />}
               // extraData={doctors}
               keyExtractor={(item) => item._id}
-              onScroll={Animated.event(
-                [
-                  {
-                    nativeEvent: {
-                      contentOffset: {y: headerPos},
-                    },
-                  },
-                ],
-                {useNativeDriver: false},
-              )}
-              onScrollEndDrag={scrollAnimation}
-              scrollEventThrottle={16}
+              // onScroll={Animated.event(
+              //   [
+              //     {
+              //       nativeEvent: {
+              //         contentOffset: {y: headerPos},
+              //       },
+              //     },
+              //   ],
+              //   {useNativeDriver: false},
+              // )}
+              // onScrollEndDrag={scrollAnimation}
+              // scrollEventThrottle={16}
               data={superDocs}
               renderItem={({item}) => (
                 <AvailDoctorContainerV2
@@ -563,8 +634,7 @@ export default function LandingPageScreen({navigation}) {
             />
           )}
         </Section>
-      </Animated.View>
-      {/* </LinearGradient> */}
+      </AnimatedScrollView>
     </View>
   );
 }

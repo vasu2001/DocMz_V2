@@ -27,6 +27,7 @@ function TextInputIcon({
   maxLength,
   onPress,
   children,
+  validated = true,
 }) {
   return (
     <View
@@ -37,6 +38,7 @@ function TextInputIcon({
           alignItems: 'center',
           justifyContent: 'space-between',
         },
+        !validated && {borderBottomColor: 'red', borderBottomWidth: 1},
       ]}>
       {hasIcon ? (
         <MaterialCommunityIcons
@@ -59,7 +61,7 @@ function TextInputIcon({
         secureTextEntry={secureTextEntry}
         keyboardType={keyboardType}
         onChangeText={(text) => inputHandler(text)}
-        style={[textStyle ? textStyle : null]}
+        style={[textStyle ? textStyle : null, {flex: 1}]}
         maxLength={maxLength}
       />
       {children}

@@ -5,10 +5,10 @@ import {
   Text,
   TextInput,
   StyleSheet,
-  Alert,
   TouchableOpacity,
   ScrollView,
   BackHandler,
+  Image,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Toast from 'react-native-root-toast';
@@ -30,14 +30,18 @@ import {
   SEARCH_PLACEHOLDER_COLOR,
   SECONDARY_COLOR,
   NEW_PRIMARY_BACKGROUND,
+  INPUT_PLACEHOLDER,
 } from '../../../styles/colors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import TopNavBar from '../../../components/molecules/TopNavBar/TopNavBar';
 import ViewPager from '@react-native-community/viewpager';
 import SignupSplash from '../DmzSignup/SignupSplash';
+import AlertModal from '../../../components/molecules/Modal/AlertModal';
+
 export default function DmzLoginV2(props) {
   const [credential, setCredential] = useState({email: '', password: ''});
   const [loginAs, setLoginAs] = useState('patient');
+  const [modal, setModal] = useState({visible: false, text: ''});
   const {isLoading, data} = useSelector((state) => state.AuthReducer);
   const dispatch = useDispatch();
   let pagerRef = createRef();
@@ -56,13 +60,14 @@ export default function DmzLoginV2(props) {
     dispatch(LoginDoctor(credential, successCallback, errorCallback));
   };
 
-  BackHandler.addEventListener('hardwareBackPress', () => {
-    props.navigation.navigate('pageNavigation');
-  });
+  // BackHandler.addEventListener('hardwareBackPress', () => {
+  //   props.navigation.navigate('pageNavigation');
+  // });
+  const reg = new RegExp(
+    /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/,
+  );
+
   const handleLogin = () => {
-    const reg = new RegExp(
-      /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/,
-    );
     const {email, password} = credential;
     if (
       email !== '' &&
@@ -73,11 +78,16 @@ export default function DmzLoginV2(props) {
       loginAs === 'patient' && handlePatientLogin();
       loginAs === 'doctor' && handleDoctorLogin();
     } else {
-      password.length < 4
-        ? Alert.alert('Password must be atleast 4 characters')
-        : reg.test(email)
-        ? Alert.alert('One or more fields empty')
-        : Alert.alert('Not a valid Email.');
+      let modalValue = {
+        text:
+          password.length < 4
+            ? 'Password must be atleast 4 characters'
+            : reg.test(email)
+            ? 'One or more fields empty'
+            : 'Not a valid Email.',
+        visible: true,
+      };
+      setModal(modalValue);
     }
   };
   const successCallback = (successResponce) => {
@@ -95,7 +105,7 @@ export default function DmzLoginV2(props) {
   };
 
   const errorCallback = (faildResponce) => {
-    Alert.alert(faildResponce.message);
+    setModal({text: faildResponce.message, visible: true});
     showTost(faildResponce.message, () => {});
     console.log(`PatientLoginAction(error):  ${faildResponce.message}`);
   };
@@ -134,178 +144,57 @@ export default function DmzLoginV2(props) {
   };
 
   return (
-    <ViewPager
-      ref={pagerRef}
-      style={styles.viewPager}
-      initialPage={0}
-      scrollEnabled={false}>
-      <View key="0">
-        <SignupSplash
-          signupAs={loginAs}
-          setSignupAs={setLoginAs}
-          onPress={() => nextpage(1)}
+    <>
+      <AlertModal
+        {...modal}
+        onCancel={() => {
+          setModal({text: '', visible: false});
+        }}
+      />
+      <View style={{backgroundColor: 'white', position: 'relative'}}>
+        <TopNavBar
+          hideRightComp={true}
+          // onLeftButtonPress={() => {}}
+          navigation={props.navigation}
+          style={{
+            Container: {
+              height: 'auto',
+              marginTop: 5,
+            },
+          }}
         />
       </View>
-      <View style={{flex: 1, backgroundColor: '#fff'}} key="1">
-        <ScrollView style={styles.MainContainer}>
-          <TopNavBar
-            hideRightComp={true}
-            // onLeftButtonPress={() => {}}
-            onRightButtonPress={() => {
-              props.navigation.navigate('pageNavigation');
-            }}
-            navigation={props.navigation}
-            style={{
-              Container: {
-                height: 'auto',
-                marginTop: 5,
-              },
-            }}
+      <ViewPager
+        ref={pagerRef}
+        style={styles.viewPager}
+        initialPage={0}
+        scrollEnabled={false}>
+        <View key="0">
+          <SignupSplash
+            signupAs={loginAs}
+            setSignupAs={setLoginAs}
+            onPress={() => nextpage(1)}
           />
-          <DmzText text="Welcome back!" style={styles.HeaderText} />
-          {/* <DmzText style={styles.HeaderDesc} text="Choose Account Type" />
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              marginTop: 25,
-            }}>
-            <TouchableOpacity
-              onPress={() => {
-                setLoginAs('patient');
-              }}>
-              <View
-                style={{
-                  width: 120,
-                  height: 120,
-                  borderRadius: 12,
-                  position: 'relative',
-                }}>
-                <LoginAsPatient height={120} width={120} />
-                {loginAs === 'patient' && (
-                  <View
-                    style={{
-                      position: 'absolute',
-                      bottom: -15,
-                      left: '50%',
-                      transform: [
-                        {
-                          translateX: -15,
-                        },
-                      ],
-                      height: 30,
-                      width: 30,
-                      borderRadius: 20,
-                      backgroundColor: '#fff',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}>
-                    <Check height={16} width={16} />
-                  </View>
-                )}
-              </View>
-              <Text
-                style={{
-                  color:
-                    loginAs == 'patient'
-                      ? NEW_PRIMARY_BACKGROUND
-                      : SEARCH_PLACEHOLDER_COLOR,
-                  fontSize: 18,
-                  fontWeight: 'bold',
-                  marginTop: 10,
-                  width: '100%',
-                  textAlign: 'center',
-                }}>
-                PATIENT
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                setLoginAs('doctor');
-              }}>
-              <View
-                style={{
-                  width: 120,
-                  height: 120,
-                  borderRadius: 11,
-                }}>
-                <LoginAsDoctor height={120} width={120} />
-                {loginAs === 'doctor' && (
-                  <View
-                    style={{
-                      position: 'absolute',
-                      bottom: -15,
-                      left: '50%',
-                      transform: [
-                        {
-                          translateX: -15,
-                        },
-                      ],
-                      height: 30,
-                      width: 30,
-                      borderRadius: 20,
-                      backgroundColor: '#fff',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}>
-                    <Check height={16} width={16} />
-                  </View>
-                )}
-              </View>
-              <Text
-                style={{
-                  color:
-                    loginAs == 'doctor'
-                      ? NEW_PRIMARY_BACKGROUND
-                      : SEARCH_PLACEHOLDER_COLOR,
-                  fontSize: 18,
-                  fontWeight: 'bold',
-                  marginTop: 10,
-                  width: '100%',
-                  textAlign: 'center',
-                }}>
-                DOCTOR
-              </Text>
-            </TouchableOpacity>
-          </View> */}
-          <DmzText
-            numberOfLines={3}
-            adjustsFontSizeToFit={true}
-            lite
-            style={{
-              fontSize: 16,
-              lineHeight: 19,
-              textAlign: 'center',
-              color: 'rgba(0, 0, 0, 0.15)',
-              marginTop: 15,
-              textTransform: 'none',
-              marginLeft: 'auto',
-              marginRight: 'auto',
-            }}
-            text={
-              loginAs === 'patient'
-                ? 'Hello patient! \n Please fill out the form below to get started'
-                : 'Hello doctor! \n Please fill out the form below to get started'
-            }
-          />
-          {/* <View
+        </View>
+        <View
           style={{
-            width: '80%',
-            marginLeft: 'auto',
-            marginRight: 'auto',
-          }}>
-          <DmzText
+            flex: 1,
+            backgroundColor: '#fff',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          key="1">
+          <DmzText text="Welcome back!" style={styles.HeaderText} />
+          <Image
+            source={require('../../../assets/jpg/person4.jpg')}
             style={{
-              fontWeight: 'normal',
-              fontSize: 16,
-              lineHeight: 19,
-              textAlign: 'center',
-              color: 'rgba(0, 0, 0, 0.15)',
-              marginHorizontal: 15,
+              height: 110,
+              width: 110,
+              borderRadius: 100,
+              margin: 10,
+              marginTop: 25,
             }}
-            text="Please fill out the form below to get started"
           />
-        </View> */}
           <TextInputIcon
             style={styles.inputContainer}
             inputHandler={handleEmail}
@@ -315,16 +204,17 @@ export default function DmzLoginV2(props) {
               paddingLeft: 20,
               color: NEW_HEADER_TEXT,
               fontSize: 14,
-              fontWeight: '700',
+              fontFamily: 'Montserrat-Medium',
               flex: 1,
             }}
-            placeholderTextColor="rgba(0, 0, 0, 0.15)"
+            placeholderTextColor={INPUT_PLACEHOLDER}
             hasIcon={true}
             iconName="email"
             placeholder="Email Id"
             iconStyle={{alignSelf: 'center'}}
             iconColor={NEW_PRIMARY_BACKGROUND}
             size={30}
+            validated={reg.test(credential.email)}
           />
           <TextInputIcon
             style={styles.inputContainer}
@@ -332,14 +222,15 @@ export default function DmzLoginV2(props) {
               paddingLeft: 20,
               color: NEW_HEADER_TEXT,
               fontSize: 14,
-              fontWeight: '700',
+              fontFamily: 'Montserrat-Medium',
               flex: 1,
             }}
             secureTextEntry={!passVisible}
+            validated={credential.password.length >= 4}
             hasIcon={true}
             inputHandler={handlePassword}
             iconName="lock"
-            placeholderTextColor="rgba(0, 0, 0, 0.15)"
+            placeholderTextColor={INPUT_PLACEHOLDER}
             placeholder="Password"
             iconStyle={{alignSelf: 'center'}}
             iconColor={NEW_PRIMARY_BACKGROUND}
@@ -360,7 +251,8 @@ export default function DmzLoginV2(props) {
                 width: '100%',
                 textAlign: 'center',
                 color: '#fff',
-                fontSize: 16,
+                fontSize: 18,
+                fontFamily: 'Montserrat-SemiBold',
               },
               Container: {
                 width: 250,
@@ -368,11 +260,11 @@ export default function DmzLoginV2(props) {
                 borderRadius: 25,
                 backgroundColor: SECONDARY_COLOR,
                 alignSelf: 'center',
-                marginTop: 40,
+                marginTop: 50,
                 elevation: 3,
               },
             }}
-            text="SIGN IN"
+            text="LOGIN"
             isLoading={isLoading}
             disabled={isLoading}
           />
@@ -381,15 +273,18 @@ export default function DmzLoginV2(props) {
               flexDirection: 'row',
               justifyContent: 'center',
               width: 'auto',
+              alignItems: 'center',
+              marginTop: 15,
             }}>
             <Text
               style={{
                 textAlign: 'center',
-                color: '#AAA4C5',
-                fontSize: 14,
+                color: NEW_HEADER_TEXT,
+                fontSize: 13,
                 marginTop: 10,
+                fontFamily: 'Montserrat-Regular',
               }}>
-              No account ?
+              Don't have an account?
             </Text>
             <TouchableOpacity
               onPress={() => {
@@ -399,45 +294,32 @@ export default function DmzLoginV2(props) {
                 style={{
                   color: NEW_PRIMARY_BACKGROUND,
                   textAlign: 'center',
-                  fontSize: 14,
+                  fontSize: 13,
                   marginTop: 10,
                   paddingLeft: 10,
+                  fontFamily: 'Montserrat-Bold',
                 }}>
                 Sign Up
               </Text>
             </TouchableOpacity>
           </View>
-          {/*  <DmzText
-          style={{
-            textAlign: 'center',
-            color: 'rgba(0, 0, 0, 0.15)',
-            fontSize: 14,
-            marginTop: 10,
-            marginLeft: '30%',
-            backgroundColor: 'red',
-          }}
-          text="No account ?"
-          children={
-            <TouchableOpacity
-              onPress={() => {
-                props.navigation.navigate('signupScreen');
+          <TouchableOpacity onPress={() => {}}>
+            <Text
+              style={{
+                color: NEW_PRIMARY_BACKGROUND,
+                textAlign: 'center',
+                fontSize: 12,
+                marginTop: 10,
+                paddingLeft: 10,
+                fontFamily: 'Montserrat-Medium',
               }}>
-              <DmzText
-                style={{
-                  color: HEADER_TEXT,
-                  textAlign: 'center',
-                  fontSize: 14,
-                  marginTop: 10,
-                  paddingLeft: 10,
-                }}
-                text="Sign Up"
-              />
-            </TouchableOpacity>
-          }
-        /> */}
-        </ScrollView>
-      </View>
-    </ViewPager>
+              Forgot Password?
+            </Text>
+          </TouchableOpacity>
+          {/* </View> */}
+        </View>
+      </ViewPager>
+    </>
   );
 }
 
@@ -448,7 +330,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     width: '85%',
-    borderBottomColor: 'rgba(2, 126, 151, 0.48)',
+    borderBottomColor: INPUT_PLACEHOLDER,
     borderBottomWidth: 0.5,
     height: 'auto',
     alignSelf: 'center',
@@ -462,8 +344,8 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   HeaderText: {
-    fontSize: 40,
-    fontWeight: 'bold',
+    fontSize: 33,
+    fontFamily: 'Montserrat-Bold',
     color: NEW_HEADER_TEXT,
     marginTop: 5,
     width: '100%',
@@ -472,7 +354,7 @@ const styles = StyleSheet.create({
   },
   HeaderDesc: {
     fontSize: 18,
-    fontWeight: 'normal',
+    fontFamily: 'Montserrat-Regular',
     lineHeight: 18,
     color: TERTIARY_TEXT,
     marginTop: 10,

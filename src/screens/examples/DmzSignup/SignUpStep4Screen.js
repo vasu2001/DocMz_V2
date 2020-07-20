@@ -22,6 +22,7 @@ import {
   NEW_PRIMARY_COLOR,
   NEW_HEADER_TEXT,
   SECONDARY_COLOR,
+  INPUT_PLACEHOLDER,
 } from '../../../styles/colors';
 
 const height = Dimensions.get('screen').height;
@@ -37,27 +38,17 @@ export default function SignUpStep4Screen(props) {
   const handleCountry = (country) => {
     setCredential({...credential, country});
   };
+  const reg = new RegExp(/^([0-9]{10})$/);
+
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
-      {/* <LinearGradient
-        start={{x: 0, y: 0}}
-        end={{x: 1, y: 0}}
-        useAngle
-        angle={120}
-        colors={[
-          'rgba(2, 126, 151, 0)',
-          'rgba(2, 126, 151, 0)',
-          'rgba(2, 126, 151, 0.31)',
-        ]}
-        style={{flex: 1, opacity: 0.4}}
-      /> */}
-
       <ScrollView
         style={{
           flex: 1,
           width: '100%',
           height: '100%',
-        }}>
+        }}
+        contentContainerStyle={{flex: 1, backgroundColor: 'white'}}>
         <StepsTracker
           text="Step 4"
           textStyle={{
@@ -68,80 +59,76 @@ export default function SignUpStep4Screen(props) {
           completedColor={NEW_PRIMARY_COLOR}
           incompletedColor={'#F8F7FF'}
         />
-        <Text
-          style={{
-            fontSize: 38,
-            color: NEW_HEADER_TEXT,
-            marginTop: 49,
-            alignSelf: 'center',
-            fontWeight: 'bold',
-          }}>
-          Contact Details
-        </Text>
         <View
           style={{
-            width: 180,
-            height: 180,
-            borderRadius: 90,
-            backgroundColor: '#fff',
-            alignSelf: 'center',
-            marginTop: 30,
-            alignItems: 'center',
+            flex: 1,
             justifyContent: 'center',
+            backgroundColor: 'white',
+            overflow: 'hidden',
           }}>
-          <Image
-            source={require('../../../assets/images/doc_3.jpg')}
-            resizeMode="contain"
-            style={{width: '80%', height: '80%', borderRadius: 90}}
+          <Text
+            style={{
+              fontSize: 30,
+              color: NEW_HEADER_TEXT,
+              marginBottom: 20,
+              alignSelf: 'center',
+              fontFamily: 'Montserrat-Bold',
+            }}>
+            Contact Details
+          </Text>
+
+          <TextInputIcon
+            placeholder="Phone Number"
+            inputHandler={handlePhone}
+            keyboardType="number-pad"
+            placeholderTextColor={INPUT_PLACEHOLDER}
+            style={styles.inputStyle}
+            textStyle={styles.textStyle}
+            maxLength={10}
+            validated={reg.test(credential.phone)}
+          />
+          <TextInputIcon
+            placeholder="City of Residence"
+            inputHandler={handleCity}
+            placeholderTextColor={INPUT_PLACEHOLDER}
+            style={styles.inputStyle}
+            textStyle={styles.textStyle}
+            validated={credential.city.length > 0}
+          />
+          <TextInputIcon
+            placeholder="Country"
+            inputHandler={handleCountry}
+            placeholderTextColor={INPUT_PLACEHOLDER}
+            style={styles.inputStyle}
+            textStyle={styles.textStyle}
+            validated={credential.country.length > 0}
+          />
+          <DmzButton
+            onPress={props.onPress}
+            style={{
+              Text: {
+                width: '100%',
+                textAlign: 'center',
+                color: 'white',
+                fontSize: 18,
+                fontFamily: 'Montserrat-SemiBold',
+              },
+              Container: {
+                width: 250,
+                height: 46,
+                borderRadius: 26,
+                backgroundColor: SECONDARY_COLOR,
+                alignSelf: 'center',
+                marginTop: 60,
+                elevation: 2,
+                marginBottom: 10,
+              },
+            }}
+            text="SUBMIT"
+            isLoading={isLoading}
+            disabled={isLoading}
           />
         </View>
-        <TextInputIcon
-          placeholder="Contact Number"
-          inputHandler={handlePhone}
-          keyboardType="number-pad"
-          placeholderTextColor="rgba(0, 0, 0, 0.15)"
-          style={styles.inputStyle}
-          textStyle={styles.textStyle}
-          maxLength={10}
-        />
-        <TextInputIcon
-          placeholder="City of Residence"
-          inputHandler={handleCity}
-          placeholderTextColor="rgba(0, 0, 0, 0.15)"
-          style={styles.inputStyle}
-          textStyle={styles.textStyle}
-        />
-        <TextInputIcon
-          placeholder="Country"
-          inputHandler={handleCountry}
-          placeholderTextColor="rgba(0, 0, 0, 0.15)"
-          style={styles.inputStyle}
-          textStyle={styles.textStyle}
-        />
-        <DmzButton
-          onPress={props.onPress}
-          style={{
-            Text: {
-              width: '100%',
-              textAlign: 'center',
-              color: 'white',
-              fontSize: 16,
-            },
-            Container: {
-              width: 200,
-              height: 46,
-              borderRadius: 26,
-              backgroundColor: SECONDARY_COLOR,
-              alignSelf: 'center',
-              marginTop: 40,
-              elevation: 10,
-              marginBottom: 10,
-            },
-          }}
-          text="Complete"
-          isLoading={isLoading}
-          disabled={isLoading}
-        />
       </ScrollView>
     </View>
   );
@@ -149,15 +136,16 @@ export default function SignUpStep4Screen(props) {
 
 const styles = StyleSheet.create({
   inputStyle: {
-    width: '70%',
-    borderBottomColor: NEW_PRIMARY_BACKGROUND,
-    borderBottomWidth: 2,
+    width: '65%',
+    borderBottomColor: NEW_PRIMARY_COLOR,
+    borderBottomWidth: 1,
     height: 'auto',
     alignSelf: 'center',
   },
   textStyle: {
-    color: HEADER_TEXT,
-    fontSize: 14,
+    color: NEW_HEADER_TEXT,
+    fontSize: 13,
     marginTop: 20,
+    fontFamily: 'Montserrat-Medium',
   },
 });

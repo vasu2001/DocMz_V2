@@ -9,6 +9,8 @@ import {
   TERTIARY_TEXT,
   PRIMARY_COLOR,
   SECONDARY_BACKGROUND,
+  NEW_HEADER_TEXT,
+  NEW_PRIMARY_COLOR,
 } from '../../../styles/colors';
 function AvailDoctorContentV2({
   Profile,
@@ -47,7 +49,8 @@ function AvailDoctorContentV2({
             source={require('../../../assets/icons/star.png')}
             style={{height: 15, width: 15}}
           />
-          <Text style={{marginHorizontal: 5}}>
+          <Text
+            style={{marginHorizontal: 5, fontFamily: 'Montserrat-SemiBold'}}>
             {parseFloat(rating).toFixed(1)}
           </Text>
         </View>
@@ -97,7 +100,11 @@ function AvailDoctorContentV2({
       </TouchableOpacity>
       <View style={CardContentStyles.AvailableDoctorsContinueButton}>
         <TouchableOpacity onPress={onPress} style={{zIndex: 2000}}>
-          <FontAwesomeIcon name="angle-right" size={35} color={PRIMARY_COLOR} />
+          <FontAwesomeIcon
+            name="angle-right"
+            size={45}
+            color={NEW_PRIMARY_COLOR}
+          />
         </TouchableOpacity>
       </View>
     </>
@@ -108,23 +115,26 @@ const CardContentStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     alignSelf: 'stretch',
+    marginTop: -10,
   },
   AvailableDoctorsDetails: {
     marginLeft: 15,
     alignSelf: 'stretch',
   },
   AvailableDoctorsName: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: HEADER_TEXT,
+    fontSize: 19,
+    // fontWeight: '700',
+    color: NEW_HEADER_TEXT,
     textTransform: 'capitalize',
+    fontFamily: 'Montserrat-SemiBold',
   },
 
   AvailableDoctorsSpecialization: {
-    color: TERTIARY_TEXT,
-    fontSize: 13,
+    color: NEW_HEADER_TEXT,
+    fontSize: 12,
     lineHeight: 18,
     textTransform: 'capitalize',
+    fontFamily: 'Montserrat-Regular',
   },
   AvailableDoctorsAvailableTimes: {
     flexDirection: 'row',

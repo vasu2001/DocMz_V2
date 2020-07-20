@@ -50,9 +50,10 @@ const HeadingRow = ({title, accentColor, icon}) => (
     </View>
     <Text
       style={{
-        fontSize: 16,
+        fontSize: 14,
         flex: 1,
         paddingHorizontal: 10,
+        fontFamily: 'Montserrat-Medium',
       }}>
       {title}
     </Text>
@@ -89,6 +90,14 @@ export default function NewPatientDashboard({navigation}) {
               marginTop: 10,
             },
           }}
+          headerText="My Dashboard"
+          LeftComp={
+            <Image
+              source={require('../../../assets/jpg/person4.jpg')}
+              style={{height: 50, width: 50, borderRadius: 25, margin: 3}}
+            />
+          }
+          onLeftButtonPress={() => {}}
         />
         <View style={{alignItems: 'center', flex: 1}}>
           <SearchBarSolid
@@ -102,7 +111,8 @@ export default function NewPatientDashboard({navigation}) {
               backgroundColor: SECONDARY_BACKGROUND,
               borderRadius: 15,
               margin: 5,
-              marginTop: 15,
+              marginVertical: 40,
+              elevation: 1,
             }}
             placeholder="Seach Doctors, Medicines….."
           />
@@ -111,7 +121,7 @@ export default function NewPatientDashboard({navigation}) {
               flex: 7,
               alignSelf: 'stretch',
               flexDirection: 'row',
-              padding: 7,
+              padding: 10,
               paddingBottom: 0,
             }}>
             <View style={{flex: 5}}>
@@ -119,7 +129,7 @@ export default function NewPatientDashboard({navigation}) {
                 style={{
                   flex: 1,
                   //   borderWidth: 1,
-                  margin: 7,
+                  margin: 10,
                   borderRadius: 15,
                   backgroundColor: GREY_CARD,
                   padding: 8,
@@ -139,7 +149,7 @@ export default function NewPatientDashboard({navigation}) {
                 style={{
                   flex: 2,
                   //   borderWidth: 1,
-                  margin: 7,
+                  margin: 10,
                   borderRadius: 15,
                   backgroundColor: SECONDARY_BACKGROUND,
                   padding: 8,
@@ -158,7 +168,7 @@ export default function NewPatientDashboard({navigation}) {
                 style={{
                   flex: 3,
                   //   borderWidth: 1,
-                  margin: 7,
+                  margin: 10,
                   borderRadius: 15,
                   backgroundColor: PRIMARY_BACKGROUND,
                   padding: 8,
@@ -196,8 +206,9 @@ export default function NewPatientDashboard({navigation}) {
                   </View>
                   <Text
                     style={{
-                      fontSize: 13,
-                      paddingHorizontal: 10,
+                      fontSize: 12,
+                      paddingHorizontal: 7,
+                      fontFamily: 'Montserrat-Regular',
                     }}>
                     Add new
                   </Text>
@@ -207,7 +218,7 @@ export default function NewPatientDashboard({navigation}) {
                 style={{
                   flex: 2,
                   //   borderWidth: 1,
-                  margin: 7,
+                  margin: 10,
                   borderRadius: 15,
                   backgroundColor: GREY_CARD,
                   padding: 8,
@@ -218,13 +229,13 @@ export default function NewPatientDashboard({navigation}) {
           <View
             style={{
               flex: 3,
-              margin: 14,
+              margin: 20,
               //   borderWidth: 1,
               alignSelf: 'stretch',
               borderRadius: 15,
               backgroundColor: PRIMARY_BACKGROUND,
               padding: 8,
-              marginTop: 7,
+              marginTop: 10,
             }}>
             <HeadingRow
               title="Upcoming Appointments"
@@ -274,7 +285,14 @@ const QuickConsultContent = (props) => (
         }}
       />
     </View>
-    <Text style={{paddingHorizontal: 10, textAlign: 'center'}}>
+    <Text
+      style={{
+        paddingHorizontal: 10,
+        textAlign: 'center',
+        fontSize: 10,
+        fontFamily: 'Montserrat-Regular',
+        color: '#383532',
+      }}>
       Dr Ray and 2 others are online
     </Text>
   </View>

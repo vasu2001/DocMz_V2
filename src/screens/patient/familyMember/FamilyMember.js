@@ -63,9 +63,9 @@ const FamilyMember = ({navigation}) => {
     !isPatientAccountReducerLoading && dispatch(GetFamilyMember(patient.meta));
   }, []);
 
-  BackHandler.addEventListener('hardwareBackPress', () => {
-    navigation.navigate('pageNavigation', {}, navigation.navigate('Home'));
-  });
+  // BackHandler.addEventListener('hardwareBackPress', () => {
+  //   navigation.navigate('pageNavigation', {}, navigation.navigate('Home'));
+  // });
 
   const onOpenPopup = () => {
     setState({...state, metaId: patient.meta});

@@ -111,8 +111,8 @@ const Styles = StyleSheet.create({
     height: 'auto',
     position: 'relative',
     paddingBottom: 25,
-    borderRadius: 30,
-    elevation: 5,
+    borderRadius: 13,
+    elevation: 2,
     backgroundColor: PRIMARY_BACKGROUND,
   },
 });

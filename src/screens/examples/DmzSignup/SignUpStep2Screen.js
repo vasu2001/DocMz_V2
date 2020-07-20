@@ -24,6 +24,7 @@ const height = Dimensions.get('screen').height;
 export default function SignUpStep2Screen(props) {
   const [otp, setOtp] = useState(['', '', '', '']);
   const inputRefs = [null, null, null, null];
+  const {signupAs} = props;
 
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
@@ -34,95 +35,126 @@ export default function SignUpStep2Screen(props) {
           height: '100%',
           backgroundColor: 'transparent',
         }}
-        contentContainerStyle={{alignItems: 'center'}}>
+        contentContainerStyle={{alignItems: 'center', flex: 1}}>
         <StepsTracker
           text="Step 2"
           textStyle={{
             fontSize: 16,
             color: NEW_HEADER_TEXT,
           }}
-          completed={50}
+          completed={signupAs === 'doctor' ? 50 : 100}
+          mode={signupAs === 'doctor' ? [25, 50, 75, 100] : [50, 100]}
           completedColor={NEW_PRIMARY_COLOR}
           incompletedColor={'#F8F7FF'}
         />
 
-        <View style={{margin: 40, alignItems: 'center'}}>
-          <Text
-            style={{color: NEW_HEADER_TEXT, fontSize: 32, fontWeight: 'bold'}}>
-            Verify your email
-          </Text>
-          <Text
-            style={{
-              color: NEW_HEADER_TEXT,
-              fontSize: 20,
-              textAlign: 'center',
-              marginHorizontal: 20,
-              letterSpacing: 0.3,
-            }}>
-            Please enter the 4 digit OTP sent to you
-          </Text>
-        </View>
+        <View style={{justifyContent: 'center', flex: 1, alignItems: 'center'}}>
+          <View style={{margin: 40, alignItems: 'center'}}>
+            <Text
+              style={{
+                color: NEW_HEADER_TEXT,
+                fontSize: 30,
+                fontFamily: 'Montserrat-Bold',
+              }}>
+              Verify your email
+            </Text>
+            <Text
+              style={{
+                color: NEW_HEADER_TEXT,
+                fontSize: 18,
+                textAlign: 'center',
+                marginHorizontal: 30,
+                letterSpacing: 0.3,
+                fontFamily: 'Montserrat-Regular',
+                marginTop: 10,
+              }}>
+              Please enter the 4 digit OTP sent to you
+            </Text>
+          </View>
 
-        <View style={{flexDirection: 'row'}}>
-          {[0, 1, 2, 3].map((i) => (
-            <TextInput
-              //   maxLength={1}
-              style={styles.inputStyle}
-              keyboardType="number-pad"
-              value={otp[i]}
-              onChangeText={(text) => {
-                inputRefs[i + 1]?.focus();
-                const newOtp = [...otp];
-                newOtp[i] = text[0];
-                setOtp(newOtp);
-              }}
-              onKeyPress={({nativeEvent}) => {
-                if (nativeEvent.key === 'Backspace' && i > 0) {
-                  inputRefs[i - 1].focus();
+          <View style={{flexDirection: 'row', marginTop: 15}}>
+            {[0, 1, 2, 3].map((i) => (
+              <TextInput
+                //   maxLength={1}
+                style={[
+                  styles.inputStyle,
+                  otp[i].length == 0 && {borderBottomColor: 'red'},
+                ]}
+                keyboardType="number-pad"
+                value={otp[i]}
+                onChangeText={(text) => {
+                  inputRefs[i + 1]?.focus();
                   const newOtp = [...otp];
-                  newOtp[i - 1] = '';
+                  newOtp[i] = text[0];
                   setOtp(newOtp);
-                }
-              }}
-              ref={(ref) => (inputRefs[i] = ref)}
-              textStyle={styles.textStyle}
-            />
-          ))}
-        </View>
+                }}
+                onKeyPress={({nativeEvent}) => {
+                  if (nativeEvent.key === 'Backspace' && i > 0) {
+                    inputRefs[i - 1].focus();
+                    const newOtp = [...otp];
+                    newOtp[i - 1] = '';
+                    setOtp(newOtp);
+                  }
+                }}
+                ref={(ref) => (inputRefs[i] = ref)}
+                textStyle={styles.textStyle}
+              />
+            ))}
+          </View>
 
-        <DmzButton
-          onPress={props.onPress}
-          style={{
-            Text: {
-              width: '100%',
-              textAlign: 'center',
-              color: 'white',
-              fontSize: 16,
-            },
-            Container: {
-              width: 200,
-              height: 46,
-              borderRadius: 23,
-              backgroundColor: SECONDARY_COLOR,
-              alignSelf: 'center',
-              marginTop: 40,
-              elevation: 10,
-              marginBottom: 15,
-            },
-          }}
-          text="CONFIRM"
-        />
-        <View style={{flexDirection: 'row', margin: 15}}>
-          <Text>Didn't recieve OTP? </Text>
+          <DmzButton
+            onPress={props.onPress}
+            style={{
+              Text: {
+                width: '100%',
+                textAlign: 'center',
+                color: 'white',
+                fontSize: 18,
+                fontFamily: 'Montserrat-SemiBold',
+              },
+              Container: {
+                width: 250,
+                height: 46,
+                borderRadius: 23,
+                backgroundColor: SECONDARY_COLOR,
+                alignSelf: 'center',
+                marginTop: 40,
+                elevation: 2,
+                marginBottom: 5,
+              },
+            }}
+            text="CONFIRM"
+          />
+          <View
+            style={{
+              flexDirection: 'row',
+              margin: 15,
+              marginBottom: 10,
+            }}>
+            <Text style={{fontFamily: 'Montserrat-Regular'}}>
+              Didn't recieve OTP?{' '}
+            </Text>
+            <TouchableOpacity>
+              <Text
+                style={{
+                  color: NEW_PRIMARY_BACKGROUND,
+                  fontFamily: 'Montserrat-Bold',
+                }}>
+                {'  '}Resend
+              </Text>
+            </TouchableOpacity>
+          </View>
           <TouchableOpacity>
-            <Text style={{color: NEW_PRIMARY_BACKGROUND}}>Resend</Text>
+            <Text
+              style={{
+                color: NEW_PRIMARY_BACKGROUND,
+                fontSize: 12,
+                fontFamily: 'Montserrat-Medium',
+              }}>
+              Change email address
+            </Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity>
-          <Text style={{color: NEW_PRIMARY_BACKGROUND, fontSize: 12}}>
-            Change email address
-          </Text>
-        </TouchableOpacity>
       </ScrollView>
     </View>
   );
@@ -130,16 +162,19 @@ export default function SignUpStep2Screen(props) {
 
 const styles = StyleSheet.create({
   inputStyle: {
-    width: 30,
-    borderBottomColor: NEW_PRIMARY_COLOR,
-    borderBottomWidth: 2,
+    width: 50,
+    borderBottomColor: NEW_HEADER_TEXT,
+    borderBottomWidth: 1,
     height: 'auto',
     alignSelf: 'center',
     marginHorizontal: 5,
+    textAlign: 'center',
   },
   textStyle: {
     color: NEW_HEADER_TEXT,
     fontSize: 20,
     marginTop: 20,
+    textAlign: 'center',
+    fontFamily: 'Montserrat-Medium',
   },
 });

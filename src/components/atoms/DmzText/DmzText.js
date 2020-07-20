@@ -71,10 +71,11 @@ const DmzText = (props) => {
 
 const Styles = StyleSheet.create({
   Container: {
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     fontSize: 14,
     lineHeight: 30,
-    textTransform: 'capitalize',
+    fontFamily: 'Montserrat-Regular',
+    // textTransform: 'capitalize',
   },
   centerText: {textAlign: 'center'},
 });

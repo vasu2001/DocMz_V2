@@ -10,6 +10,7 @@ import {
   TouchableHighlight,
   ScrollView,
   FlatList,
+  ImagePropTypes,
 } from 'react-native';
 import RadialGradient from 'react-native-radial-gradient';
 import {extendMoment} from 'moment-range';
@@ -105,7 +106,11 @@ export default function PatientCalendarScreen({navigation}) {
     <View
       style={{flex: 1, flexDirection: 'column', backgroundColor: '#ffffff'}}>
       <View>
-        <TopNavBar />
+        <TopNavBar
+          navigation={navigation}
+          headerText="Book"
+          style={{Container: {marginVertical: 15}}}
+        />
         <Calendar onDateChange={onDateChange} />
         <View
           style={{
@@ -118,7 +123,7 @@ export default function PatientCalendarScreen({navigation}) {
             <Text
               style={{
                 borderRadius: 6,
-                borderWidth: 1.5,
+                borderWidth: 1,
                 width: 20,
                 height: 20,
                 textAlign: 'center',
@@ -129,12 +134,12 @@ export default function PatientCalendarScreen({navigation}) {
             </Text>
             <Text
               style={{
-                fontSize: 16,
+                fontSize: 14,
                 paddingLeft: 10,
                 height: 20,
                 textAlignVertical: 'center',
                 color: NEW_HEADER_TEXT,
-                fontFamily: 'Acumin-RPro',
+                fontFamily: 'Montserrat-Regular',
               }}>
               Today
             </Text>
@@ -153,10 +158,10 @@ export default function PatientCalendarScreen({navigation}) {
             </Text>
             <Text
               style={{
-                fontSize: 16,
+                fontSize: 14,
                 paddingLeft: 10,
                 color: NEW_HEADER_TEXT,
-                fontFamily: 'Acumin-RPro',
+                fontFamily: 'Montserrat-Regular',
               }}>
               Chosen
             </Text>
