@@ -8,6 +8,7 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
 import {Host} from '../../../utils/connection';
+import {PRIMARY_BACKGROUND} from '../../../styles/colors';
 function AvailDoctorContainerV2({
   onPress,
   name,
@@ -110,8 +111,9 @@ const Styles = StyleSheet.create({
     height: 'auto',
     position: 'relative',
     paddingBottom: 25,
-    borderRadius: 30,
-    elevation: 5,
+    borderRadius: 13,
+    elevation: 2,
+    backgroundColor: PRIMARY_BACKGROUND,
   },
 });
 export default AvailDoctorContainerV2;

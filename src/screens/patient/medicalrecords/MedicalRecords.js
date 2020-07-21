@@ -57,16 +57,16 @@ function MedicalRecords({navigation}) {
     setShowAddRecord(true);
   };
 
-  BackHandler.addEventListener('hardwareBackPress', function () {
-    if (showAddRecord) {
-      setShowAddRecord(false);
+  // BackHandler.addEventListener('hardwareBackPress', function () {
+  //   if (showAddRecord) {
+  //     setShowAddRecord(false);
 
-      return true;
-    }
+  //     return true;
+  //   }
 
-    // navigation.goBack();
-    return false;
-  });
+  //   // navigation.goBack();
+  //   return false;
+  // });
 
   return (
     <View style={Styles.Container}>

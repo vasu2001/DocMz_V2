@@ -22,30 +22,36 @@ import {
   HEADER_TEXT,
   PRIMARY_COLOR,
   TERTIARY_TEXT,
+  SECONDARY_COLOR,
+  NEW_HEADER_TEXT,
+  NEW_PRIMARY_COLOR,
+  PRIMARY_BACKGROUND,
+  SECONDARY_BACKGROUND,
+  SOME_COLOR,
 } from '../../../styles/colors';
 function DoctorProfile(props) {
   const {navigation} = props;
   const dimen = useRef(new Animated.Value(0)).current;
   const opacity = useRef(new Animated.Value(0)).current;
   useEffect(() => {
-    BackHandler.removeEventListener();
+    // BackHandler.removeEventListener();
     Animated.sequence([
       Animated.timing(dimen, {
         toValue: 1,
-        delay: 200,
+        // delay: 200,
         duration: 500,
         easing: Easing.ease,
         useNativeDriver: false,
       }),
       Animated.timing(opacity, {
         toValue: 1,
-        delay: 200,
+        // delay: 200,
         duration: 500,
         easing: Easing.ease,
         useNativeDriver: true,
       }),
     ]).start();
-  });
+  }, []);
   const {data} = props.navigation.state.params;
   const authData = useSelector((state) => state.AuthReducer);
   const _checkLogedinAndDoTheStuff = () => {
@@ -63,18 +69,19 @@ function DoctorProfile(props) {
     }
   };
 
-  BackHandler.addEventListener('hardwareBackPress', () => {
-    navigation.navigate(
-      'pageNavigation',
-      {},
-      navigation.navigate({routeName: 'Home'}),
-    );
-    return true;
-  });
+  // BackHandler.addEventListener('hardwareBackPress', () => {
+  //   navigation.navigate(
+  //     'pageNavigation',
+  //     {},
+  //     navigation.navigate({routeName: 'Home'}),
+  //   );
+  //   navigation.goBack();
+  //   return true;
+  // });
 
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
-      <SolidHeader
+      {/* <SolidHeader
         style={{
           Container: {
             // height: '40%',
@@ -90,10 +97,10 @@ function DoctorProfile(props) {
             }),
           },
         }}
-      />
+      /> */}
       <TopNavBar
         style={{Container: {marginTop: 5}}}
-        hideRightComp
+        // hideRightComp
         onLeftButtonPress={() => {
           navigation.navigate(
             'pageNavigation',
@@ -101,46 +108,99 @@ function DoctorProfile(props) {
             navigation.navigate({routeName: 'Home'}),
           );
         }}
+        headerText="Doctor's Profile"
         // onRightButtonPress={() => {}}
       />
       <Animated.View
-        style={{flex: 1, opacity: opacity, transform: [{scale: opacity}]}}>
-        <Text
+        style={{
+          flex: 1,
+          opacity: opacity,
+          transform: [{scale: opacity}],
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginTop: 70,
+          marginHorizontal: 20,
+          // height: 135,
+          // borderWidth: 1,
+        }}>
+        <View
           style={{
-            fontSize: 36,
-            fontWeight: '700',
-            alignSelf: 'center',
-            lineHeight: 36,
-            color: HEADER_TEXT,
-            textTransform: 'capitalize',
+            height: 140,
+            width: 140,
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 70,
+            backgroundColor: SECONDARY_BACKGROUND,
+            // borderWidth: 1,
           }}>
-          Dr. {data.basic.name}
-        </Text>
-        <Text
-          style={{
-            fontSize: 20,
-            fontWeight: '500',
-            alignSelf: 'center',
-            lineHeight: 22,
-            color: PRIMARY_COLOR,
-            textTransform: 'capitalize',
-          }}>
-          {data.specialty}
-        </Text>
-        <View style={{alignSelf: 'center', marginTop: 2}}>
-          <RatingStarts
-            rating={4}
-            size={14}
-            filled
-            activeColor={PRIMARY_COLOR}
-            passiveColor={'#EBFAFF'}
+          <Image
+            style={{
+              borderRadius: 65,
+              height: 130,
+              width: 130,
+            }}
+            source={require('../../../assets/jpg/person1.jpg')}
           />
+        </View>
+
+        <View
+          style={{
+            justifyContent: 'space-evenly',
+            flex: 1,
+            marginLeft: 15,
+            alignSelf: 'stretch',
+            // borderWidth: 1,
+          }}>
+          <Text
+            style={{
+              fontSize: 22,
+              lineHeight: 22,
+              color: NEW_HEADER_TEXT,
+              textTransform: 'capitalize',
+              fontFamily: 'Montserrat-SemiBold',
+              marginBottom: 5,
+            }}>
+            Dr. {data.basic.name}
+          </Text>
+          <Text
+            style={{
+              fontSize: 14,
+              lineHeight: 18,
+              color: NEW_HEADER_TEXT,
+              textTransform: 'capitalize',
+              fontFamily: 'Montserrat-Medium',
+            }}>
+            {data.specialty}
+          </Text>
+          <View
+            style={{flexDirection: 'row', marginTop: 7, alignItems: 'center'}}>
+            <Image
+              source={require('../../../assets/icons/star.png')}
+              style={{height: 15, width: 15, marginRight: 7}}
+            />
+            <Text style={{fontFamily: 'Montserrat-SemiBold', fontSize: 13}}>
+              {4.2}{' '}
+            </Text>
+            <Text style={{fontFamily: 'Montserrat-Regular', fontSize: 13}}>
+              (9 Reviews)
+            </Text>
+
+            <MaterialCommunityIcons
+              name="heart"
+              size={22}
+              color="#EF786E"
+              style={{marginHorizontal: 10}}
+            />
+          </View>
         </View>
       </Animated.View>
       <Animated.View
         style={{
-          flex: 1.5,
           flexDirection: 'row',
+          alignSelf: 'center',
+          marginTop: 80,
+          marginBottom: 10,
+
           opacity: opacity.interpolate({
             inputRange: [0, 0.99, 1],
             outputRange: [0, 0.2, 1],
@@ -154,140 +214,84 @@ function DoctorProfile(props) {
             },
           ],
         }}>
-        <View style={{flex: 3, alignItems: 'center'}}>
-          <View
+        <View style={Styles.DoctorProfilePatientDetails}>
+          <Text
             style={{
-              borderWidth: 10,
-              borderColor: '#fff',
-              borderRadius: 20,
-              height: 180,
-              width: 180,
-              bottom: -15,
-              position: 'relative',
+              color: NEW_HEADER_TEXT,
+              fontSize: 24,
+              fontFamily: 'Montserrat-SemiBold',
             }}>
-            <Image
-              style={{
-                borderRadius: 15,
-                height: '100%',
-                width: '100%',
-              }}
-              source={require('../../../assets/jpg/person1.jpg')}
-            />
-            <View
-              style={{
-                height: 40,
-                width: 40,
-                borderRadius: 40,
-                borderWidth: 2,
-                borderColor: '#FD906A',
-                alignItems: 'center',
-                justifyContent: 'center',
-                elevation: 1,
-                backgroundColor: '#fff',
-                position: 'absolute',
-                bottom: 0,
-                right: -8,
-                bottom: -8,
-                zIndex: 9999,
-              }}>
-              <MaterialCommunityIcons name="heart" size={24} color="#FD906A" />
-            </View>
-          </View>
+            1.5K
+          </Text>
+          <Text
+            style={{
+              color: NEW_HEADER_TEXT,
+              fontSize: 13,
+              fontFamily: 'Montserrat-Regular',
+            }}>
+            Patients
+          </Text>
         </View>
-        <View
-          style={{
-            flex: 2,
-            borderBottomRightRadius: 70,
-            justifyContent: 'center',
-          }}>
-          <View style={Styles.DoctorProfilePatientDetails}>
-            <Fontisto name="doctor" size={32} color={PRIMARY_COLOR} />
-            <View style={{marginLeft: 15}}>
-              <Text
-                style={{
-                  color: PRIMARY_COLOR,
-                  fontSize: 24,
-                  fontWeight: 'bold',
-                }}>
-                1.5K
-              </Text>
-              <Text style={{color: PRIMARY_COLOR, fontSize: 12}}>Patients</Text>
-            </View>
-          </View>
-          <View style={Styles.DoctorProfileExperienceDetails}>
-            <MaterialCommunityIcons
-              name="timer-sand"
-              size={30}
-              color={PRIMARY_COLOR}
-            />
-            <View style={{marginLeft: 15}}>
-              <Text
-                style={{
-                  color: PRIMARY_COLOR,
-                  fontSize: 24,
-                  fontWeight: 'bold',
-                }}>
-                5 Years
-              </Text>
-              <Text style={{color: PRIMARY_COLOR, fontSize: 12}}>
-                Experience
-              </Text>
-            </View>
-          </View>
+        <View style={Styles.DoctorProfileExperienceDetails}>
+          <Text
+            style={{
+              color: NEW_HEADER_TEXT,
+              fontSize: 24,
+              fontFamily: 'Montserrat-SemiBold',
+            }}>
+            5 yrs
+          </Text>
+          <Text
+            style={{
+              color: NEW_HEADER_TEXT,
+              fontSize: 13,
+              fontFamily: 'Montserrat-Regular',
+            }}>
+            Experience
+          </Text>
         </View>
       </Animated.View>
       <View style={Styles.ContentContainer}>
         <View style={Styles.ContentContainerTabs}>
-          <View style={{alignItems: 'center', justifyContent: 'flex-end'}}>
+          <View
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              marginHorizontal: 5,
+            }}>
             <Text
               style={{
-                color: PRIMARY_COLOR,
-                fontSize: 16,
-                lineHeight: 16,
-                fontWeight: '700',
+                color: 'white',
+                fontSize: 13,
+                // fontWeight: '700',
+                fontFamily: 'Montserrat-SemiBold',
+                backgroundColor: NEW_PRIMARY_COLOR,
+                padding: 7,
+                paddingHorizontal: 20,
+                borderRadius: 10,
               }}>
               About
             </Text>
-            <View
-              style={{
-                height: 6,
-                width: 6,
-                borderRadius: 6,
-                backgroundColor: PRIMARY_COLOR,
-                marginBottom: -8,
-                marginTop: 2,
-              }}
-            />
           </View>
-          <View>
+
+          <View style={{flex: 1, alignItems: 'center', marginHorizontal: 5}}>
             <Text
               style={{
-                color: TERTIARY_TEXT,
-                fontSize: 16,
-                lineHeight: 16,
-                fontWeight: '500',
-              }}>
-              Calendar
-            </Text>
-          </View>
-          <View>
-            <Text
-              style={{
-                color: TERTIARY_TEXT,
-                fontSize: 16,
-                lineHeight: 16,
-                fontWeight: '500',
+                color: SOME_COLOR,
+                fontSize: 13,
+                fontFamily: 'Montserrat-SemiBold',
+                // fontWeight: '500',
               }}>
               Feedback
             </Text>
           </View>
-          <View>
+          <View style={{flex: 1, alignItems: 'center', marginHorizontal: 5}}>
             <Text
               style={{
-                color: TERTIARY_TEXT,
-                fontSize: 16,
-                lineHeight: 16,
-                fontWeight: '500',
+                color: SOME_COLOR,
+                fontSize: 13,
+                // fontWeight: '500',
+                fontFamily: 'Montserrat-SemiBold',
               }}>
               More
             </Text>
@@ -296,7 +300,14 @@ function DoctorProfile(props) {
         <ScrollView style={Styles.DoctorInfoScroll}>
           <View style={{flex: 1, paddingHorizontal: 20}}>
             <Text
-              style={{letterSpacing: 0.3, lineHeight: 20, color: HEADER_TEXT}}>
+              style={{
+                letterSpacing: 0.3,
+                lineHeight: 23,
+                color: NEW_HEADER_TEXT,
+                textAlign: 'center',
+                fontFamily: 'Montserrat-Regular',
+                fontSize: 13,
+              }}>
               Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sedLorem
               ipsum dolor sit amet, consetetur sadipscing elitr, sed Lorem ipsum
               dolor sit amet, consetetur sadipscing elitr, sed Lorem ipsum dolor
@@ -315,16 +326,21 @@ function DoctorProfile(props) {
           onPress={_checkLogedinAndDoTheStuff}
           style={{
             height: 40,
-            width: 180,
+            width: 250,
             borderRadius: 40,
-            backgroundColor: PRIMARY_COLOR,
+            backgroundColor: SECONDARY_COLOR,
             alignItems: 'center',
             justifyContent: 'center',
-            elevation: 5,
             marginLeft: 8,
           }}>
-          <Text style={{color: '#fff', fontWeight: '700', letterSpacing: 0.8}}>
-            Book appointment
+          <Text
+            style={{
+              color: '#fff',
+              // fontWeight: 'bold',
+              fontSize: 16,
+              fontFamily: 'Montserrat-SemiBold',
+            }}>
+            BOOK APPOINTMENT
           </Text>
         </TouchableOpacity>
       </View>
@@ -334,28 +350,30 @@ function DoctorProfile(props) {
 
 const Styles = StyleSheet.create({
   DoctorProfilePatientDetails: {
-    flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 5,
+    flex: 1,
+    borderRightWidth: 1.5,
+    borderColor: NEW_PRIMARY_COLOR,
   },
   DoctorProfileExperienceDetails: {
-    flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 5,
+    flex: 1,
+    borderLeftWidth: 1.5,
+    borderColor: NEW_PRIMARY_COLOR,
   },
   ContentContainer: {
     flex: 4,
     zIndex: 10,
   },
   ContentContainerTabs: {
-    height: 40,
-    width: '100%',
-    backgroundColor: '#fff',
-    marginTop: 70,
+    backgroundColor: PRIMARY_BACKGROUND,
+    marginTop: 40,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-around',
-    paddingHorizontal: 25,
+    padding: 5,
+    borderRadius: 10,
+    alignSelf: 'center',
+    marginHorizontal: 30,
   },
   DoctorInfoScroll: {
     padding: 15,

@@ -6,21 +6,29 @@ import LoginAsDoctor from '../../../assets/svg/LoginAsDoctor.svg';
 import Check from '../../../assets/svg/check.svg';
 import DmzText from '../../../components/atoms/DmzText/DmzText';
 import DmzButton from '../../../components/atoms/DmzButton/DmzButton';
-import {PRIMARY_COLOR, TERTIARY_TEXT} from '../../../styles/colors';
+import {
+  PRIMARY_COLOR,
+  TERTIARY_TEXT,
+  NEW_PRIMARY_BACKGROUND,
+  SEARCH_PLACEHOLDER_COLOR,
+  NEW_HEADER_TEXT,
+  SECONDARY_COLOR,
+} from '../../../styles/colors';
 function SignupSplash({onPress, signupAs, setSignupAs}) {
   return (
-    <>
+    <View style={{justifyContent: 'center', flex: 1, backgroundColor: 'white'}}>
       <DmzText text="Welcome!" style={styles.HeaderText} />
-      <DmzText style={styles.HeaderDesc} text="Choose Account Type" />
+      <DmzText style={styles.HeaderDesc} text="Choose your account type" />
       <View
         style={{
           flexDirection: 'row',
           justifyContent: 'space-around',
-          marginTop: 25,
+          marginVertical: 50,
         }}>
         <TouchableOpacity
           onPress={() => {
             setSignupAs('patient');
+            onPress();
           }}>
           <View
             style={{
@@ -30,33 +38,12 @@ function SignupSplash({onPress, signupAs, setSignupAs}) {
               position: 'relative',
             }}>
             <LoginAsPatient height={120} width={120} />
-            {signupAs === 'patient' && (
-              <View
-                style={{
-                  position: 'absolute',
-                  bottom: -15,
-                  left: '50%',
-                  transform: [
-                    {
-                      translateX: -15,
-                    },
-                  ],
-                  height: 30,
-                  width: 30,
-                  borderRadius: 20,
-                  backgroundColor: '#fff',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <Check height={16} width={16} />
-              </View>
-            )}
           </View>
           <Text
             style={{
-              color: signupAs == 'patient' ? PRIMARY_COLOR : TERTIARY_TEXT,
+              color: NEW_HEADER_TEXT,
               fontSize: 18,
-              fontWeight: 'bold',
+              fontFamily: 'Montserrat-SemiBold',
               marginTop: 10,
               width: '100%',
               textAlign: 'center',
@@ -67,6 +54,7 @@ function SignupSplash({onPress, signupAs, setSignupAs}) {
         <TouchableOpacity
           onPress={() => {
             setSignupAs('doctor');
+            onPress();
           }}>
           <View
             style={{
@@ -75,33 +63,12 @@ function SignupSplash({onPress, signupAs, setSignupAs}) {
               borderRadius: 11,
             }}>
             <LoginAsDoctor height={120} width={120} />
-            {signupAs === 'doctor' && (
-              <View
-                style={{
-                  position: 'absolute',
-                  bottom: -15,
-                  left: '50%',
-                  transform: [
-                    {
-                      translateX: -15,
-                    },
-                  ],
-                  height: 30,
-                  width: 30,
-                  borderRadius: 20,
-                  backgroundColor: '#fff',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <Check height={16} width={16} />
-              </View>
-            )}
           </View>
           <Text
             style={{
-              color: signupAs == 'doctor' ? PRIMARY_COLOR : TERTIARY_TEXT,
+              color: NEW_HEADER_TEXT,
               fontSize: 18,
-              fontWeight: 'bold',
+              fontFamily: 'Montserrat-SemiBold',
               marginTop: 10,
               width: '100%',
               textAlign: 'center',
@@ -110,49 +77,26 @@ function SignupSplash({onPress, signupAs, setSignupAs}) {
           </Text>
         </TouchableOpacity>
       </View>
-      <DmzButton
-        onPress={onPress}
-        style={{
-          Text: {
-            textAlign: 'center',
-            color: '#fff',
-            fontSize: 16,
-          },
-          Container: {
-            width: 'auto',
-            height: 'auto',
-            borderRadius: 30,
-            backgroundColor: PRIMARY_COLOR,
-            alignSelf: 'center',
-            marginTop: 40,
-            elevation: 0,
-            padding: 15,
-          },
-        }}
-        text="Go to Signup"
-        // isLoading={isLoading}
-        // disabled={isLoading}
-      />
-    </>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   HeaderText: {
-    fontSize: 45,
-    fontWeight: 'bold',
-    color: PRIMARY_COLOR,
+    fontSize: 35,
+    fontFamily: 'Montserrat-Bold',
+    color: NEW_HEADER_TEXT,
     marginTop: 40,
     width: '100%',
     textAlign: 'center',
     lineHeight: 50,
   },
   HeaderDesc: {
-    fontSize: 18,
-    fontWeight: 'normal',
-    lineHeight: 18,
-    color: TERTIARY_TEXT,
-    marginTop: 10,
+    fontSize: 20,
+    fontFamily: 'Montserrat-Regular',
+    lineHeight: 22,
+    color: NEW_HEADER_TEXT,
+    marginTop: 5,
     width: '100%',
     textAlign: 'center',
     opacity: 1,

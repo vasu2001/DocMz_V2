@@ -4,10 +4,12 @@ import {View, TextInput} from 'react-native';
 function SearchBarSolid({
   withIcon,
   icon,
+  searchIcon,
   placeholder,
   placeholderTextColor,
   onChangeText,
   onEndEditing,
+  style = {},
 }) {
   return (
     <View
@@ -17,16 +19,27 @@ function SearchBarSolid({
         alignItems: 'center',
       }}>
       <View
-        style={{
-          backgroundColor: '#fafafa',
-          borderRadius: 40,
-          paddingHorizontal: 20,
-          paddingVertical: 2,
-          elevation: 25,
-          width: '85%',
-        }}>
+        style={[
+          {
+            backgroundColor: '#fafafa',
+            borderRadius: 40,
+            paddingHorizontal: 20,
+            paddingVertical: 2,
+            elevation: 6,
+            width: '85%',
+            flexDirection: 'row',
+            alignItems: 'center',
+          },
+          style,
+        ]}>
         <TextInput
-          style={{height: 40, lineHeight: 14, fontSize: 14}}
+          style={{
+            height: 40,
+            lineHeight: 14,
+            fontSize: 13,
+            flex: 1,
+            fontFamily: 'Montserrat-Regular',
+          }}
           placeholderTextColor={
             placeholderTextColor ? placeholderTextColor : 'black'
           }
@@ -37,6 +50,7 @@ function SearchBarSolid({
           onChangeText={onChangeText}
           enablesReturnKeyAutomatically
         />
+        {searchIcon ?? null}
       </View>
       {withIcon && icon}
     </View>

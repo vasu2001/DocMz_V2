@@ -1,6 +1,11 @@
 import React from 'react';
-import {View, StyleSheet, Text, ActivityIndicator} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {
+  View,
+  StyleSheet,
+  Text,
+  ActivityIndicator,
+  TouchableOpacity,
+} from 'react-native';
 
 function DmzButton({
   text,
@@ -50,7 +55,6 @@ const Styles = StyleSheet.create({
   },
   Text: {
     fontSize: 14,
-    fontWeight: 'bold',
   },
 });
 

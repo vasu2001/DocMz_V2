@@ -5,9 +5,16 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import NavBackButton from '../../../assets/svg/nav_back.svg';
 import NavHamButton from '../../../assets/svg/nav_ham.svg';
 
-import {PRIMARY} from '../../../styles/colors';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+
+import {
+  PRIMARY,
+  NEW_HEADER_TEXT,
+  NEW_PRIMARY_COLOR,
+} from '../../../styles/colors';
 
 import DmzText from '../../atoms/DmzText/DmzText';
+import Iconicons from 'react-native-vector-icons/Ionicons';
 
 function TopNavBar({
   onLeftButtonPress = () => navigation.goBack(null),
@@ -38,10 +45,14 @@ function TopNavBar({
           style={Styles.TouchableOpacity}
           onPress={onLeftButtonPress}>
           {!LeftComp ? (
-            <NavBackButton
+            <AntDesign
+              name="left"
+              size={28}
+              color={NEW_PRIMARY_COLOR}
               style={[Styles.BackButton, style ? style.BackButton : null]}
             />
           ) : (
+            // <Iconicons name="chevron-back" size={20} />
             LeftComp
           )}
         </TouchableOpacity>
@@ -53,8 +64,9 @@ function TopNavBar({
         style={[
           {
             fontSize: 20,
-            color: '#fff',
+            color: NEW_HEADER_TEXT,
             alignSelf: 'center',
+            fontFamily: 'Montserrat-Medium',
           },
           style ? style.Header : null,
         ]}
@@ -88,12 +100,13 @@ const Styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 8,
+    marginTop: 5,
   },
   TouchableOpacity: {
     padding: 10,
     borderRadius: 20,
   },
-  BackButton: {height: 20, marginLeft: 10},
+  BackButton: {height: 30, marginLeft: 10},
   HamburgerButton: {height: 20, width: 20, marginRight: 15},
 });
 export default TopNavBar;

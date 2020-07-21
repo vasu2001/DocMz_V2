@@ -10,6 +10,7 @@ import {
   TouchableHighlight,
   ScrollView,
   FlatList,
+  ImagePropTypes,
 } from 'react-native';
 import RadialGradient from 'react-native-radial-gradient';
 import {extendMoment} from 'moment-range';
@@ -20,6 +21,11 @@ import AppoinmentSlider from '../../../components/molecules/YearCalendar.js/Appo
 import TopNavBar from '../../../components/molecules/TopNavBar/TopNavBar';
 import {GetAppointmentSlot} from '../../../redux/action/patientAccountAction';
 import {useDispatch, useSelector} from 'react-redux';
+import {
+  NEW_HEADER_TEXT,
+  NEW_PRIMARY_COLOR,
+  SECONDARY_COLOR,
+} from '../../../styles/colors';
 const moment = extendMoment(Moment);
 
 const height = Dimensions.get('screen').height;
@@ -98,14 +104,13 @@ export default function PatientCalendarScreen({navigation}) {
   // };
   return (
     <View
-      style={{flex: 1, flexDirection: 'column', backgroundColor: '#95CCE0'}}>
-      <RadialGradient
-        style={{width: '100%', height: '100%', zIndex: 0, flex: 1}}
-        colors={['#DEF1F9', '#C0E0EC', '#95CCE0']}
-        stops={[0.0, 0.2, 0.75]}
-        center={[100, 100]}
-        radius={120}>
-        <TopNavBar />
+      style={{flex: 1, flexDirection: 'column', backgroundColor: '#ffffff'}}>
+      <View>
+        <TopNavBar
+          navigation={navigation}
+          headerText="Book"
+          style={{Container: {marginVertical: 15}}}
+        />
         <Calendar onDateChange={onDateChange} />
         <View
           style={{
@@ -118,23 +123,23 @@ export default function PatientCalendarScreen({navigation}) {
             <Text
               style={{
                 borderRadius: 6,
-                borderWidth: 1.5,
+                borderWidth: 1,
                 width: 20,
                 height: 20,
                 textAlign: 'center',
-                borderColor: '#FF7A59',
+                borderColor: NEW_PRIMARY_COLOR,
                 fontSize: 18,
               }}>
               {' '}
             </Text>
             <Text
               style={{
-                fontSize: 16,
+                fontSize: 14,
                 paddingLeft: 10,
                 height: 20,
                 textAlignVertical: 'center',
-                color: 'white',
-                fontFamily: 'Acumin-RPro',
+                color: NEW_HEADER_TEXT,
+                fontFamily: 'Montserrat-Regular',
               }}>
               Today
             </Text>
@@ -143,7 +148,7 @@ export default function PatientCalendarScreen({navigation}) {
             <Text
               style={{
                 borderRadius: 5,
-                backgroundColor: '#FF7A59',
+                backgroundColor: SECONDARY_COLOR,
                 width: 20,
                 height: 20,
                 textAlign: 'center',
@@ -153,16 +158,16 @@ export default function PatientCalendarScreen({navigation}) {
             </Text>
             <Text
               style={{
-                fontSize: 16,
+                fontSize: 14,
                 paddingLeft: 10,
-                color: 'white',
-                fontFamily: 'Acumin-RPro',
+                color: NEW_HEADER_TEXT,
+                fontFamily: 'Montserrat-Regular',
               }}>
               Chosen
             </Text>
           </View>
         </View>
-      </RadialGradient>
+      </View>
       <AppoinmentSlider navigation={navigation} slots={appointmentForSlot} />
     </View>
   );
