@@ -82,7 +82,7 @@ const ConfirmAppointment = ({navigation}) => {
         isClap={true}
         onLeftButtonPress={() => navigation.goBack(null)}
         headerText={'Book an Appointment'}
-        style={{margin: -25, marginTop: -30}}
+        // style={{margin: -25, marginTop: -30}}
       />
       <ScrollView
         style={ConfirmAppointmentStyles.ScrollView}
@@ -216,8 +216,8 @@ const ConfirmAppointmentStyles = StyleSheet.create({
     height: '100%',
   },
   ScrollView: {
-    marginTop: 45,
-    marginBottom: -40,
+    // marginTop: 45,
+    // marginBottom: -40,
   },
   ScheduleAvailability: {
     flexDirection: 'row',

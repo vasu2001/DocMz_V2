@@ -1,6 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
-import {View, Text, Dimensions, StyleSheet, ScrollView} from 'react-native';
+import {
+  View,
+  Text,
+  Dimensions,
+  StyleSheet,
+  ScrollView,
+  Image,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import RadialGradient from 'react-native-radial-gradient';
 import StepsTracker from '../../../components/atoms/StepsTracker/StepsTracker';
@@ -100,7 +107,8 @@ export default function SignUpStep3Screen(props) {
           style={styles.inputStyle}
           textStyle={styles.textStyle}
           maxLength={15}
-          validated={credential.registration_number.length >= 8}
+          validationCallback={() => credential.registration_number.length >= 8}
+          value={credential.registration_number}
         />
 
         <TextInputIcon
@@ -109,7 +117,8 @@ export default function SignUpStep3Screen(props) {
           placeholderTextColor={INPUT_PLACEHOLDER}
           style={styles.inputStyle}
           textStyle={styles.textStyle}
-          validated={credential.specialty.length > 0}
+          validationCallback={() => credential.specialty.length > 0}
+          value={credential.specialty}
         />
         <DmzButton
           onPress={props.onPress}
@@ -143,6 +152,18 @@ export default function SignUpStep3Screen(props) {
           }}>
           Just one more step to complete{'\n'}your registration process!
         </Text>
+        <View
+          style={{
+            backgroundColor: 'white',
+            alignItems: 'center',
+            paddingTop: 5,
+            paddingBottom: 15,
+          }}>
+          <Image
+            source={require('../../../assets/icons/docmz.png')}
+            style={{height: 21, width: 91}}
+          />
+        </View>
       </ScrollView>
     </View>
   );

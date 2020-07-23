@@ -85,7 +85,8 @@ export default function SignUpStep4Screen(props) {
             style={styles.inputStyle}
             textStyle={styles.textStyle}
             maxLength={10}
-            validated={reg.test(credential.phone)}
+            validationCallback={() => reg.test(credential.phone)}
+            value={credential.phone}
           />
           <TextInputIcon
             placeholder="City of Residence"
@@ -93,7 +94,8 @@ export default function SignUpStep4Screen(props) {
             placeholderTextColor={INPUT_PLACEHOLDER}
             style={styles.inputStyle}
             textStyle={styles.textStyle}
-            validated={credential.city.length > 0}
+            validationCallback={() => credential.city.length > 0}
+            value={credential.city}
           />
           <TextInputIcon
             placeholder="Country"
@@ -101,7 +103,8 @@ export default function SignUpStep4Screen(props) {
             placeholderTextColor={INPUT_PLACEHOLDER}
             style={styles.inputStyle}
             textStyle={styles.textStyle}
-            validated={credential.country.length > 0}
+            validationCallback={() => credential.country.length > 0}
+            value={credential.country}
           />
           <DmzButton
             onPress={props.onPress}
@@ -127,6 +130,18 @@ export default function SignUpStep4Screen(props) {
             text="SUBMIT"
             isLoading={isLoading}
             disabled={isLoading}
+          />
+        </View>
+        <View
+          style={{
+            backgroundColor: 'white',
+            alignItems: 'center',
+            paddingTop: 5,
+            paddingBottom: 15,
+          }}>
+          <Image
+            source={require('../../../assets/icons/docmz.png')}
+            style={{height: 21, width: 91}}
           />
         </View>
       </ScrollView>

@@ -49,9 +49,9 @@ export default function AppoinmentSlider({slots, navigation}) {
     onPanResponderMove: (e, gestureState) => {
       console.log(gestureState.dy, ' ', height * 0.25);
       if (gestureState.moveY <= height * 0.6) {
-        if (!pos || gestureState.dy > 0) {
-          val.setValue(gestureState.dy);
-        }
+        // if (!pos || gestureState.dy > 0) {
+        val.setValue(gestureState.dy);
+        // }
       }
     },
     onPanResponderRelease: (e, gestureState) => {
@@ -85,7 +85,7 @@ export default function AppoinmentSlider({slots, navigation}) {
         width: width,
         height: 'auto',
         transform: [{translateY: val}],
-        zIndex: 10,
+        zIndex: 9999,
         elevation: 2,
       }}>
       <Animated.View style={{height: 50}} {...panResponder.panHandlers}>

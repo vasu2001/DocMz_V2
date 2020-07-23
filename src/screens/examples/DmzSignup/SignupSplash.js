@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import LoginAsPatient from '../../../assets/svg/LoginAsPatient.svg';
 import LoginAsDoctor from '../../../assets/svg/LoginAsDoctor.svg';
 import Check from '../../../assets/svg/check.svg';
@@ -22,7 +22,7 @@ function SignupSplash({onPress, signupAs, setSignupAs}) {
       <View
         style={{
           flexDirection: 'row',
-          justifyContent: 'space-around',
+          justifyContent: 'space-evenly',
           marginVertical: 50,
         }}>
         <TouchableOpacity
@@ -30,51 +30,20 @@ function SignupSplash({onPress, signupAs, setSignupAs}) {
             setSignupAs('patient');
             onPress();
           }}>
-          <View
-            style={{
-              width: 120,
-              height: 120,
-              borderRadius: 12,
-              position: 'relative',
-            }}>
-            <LoginAsPatient height={120} width={120} />
-          </View>
-          <Text
-            style={{
-              color: NEW_HEADER_TEXT,
-              fontSize: 18,
-              fontFamily: 'Montserrat-SemiBold',
-              marginTop: 10,
-              width: '100%',
-              textAlign: 'center',
-            }}>
-            PATIENT
-          </Text>
+          <Image
+            source={require('../../../assets/icons/patienticon.png')}
+            style={{height: 140, width: 140}}
+          />
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
             setSignupAs('doctor');
             onPress();
           }}>
-          <View
-            style={{
-              width: 120,
-              height: 120,
-              borderRadius: 11,
-            }}>
-            <LoginAsDoctor height={120} width={120} />
-          </View>
-          <Text
-            style={{
-              color: NEW_HEADER_TEXT,
-              fontSize: 18,
-              fontFamily: 'Montserrat-SemiBold',
-              marginTop: 10,
-              width: '100%',
-              textAlign: 'center',
-            }}>
-            DOCTOR
-          </Text>
+          <Image
+            source={require('../../../assets/icons/doctoricon.png')}
+            style={{height: 140, width: 140}}
+          />
         </TouchableOpacity>
       </View>
     </View>

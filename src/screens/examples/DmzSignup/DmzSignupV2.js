@@ -1,5 +1,5 @@
 import React, {createRef, useState} from 'react';
-import {View, StyleSheet, PermissionsAndroid} from 'react-native';
+import {View, StyleSheet, PermissionsAndroid, Image} from 'react-native';
 import ViewPager from '@react-native-community/viewpager';
 import SignupSplash from './SignupSplash';
 import SignUpStep1Screen from './SignUpStep1Screen';

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Animated, StyleSheet} from 'react-native';
+import {Animated, StyleSheet, Image} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 import NavBackButton from '../../../assets/svg/nav_back.svg';
@@ -45,10 +45,8 @@ function TopNavBar({
           style={Styles.TouchableOpacity}
           onPress={onLeftButtonPress}>
           {!LeftComp ? (
-            <AntDesign
-              name="left"
-              size={28}
-              color={NEW_PRIMARY_COLOR}
+            <Image
+              source={require('../../../assets/icons/back.png')}
               style={[Styles.BackButton, style ? style.BackButton : null]}
             />
           ) : (
@@ -77,7 +75,8 @@ function TopNavBar({
           // onPress={() => onRightButtonPress()}>
           onPress={() => onRightButtonPress()}>
           {!RightComp ? (
-            <NavHamButton
+            <Image
+              source={require('../../../assets/icons/hamburger_menu.png')}
               style={[
                 Styles.HamburgerButton,
                 style ? style.HamburgerButton : null,
@@ -106,7 +105,7 @@ const Styles = StyleSheet.create({
     padding: 10,
     borderRadius: 20,
   },
-  BackButton: {height: 30, marginLeft: 10},
-  HamburgerButton: {height: 20, width: 20, marginRight: 15},
+  BackButton: {height: 19, width: 10, marginLeft: 5},
+  HamburgerButton: {height: 19, width: 24, marginRight: 5},
 });
 export default TopNavBar;

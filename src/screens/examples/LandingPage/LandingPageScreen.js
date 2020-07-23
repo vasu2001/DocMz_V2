@@ -24,6 +24,7 @@ import {
   Dimensions,
   BackHandler,
   Animated,
+  Image,
 } from 'react-native';
 // import Animated from 'react-native-reanimated';
 import {
@@ -99,6 +100,11 @@ export default function LandingPageScreen({navigation}) {
   }, []);
 
   const tempSpeciality = ['Pulmanologist', 'Cardiologist', 'Neurologist'];
+  const tempSpecialityIcons = [
+    require('../../../assets/icons/lungs.png'),
+    require('../../../assets/icons/heart.png'),
+    require('../../../assets/icons/neuro.png'),
+  ];
 
   const headerPos = useRef(new Animated.Value(0)).current;
   const onPress = (id) => {
@@ -340,6 +346,7 @@ export default function LandingPageScreen({navigation}) {
       </View>
       <AnimatedScrollView
         nestedScrollEnabled
+        scrollEnabled={!(loading || searchDoctorsLoading || superDocsLoading)}
         // contentContainerStyle={{flex: 1}}
         style={{
           // height: height,
@@ -390,11 +397,16 @@ export default function LandingPageScreen({navigation}) {
             <SearchBarSolid
               withIcon
               placeholderTextColor={SEARCH_PLACEHOLDER_COLOR}
-              icon={<Filter height={24} width={24} color={'#000'} />}
+              icon={
+                <Image
+                  source={require('../../../assets/icons/configure.png')}
+                  style={{height: 24, width: 24}}
+                />
+              }
               searchIcon={
-                <Icon
-                  name="search"
-                  size={20}
+                <Image
+                  source={require('../../../assets/icons/search.png')}
+                  style={{height: 20, width: 18}}
                   color={SEARCH_PLACEHOLDER_COLOR}
                 />
               }
@@ -435,11 +447,10 @@ export default function LandingPageScreen({navigation}) {
                         backgroundColor: PRIMARY_BACKGROUND,
                       },
                     }}>
-                    <Fontisto
-                      name="doctor"
-                      size={40}
-                      style={{margin: 5}}
-                      color={NEW_PRIMARY_COLOR}
+                    <Image
+                      source={tempSpecialityIcons[i]}
+                      resizeMode="contain"
+                      style={{margin: 5, height: 40, width: 40}}
                     />
                     <Text
                       adjustsFontSizeToFit
