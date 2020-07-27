@@ -265,9 +265,9 @@ function DoctorProfile(props) {
                 fontSize: 13,
                 // fontWeight: '700',
                 fontFamily: 'Montserrat-SemiBold',
-                backgroundColor: NEW_PRIMARY_COLOR,
+                backgroundColor: SECONDARY_COLOR,
                 padding: 7,
-                paddingHorizontal: 20,
+                paddingHorizontal: 15,
                 borderRadius: 10,
               }}>
               About
@@ -277,7 +277,19 @@ function DoctorProfile(props) {
           <View style={{flex: 1, alignItems: 'center', marginHorizontal: 5}}>
             <Text
               style={{
-                color: SOME_COLOR,
+                color: SECONDARY_COLOR,
+                fontSize: 13,
+                // fontWeight: '500',
+                fontFamily: 'Montserrat-SemiBold',
+              }}>
+              Fee
+            </Text>
+          </View>
+
+          <View style={{flex: 1, alignItems: 'center', marginHorizontal: 5}}>
+            <Text
+              style={{
+                color: SECONDARY_COLOR,
                 fontSize: 13,
                 fontFamily: 'Montserrat-SemiBold',
                 // fontWeight: '500',
@@ -285,10 +297,11 @@ function DoctorProfile(props) {
               Feedback
             </Text>
           </View>
+
           <View style={{flex: 1, alignItems: 'center', marginHorizontal: 5}}>
             <Text
               style={{
-                color: SOME_COLOR,
+                color: SECONDARY_COLOR,
                 fontSize: 13,
                 // fontWeight: '500',
                 fontFamily: 'Montserrat-SemiBold',
@@ -366,7 +379,7 @@ const Styles = StyleSheet.create({
     zIndex: 10,
   },
   ContentContainerTabs: {
-    backgroundColor: PRIMARY_BACKGROUND,
+    backgroundColor: SECONDARY_BACKGROUND,
     marginTop: 40,
     flexDirection: 'row',
     alignItems: 'center',

@@ -16,6 +16,7 @@ import TimelineContainer from '../../../components/molecules/TimelineContainer/T
 import ProfilePic from '../../../components/atoms/ProfilePic/ProfilePic';
 import FancyHeaderLite from '../../../components/organisms/FancyHeaderLite/FancyHeaderLite';
 import Container from '../../../components/organisms/Container/Container';
+import TopNavBar from '../../../components/molecules/TopNavBar/TopNavBar';
 
 if (Platform.OS === 'android') {
   if (UIManager.setLayoutAnimationEnabledExperimental) {
@@ -45,17 +46,15 @@ const Appointments = ({navigation}) => {
   };
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
-      <FancyHeaderLite
+      <TopNavBar
         navigation={navigation}
         onLeftButtonPress={() => navigation.goBack(null)}
-        headerText={'Appointment'}
+        headerText={'My Appointments'}
         style={{Section: {overflow: 'hidden', height: '20%', marginBottom: 0}}}
       />
-      <Container
+      <View
         style={{
-          height: '75%',
-          transform: [{translateY: -30}],
-          zIndex: 999,
+          flex: 1,
           backgroundColor: '#fff',
           padding: 5,
           paddingTop: 15,
@@ -100,7 +99,7 @@ const Appointments = ({navigation}) => {
             )}
           />
         )}
-      </Container>
+      </View>
     </View>
   );
 };

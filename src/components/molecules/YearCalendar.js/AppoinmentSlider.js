@@ -25,7 +25,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
-export default function AppoinmentSlider({slots, navigation}) {
+export default function AppoinmentSlider({slots, navigation, setModal}) {
   const [pos, setPos] = useState(false);
   const [selectedIndex, setselectedIndex] = useState(0);
   const [timeValue, setTimeValue] = useState('');
@@ -70,7 +70,10 @@ export default function AppoinmentSlider({slots, navigation}) {
 
   const bookAppointment = (id) => {
     console.log(id);
-    navigation.navigate('ConfirmAppointment', {data: []});
+    setModal({
+      visible: true,
+      onNext: () => navigation.navigate('ConfirmAppointment', {data: []}),
+    });
   };
 
   return (

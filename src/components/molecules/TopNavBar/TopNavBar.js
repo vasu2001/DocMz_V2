@@ -1,5 +1,5 @@
 import React from 'react';
-import {Animated, StyleSheet, Image} from 'react-native';
+import {Animated, StyleSheet, Image, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 import NavBackButton from '../../../assets/svg/nav_back.svg';
@@ -69,7 +69,7 @@ function TopNavBar({
           style ? style.Header : null,
         ]}
       />
-      {!hideRightComp && (
+      {!hideRightComp ? (
         <TouchableOpacity
           style={Styles.TouchableOpacity}
           // onPress={() => onRightButtonPress()}>
@@ -86,6 +86,8 @@ function TopNavBar({
             RightComp
           )}
         </TouchableOpacity>
+      ) : (
+        <View />
       )}
     </Animated.View>
   );
@@ -105,7 +107,7 @@ const Styles = StyleSheet.create({
     padding: 10,
     borderRadius: 20,
   },
-  BackButton: {height: 19, width: 10, marginLeft: 5},
-  HamburgerButton: {height: 19, width: 24, marginRight: 5},
+  BackButton: {height: 19, width: 10},
+  HamburgerButton: {height: 19, width: 24},
 });
 export default TopNavBar;
