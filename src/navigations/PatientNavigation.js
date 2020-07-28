@@ -45,6 +45,8 @@ import NewPayment from '../screens/examples/payments/NewPayments';
 import Pay from '../screens/examples/payments/Pay';
 import BookingConfirmed from '../screens/examples/payments/BookingConfirmed';
 import NewCard from '../screens/examples/payments/NewCard';
+import NewWaitingRoom from '../screens/patient/waitingRoom/NewWaitingRoom';
+import VoiceCall from '../screens/patient/Calls/Voicecall';
 
 // const PatientBottomNavigation = createSwitchNavigator(
 //   {
@@ -148,7 +150,7 @@ const PatientNavigationHome = createBottomTabNavigator(
       },
     },
     test: {
-      screen: NewCard,
+      screen: NewWaitingRoom,
       navigationOptions: {
         tabBarIcon: ({focused, horizontal, tintColor}) => {
           return (
@@ -196,6 +198,7 @@ const PatientNavigation = createDrawerNavigator(
     RedeemVoucher,
     Profile: {screen: ProfileStack},
     Address: {screen: AddressStack},
+    VoiceCall: {screen: VoiceCall},
   },
   {
     initialRouteName: 'Home',

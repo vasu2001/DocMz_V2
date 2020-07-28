@@ -1,18 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {setState, useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  Dimensions,
-  StyleSheet,
-  Animated,
-  PanResponder,
-  TouchableHighlight,
-  ScrollView,
-  FlatList,
-  ImagePropTypes,
-} from 'react-native';
-import RadialGradient from 'react-native-radial-gradient';
+import {View, Text, Dimensions, StyleSheet} from 'react-native';
 import {extendMoment} from 'moment-range';
 import Moment from 'moment';
 import dateArray from 'moment-array-dates';

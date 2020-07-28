@@ -9,6 +9,7 @@ import {
   PanResponder,
   TouchableHighlight,
   ScrollView,
+  TouchableOpacity,
 } from 'react-native';
 import {ButtonGroup} from 'react-native-elements';
 import Moment from 'moment';
@@ -20,7 +21,6 @@ import {
   NEW_UNSELECTED_TEXT,
 } from '../../../styles/colors';
 import NewToggleButton from '../ToggleButton/NewToggleButton';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
