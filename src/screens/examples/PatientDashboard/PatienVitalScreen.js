@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
 import {View, Modal, TouchableOpacity} from 'react-native';
 import PatientHistoryCardSmall from '../../../components/molecules/PatientVitalCards/PatientHistoryCardSmall';
@@ -26,7 +25,7 @@ export default function PatienVitalScreen() {
   useEffect(() => {
     setData(patient);
     setVitals(patientVitals);
-    console.log('updating');
+    console.log(patient);
   }, [patient, patientVitals]);
 
   const cmToFeet = (val) => {
