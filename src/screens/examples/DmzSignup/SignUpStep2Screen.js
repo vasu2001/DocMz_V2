@@ -1,6 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
-import {View, Text, Dimensions, StyleSheet, ScrollView} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  Text,
+  Dimensions,
+  StyleSheet,
+  ScrollView,
+  Image,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import RadialGradient from 'react-native-radial-gradient';
 import StepsTracker from '../../../components/atoms/StepsTracker/StepsTracker';
@@ -23,8 +30,25 @@ const height = Dimensions.get('screen').height;
 
 export default function SignUpStep2Screen(props) {
   const [otp, setOtp] = useState(['', '', '', '']);
+  const [validated, setValidated] = useState([true, true, true, true]);
   const inputRefs = [null, null, null, null];
   const {signupAs} = props;
+  let timeout = null;
+
+  useEffect(() => {
+    if (otp.join('').length > 0) {
+      timeout && clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        let newValidated = [...validated];
+        otp.forEach((letter, i) => (newValidated[i] = letter?.length === 1));
+        setValidated(newValidated);
+      }, 500);
+    }
+
+    return () => {
+      timeout && clearTimeout(timeout);
+    };
+  }, [otp]);
 
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
@@ -78,7 +102,7 @@ export default function SignUpStep2Screen(props) {
                 //   maxLength={1}
                 style={[
                   styles.inputStyle,
-                  otp[i].length == 0 && {borderBottomColor: 'red'},
+                  !validated[i] && {borderBottomColor: 'red'},
                 ]}
                 keyboardType="number-pad"
                 value={otp[i]}
@@ -154,6 +178,18 @@ export default function SignUpStep2Screen(props) {
               Change email address
             </Text>
           </TouchableOpacity>
+        </View>
+        <View
+          style={{
+            backgroundColor: 'white',
+            alignItems: 'center',
+            paddingTop: 5,
+            paddingBottom: 15,
+          }}>
+          <Image
+            source={require('../../../assets/icons/docmz.png')}
+            style={{height: 21, width: 91}}
+          />
         </View>
       </ScrollView>
     </View>

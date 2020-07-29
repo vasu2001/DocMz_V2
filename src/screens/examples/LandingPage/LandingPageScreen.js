@@ -24,6 +24,7 @@ import {
   Dimensions,
   BackHandler,
   Animated,
+  Image,
 } from 'react-native';
 // import Animated from 'react-native-reanimated';
 import {
@@ -43,10 +44,14 @@ import {
   SEARCH_PLACEHOLDER_COLOR,
   PRIMARY_BACKGROUND,
   SECONDARY_BACKGROUND,
+  INPUT_PLACEHOLDER,
 } from '../../../styles/colors';
 import Toast from 'react-native-root-toast';
 import {getSpecialty} from '../../../redux/action/doctor/myDoctorAction';
 import {multiply} from 'react-native-reanimated';
+import ConnectionError from '../../../components/molecules/Modal/ConnectionError';
+import GenericError from '../../../components/molecules/Modal/GenericError';
+import CancelConfirm from '../../../components/molecules/Modal/CancelConfirm';
 export default function LandingPageScreen({navigation}) {
   const height = Dimensions.get('window').height;
   const DocCards = ['Family Physicians', 'Pulmonologist', 'Family Physicians'];
@@ -99,6 +104,11 @@ export default function LandingPageScreen({navigation}) {
   }, []);
 
   const tempSpeciality = ['Pulmanologist', 'Cardiologist', 'Neurologist'];
+  const tempSpecialityIcons = [
+    require('../../../assets/icons/lungs.png'),
+    require('../../../assets/icons/heart.png'),
+    require('../../../assets/icons/neuro.png'),
+  ];
 
   const headerPos = useRef(new Animated.Value(0)).current;
   const onPress = (id) => {
@@ -264,6 +274,7 @@ export default function LandingPageScreen({navigation}) {
 
   return (
     <View style={{height: height - 45, backgroundColor: '#ffffff'}}>
+      {/* <CancelConfirm visible={true} onYes={() => {}} onNo={() => {}} /> */}
       <Toast
         visible={toastVisible}
         position={height * 0.9}
@@ -272,9 +283,7 @@ export default function LandingPageScreen({navigation}) {
         hideOnPress={true}>
         Press again to Exit
       </Toast>
-      {/* {getScrollHeader()} */}
       <TopNavBar
-        // hideLeftComp={true}
         onLeftButtonPress={() => {}}
         // onRightButtonPress={() => {}}
         navigation={navigation}
@@ -284,72 +293,75 @@ export default function LandingPageScreen({navigation}) {
             marginTop: 15,
           },
         }}
+        headerText="Search"
       />
       <View
         style={{
           flexDirection: 'row',
           paddingHorizontal: 25,
-          height: '20%',
+          paddingVertical: 10,
           alignItems: 'center',
           width: '100%',
           marginTop: 10,
+          justifyContent: 'center',
+          marginBottom: 20,
         }}>
-        <View style={{width: '50%'}}>
+        <Animated.View
+          style={{
+            alignItems: 'center',
+            borderRightWidth: headerPos.interpolate({
+              inputRange: [0, 400],
+              outputRange: [1, 0],
+              extrapolate: 'clamp',
+            }),
+            borderColor: NEW_PRIMARY_COLOR,
+            flex: 1,
+          }}>
           <Text
+            numberOfLines={1}
+            adjustsFontSizeToFit
             style={{
               color: NEW_HEADER_TEXT,
-              fontSize: 25,
-              lineHeight: 30,
-              fontFamily: 'Montserrat-Regular',
-              marginBottom: -10,
+              fontSize: 20,
+              fontFamily: 'Montserrat-Bold',
             }}>
-            Search
+            Doctors
           </Text>
-          <Animated.View
+        </Animated.View>
+        <Animated.View
+          style={{
+            alignItems: 'center',
+            borderLeftWidth: 1,
+            borderColor: NEW_PRIMARY_COLOR,
+            flex: 1,
+            opacity: headerPos.interpolate({
+              inputRange: [0, 400],
+              outputRange: [1, 0],
+              extrapolate: 'clamp',
+            }),
+          }}>
+          <Text
+            numberOfLines={1}
+            adjustsFontSizeToFit
             style={{
-              transform: [
-                {
-                  translateY: headerPos.interpolate({
-                    inputRange: [0, 350],
-                    outputRange: [0, -35],
-                    extrapolate: 'clamp',
-                  }),
-                },
-                {
-                  translateX: headerPos.interpolate({
-                    inputRange: [0, 350],
-                    outputRange: [0, 90],
-                    extrapolate: 'clamp',
-                  }),
-                },
-              ],
+              color: INPUT_PLACEHOLDER,
+              fontSize: 20,
+              fontFamily: 'Montserrat-Regular',
             }}>
-            <Text
-              numberOfLines={1}
-              adjustsFontSizeToFit
-              style={{
-                color: NEW_HEADER_TEXT,
-                fontSize: 55,
-                lineHeight: 55,
-                fontFamily: 'Montserrat-Bold',
-              }}>
-              Doctors
-            </Text>
-          </Animated.View>
-        </View>
+            Medicines
+          </Text>
+        </Animated.View>
       </View>
       <AnimatedScrollView
         nestedScrollEnabled
+        scrollEnabled={!(loading || searchDoctorsLoading || superDocsLoading)}
         // contentContainerStyle={{flex: 1}}
         style={{
-          // height: height,
-          // borderWidth: 1,
-          marginTop: -20,
           transform: [
             {
               translateY: headerPos.interpolate({
-                inputRange: [0, 350],
-                outputRange: [0, -30],
+                inputRange: [0, 400],
+                outputRange: [0, -20],
                 extrapolate: 'clamp',
               }),
             },
@@ -390,11 +402,16 @@ export default function LandingPageScreen({navigation}) {
             <SearchBarSolid
               withIcon
               placeholderTextColor={SEARCH_PLACEHOLDER_COLOR}
-              icon={<Filter height={24} width={24} color={'#000'} />}
+              icon={
+                <Image
+                  source={require('../../../assets/icons/configure.png')}
+                  style={{height: 24, width: 24}}
+                />
+              }
               searchIcon={
-                <Icon
-                  name="search"
-                  size={20}
+                <Image
+                  source={require('../../../assets/icons/search.png')}
+                  style={{height: 20, width: 18}}
                   color={SEARCH_PLACEHOLDER_COLOR}
                 />
               }
@@ -435,11 +452,10 @@ export default function LandingPageScreen({navigation}) {
                         backgroundColor: PRIMARY_BACKGROUND,
                       },
                     }}>
-                    <Fontisto
-                      name="doctor"
-                      size={40}
-                      style={{margin: 5}}
-                      color={NEW_PRIMARY_COLOR}
+                    <Image
+                      source={tempSpecialityIcons[i]}
+                      resizeMode="contain"
+                      style={{margin: 5, height: 40, width: 40}}
                     />
                     <Text
                       adjustsFontSizeToFit

@@ -48,3 +48,6 @@ export const GREY_CARD = '#F4F4F4';
 export const INACTIVE_STEP = '#E4FCF9';
 export const INPUT_PLACEHOLDER = '#8E9393';
 export const SOME_COLOR = '#3EAEAE';
+export const GREY_OUTLINE = '#E0E0E0';
+export const GREY_BACKGROUND = '#f8f8f8';
+export const NEW_PRIMARY_LIGHT_BG = '#e6f7f5';

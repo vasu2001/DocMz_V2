@@ -214,7 +214,8 @@ export default function DmzLoginV2(props) {
             iconStyle={{alignSelf: 'center'}}
             iconColor={NEW_PRIMARY_BACKGROUND}
             size={30}
-            validated={reg.test(credential.email)}
+            validationCallback={() => reg.test(credential.email)}
+            value={credential.email}
           />
           <TextInputIcon
             style={styles.inputContainer}
@@ -226,7 +227,8 @@ export default function DmzLoginV2(props) {
               flex: 1,
             }}
             secureTextEntry={!passVisible}
-            validated={credential.password.length >= 4}
+            validationCallback={() => credential.password.length >= 4}
+            value={credential.password}
             hasIcon={true}
             inputHandler={handlePassword}
             iconName="lock"
@@ -319,6 +321,18 @@ export default function DmzLoginV2(props) {
           {/* </View> */}
         </View>
       </ViewPager>
+      <View
+        style={{
+          backgroundColor: 'white',
+          alignItems: 'center',
+          paddingTop: 5,
+          paddingBottom: 15,
+        }}>
+        <Image
+          source={require('../../../assets/icons/docmz.png')}
+          style={{height: 21, width: 91}}
+        />
+      </View>
     </>
   );
 }

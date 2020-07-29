@@ -127,7 +127,8 @@ export default function SignUpStep1Screen(props) {
           placeholderTextColor={INPUT_PLACEHOLDER}
           style={styles.inputStyle}
           textStyle={styles.textStyle}
-          validated={credential.firstName != ''}
+          validationCallback={() => credential.firstName != ''}
+          value={credential.firstName}
         />
         <TextInputIcon
           placeholder="Last Name"
@@ -135,7 +136,8 @@ export default function SignUpStep1Screen(props) {
           placeholderTextColor={INPUT_PLACEHOLDER}
           style={styles.inputStyle}
           textStyle={styles.textStyle}
-          validated={credential.lastName != ''}
+          validationCallback={() => credential.lastName != ''}
+          value={credential.lastName}
         />
         <TextInputIcon
           placeholder="Email"
@@ -144,12 +146,13 @@ export default function SignUpStep1Screen(props) {
           placeholderTextColor={INPUT_PLACEHOLDER}
           style={styles.inputStyle}
           textStyle={styles.textStyle}
-          validated={reg.test(credential.email)}
+          validationCallback={() => reg.test(credential.email)}
+          value={credential.email}
         />
         <TextInputIcon
           hasIcon={true}
           iconName={passVisible ? 'eye' : 'eye-off'}
-          validated={credential.password.length >= 4}
+          validationCallback={() => credential.password.length >= 4}
           size={25}
           iconPos="right"
           secureTextEntry={!passVisible}
@@ -163,6 +166,7 @@ export default function SignUpStep1Screen(props) {
             justifyContent: 'center',
           }}
           textStyle={[styles.textStyle, {width: '83%'}]}
+          value={credential.password}
         />
         <View
           style={{
@@ -294,6 +298,18 @@ export default function SignUpStep1Screen(props) {
             </Text>
           </Text>
         </TouchableOpacity>
+        <View
+          style={{
+            backgroundColor: 'white',
+            alignItems: 'center',
+            paddingTop: 5,
+            paddingBottom: 15,
+          }}>
+          <Image
+            source={require('../../../assets/icons/docmz.png')}
+            style={{height: 21, width: 91}}
+          />
+        </View>
       </ScrollView>
     </View>
   );
@@ -303,7 +319,7 @@ const styles = StyleSheet.create({
   inputStyle: {
     width: '70%',
     borderBottomColor: NEW_PRIMARY_COLOR,
-    borderBottomWidth: 1.5,
+    borderBottomWidth: 1,
     height: 'auto',
     alignSelf: 'center',
   },

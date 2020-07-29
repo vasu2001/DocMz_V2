@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, StyleSheet, Text} from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useSafeArea} from 'react-native-safe-area-view';
 
 /**
  *
@@ -27,8 +28,25 @@ function TextInputIcon({
   maxLength,
   onPress,
   children,
-  validated = true,
+  // validated = true,
+  validationCallback = () => true,
 }) {
+  const [validated, setValidated] = useState(true);
+  let timeout = null;
+
+  useEffect(() => {
+    if (value.length > 0) {
+      timeout && clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        setValidated(validationCallback());
+      }, 500);
+    }
+
+    return () => {
+      timeout && clearTimeout(timeout);
+    };
+  }, [value]);
+
   return (
     <View
       style={[

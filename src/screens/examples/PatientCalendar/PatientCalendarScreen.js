@@ -1,18 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {setState, useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  Dimensions,
-  StyleSheet,
-  Animated,
-  PanResponder,
-  TouchableHighlight,
-  ScrollView,
-  FlatList,
-  ImagePropTypes,
-} from 'react-native';
-import RadialGradient from 'react-native-radial-gradient';
+import {View, Text, Dimensions, StyleSheet} from 'react-native';
 import {extendMoment} from 'moment-range';
 import Moment from 'moment';
 import dateArray from 'moment-array-dates';
@@ -26,6 +14,7 @@ import {
   NEW_PRIMARY_COLOR,
   SECONDARY_COLOR,
 } from '../../../styles/colors';
+import AppointmentQuestion from '../../../components/molecules/Modal/AppointmentQuestion';
 const moment = extendMoment(Moment);
 
 const height = Dimensions.get('screen').height;
@@ -34,6 +23,10 @@ const width = Dimensions.get('screen').width;
 export default function PatientCalendarScreen({navigation}) {
   const [selectedStartDate, setStartDate] = useState('');
   const [selectedEndDate, setEndDate] = useState('');
+  const [questionModal, setModal] = useState({
+    visible: false,
+    onNext: () => {},
+  });
   const dispatch = useDispatch();
   const {appointmentForSlotLoading, appointmentForSlot} = useSelector(
     (state) => state.PatientAccountReducer,
@@ -103,73 +96,87 @@ export default function PatientCalendarScreen({navigation}) {
   //   }
   // };
   return (
-    <View
-      style={{flex: 1, flexDirection: 'column', backgroundColor: '#ffffff'}}>
-      <View>
-        <TopNavBar
-          navigation={navigation}
-          headerText="Book"
-          style={{Container: {marginVertical: 15}}}
-        />
-        <Calendar onDateChange={onDateChange} />
-        <View
-          style={{
-            justifyContent: 'space-around',
-            flexDirection: 'row',
-            marginTop: 20,
-            paddingHorizontal: '15%',
-          }}>
-          <View style={{flexDirection: 'row', alignContent: 'center'}}>
-            <Text
-              style={{
-                borderRadius: 6,
-                borderWidth: 1,
-                width: 20,
-                height: 20,
-                textAlign: 'center',
-                borderColor: NEW_PRIMARY_COLOR,
-                fontSize: 18,
-              }}>
-              {' '}
-            </Text>
-            <Text
-              style={{
-                fontSize: 14,
-                paddingLeft: 10,
-                height: 20,
-                textAlignVertical: 'center',
-                color: NEW_HEADER_TEXT,
-                fontFamily: 'Montserrat-Regular',
-              }}>
-              Today
-            </Text>
-          </View>
-          <View style={{flexDirection: 'row'}}>
-            <Text
-              style={{
-                borderRadius: 5,
-                backgroundColor: SECONDARY_COLOR,
-                width: 20,
-                height: 20,
-                textAlign: 'center',
-                borderColor: 'white',
-              }}>
-              {' '}
-            </Text>
-            <Text
-              style={{
-                fontSize: 14,
-                paddingLeft: 10,
-                color: NEW_HEADER_TEXT,
-                fontFamily: 'Montserrat-Regular',
-              }}>
-              Chosen
-            </Text>
+    <>
+      <AppointmentQuestion
+        {...questionModal}
+        onCancel={() => {
+          setModal({visible: false});
+        }}
+        text="Who is this visit for?"
+        options={['Myself', 'Mother', 'Father', 'Other']}
+      />
+      <View
+        style={{flex: 1, flexDirection: 'column', backgroundColor: '#ffffff'}}>
+        <View>
+          <TopNavBar
+            navigation={navigation}
+            headerText="Book"
+            style={{Container: {marginVertical: 15}}}
+          />
+          <Calendar onDateChange={onDateChange} />
+          <View
+            style={{
+              justifyContent: 'space-around',
+              flexDirection: 'row',
+              marginTop: 20,
+              paddingHorizontal: '15%',
+            }}>
+            <View style={{flexDirection: 'row', alignContent: 'center'}}>
+              <Text
+                style={{
+                  borderRadius: 6,
+                  borderWidth: 1,
+                  width: 20,
+                  height: 20,
+                  textAlign: 'center',
+                  borderColor: NEW_PRIMARY_COLOR,
+                  fontSize: 18,
+                }}>
+                {' '}
+              </Text>
+              <Text
+                style={{
+                  fontSize: 14,
+                  paddingLeft: 10,
+                  height: 20,
+                  textAlignVertical: 'center',
+                  color: NEW_HEADER_TEXT,
+                  fontFamily: 'Montserrat-Regular',
+                }}>
+                Today
+              </Text>
+            </View>
+            <View style={{flexDirection: 'row'}}>
+              <Text
+                style={{
+                  borderRadius: 5,
+                  backgroundColor: SECONDARY_COLOR,
+                  width: 20,
+                  height: 20,
+                  textAlign: 'center',
+                  borderColor: 'white',
+                }}>
+                {' '}
+              </Text>
+              <Text
+                style={{
+                  fontSize: 14,
+                  paddingLeft: 10,
+                  color: NEW_HEADER_TEXT,
+                  fontFamily: 'Montserrat-Regular',
+                }}>
+                Chosen
+              </Text>
+            </View>
           </View>
         </View>
+        <AppoinmentSlider
+          navigation={navigation}
+          slots={appointmentForSlot}
+          setModal={setModal}
+        />
       </View>
-      <AppoinmentSlider navigation={navigation} slots={appointmentForSlot} />
-    </View>
+    </>
   );
 }
 
