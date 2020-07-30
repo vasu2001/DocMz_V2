@@ -72,7 +72,8 @@ export default function AppoinmentSlider({slots, navigation, setModal}) {
     console.log(id);
     setModal({
       visible: true,
-      onNext: () => navigation.navigate('ConfirmAppointment', {data: []}),
+      onNext: () =>
+        navigation.navigate('ConfirmAppointment', {data: {slotId: id}}),
     });
   };
 

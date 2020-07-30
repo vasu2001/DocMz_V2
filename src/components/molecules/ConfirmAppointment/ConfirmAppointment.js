@@ -58,7 +58,7 @@ const ConfirmAppointment = ({navigation}) => {
   const PopupTranslateY = useRef(new Animated.Value(0)).current;
 
   console.log('************************************');
-  console.log(data.output || data.appointments);
+  console.log(data);
 
   const [state, setState] = useState({
     name: '',
@@ -102,132 +102,6 @@ const ConfirmAppointment = ({navigation}) => {
           },
         }}
       />
-
-      {/* <ScrollView
-          style={ConfirmAppointmentStyles.ScrollView}
-          showsVerticalScrollIndicator={false}>
-          <View style={ConfirmAppointmentStyles.ScheduleAvailability}>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              style={{marginTop: 20}}>
-              <CardInRow
-                style={{
-                  paddingTop: 10,
-                  paddingLeft: 10,
-                  paddingRight: 10,
-                  paddingBottom: 8,
-                  borderTopWidth: 1,
-                  BorderBottomWidth: 1,
-                  borderColor: '#F2EBEB',
-                }}>
-                {Data.map((item) => (
-                  <ProfileColText
-                    ProfileName={item.name}
-                    ProfileEmail={item.contact}
-                    trigger={() => initialChoosenState(item)}
-                  />
-                ))}
-              </CardInRow>
-            </ScrollView>
-            <View style={ConfirmAppointmentStyles.ScheduleTiming}>
-              <MaterialCommunityIcons
-                name="calendar"
-                size={32}
-                color="#6230CC"
-              />
-              <View style={ConfirmAppointmentStyles.DateAndTime}>
-                <Text style={ConfirmAppointmentStyles.Date}>
-                  Friday,March 27
-                </Text>
-                <Text style={ConfirmAppointmentStyles.Time}>
-                  10:00 - 11:00 AM
-                </Text>
-              </View>
-            </View>
-            <View style={ConfirmAppointmentStyles.Available}>
-              <Available />
-              <Text style={ConfirmAppointmentStyles.AvailableText}>
-                Available
-              </Text>
-            </View>
-          </View>
-          <Text style={ConfirmAppointmentStyles.InputLabel}>Patient Name</Text>
-          <TextInputCustom
-            inputHandler={(txt) => setState({...state, name: txt})}
-            value={state.name}
-            placeholder="Name"
-            textContentType="name"
-          />
-          <Text style={ConfirmAppointmentStyles.InputLabel}>
-            Reason for visit
-          </Text>
-          <TextInputCustom
-            inputHandler={(txt) => setState({...state, reasonForVisit: txt})}
-            value={state.reasonForVisit}
-            placeholder="Reason"
-            textContentType="name"
-          />
-          <Text style={ConfirmAppointmentStyles.InputLabel}>
-            Contact Number
-          </Text>
-          <TextInputCustom
-            inputHandler={(txt) => setState({...state, contact: txt})}
-            value={state.contact}
-            placeholder="Contact"
-            textContentType="telephoneNumber"
-            keyboardType="phone-pad"
-          />
-          <View style={ConfirmAppointmentStyles.ConsultFeeContainer}>
-            <ConsultFeeIcon />
-            <Text style={{marginLeft: 5}}>Consultation Fee</Text>
-            <Text style={{fontWeight: 'bold', marginLeft: 5}}>$250.00</Text>
-          </View>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'center',
-              marginTop: 40,
-            }}>
-            <TouchableOpacity
-              style={{flex: 6, padding: 5, paddingBottom: 30}}
-              onPress={() => navigation.goBack(null)}>
-              <BasicCard
-                active
-                style={{
-                  CardContainer: {
-                    height: '100%',
-                    width: '100%',
-                    backgroundColor: '#fff',
-                    borderWidth: 2,
-                    borderColor: '#F4C130',
-                  },
-                }}>
-                <Text style={{color: '#F4C130', fontWeight: 'bold'}}>
-                  Cancel
-                </Text>
-              </BasicCard>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{flex: 6, padding: 5, paddingBottom: 30}}
-              onPress={() => handelAppointmentSubmit()}>
-              <BasicCard
-                active
-                style={{
-                  CardContainer: {
-                    height: '100%',
-                    width: '100%',
-                    backgroundColor: '#F4C130',
-                  },
-                }}>
-                <Text style={{color: '#fff', fontWeight: 'bold'}}>
-                  Book Appointment
-                </Text>
-              </BasicCard>
-            </TouchableOpacity>
-          </View>
-        </ScrollView> */}
 
       <ScrollView style={ConfirmAppointmentStyles.ScrollView}>
         <View style={[ConfirmAppointmentStyles.rootGroup, {marginTop: 40}]}>
