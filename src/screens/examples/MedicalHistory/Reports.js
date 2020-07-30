@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Text, View, FlatList} from 'react-native';
 import NewItem from '../../../components/molecules/MedicalHistory/NewItem';
 import ReportsItem from '../../../components/molecules/MedicalHistory/ReportsItem';
+import AddReport from '../../../components/molecules/Modal/AddReport';
 
 const dummyData = [
   {
@@ -22,13 +23,22 @@ const dummyData = [
 ];
 
 const Reports = ({params}) => {
+  const [modalVisible, setVisible] = useState(false);
+
   return (
-    <FlatList
-      style={{padding: 20}}
-      data={dummyData}
-      ListFooterComponent={<NewItem />}
-      renderItem={({item}) => <ReportsItem data={item} />}
-    />
+    <>
+      <AddReport
+        visible={modalVisible}
+        onCancel={() => setVisible(false)}
+        onUpload={(temp) => {}}
+      />
+      <FlatList
+        style={{padding: 20}}
+        data={dummyData}
+        ListFooterComponent={<NewItem onPress={() => setVisible(true)} />}
+        renderItem={({item}) => <ReportsItem data={item} />}
+      />
+    </>
   );
 };
 
