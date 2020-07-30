@@ -8,9 +8,9 @@ import {
   Platform,
   UIManager,
   LayoutAnimation,
+  TouchableOpacity,
 } from 'react-native';
 import ToggleDot from '../../atoms/ToggleDot/ToggleDot';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import {SECONDARY_BACKGROUND, SECONDARY_COLOR} from '../../../styles/colors';
 
 if (Platform.OS === 'android') {

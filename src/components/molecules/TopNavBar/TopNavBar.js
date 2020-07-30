@@ -14,7 +14,6 @@ import {
 } from '../../../styles/colors';
 
 import DmzText from '../../atoms/DmzText/DmzText';
-import Iconicons from 'react-native-vector-icons/Ionicons';
 
 function TopNavBar({
   onLeftButtonPress = () => navigation.goBack(null),

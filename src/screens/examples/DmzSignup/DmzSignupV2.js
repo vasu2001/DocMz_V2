@@ -27,7 +27,7 @@ function DmzSignupV2(props) {
   const {isLoading, data} = useSelector((state) => state.AuthReducer);
   // const [signupAs, setSignupAs] = useState('patient');
   const signupAs = props.navigation.state.params.loginAs;
-  const [imageData, setImageData] = useState('');
+  const [imageData, setImageData] = useState(null);
   const [modal, setModal] = useState({visible: false, text: ''});
   const [credential, setCredential] = useState({
     firstName: '',
@@ -240,6 +240,7 @@ function DmzSignupV2(props) {
             credential={credential}
             setCredential={setCredential}
             onChoosePicture={onChoosePicture}
+            imageData={imageData}
             onPress={() => {
               const {registration_number, specialty} = credential;
               if (

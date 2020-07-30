@@ -23,7 +23,8 @@ import ConfirmAppointment from '../components/molecules/ConfirmAppointment/Confi
 import BookingDetails from '../screens/patient/questionnaire/BookingDetails';
 import FamilyMember from '../screens/patient/familyMember/FamilyMember';
 import WaitingRoom from '../screens/patient/waitingRoom/WaitingRoom';
-import ProfileScreen from '../screens/examples/Profile/Profile';
+// import ProfileScreen from '../screens/examples/Profile/Profile';
+import ProfileScreen from '../screens/examples/Profile/NewProfile';
 import LandingPageScreen from '../screens/examples/LandingPage/LandingPageScreen';
 import PatientAdressList from '../screens/examples/PatientAddress/PatientAdressList';
 import PatienDashboard from '../screens/examples/PatientDashboard/PatienDashboard';
@@ -47,6 +48,7 @@ import BookingConfirmed from '../screens/examples/payments/BookingConfirmed';
 import NewCard from '../screens/examples/payments/NewCard';
 import NewWaitingRoom from '../screens/patient/waitingRoom/NewWaitingRoom';
 import VoiceCall from '../screens/patient/Calls/Voicecall';
+import MedicalHistory from '../screens/examples/MedicalHistory/MedicalHistory';
 
 // const PatientBottomNavigation = createSwitchNavigator(
 //   {
@@ -106,6 +108,7 @@ const ProfileStack = createStackNavigator(
     PhoneNumberOtp,
     EmailIdOtp,
     EditEmailId,
+    MedicalHistory,
   },
   {headerMode: 'none', initialRouteName: 'ProfileScreen'},
 );

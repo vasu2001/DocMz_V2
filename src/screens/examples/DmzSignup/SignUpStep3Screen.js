@@ -29,7 +29,7 @@ import {
 const height = Dimensions.get('screen').height;
 
 export default function SignUpStep3Screen(props) {
-  const {credential, setCredential, onChoosePicture} = props;
+  const {credential, setCredential, onChoosePicture, imageData} = props;
   const handleRegistrationNumber = (registration_number) => {
     setCredential({...credential, registration_number});
   };
@@ -87,17 +87,26 @@ export default function SignUpStep3Screen(props) {
             alignItems: 'center',
             justifyContent: 'center',
           }}>
-          <ImagePlaceholder />
-          <Text
-            style={{
-              position: 'absolute',
-              textAlign: 'center',
-              fontSize: 18,
-              color: TERTIARY_TEXT,
-              fontWeight: 'bold',
-            }}>
-            Upload {'\n'}Picture/Video
-          </Text>
+          {imageData?.uri ? (
+            <Image
+              source={{uri: imageData.uri}}
+              style={{height: 200, width: 200}}
+            />
+          ) : (
+            <>
+              <ImagePlaceholder />
+              <Text
+                style={{
+                  position: 'absolute',
+                  textAlign: 'center',
+                  fontSize: 18,
+                  color: TERTIARY_TEXT,
+                  fontWeight: 'bold',
+                }}>
+                Upload {'\n'}Picture/Video
+              </Text>
+            </>
+          )}
         </TouchableOpacity>
         <TextInputIcon
           placeholder="Registration Number"
