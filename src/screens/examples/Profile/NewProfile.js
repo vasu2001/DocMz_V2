@@ -71,7 +71,8 @@ const NewProfile = ({navigation}) => {
         </View>
 
         <View style={{marginHorizontal: 30, marginVertical: 15}}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('MedicalHistory', {})}>
             <View style={styles.listRow}>
               <Image
                 source={require('../../../assets/icons/profile/history.png')}

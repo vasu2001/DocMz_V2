@@ -48,6 +48,7 @@ import BookingConfirmed from '../screens/examples/payments/BookingConfirmed';
 import NewCard from '../screens/examples/payments/NewCard';
 import NewWaitingRoom from '../screens/patient/waitingRoom/NewWaitingRoom';
 import VoiceCall from '../screens/patient/Calls/Voicecall';
+import MedicalHistory from '../screens/examples/MedicalHistory/MedicalHistory';
 
 // const PatientBottomNavigation = createSwitchNavigator(
 //   {
@@ -107,6 +108,7 @@ const ProfileStack = createStackNavigator(
     PhoneNumberOtp,
     EmailIdOtp,
     EditEmailId,
+    MedicalHistory,
   },
   {headerMode: 'none', initialRouteName: 'ProfileScreen'},
 );
