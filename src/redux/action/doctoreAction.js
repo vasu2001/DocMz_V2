@@ -268,9 +268,15 @@ export const UploadProfilePic = (id, ImageData) => {
     const data = new FormData();
     data.append('image', Image);
     data.append('id', id);
+    // const config = {
+    //   Accept: '*/*',
+    //   'content-type': 'multipart/form-data',
+    // };
     const config = {
-      Accept: '*/*',
-      'Content-Type': 'multipart/form-data',
+      headers: {
+        // 'content-type': 'multipart/form-data',
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
     };
     console.log('ppppppppppppppppppppppppppppppppp');
     console.log(data);
@@ -291,7 +297,7 @@ export const UploadProfilePic = (id, ImageData) => {
       })
       .catch((err) => {
         console.log('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
-        console.log(err);
+        console.log(JSON.stringify(err));
         dispatch(errorUploadingImage(err));
       });
   };

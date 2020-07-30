@@ -96,8 +96,8 @@ const MainNavigation = createStackNavigator(
     WaitingRoom: WaitingRoom,
   },
   {
-    initialRouteName: 'pageNavigation',
-    // initialRouteName: 'question',
+    // initialRouteName: 'pageNavigation',
+    initialRouteName: 'PatientHomePage',
     headerMode: 'none',
   },
 );

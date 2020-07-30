@@ -23,7 +23,8 @@ import ConfirmAppointment from '../components/molecules/ConfirmAppointment/Confi
 import BookingDetails from '../screens/patient/questionnaire/BookingDetails';
 import FamilyMember from '../screens/patient/familyMember/FamilyMember';
 import WaitingRoom from '../screens/patient/waitingRoom/WaitingRoom';
-import ProfileScreen from '../screens/examples/Profile/Profile';
+// import ProfileScreen from '../screens/examples/Profile/Profile';
+import ProfileScreen from '../screens/examples/Profile/NewProfile';
 import LandingPageScreen from '../screens/examples/LandingPage/LandingPageScreen';
 import PatientAdressList from '../screens/examples/PatientAddress/PatientAdressList';
 import PatienDashboard from '../screens/examples/PatientDashboard/PatienDashboard';
