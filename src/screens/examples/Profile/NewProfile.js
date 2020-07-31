@@ -9,8 +9,12 @@ import {
 } from 'react-native';
 import TopNavBar from '../../../components/molecules/TopNavBar/TopNavBar';
 import {NEW_PRIMARY_COLOR, GREY_OUTLINE} from '../../../styles/colors';
+import {useSelector} from 'react-redux';
+import {Host} from '../../../utils/connection';
 
 const NewProfile = ({navigation}) => {
+  const {data} = useSelector((state) => state.AuthReducer);
+
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <TopNavBar
@@ -26,7 +30,11 @@ const NewProfile = ({navigation}) => {
             alignSelf: 'center',
           }}>
           <Image
-            source={require('../../../assets/jpg/person3.jpg')}
+            source={
+              data?.picture && data?.picture[0]
+                ? {uri: Host + data.picture[0].replace('public', '')}
+                : require('../../../assets/jpg/person3.jpg')
+            }
             style={{height: 120, width: 120, borderRadius: 60, margin: 15}}
             resizeMode="cover"
           />
@@ -36,7 +44,7 @@ const NewProfile = ({navigation}) => {
               fontFamily: 'Montserrat-SemiBold',
               fontSize: 20,
             }}>
-            Allen Paul
+            {(data.firstName ?? '') + ' ' + (data.lastName ?? '')}
           </Text>
 
           <View
@@ -88,7 +96,8 @@ const NewProfile = ({navigation}) => {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('FamilyMember', {})}>
             <View style={styles.listRow}>
               <Image
                 source={require('../../../assets/icons/profile/family.png')}

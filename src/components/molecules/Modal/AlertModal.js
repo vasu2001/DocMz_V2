@@ -42,7 +42,7 @@ const AlertModal = ({text, visible, onCancel}) => {
                   fontSize: 20,
                   textAlign: 'center',
                 }}>
-                {text}
+                {typeof text === 'string' ? text : ''}
               </Text>
               {/* <DmzButton
             onPress={onCancel}

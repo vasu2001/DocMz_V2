@@ -18,6 +18,7 @@ import SlidingUpPanel from 'rn-sliding-up-panel';
 import PatientLocation from '../../../../screens/examples/PatientLocation/PatientLocation';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import TopNavBar from '../../../molecules/TopNavBar/TopNavBar';
+import {Host} from '../../../../utils/connection';
 const Navigation = [
   {
     active: true,
@@ -215,7 +216,15 @@ const Custom = ({
           <TouchableOpacity
             onPress={onProfileClick}
             style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Avater type={6} style={{borderRadius: 10, borderWidth: 4}} />
+            <Avater
+              type={6}
+              style={{borderRadius: 10, borderWidth: 4}}
+              src={
+                data?.picture && data?.picture[0]
+                  ? {uri: Host + data?.picture[0].replace('public', '')}
+                  : null
+              }
+            />
             <DmzText
               text={
                 !data || data.length == 0
