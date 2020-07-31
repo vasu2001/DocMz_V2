@@ -50,7 +50,7 @@ function Languages({navigation}) {
                 fontWeight: 'bold',
                 marginTop: 5,
               }}>
-              {Local('Testing.lang', {test: 'just'})}
+              {Local('doctor.Languages.region_and_lang')}
             </Text>
           </View>
         </View>

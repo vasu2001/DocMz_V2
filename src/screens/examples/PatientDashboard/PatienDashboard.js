@@ -87,7 +87,7 @@ export default function PatienDashboard({navigation}) {
                 text={
                   patient == null
                     ? ''
-                    : `${patient.firstName} ${patient.firstName}'s`
+                    : `${patient.firstName} ${patient.lastName}'s`
                 }
                 style={{color: PRIMARY_TEXT, fontSize: 18}}
               />

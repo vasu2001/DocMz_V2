@@ -220,7 +220,6 @@ const Home = ({navigation}) => {
             return (
               <TouchableOpacity
                 onPress={() => {
-                  console.log('poskfs');
                   navigation.navigate('PatientDetails', {patient: patient});
                 }}
                 style={{marginTop: 25}}>

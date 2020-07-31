@@ -240,9 +240,9 @@ const FamilyMember = ({navigation}) => {
                   date={state.birthdate}
                   mode="date"
                   placeholder="Date of Birth"
-                  format="DD-MM-YYYY"
-                  minDate="01-01-1900"
-                  maxDate={Moment(new Date(), 'DD-MM-YYYY')}
+                  format="MM/DD/YYYY"
+                  minDate="01/01/1900"
+                  maxDate={Moment(new Date(), 'MM/DD/YYYY')}
                   showIcon={false}
                   allowFontScaling={true}
                   customStyles={{

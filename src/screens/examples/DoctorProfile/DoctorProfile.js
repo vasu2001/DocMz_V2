@@ -24,6 +24,7 @@ import {
   INPUT_PLACEHOLDER,
 } from '../../../styles/colors';
 import ReviewItem from '../../../components/molecules/Reviews/ReviewItem';
+import {Host} from '../../../utils/connection';
 
 const dummyFeeback = [
   {
@@ -101,7 +102,7 @@ function DoctorProfile(props) {
   //   navigation.goBack();
   //   return true;
   // });
-
+  let imageSource = require('../../../assets/jpg/person1.jpg');
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       <TopNavBar
@@ -145,7 +146,15 @@ function DoctorProfile(props) {
               height: 130,
               width: 130,
             }}
-            source={require('../../../assets/jpg/person1.jpg')}
+            source={
+              data.picture.length > 0
+                ? {
+                    uri: `${Host}${data.picture[0]
+                      .replace('public', '')
+                      .replace('\\\\', '/')}`,
+                  }
+                : imageSource
+            }
           />
         </View>
 
