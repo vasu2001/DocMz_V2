@@ -139,7 +139,7 @@ const PatientNavigationHome = createBottomTabNavigator(
       },
     },
     patientDashboardNav: {
-      screen: PatienDashboard,
+      screen: MedicalHistory,
       navigationOptions: {
         tabBarIcon: ({focused, horizontal, tintColor}) => {
           return (

@@ -25,7 +25,12 @@ import NewToggleButton from '../ToggleButton/NewToggleButton';
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
-export default function AppoinmentSlider({slots, navigation, setModal}) {
+export default function AppoinmentSlider({
+  slots,
+  navigation,
+  setModal,
+  doctorData,
+}) {
   const [pos, setPos] = useState(false);
   const [selectedIndex, setselectedIndex] = useState(0);
   const [timeValue, setTimeValue] = useState('');
@@ -68,12 +73,12 @@ export default function AppoinmentSlider({slots, navigation, setModal}) {
     },
   });
 
-  const bookAppointment = (id) => {
-    console.log(id);
+  const bookAppointment = (slot) => {
+    console.log(slot._id);
     setModal({
       visible: true,
       onNext: () =>
-        navigation.navigate('ConfirmAppointment', {data: {slotId: id}}),
+        navigation.navigate('ConfirmAppointment', {data: slot, doctorData}),
     });
   };
 
@@ -185,7 +190,7 @@ export default function AppoinmentSlider({slots, navigation, setModal}) {
                               }}
                               onPress={() => {
                                 setTimeValue(time);
-                                bookAppointment(u._id);
+                                bookAppointment(u);
                               }}>
                               <Text
                                 style={{

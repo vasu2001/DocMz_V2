@@ -7,7 +7,10 @@ import dateArray from 'moment-array-dates';
 import Calendar from '../../../components/molecules/YearCalendar.js/Calendar';
 import AppoinmentSlider from '../../../components/molecules/YearCalendar.js/AppoinmentSlider';
 import TopNavBar from '../../../components/molecules/TopNavBar/TopNavBar';
-import {GetAppointmentSlot} from '../../../redux/action/patientAccountAction';
+import {
+  GetAppointmentSlot,
+  GetFamilyMember,
+} from '../../../redux/action/patientAccountAction';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   NEW_HEADER_TEXT,
@@ -31,10 +34,30 @@ export default function PatientCalendarScreen({navigation}) {
   const {appointmentForSlotLoading, appointmentForSlot} = useSelector(
     (state) => state.PatientAccountReducer,
   );
+  const [forWhomOption, setForWhomOption] = useState([
+    'Myself',
+    'Mother',
+    'Father',
+    'Other',
+  ]);
   // selectedIndex: 0
   // pos: false,
   // months: [],
-  const {_id} = navigation.state.params.data;
+  const data = navigation.state.params.data;
+  const {_id} = data;
+
+  const {familyMember, isPatientAccountReducerLoading, patient} = useSelector(
+    (state) => state.PatientAccountReducer,
+  );
+  useEffect(() => {
+    !isPatientAccountReducerLoading && dispatch(GetFamilyMember(patient.meta));
+  }, []);
+  useEffect(() => {
+    const relationship = Array.from(
+      new Set(familyMember.map((item) => item.relationship)),
+    );
+    setForWhomOption(relationship);
+  }, [familyMember]);
   // const [range, setRange] = useState([]);
   // const time = ['09:00', '10:00', '11:00', '12:00', '01:00', '02:000'];
   // // daysLable: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
@@ -103,7 +126,7 @@ export default function PatientCalendarScreen({navigation}) {
           setModal({visible: false});
         }}
         text="Who is this visit for?"
-        options={['Myself', 'Mother', 'Father', 'Other']}
+        options={forWhomOption}
       />
       <View
         style={{flex: 1, flexDirection: 'column', backgroundColor: '#ffffff'}}>
@@ -173,6 +196,7 @@ export default function PatientCalendarScreen({navigation}) {
         <AppoinmentSlider
           navigation={navigation}
           slots={appointmentForSlot}
+          doctorData={data}
           setModal={setModal}
         />
       </View>

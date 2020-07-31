@@ -79,7 +79,6 @@ function DoctorProfile(props) {
   const {data} = props.navigation.state.params;
   const authData = useSelector((state) => state.AuthReducer);
   const _checkLogedinAndDoTheStuff = () => {
-    console.log('bug bug ', authData.isLogedin);
     if (!authData.isLogedin) {
       console.log('>> authentication.');
       navigation.navigate('authentication');

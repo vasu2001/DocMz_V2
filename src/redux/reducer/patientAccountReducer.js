@@ -9,6 +9,9 @@ const initialState = {
   appointmentForSlotLoading: false,
   appointmentForSlot: [],
   appointmentForSlotError: '',
+  bookingAppointment: false,
+  bookedAppointment: '',
+  errorBookingAppointment: '',
 };
 
 const PatientAccountReducer = (state = initialState, action) => {
@@ -78,6 +81,23 @@ const PatientAccountReducer = (state = initialState, action) => {
         ...state,
         appointmentForSlotLoading: false,
         appointmentForSlotError: action.payload,
+      };
+    case 'BOOKING_APPOINTMENT':
+      return {
+        ...state,
+        bookingAppointment: true,
+      };
+    case 'BOOKED_APPOINTMENT':
+      return {
+        ...state,
+        bookedAppointment: action.payload,
+        bookingAppointment: false,
+      };
+    case 'ERROR_BOOKING_APPOINTMENT':
+      return {
+        ...state,
+        errorBookingAppointment: action.payload,
+        bookingAppointment: false,
       };
     default:
       return state;
