@@ -274,8 +274,8 @@ export const UploadProfilePic = (id, ImageData) => {
     // };
     const config = {
       headers: {
-        // 'content-type': 'multipart/form-data',
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'multipart/form-data',
+        // 'Content-Type': 'application/x-www-form-urlencoded',
       },
     };
     console.log('ppppppppppppppppppppppppppppppppp');

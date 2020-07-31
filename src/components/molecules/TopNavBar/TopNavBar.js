@@ -16,7 +16,7 @@ import {
 import DmzText from '../../atoms/DmzText/DmzText';
 
 function TopNavBar({
-  onLeftButtonPress = () => navigation.goBack(null),
+  onLeftButtonPress = () => navigation.goBack(),
   onRightButtonPress = () => navigation.openDrawer(),
   headerText,
   LeftComp,

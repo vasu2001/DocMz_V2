@@ -224,6 +224,8 @@ export const LoginDoctor = (data, success, failed) => {
             ...data,
           };
 
+          console.log(_data);
+
           dispatch(saveNewUser(_data, 'doctor'));
           success({
             status: true,
