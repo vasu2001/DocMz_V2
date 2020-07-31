@@ -31,8 +31,8 @@ const NewProfile = ({navigation}) => {
           }}>
           <Image
             source={
-              data?.picture[0]
-                ? {uri: Host + data?.picture[0].replace('public', '')}
+              data?.picture && data?.picture[0]
+                ? {uri: Host + data.picture[0].replace('public', '')}
                 : require('../../../assets/jpg/person3.jpg')
             }
             style={{height: 120, width: 120, borderRadius: 60, margin: 15}}

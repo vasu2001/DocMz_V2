@@ -220,7 +220,7 @@ const Custom = ({
               type={6}
               style={{borderRadius: 10, borderWidth: 4}}
               src={
-                data?.picture[0]
+                data?.picture && data?.picture[0]
                   ? {uri: Host + data?.picture[0].replace('public', '')}
                   : null
               }
