@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Text,
   View,
@@ -16,18 +16,28 @@ import {
 import DmzButton from '../../atoms/DmzButton/DmzButton';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {array} from 'prop-types';
+import CollapsibleContainer from './CollapsibleContainer';
+import {getStoredState} from 'redux-persist';
 
 const AddFamily = ({visible, onCancel, onUpdate}) => {
-  const [details, setDetails] = useState({
+  const initialState = {
     name: '',
     relation: '',
     age: '',
     bloodType: '',
     medicalHistory: [''],
-  });
+    allergies: [''],
+  };
+
+  const [details, setDetails] = useState(initialState);
 
   return (
-    <BlurModal {...{visible, onCancel}}>
+    <BlurModal
+      {...{visible}}
+      onCancel={() => {
+        onCancel();
+        setDetails(initialState);
+      }}>
       <Text
         style={{
           fontFamily: 'Montserrat-SemiBold',
@@ -60,69 +70,116 @@ const AddFamily = ({visible, onCancel, onUpdate}) => {
         style={styles.text}
       /> */}
 
-      <View
-        style={{
-          flexDirection: 'row',
-          alignSelf: 'stretch',
-          justifyContent: 'space-between',
-          marginBottom: 5,
-        }}>
-        <TextInput
-          value={details.age}
-          onChangeText={(text) => setDetails({...details, age: text})}
-          placeholderTextColor={INPUT_PLACEHOLDER}
-          placeholder="Age"
-          style={[styles.text, {width: '45%'}]}
-          keyboardType="number-pad"
-        />
-        <TextInput
-          value={details.bloodType}
-          onChangeText={(text) => setDetails({...details, bloodType: text})}
-          placeholderTextColor={INPUT_PLACEHOLDER}
-          placeholder="Bloodtype"
-          style={[styles.text, {width: '45%'}]}
-        />
-      </View>
-
-      {details.medicalHistory.map((item, i) => (
+      <CollapsibleContainer
+        height={
+          40 + (details.medicalHistory.length + details.allergies.length) * 50
+        }>
         <View
           style={{
             flexDirection: 'row',
-            alignItems: 'center',
-            borderColor: NEW_PRIMARY_BACKGROUND,
-            borderBottomWidth: 1.5,
-            marginBottom: 10,
+            alignSelf: 'stretch',
+            justifyContent: 'space-between',
+            marginBottom: 5,
           }}>
           <TextInput
-            value={item}
-            onChangeText={(text) => {
-              let temp = details.medicalHistory;
-              temp[i] = text;
-              setDetails({...details, medicalHistory: temp});
-            }}
+            value={details.age}
+            onChangeText={(text) => setDetails({...details, age: text})}
             placeholderTextColor={INPUT_PLACEHOLDER}
-            placeholder="Medical History"
-            style={[
-              styles.text,
-              {borderBottomWidth: 0, flex: 1, marginBottom: 0},
-            ]}
+            placeholder="Age"
+            style={[styles.text, {width: '45%'}]}
+            keyboardType="number-pad"
           />
-          <TouchableOpacity
-            onPress={() => {
-              let temp = details.medicalHistory;
-              if (i + 1 === details.medicalHistory.length) temp.push('');
-              else temp.splice(i, 1);
-              setDetails({...details, medicalHistory: temp});
-            }}>
-            <FontAwesome5
-              name={i + 1 === details.medicalHistory.length ? 'plus' : 'minus'}
-              size={10}
-              color={INPUT_PLACEHOLDER}
-              style={{marginHorizontal: 5}}
-            />
-          </TouchableOpacity>
+          <TextInput
+            value={details.bloodType}
+            onChangeText={(text) => setDetails({...details, bloodType: text})}
+            placeholderTextColor={INPUT_PLACEHOLDER}
+            placeholder="Bloodtype"
+            style={[styles.text, {width: '45%'}]}
+          />
         </View>
-      ))}
+
+        {details.allergies.map((item, i) => (
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              borderColor: NEW_PRIMARY_BACKGROUND,
+              borderBottomWidth: 1.5,
+              marginBottom: 10,
+            }}>
+            <TextInput
+              value={item}
+              onChangeText={(text) => {
+                let temp = details.allergies;
+                temp[i] = text;
+                setDetails({...details, allergies: temp});
+              }}
+              placeholderTextColor={INPUT_PLACEHOLDER}
+              placeholder="Allergies"
+              style={[
+                styles.text,
+                {borderBottomWidth: 0, flex: 1, marginBottom: 0},
+              ]}
+            />
+            <TouchableOpacity
+              onPress={() => {
+                let temp = details.allergies;
+                if (i + 1 === details.allergies.length) temp.push('');
+                else temp.splice(i, 1);
+                setDetails({...details, allergies: temp});
+              }}>
+              <FontAwesome5
+                name={i + 1 === details.allergies.length ? 'plus' : 'minus'}
+                size={10}
+                color={INPUT_PLACEHOLDER}
+                style={{marginHorizontal: 5}}
+              />
+            </TouchableOpacity>
+          </View>
+        ))}
+
+        {details.medicalHistory.map((item, i) => (
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              borderColor: NEW_PRIMARY_BACKGROUND,
+              borderBottomWidth: 1.5,
+              marginBottom: 10,
+            }}>
+            <TextInput
+              value={item}
+              onChangeText={(text) => {
+                let temp = details.medicalHistory;
+                temp[i] = text;
+                setDetails({...details, medicalHistory: temp});
+              }}
+              placeholderTextColor={INPUT_PLACEHOLDER}
+              placeholder="Medical History"
+              style={[
+                styles.text,
+                {borderBottomWidth: 0, flex: 1, marginBottom: 0},
+              ]}
+            />
+            <TouchableOpacity
+              onPress={() => {
+                let temp = details.medicalHistory;
+                if (i + 1 === details.medicalHistory.length) temp.push('');
+                else temp.splice(i, 1);
+                setDetails({...details, medicalHistory: temp});
+              }}>
+              <FontAwesome5
+                name={
+                  i + 1 === details.medicalHistory.length ? 'plus' : 'minus'
+                }
+                size={10}
+                color={INPUT_PLACEHOLDER}
+                style={{marginHorizontal: 5}}
+              />
+            </TouchableOpacity>
+          </View>
+        ))}
+      </CollapsibleContainer>
 
       <DmzButton
         onPress={() => {

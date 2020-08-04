@@ -20,9 +20,11 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {TextInputMask} from 'react-native-masked-text';
 import NewToggleButton from '../ToggleButton/NewToggleButton';
 import Feather from 'react-native-vector-icons/Feather';
+import CollapsibleContainer from './CollapsibleContainer';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const AddMed = ({visible, onCancel, onUpdate}) => {
-  const [details, setDetails] = useState({
+  const initialState = {
     name: '',
     category: '',
     amount: '',
@@ -33,26 +35,27 @@ const AddMed = ({visible, onCancel, onUpdate}) => {
         amPm: 'AM',
       },
     ],
-  });
+    alert: false,
+  };
+
+  const [details, setDetails] = useState(initialState);
 
   return (
     <BlurModal
       {...{visible}}
       onCancel={() => {
-        setDetails({
-          name: '',
-          category: '',
-          amount: '',
-          date: '',
-          time: [
-            {
-              value: '',
-              amPm: 'AM',
-            },
-          ],
-        });
+        setDetails(initialState);
         onCancel();
       }}>
+      <TouchableOpacity
+        style={{right: 35, top: 35, position: 'absolute'}}
+        onPress={() => setDetails({...details, alert: !details.alert})}>
+        <MaterialIcons
+          name={details.alert ? 'timer' : 'timer-off'}
+          size={25}
+          color={details.alert ? NEW_PRIMARY_COLOR : INPUT_PLACEHOLDER}
+        />
+      </TouchableOpacity>
       <Text
         style={{
           fontFamily: 'Montserrat-SemiBold',
@@ -69,132 +72,134 @@ const AddMed = ({visible, onCancel, onUpdate}) => {
         style={styles.text}
       />
 
-      <TextInput
-        value={details.category}
-        onChangeText={(text) => setDetails({...details, category: text})}
-        placeholderTextColor={INPUT_PLACEHOLDER}
-        placeholder="Add Category"
-        style={styles.text}
-      />
-
-      <TextInput
-        value={details.amount}
-        onChangeText={(text) => setDetails({...details, amount: text})}
-        placeholderTextColor={INPUT_PLACEHOLDER}
-        placeholder="Amount to be taken"
-        style={styles.text}
-        keyboardType="number-pad"
-      />
-
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          borderColor: NEW_PRIMARY_BACKGROUND,
-          borderBottomWidth: 1.5,
-          marginBottom: 15,
-        }}>
+      <CollapsibleContainer height={225 + details.time.length * 35}>
         <TextInput
-          value={details.date}
-          onChangeText={(text) => setDetails({...details, date1: text})}
+          value={details.category}
+          onChangeText={(text) => setDetails({...details, category: text})}
           placeholderTextColor={INPUT_PLACEHOLDER}
-          placeholder="Course Duration"
-          style={[
-            styles.text,
-            {borderBottomWidth: 0, flex: 1, marginBottom: 0},
-          ]}
-          editable={false}
+          placeholder="Add Category"
+          style={styles.text}
         />
-        <TouchableOpacity>
-          <FontAwesome5
-            name="calendar-alt"
-            size={22}
-            color={NEW_PRIMARY_COLOR}
-            style={{marginHorizontal: 5}}
-          />
-        </TouchableOpacity>
-      </View>
 
-      <Text style={[styles.text, {borderBottomWidth: 0, marginBottom: 0}]}>
-        Time
-      </Text>
+        <TextInput
+          value={details.amount}
+          onChangeText={(text) => setDetails({...details, amount: text})}
+          placeholderTextColor={INPUT_PLACEHOLDER}
+          placeholder="Amount to be taken"
+          style={styles.text}
+          keyboardType="number-pad"
+        />
 
-      {details.time.map((time, i) => (
         <View
           style={{
             flexDirection: 'row',
             alignItems: 'center',
-            marginBottom: 10,
+            borderColor: NEW_PRIMARY_BACKGROUND,
+            borderBottomWidth: 1.5,
+            marginBottom: 15,
           }}>
-          <TextInputMask
-            type={'datetime'}
-            options={{
-              format: 'HH:mm',
-            }}
-            value={time.value}
-            onChangeText={(text) => {
-              let temp = details.time;
-              temp[i].value = text;
-              setDetails({...details, time: temp});
-            }}
-            style={{
-              padding: 5,
-              borderRadius: 30,
-              borderColor: GREY_OUTLINE,
-              borderWidth: 1,
-              width: 80,
-              fontFamily: 'Montserrat-Regular',
-              fontSize: 16,
-              paddingHorizontal: 10,
-              textAlign: 'center',
-              height: 35,
-            }}
+          <TextInput
+            value={details.date}
+            onChangeText={(text) => setDetails({...details, date1: text})}
+            placeholderTextColor={INPUT_PLACEHOLDER}
+            placeholder="Course Duration"
+            style={[
+              styles.text,
+              {borderBottomWidth: 0, flex: 1, marginBottom: 0},
+            ]}
+            editable={false}
           />
-          <NewToggleButton
-            text0="AM"
-            text1="PM"
-            style={{width: 80, marginLeft: 20, elevation: 0, height: 35}}
-            toggle={time.amPm === 'AM'}
-            onToggle={() => {
-              let temp = details.time;
-              temp[i].amPm = temp[i].amPm === 'AM' ? 'PM' : 'AM';
-              setDetails({...details, time: temp});
-            }}
-          />
+          <TouchableOpacity>
+            <FontAwesome5
+              name="calendar-alt"
+              size={22}
+              color={NEW_PRIMARY_COLOR}
+              style={{marginHorizontal: 5}}
+            />
+          </TouchableOpacity>
         </View>
-      ))}
 
-      <View style={{flexDirection: 'row', marginBottom: 10}}>
-        <TouchableOpacity
-          onPress={() => {
-            let temp = details.time;
-            if (temp[temp.length - 1].value.length !== 5) return;
-            temp.push({value: '', amPm: 'AM'});
-            setDetails({...details, time: temp});
-          }}>
+        <Text style={[styles.text, {borderBottomWidth: 0, marginBottom: 0}]}>
+          Time
+        </Text>
+
+        {details.time.map((time, i) => (
           <View
             style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginBottom: 10,
+            }}>
+            <TextInputMask
+              type={'datetime'}
+              options={{
+                format: 'HH:mm',
+              }}
+              value={time.value}
+              onChangeText={(text) => {
+                let temp = details.time;
+                temp[i].value = text;
+                setDetails({...details, time: temp});
+              }}
+              style={{
+                padding: 5,
+                borderRadius: 30,
+                borderColor: GREY_OUTLINE,
+                borderWidth: 1,
+                width: 80,
+                fontFamily: 'Montserrat-Regular',
+                fontSize: 16,
+                paddingHorizontal: 10,
+                textAlign: 'center',
+                height: 35,
+              }}
+            />
+            <NewToggleButton
+              text0="AM"
+              text1="PM"
+              style={{width: 80, marginLeft: 20, elevation: 0, height: 35}}
+              toggle={time.amPm === 'AM'}
+              onToggle={() => {
+                let temp = details.time;
+                temp[i].amPm = temp[i].amPm === 'AM' ? 'PM' : 'AM';
+                setDetails({...details, time: temp});
+              }}
+            />
+          </View>
+        ))}
+
+        <View style={{flexDirection: 'row', marginBottom: 10}}>
+          <TouchableOpacity
+            onPress={() => {
+              let temp = details.time;
+              if (temp[temp.length - 1].value.length !== 5) return;
+              temp.push({value: '', amPm: 'AM'});
+              setDetails({...details, time: temp});
+            }}>
+            <View
+              style={{
+                height: 35,
+                width: 80,
+                borderWidth: 1,
+                borderColor: GREY_OUTLINE,
+                borderRadius: 30,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Feather name="plus" size={20} color={INPUT_PLACEHOLDER} />
+            </View>
+          </TouchableOpacity>
+          <Image
+            source={require('../../../assets/icons/inactive_toggle.png')}
+            style={{
               height: 35,
               width: 80,
-              borderWidth: 1,
-              borderColor: GREY_OUTLINE,
-              borderRadius: 30,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Feather name="plus" size={20} color={INPUT_PLACEHOLDER} />
-          </View>
-        </TouchableOpacity>
-        <Image
-          source={require('../../../assets/icons/inactive_toggle.png')}
-          style={{
-            height: 35,
-            width: 80,
-            marginLeft: 20,
-          }}
-          resizeMode="stretch"
-        />
-      </View>
+              marginLeft: 20,
+            }}
+            resizeMode="stretch"
+          />
+        </View>
+      </CollapsibleContainer>
 
       <DmzButton
         onPress={() => {
@@ -238,3 +243,4 @@ const styles = StyleSheet.create({
   },
   inputContainer: {},
 });
+``;

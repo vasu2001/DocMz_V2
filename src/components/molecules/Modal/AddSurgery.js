@@ -15,6 +15,7 @@ import {
 } from '../../../styles/colors';
 import DmzButton from '../../atoms/DmzButton/DmzButton';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import CollapsibleContainer from './CollapsibleContainer';
 
 const AddSurgery = ({visible, onCancel, onUpdate}) => {
   const [details, setDetails] = useState({
@@ -42,50 +43,52 @@ const AddSurgery = ({visible, onCancel, onUpdate}) => {
         style={styles.text}
       />
 
-      <TextInput
-        value={details.docName}
-        onChangeText={(text) => setDetails({...details, docName: text})}
-        placeholderTextColor={INPUT_PLACEHOLDER}
-        placeholder="Surgeon’s Name"
-        style={styles.text}
-      />
-
-      <TextInput
-        value={details.otor}
-        onChangeText={(text) => setDetails({...details, otor: text})}
-        placeholderTextColor={INPUT_PLACEHOLDER}
-        placeholder="OT/OR"
-        style={styles.text}
-      />
-
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          borderColor: NEW_PRIMARY_BACKGROUND,
-          borderBottomWidth: 1.5,
-          marginBottom: 15,
-        }}>
+      <CollapsibleContainer>
         <TextInput
-          value={details.date}
-          onChangeText={(text) => setDetails({...details, date1: text})}
+          value={details.docName}
+          onChangeText={(text) => setDetails({...details, docName: text})}
           placeholderTextColor={INPUT_PLACEHOLDER}
-          placeholder="Date"
-          style={[
-            styles.text,
-            {borderBottomWidth: 0, flex: 1, marginBottom: 0},
-          ]}
-          editable={false}
+          placeholder="Surgeon’s Name"
+          style={styles.text}
         />
-        <TouchableOpacity>
-          <FontAwesome5
-            name="calendar-alt"
-            size={22}
-            color={NEW_PRIMARY_COLOR}
-            style={{marginHorizontal: 5}}
+
+        <TextInput
+          value={details.otor}
+          onChangeText={(text) => setDetails({...details, otor: text})}
+          placeholderTextColor={INPUT_PLACEHOLDER}
+          placeholder="OT/OR"
+          style={styles.text}
+        />
+
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            borderColor: NEW_PRIMARY_BACKGROUND,
+            borderBottomWidth: 1.5,
+            marginBottom: 15,
+          }}>
+          <TextInput
+            value={details.date}
+            onChangeText={(text) => setDetails({...details, date1: text})}
+            placeholderTextColor={INPUT_PLACEHOLDER}
+            placeholder="Date"
+            style={[
+              styles.text,
+              {borderBottomWidth: 0, flex: 1, marginBottom: 0},
+            ]}
+            editable={false}
           />
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity>
+            <FontAwesome5
+              name="calendar-alt"
+              size={22}
+              color={NEW_PRIMARY_COLOR}
+              style={{marginHorizontal: 5}}
+            />
+          </TouchableOpacity>
+        </View>
+      </CollapsibleContainer>
 
       <DmzButton
         onPress={() => {

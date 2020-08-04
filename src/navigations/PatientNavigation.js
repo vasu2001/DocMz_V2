@@ -50,6 +50,7 @@ import NewCard from '../screens/examples/payments/NewCard';
 import NewWaitingRoom from '../screens/patient/waitingRoom/NewWaitingRoom';
 import VoiceCall from '../screens/patient/Calls/Voicecall';
 import MedicalHistory from '../screens/examples/MedicalHistory/MedicalHistory';
+import HealthcareTeam from '../screens/patient/HealtcareTeam/HealtcareTeam';
 
 // const PatientBottomNavigation = createSwitchNavigator(
 //   {
@@ -110,6 +111,7 @@ const ProfileStack = createStackNavigator(
     EmailIdOtp,
     EditEmailId,
     MedicalHistory,
+    HealthcareTeam,
   },
   {headerMode: 'none', initialRouteName: 'ProfileScreen'},
 );
@@ -154,7 +156,7 @@ const PatientNavigationHome = createBottomTabNavigator(
       },
     },
     test: {
-      screen: NewWaitingRoom,
+      screen: ProfileScreen,
       navigationOptions: {
         tabBarIcon: ({focused, horizontal, tintColor}) => {
           return (
