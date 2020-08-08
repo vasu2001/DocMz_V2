@@ -10,6 +10,8 @@ import MyDoctorReducer from './doctor/myDoctorReducer';
 import questionnaireReducer from './doctor/questionnaireReducer';
 import PatientAccountReducer from './patientAccountReducer';
 import themeReducer from './themeReducer';
+import chatReducer from './chatReducer';
+
 const allReducer = combineReducers({
   AuthReducer,
   DataStoreReducer,
@@ -21,6 +23,7 @@ const allReducer = combineReducers({
   PatientAccountReducer,
   questionnaireReducer,
   themeReducer,
+  chatReducer,
 });
 
 export default allReducer;

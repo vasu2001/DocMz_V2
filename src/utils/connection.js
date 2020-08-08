@@ -13,3 +13,4 @@
 // export const Host = 'http://192.168.137.1:3005';
 // export const Host = 'http://192.168.0.105:3005';
 export const Host = 'https://server.docmz.com';
+// export const Host = 'http://192,168.0.179';

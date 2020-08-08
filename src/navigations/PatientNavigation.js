@@ -51,6 +51,12 @@ import NewWaitingRoom from '../screens/patient/waitingRoom/NewWaitingRoom';
 import VoiceCall from '../screens/patient/Calls/Voicecall';
 import MedicalHistory from '../screens/examples/MedicalHistory/MedicalHistory';
 import HealthcareTeam from '../screens/patient/HealtcareTeam/HealtcareTeam';
+import ChatNavigation from './ChatNavigation';
+import DocWelcomeScreen from '../screens/doctor/WelcomeScreen/WelcomeScreen';
+import AddClinic from '../screens/doctor/AddClinic/AddClinic';
+import AddVisitingDetails from '../screens/doctor/AddClinic/AddVisitingDetails';
+import AddOwnedClinic from '../screens/doctor/AddClinic/AddOwnedClinic';
+import NewDoctorDashboard from '../screens/doctor/Dashboard/NewDoctorDashboard';
 
 // const PatientBottomNavigation = createSwitchNavigator(
 //   {
@@ -142,7 +148,7 @@ const PatientNavigationHome = createBottomTabNavigator(
       },
     },
     patientDashboardNav: {
-      screen: PatienDashboard,
+      screen: NewDoctorDashboard,
       navigationOptions: {
         tabBarIcon: ({focused, horizontal, tintColor}) => {
           return (
@@ -156,7 +162,7 @@ const PatientNavigationHome = createBottomTabNavigator(
       },
     },
     test: {
-      screen: ProfileScreen,
+      screen: AddOwnedClinic,
       navigationOptions: {
         tabBarIcon: ({focused, horizontal, tintColor}) => {
           return (
