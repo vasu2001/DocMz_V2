@@ -11,7 +11,9 @@ const PROFILE_PIC_UPLOADED = 'PROFILE_PIC_UPLOADED';
 const START_APPOINTMENT_SLOT_LOADING = 'START_APPOINTMENT_SLOT_LOADING';
 const APPOINTMENT_SLOT_LOADED = 'APPOINTMENT_SLOT_LOADED';
 const APPOINTMENT_SLOT_ERROR = 'APPOINTMENT_SLOT_ERROR';
-
+const BOOKING_APPOINTMENT = 'BOOKING_APPOINTMENT';
+const BOOKED_APPOINTMENT = 'BOOKED_APPOINTMENT';
+const ERROR_BOOKING_APPOINTMENT = 'ERROR_BOOKING_APPOINTMENT';
 const saveUserAccount = (data, dataVitals) => {
   console.log(data, '----------------', dataVitals);
   return {
@@ -72,6 +74,25 @@ const appointmentSlotError = (error) => {
     payload: error,
   };
 };
+
+const bookingAppointment = () => {
+  return {
+    type: BOOKING_APPOINTMENT,
+  };
+};
+const bookedAppointment = (data) => {
+  return {
+    type: BOOKED_APPOINTMENT,
+    payload: data,
+  };
+};
+const errorBookingAppointment = (err) => {
+  return {
+    type: ERROR_BOOKING_APPOINTMENT,
+    payload: err,
+  };
+};
+
 export const resetUserAccountReducer = () => {
   return {
     type: RESET,
@@ -424,6 +445,28 @@ export const GetAppointmentSlot = (dates, id) => {
       })
       .catch((err) => {
         dispatch(appointmentSlotError(err));
+      });
+  };
+};
+
+export const bookAppointment = (data) => {
+  return async (dispatch) => {
+    dispatch(bookingAppointment());
+    const config = {
+      Accept: '*/*',
+      'Content-Type': 'application/x-www-form-urlencoded',
+    };
+    await axios
+      .post(`${Host}/appointment/book`, data, config)
+      .then((result) => {
+        if (result.status) {
+          dispatch(bookedAppointment(result.message));
+        } else {
+          dispatch(errorBookingAppointment(''));
+        }
+      })
+      .catch((err) => {
+        dispatch(errorBookingAppointment(err));
       });
   };
 };

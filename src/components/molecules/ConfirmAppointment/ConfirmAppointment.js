@@ -28,7 +28,10 @@ import {
 } from '../../../styles/colors';
 import AppointmentQuestion from '../Modal/AppointmentQuestion';
 import DmzButton from '../../atoms/DmzButton/DmzButton';
-
+import {Picker} from '@react-native-community/picker';
+import {useSelector, useDispatch} from 'react-redux';
+import moment from 'moment';
+import {bookAppointment} from '../../../redux/action/patientAccountAction';
 const Data = [
   {
     name: 'kamalesh biswas',
@@ -53,27 +56,55 @@ const Data = [
 ];
 
 const ConfirmAppointment = ({navigation}) => {
-  const data = navigation.state.params.data;
+  const {data: slotData, doctorData} = navigation.state.params;
+  const dispatch = useDispatch();
   const [showPopup, setShowPopup] = useState(false);
+  const [memberCredential, setMemberCredential] = useState({
+    id: '',
+    name: '',
+    contact: '',
+    date: '',
+  });
   const PopupTranslateY = useRef(new Animated.Value(0)).current;
 
   console.log('************************************');
-  console.log(data);
+  console.log(slotData);
+  console.log('************************************');
+  console.log(doctorData);
 
-  const [state, setState] = useState({
-    name: '',
-    reasonForVisit: '',
-    contact: '',
-  });
+  const {familyMember, patient} = useSelector(
+    (state) => state.PatientAccountReducer,
+  );
+  // const [state, setState] = useState({
+  //   name: '',
+  //   reasonForVisit: '',
+  //   contact: '',
+  // });
 
-  const initialChoosenState = (_state) => {
-    setState(_state);
+  const credentialSet = (id) => {
+    const member = familyMember.find((item) => item._id === id);
+    setMemberCredential({
+      id: id,
+      name: `${member.firstName} ${member.lastName}`,
+      date: moment(slotData.bookedFor).format('ddd,MMMM M - HH:mm a'),
+      contact: patient.phone,
+    });
   };
+  // const initialChoosenState = (_state) => {
+  //   setState(_state);
+  // };
 
   const handelAppointmentSubmit = () => {
-    console.log('Handel appointment submit.');
-    console.log(state);
-    navigation.navigate('Questionnaire');
+    const member = familyMember.find(
+      (item) => item._id === memberCredential.id,
+    );
+    const data = {
+      timeSlot: slotData._id,
+      patient: patient._id,
+      forWhom: member.relationship,
+      patientInfo: JSON.stringify(member),
+    };
+    dispatch(bookAppointment(data));
   };
 
   const onPress = (id) => {
@@ -109,15 +140,26 @@ const ConfirmAppointment = ({navigation}) => {
             Patient Details
           </Text>
           <View style={ConfirmAppointmentStyles.inputGroup}>
-            <Text
+            <View
               style={[
                 ConfirmAppointmentStyles.text,
                 ConfirmAppointmentStyles.upperText,
               ]}>
-              Mark Sloan
-            </Text>
+              <Picker
+                style={{height: 20, width: '100%'}}
+                selectedValue={memberCredential.id}
+                onValueChange={credentialSet}>
+                <Picker.Item color="#777" label="Select Name" value={null} />
+                {familyMember.map((item) => (
+                  <Picker.Item
+                    label={`${item.firstName} ${item.lastName}`}
+                    value={item._id}
+                  />
+                ))}
+              </Picker>
+            </View>
             <Text style={[ConfirmAppointmentStyles.text]}>
-              Contact - 7894561230
+              {memberCredential.contact}
             </Text>
             <Text
               style={[
@@ -140,10 +182,10 @@ const ConfirmAppointment = ({navigation}) => {
               Reason - Urinary Tract Infection (UTI)
             </Text>
             <Text style={[ConfirmAppointmentStyles.text]}>
-              Wed, July 15 - 01:00 pm
+              {memberCredential.date}
             </Text>
             <Text style={[ConfirmAppointmentStyles.text]}>
-              Dr. Co Ekaterine - Gynaecologist
+              Dr. {doctorData.basic.name} - {doctorData.specialty}
             </Text>
             <Text
               style={[
